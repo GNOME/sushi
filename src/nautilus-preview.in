@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if test x"$GJS_PATH" = x ; then
+    export GJS_PATH=@pkgdatadir@/js
+else
+    export GJS_PATH=@pkgdatadir@/js:$GJS_PATH
+fi
+
+# Work around Ubuntu xulrunner bug:
+# http://bugzilla.gnome.org/show_bug.cgi?id=573413
+MOZJS_LD_LIBRARY_PATH=""
+
+for i in /usr/lib/xulrunner-2.0* ; do
+   if [ -f ${i}/libmozjs.so ] ; then
+       MOZJS_LD_LIBRARY_PATH=${i}
+       break
+   fi
+done
+
+if test x"$LD_LIBRARY_PATH" = x ; then
+    export LD_LIBRARY_PATH=$MOZJS_LD_LIBRARY_PATH
+else
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MOZJS_LD_LIBRARY_PATH
+fi
+
+if test x"$FONTCONFIG_FILE" = x ; then
+    export FONTCONFIG_FILE=@pkgdatadir@/fonts.conf
+fi
+
+@libexecdir@/nautilus-preview-start

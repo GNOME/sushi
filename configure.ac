@@ -73,6 +73,8 @@ AC_SUBST(GLIB_MKENUMS)
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
+data/Makefile
+data/style/Makefile
 po/Makefile.in
 ])
 
