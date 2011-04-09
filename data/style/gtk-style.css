@@ -1,0 +1,25 @@
+* {
+   background-color: alpha(#000, 0.0);
+}
+
+.np-toolbar {
+    border-style: none;
+    border-radius: 3;
+    border-width: 0;
+
+    background-color: #333;
+    color: #fff;
+}
+
+.np-toolbar-button,
+.np-toolbar .button {
+    background-image: -gtk-gradient(linear,
+                                    left top, left bottom,
+                                    from(#333),
+                                    color-stop(0.50, shade (#333, 1.25)),
+                                    to (#333));
+}
+
+.np-toolbar-button:hover {
+    background-color: alpha(#333, 0.75);
+}
