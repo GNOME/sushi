@@ -90,6 +90,7 @@ Application.prototype = {
     },
 
     showFile : function(uri) {
+        this._mainWindow.setFile(Gio.file_new_for_uri(uri));
     },
 
     quit : function() {

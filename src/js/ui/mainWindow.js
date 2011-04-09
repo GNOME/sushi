@@ -1,3 +1,4 @@
+const GLib = imports.gi.GLib;
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const GtkClutter = imports.gi.GtkClutter;
@@ -5,6 +6,8 @@ const Clutter = imports.gi.Clutter;
 
 const Cairo = imports.cairo;
 const Lang = imports.lang;
+
+const Mainloop = imports.mainloop;
 
 function MainWindow(args) {
     this._init(args);
@@ -19,7 +22,6 @@ MainWindow.prototype = {
         this._createClutterEmbed();
 
         this._connectStageSignals();
-        this._createToolbar();
     },
 
     _createGtkWindow : function() {
@@ -66,8 +68,8 @@ MainWindow.prototype = {
         this._mainToolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR);
         this._mainToolbar.show();
 
-        let actor = new GtkClutter.Actor({ contents: this._mainToolbar });
-        actor.add_constraint(
+        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
+        this._toolbarActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5 }));
 
@@ -75,11 +77,11 @@ MainWindow.prototype = {
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.Y,
                                          offset: this._stage.height - 52 });
-        actor.add_constraint(yConstraint);
+        this._toolbarActor.add_constraint(yConstraint);
 
-        actor.set_size(100, 40);
-        actor.set_opacity(200);
-        this._stage.add_actor(actor);
+        this._toolbarActor.set_size(100, 40);
+        this._toolbarActor.set_opacity(200);
+        this._stage.add_actor(this._toolbarActor);
 
         this._stage.connect("notify::height",
                             Lang.bind(this, function() {
@@ -118,5 +120,69 @@ MainWindow.prototype = {
 
     showAll : function() {
         this._gtkWindow.show_all();
+    },
+
+    setFile : function(file) {
+        if (this._texture)
+            this._texture.destroy();
+
+        this._texture = new Clutter.Texture({ filename: file.get_path(),
+                                             "keep-aspect-ratio": true });
+
+        if(this._texture.width > 800 || this._texture.height > 600) {
+            let scale = 0;
+
+            if (this._texture.width > this._texture.height)
+                scale = 800 / this._texture.width;
+            else
+                scale = 600 / this._texture.height;
+
+            this._texture.set_size(this._texture.width * scale,
+                                   this._texture.height * scale);
+            this._gtkWindow.resize(this._texture.width,
+                                   this._texture.height);
+        } else if (this._texture.width < 400 ||
+                   this._texture.height < 400) {
+            this._texture.add_constraint(
+                new Clutter.AlignConstraint({ source: this._stage,
+                                              factor: 0.5 }));
+
+            let yAlign =                 
+                new Clutter.AlignConstraint({ source: this._stage,
+                                              factor: 0.5 })
+            yAlign.set_align_axis(Clutter.AlignAxis.Y_AXIS);
+            this._texture.add_constraint(yAlign);
+
+            this._gtkWindow.resize(400, 400);
+        } else {
+            this._gtkWindow.resize(this._texture.width,
+                                   this._texture.height);
+        }
+
+        this._stage.add_actor(this._texture);
+        this._texture.set_reactive(true);
+        this._texture.connect("motion-event",
+                              Lang.bind(this, this._onTextureMotion));
+    },
+
+    _onTextureMotion : function() {
+        if (this._toolbarId) {
+            GLib.source_remove(this._toolbarId);
+            delete this._toolbarId;
+        } else {
+            this._createToolbar();
+        }
+
+        this._toolbarId = Mainloop.timeout_add_seconds(2,
+                                                       Lang.bind(this,
+                                                                 this._onToolbarTimeout));
+    },
+
+    _onToolbarTimeout : function() {
+        log ("timeoiut");
+        delete this._toolbarId;
+        this._toolbarActor.destroy();
+
+        return false;
     }
 }
