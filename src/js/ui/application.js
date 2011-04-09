@@ -8,20 +8,21 @@ const Path = imports.util.path;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Gdk = imports.gi.Gdk;
+const Gio = imports.gi.Gio;
 
 const MainWindow = imports.ui.mainWindow;
 
 const _SUSHI_DBUS_PATH = '/org/gnome/Sushi';
 
 const SushiIface = {
-    name: "org.gnome.Sushi",
+    name: 'org.gnome.NautilusPreviewer',
 
     methods: [ { name: "activate",
-                 inSignature: '',
-                 outSignature: '' },
+                 inSignature: "",
+                 outSignature: "" },
                { name: "showFile",
-                 inSignature: 's',
-                 outSignature: '' } ],
+                 inSignature: "",
+                 outSignature: "" } ],
 
     signals: [],
 
