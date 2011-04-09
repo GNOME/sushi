@@ -78,12 +78,12 @@ main (int argc, char **argv)
   GtkSettings *settings;
   GError *error;
 
+  clutter_x11_set_use_argb_visual (TRUE);
   gtk_clutter_init (&argc, &argv);
 
   parse_options (&argc, &argv);
 
   js_context = gjs_context_new_with_search_path (NULL);
-
   settings = gtk_settings_get_default ();
 
   g_object_connect (settings,
