@@ -16,7 +16,7 @@
     background-image: -gtk-gradient(linear,
                                     left top, left bottom,
                                     from(#333),
-                                    color-stop(0.50, shade (#333, 1.25)),
+                                    color-stop(0.50, shade (#333, 1.40)),
                                     to (#333));
 }
 

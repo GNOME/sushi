@@ -4,7 +4,6 @@ const Path = imports.util.path;
 // gi imports
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Mx = imports.gi.Mx;
 const Gdk = imports.gi.Gdk;
 
 const MainWindow = imports.ui.mainWindow;
@@ -27,12 +26,6 @@ Application.prototype = {
     },
 
     _defineStyleAndThemes : function() {
-        let mxIcontheme = Mx.IconTheme.get_default();
-        mxIcontheme.set_search_paths([Path.ICONS_DIR]);
-
-        let style = Mx.Style.get_default();
-        style.load_from_file(Path.STYLE_DIR + "style.css");
-
         let provider = new Gtk.CssProvider();
         provider.load_from_path(Path.STYLE_DIR + "gtk-style.css");
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),

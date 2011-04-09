@@ -53,7 +53,6 @@ GTK_MIN_VERSION=3.0.0
 GJS_MIN_VERSION=0.7.7
 CLUTTER_GTK_MIN_VERSION=0.91.8
 GOBJECT_INTROSPECTION_MIN_VERSION=0.9.6
-MX_MIN_VERSION=1.1.1
 GDK_PIXBUF_MIN_VERSION=2.22.1
 
 PKG_CHECK_MODULES(NAUTILUS_PREVIEW,
@@ -63,7 +62,6 @@ PKG_CHECK_MODULES(NAUTILUS_PREVIEW,
                   gjs-dbus-1.0 >= $GJS_MIN_VERSION
                   gobject-2.0 >= $GLIB_MIN_VERSION
                   clutter-1.0 >= $CLUTTER_MIN_VERSION
-                  mx-1.0 >= $MX_MIN_VERSION
                   gtk+-3.0 >= $GTK_MIN_VERSION
                   clutter-gtk-1.0 >= $CLUTTER_GTK_MIN_VERSION)
 

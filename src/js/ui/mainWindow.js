@@ -2,7 +2,6 @@ const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const GtkClutter = imports.gi.GtkClutter;
 const Clutter = imports.gi.Clutter;
-const Mx = imports.gi.Mx;
 
 const Cairo = imports.cairo;
 const Lang = imports.lang;
@@ -20,8 +19,6 @@ MainWindow.prototype = {
         this._createClutterEmbed();
 
         this._connectStageSignals();
-
-        this._createMainBox();
         this._createToolbar();
     },
 
@@ -49,7 +46,11 @@ MainWindow.prototype = {
 
         this._stage = this._clutterEmbed.get_stage();
         this._stage.set_use_alpha(true);
-        this._stage.set_opacity(128);
+        this._stage.set_opacity(221);
+        this._stage.set_color(new Clutter.Color({ red: 0,
+                                                  green: 0,
+                                                  blue: 0, 
+                                                  alpha: 255 }));
         this._stage.set_size(400, 400);
         this._gtkWindow.resize(400, 400);
     },
@@ -57,28 +58,6 @@ MainWindow.prototype = {
     _connectStageSignals : function() {
         this._stage.connect("key-press-event",
                             Lang.bind(this, this._onStageKeyPressEvent));
-    },
-
-    _createMainBox : function() {
-        this._mainBox =
-            new Mx.BoxLayout({ orientation: Mx.Orientation.VERTICAL,
-                               reactive: true,
-                               name: "main-window-main-box" });
-
-        this._stage.add_actor(this._mainBox);
-        this._stage.show();
-
-        let widthConstraint =
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.WIDTH,
-                                         offset: 0.0 });
-        this._mainBox.add_constraint(widthConstraint);
-
-        let heightConstraint =
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.HEIGHT,
-                                         offset: 0.0 });
-        this._mainBox.add_constraint(heightConstraint);
     },
 
     _createToolbar : function () {
@@ -99,7 +78,7 @@ MainWindow.prototype = {
         actor.add_constraint(yConstraint);
 
         actor.set_size(100, 40);
-        actor.set_opacity(128);
+        actor.set_opacity(200);
         this._stage.add_actor(actor);
 
         this._stage.connect("notify::height",
