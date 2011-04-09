@@ -1,3 +1,6 @@
+const DBus = imports.dbus;
+const Lang = imports.lang;
+
 // util imports
 const Path = imports.util.path;
 
@@ -8,16 +11,64 @@ const Gdk = imports.gi.Gdk;
 
 const MainWindow = imports.ui.mainWindow;
 
+const _SUSHI_DBUS_PATH = '/org/gnome/Sushi';
+
+const SushiIface = {
+    name: "org.gnome.Sushi",
+
+    methods: [ { name: "activate",
+                 inSignature: '',
+                 outSignature: '' },
+               { name: "showFile",
+                 inSignature: 's',
+                 outSignature: '' } ],
+
+    signals: [],
+
+    properties: []
+};
+
+function RemoteApplication(args) {
+    this._init(args);
+}
+
+RemoteApplication.prototype = {
+    _init : function(args) {
+        DBus.session.proxifyObject(this,
+                                   SushiIface.name,
+                                   _SUSHI_DBUS_PATH);
+    }
+}
+
+DBus.proxifyPrototype(RemoteApplication.prototype,
+                      SushiIface);
+
 function Application(args) {
     this._init(args);
 }
 
 Application.prototype = {
     _init : function(args) {
+        DBus.session.acquire_name(SushiIface.name,
+                                  DBus.SINGLE_INSTANCE,
+                                  Lang.bind(this, this._onNameAcquired),
+                                  Lang.bind(this, this._onNameNotAcquired));
+    },
+
+    _onNameAcquired : function() {
+        DBus.session.exportObject(_SUSHI_DBUS_PATH, this);
+
         this._defineStyleAndThemes();
         this._createMainWindow();
 
         this._mainWindow.showAll();
+    },
+
+    _onNameNotAcquired : function() {
+        let remoteApp = new RemoteApplication();
+        remoteApp.activateRemote();
+
+        this.quit();
     },
 
     _createMainWindow : function() {
@@ -31,6 +82,13 @@ Application.prototype = {
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  600);
+    },
+
+    activate : function() {
+        this._mainWindow.showAll();
+    },
+
+    showFile : function(uri) {
     },
 
     quit : function() {
