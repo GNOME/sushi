@@ -5,9 +5,16 @@ const GtkClutter = imports.gi.GtkClutter;
 const Clutter = imports.gi.Clutter;
 
 const Cairo = imports.cairo;
+const Tweener = imports.tweener.tweener;
 const Lang = imports.lang;
 
 const Mainloop = imports.mainloop;
+
+const VIEW_MIN = 400;
+const VIEW_PADDING_Y = 28;
+const VIEW_PADDING_X = 4;
+const VIEW_MAX_W = 800;
+const VIEW_MAX_H = 600;
 
 function MainWindow(args) {
     this._init(args);
@@ -22,6 +29,7 @@ MainWindow.prototype = {
         this._createClutterEmbed();
 
         this._connectStageSignals();
+        this._createToolbar();
     },
 
     _createGtkWindow : function() {
@@ -53,8 +61,8 @@ MainWindow.prototype = {
                                                   green: 0,
                                                   blue: 0, 
                                                   alpha: 255 }));
-        this._stage.set_size(400, 400);
-        this._gtkWindow.resize(400, 400);
+        this._stage.set_size(VIEW_MIN, VIEW_MIN);
+        this._gtkWindow.resize(VIEW_MIN, VIEW_MIN);
     },
 
     _connectStageSignals : function() {
@@ -80,7 +88,7 @@ MainWindow.prototype = {
         this._toolbarActor.add_constraint(yConstraint);
 
         this._toolbarActor.set_size(100, 40);
-        this._toolbarActor.set_opacity(200);
+        this._toolbarActor.set_opacity(0);
         this._stage.add_actor(this._toolbarActor);
 
         this._stage.connect("notify::height",
@@ -129,35 +137,36 @@ MainWindow.prototype = {
         this._texture = new Clutter.Texture({ filename: file.get_path(),
                                              "keep-aspect-ratio": true });
 
-        if(this._texture.width > 800 || this._texture.height > 600) {
+        if(this._texture.width > VIEW_MAX_W || this._texture.height > VIEW_MAX_H) {
             let scale = 0;
 
             if (this._texture.width > this._texture.height)
-                scale = 800 / this._texture.width;
+                scale = VIEW_MAX_W / this._texture.width;
             else
-                scale = 600 / this._texture.height;
+                scale = VIEW_MAX_H / this._texture.height;
 
             this._texture.set_size(this._texture.width * scale,
                                    this._texture.height * scale);
-            this._gtkWindow.resize(this._texture.width,
-                                   this._texture.height);
-        } else if (this._texture.width < 400 ||
-                   this._texture.height < 400) {
-            this._texture.add_constraint(
-                new Clutter.AlignConstraint({ source: this._stage,
-                                              factor: 0.5 }));
-
-            let yAlign =                 
-                new Clutter.AlignConstraint({ source: this._stage,
-                                              factor: 0.5 })
-            yAlign.set_align_axis(Clutter.AlignAxis.Y_AXIS);
-            this._texture.add_constraint(yAlign);
-
-            this._gtkWindow.resize(400, 400);
+            this._gtkWindow.resize(this._texture.width + VIEW_PADDING_X,
+                                   this._texture.height + VIEW_PADDING_Y);
+        } else if (this._texture.width < VIEW_MIN &&
+                   this._texture.height < VIEW_MIN) {
+            this._gtkWindow.resize(VIEW_MIN + VIEW_PADDING_X,
+                                   VIEW_MIN + VIEW_PADDING_Y);
         } else {
-            this._gtkWindow.resize(this._texture.width,
-                                   this._texture.height);
+            this._gtkWindow.resize(this._texture.width + VIEW_PADDING_X,
+                                   this._texture.height + VIEW_PADDING_Y);
         }
+
+        this._texture.add_constraint(
+            new Clutter.AlignConstraint({ source: this._stage,
+                                          factor: 0.5 }));
+
+        let yAlign =                 
+            new Clutter.AlignConstraint({ source: this._stage,
+                                          factor: 0.92 })
+        yAlign.set_align_axis(Clutter.AlignAxis.Y_AXIS);
+        this._texture.add_constraint(yAlign);
 
         this._stage.add_actor(this._texture);
         this._texture.set_reactive(true);
@@ -170,19 +179,29 @@ MainWindow.prototype = {
             GLib.source_remove(this._toolbarId);
             delete this._toolbarId;
         } else {
-            this._createToolbar();
+            Tweener.removeAllTweens(this._toolbarActor);
+
+            this._toolbarActor.raise_top();
+            this._toolbarActor.set_opacity(0);
+            Tweener.addTween(this._toolbarActor,
+                             { opacity: 200,
+                               time: 0.1,
+                               transition: 'easeOutQuad',
+                             });
         }
 
-        this._toolbarId = Mainloop.timeout_add_seconds(2,
-                                                       Lang.bind(this,
-                                                                 this._onToolbarTimeout));
+        this._toolbarId = Mainloop.timeout_add(1500,
+                                               Lang.bind(this,
+                                                         this._onToolbarTimeout));
     },
 
     _onToolbarTimeout : function() {
-        log ("timeoiut");
         delete this._toolbarId;
-        this._toolbarActor.destroy();
-
+        Tweener.addTween(this._toolbarActor,
+                         { opacity: 0,
+                           time: 0.25,
+                           transition: 'easeOutQuad'
+                         });
         return false;
     }
 }

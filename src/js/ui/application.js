@@ -24,7 +24,12 @@ const SushiIface = {
                  inSignature: "",
                  outSignature: "" } ],
 
-    signals: [],
+    signals: [ { name: "nextFile",
+                 inSignature: "",
+                 outSignature: "" },
+               { name: "prevFile",
+                 inSignature: "",
+                 outSignature: "" }],
 
     properties: []
 };
