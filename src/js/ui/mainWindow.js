@@ -70,6 +70,8 @@ MainWindow.prototype = {
                             Lang.bind(this, this._onStageKeyPressEvent));
         this._stage.connect("button-press-event",
                             Lang.bind(this, this._onButtonPressEvent));
+        this._stage.connect("motion-event",
+                            Lang.bind(this, this._onMotionEvent));
     },
 
     _createToolbar : function () {
@@ -110,6 +112,10 @@ MainWindow.prototype = {
         this._toolbarZoom.show();
         this._mainToolbar.insert(this._toolbarZoom, 0);
 
+        this._isFullscreen = false;
+        this._toolbarZoom.connect("clicked",
+                                  Lang.bind(this, this._toggleFullScreen));
+
         this._toolbarPrev = new Gtk.ToolButton();
         this._toolbarPrev.set_icon_name("go-previous-symbolic");
         this._toolbarPrev.set_expand(true);
@@ -128,6 +134,75 @@ MainWindow.prototype = {
             this._application.quit();
     },
 
+    _toggleFullScreen : function() {
+        /* FIXME: this doesn't work well, but I don't really understand why...*/
+        if(this._isFullScreen) {
+            this._isFullScreen = false;
+            this._positionTexture();
+            this._gtkWindow.unfullscreen();
+        } else {
+            this._isFullScreen = true;
+            this._positionTexture();
+            this._gtkWindow.fullscreen();
+        }
+    },
+
+    _positionTexture : function() {
+        let yFactor = 0;
+        let screen_size = [ this._gtkWindow.get_screen().get_width(),
+                            this._gtkWindow.get_screen().get_height() ];
+        let base_size = this._texture.get_base_size();
+
+        let maxW = this._isFullScreen ?
+            screen_size[0] : VIEW_MAX_W;
+        let maxH = this._isFullScreen ?
+            screen_size[1] : VIEW_MAX_H;
+
+        let width = base_size[0];
+        let height = base_size[1];
+
+        this._texture.clear_constraints();
+
+        if(width > maxW || height > maxH) {
+            let scale = 0;
+
+            if (width > height)
+                scale = maxW / width;
+            else
+                scale = maxH / height;
+
+            this._texture.set_size(width * scale,
+                                   height * scale);
+            this._gtkWindow.resize(this._texture.width + VIEW_PADDING_X,
+                                   this._texture.height + VIEW_PADDING_Y);
+        } else if (width < VIEW_MIN &&
+                   height < VIEW_MIN) {
+            this._gtkWindow.resize(VIEW_MIN + VIEW_PADDING_X,
+                                   VIEW_MIN + VIEW_PADDING_Y);
+            yFactor = 0.52;
+        } else {
+            this._gtkWindow.resize(width + VIEW_PADDING_X,
+                                   height + VIEW_PADDING_Y);
+        }
+
+        this._texture.add_constraint(
+            new Clutter.AlignConstraint({ source: this._stage,
+                                          factor: 0.5 }));
+
+        if (yFactor == 0) {
+            if (this._isFullScreen)
+                yFactor = 0.52;
+            else        
+                yFactor = 0.92;
+        }
+
+        let yAlign =                 
+            new Clutter.AlignConstraint({ source: this._stage,
+                                          factor: yFactor })
+        yAlign.set_align_axis(Clutter.AlignAxis.Y_AXIS);
+        this._texture.add_constraint(yAlign);
+    },
+
     showAll : function() {
         this._gtkWindow.show_all();
     },
@@ -139,47 +214,8 @@ MainWindow.prototype = {
         this._texture = new Clutter.Texture({ filename: file.get_path(),
                                              "keep-aspect-ratio": true });
 
-        let yFactor = 0;
-
-        if(this._texture.width > VIEW_MAX_W || this._texture.height > VIEW_MAX_H) {
-            let scale = 0;
-
-            if (this._texture.width > this._texture.height)
-                scale = VIEW_MAX_W / this._texture.width;
-            else
-                scale = VIEW_MAX_H / this._texture.height;
-
-            this._texture.set_size(this._texture.width * scale,
-                                   this._texture.height * scale);
-            this._gtkWindow.resize(this._texture.width + VIEW_PADDING_X,
-                                   this._texture.height + VIEW_PADDING_Y);
-        } else if (this._texture.width < VIEW_MIN &&
-                   this._texture.height < VIEW_MIN) {
-            this._gtkWindow.resize(VIEW_MIN + VIEW_PADDING_X,
-                                   VIEW_MIN + VIEW_PADDING_Y);
-            yFactor = 0.52;
-        } else {
-            this._gtkWindow.resize(this._texture.width + VIEW_PADDING_X,
-                                   this._texture.height + VIEW_PADDING_Y);
-        }
-
-        this._texture.add_constraint(
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: 0.5 }));
-
-        if (yFactor == 0)
-            yFactor = 0.92;
-
-        let yAlign =                 
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: yFactor })
-        yAlign.set_align_axis(Clutter.AlignAxis.Y_AXIS);
-        this._texture.add_constraint(yAlign);
-
+        this._positionTexture();
         this._stage.add_actor(this._texture);
-        this._texture.set_reactive(true);
-        this._texture.connect("motion-event",
-                              Lang.bind(this, this._onTextureMotion));
 
         this._createTitle(file);
     },
@@ -224,10 +260,11 @@ MainWindow.prototype = {
     },
 
     _eventOnActor : function(coords, actor) {
-        if (((coords[0] >= actor.get_x()) &&
-             (coords[0] <= actor.get_x() + actor.get_width()) &&
-             (coords[1] >= actor.get_y()) &&
-             (coords[1] <= actor.get_y() + actor.get_height())))
+        let transformed_pos = actor.get_transformed_position();
+        if (((coords[0] >= transformed_pos[0]) &&
+             (coords[0] <= transformed_pos[0] + actor.get_width()) &&
+             (coords[1] >= transformed_pos[1]) &&
+             (coords[1] <= transformed_pos[1] + actor.get_height())))
             return true;
 
         return false;
@@ -253,7 +290,7 @@ MainWindow.prototype = {
         return true;
     },
 
-    _onTextureMotion : function() {
+    _onMotionEvent : function() {
         if (this._toolbarId) {
             GLib.source_remove(this._toolbarId);
             delete this._toolbarId;
@@ -272,6 +309,8 @@ MainWindow.prototype = {
         this._toolbarId = Mainloop.timeout_add(1500,
                                                Lang.bind(this,
                                                          this._onToolbarTimeout));
+
+        return true;
     },
 
     _onToolbarTimeout : function() {
