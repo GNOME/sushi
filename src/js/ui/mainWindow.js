@@ -68,6 +68,8 @@ MainWindow.prototype = {
     _connectStageSignals : function() {
         this._stage.connect("key-press-event",
                             Lang.bind(this, this._onStageKeyPressEvent));
+        this._stage.connect("button-press-event",
+                            Lang.bind(this, this._onButtonPressEvent));
     },
 
     _createToolbar : function () {
@@ -213,12 +215,42 @@ MainWindow.prototype = {
                                  Lang.bind(this._application,
                                            this._application.quit));
 
-        let actor = new GtkClutter.Actor({ contents: this._quitButton });
-        actor.add_constraint(
+        this._quitActor = new GtkClutter.Actor({ contents: this._quitButton });
+        this._quitActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 1.0 }));
 
-        this._stage.add_actor(actor);
+        this._stage.add_actor(this._quitActor);
+    },
+
+    _eventOnActor : function(coords, actor) {
+        if (((coords[0] >= actor.get_x()) &&
+             (coords[0] <= actor.get_x() + actor.get_width()) &&
+             (coords[1] >= actor.get_y()) &&
+             (coords[1] <= actor.get_y() + actor.get_height())))
+            return true;
+
+        return false;
+    },
+
+    _onButtonPressEvent : function(actor, event) {        
+        let win_coords = event.get_coords();
+
+        if ((this._toolbarId &&
+             this._eventOnActor(win_coords, this._toolbarActor)) ||
+            this._eventOnActor(win_coords, this._quitActor))
+            return false;
+
+        let root_coords = 
+            this._gtkWindow.get_window().get_root_coords(win_coords[0],
+                                                         win_coords[1]);
+
+        this._gtkWindow.get_window().begin_move_drag(event.get_button(),
+                                                     root_coords[0],
+                                                     root_coords[1],
+                                                     event.get_time());
+
+        return true;
     },
 
     _onTextureMotion : function() {
