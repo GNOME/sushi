@@ -137,6 +137,8 @@ MainWindow.prototype = {
         this._texture = new Clutter.Texture({ filename: file.get_path(),
                                              "keep-aspect-ratio": true });
 
+        let yFactor = 0;
+
         if(this._texture.width > VIEW_MAX_W || this._texture.height > VIEW_MAX_H) {
             let scale = 0;
 
@@ -153,6 +155,7 @@ MainWindow.prototype = {
                    this._texture.height < VIEW_MIN) {
             this._gtkWindow.resize(VIEW_MIN + VIEW_PADDING_X,
                                    VIEW_MIN + VIEW_PADDING_Y);
+            yFactor = 0.52;
         } else {
             this._gtkWindow.resize(this._texture.width + VIEW_PADDING_X,
                                    this._texture.height + VIEW_PADDING_Y);
@@ -162,9 +165,12 @@ MainWindow.prototype = {
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5 }));
 
+        if (yFactor == 0)
+            yFactor = 0.92;
+
         let yAlign =                 
             new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: 0.92 })
+                                          factor: yFactor })
         yAlign.set_align_axis(Clutter.AlignAxis.Y_AXIS);
         this._texture.add_constraint(yAlign);
 
@@ -172,6 +178,47 @@ MainWindow.prototype = {
         this._texture.set_reactive(true);
         this._texture.connect("motion-event",
                               Lang.bind(this, this._onTextureMotion));
+
+        this._createTitle(file);
+    },
+
+    _createTitle : function(file) {
+        if (this._titleLabel) {
+            this._titleLabel.set_label(file.get_basename());
+            return;
+        }
+
+        this._titleLabel = new Gtk.Label({ label: file.get_basename() });
+        this._titleLabel.get_style_context().add_class("np-decoration");
+        
+        this._titleLabel.show();
+        let actor = new GtkClutter.Actor({ contents: this._titleLabel });
+        actor.add_constraint(
+            new Clutter.AlignConstraint({ source: this._stage,
+                                          factor: 0.5 }));
+        actor.add_constraint(
+            new Clutter.BindConstraint({ source: this._stage,
+                                         coordinate: Clutter.BindCoordinate.Y,
+                                         offset: 3 }));
+
+        this._stage.add_actor(actor);
+
+        this._quitButton = 
+            new Gtk.Button({ image: new Gtk.Image ({ "icon-size": Gtk.IconSize.MENU,
+                                                     "icon-name": "window-close-symbolic" })});
+        this._quitButton.get_style_context().add_class("np-decoration");
+        this._quitButton.show();
+
+        this._quitButton.connect("clicked",
+                                 Lang.bind(this._application,
+                                           this._application.quit));
+
+        let actor = new GtkClutter.Actor({ contents: this._quitButton });
+        actor.add_constraint(
+            new Clutter.AlignConstraint({ source: this._stage,
+                                          factor: 1.0 }));
+
+        this._stage.add_actor(actor);
     },
 
     _onTextureMotion : function() {

@@ -11,8 +11,43 @@
     color: #fff;
 }
 
+.np-decoration {
+    color: #ddddde;
+}
+
+.np-decoration.button {
+    color: #ddddee;
+    background-image: none;
+
+    border-style: none;
+    border-radius: 0;
+    border-width: 0;
+    background-color: alpha (#000, 0.0);
+
+    -GtkWidget-focus-line-width: 0;
+    -adwaita-focus-fill-color: none;
+}
+
+.np-decoration.button:hover {
+    background-image: -gtk-gradient(linear,
+                                    left top,
+                                    left bottom,
+                                    from(alpha(#333, 0.0)),
+                                    color-stop(0.50, alpha(#333, 0.66)),
+                                    to(alpha(#333, 0.0)));
+}
+
+.np-decoration.button:hover:active {
+    background-image: -gtk-gradient(linear,
+                                    left top,
+                                    left bottom,
+                                    from(alpha(#333, 0.0)),
+                                    color-stop(0.50, #333),
+                                    to(alpha(#333, 0.0)));
+}
+
 .np-toolbar-button,
-.np-toolbar .button {
+.np-toolbar.button {
     background-image: -gtk-gradient(linear,
                                     left top, left bottom,
                                     from(#333),
