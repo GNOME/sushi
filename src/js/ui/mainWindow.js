@@ -1,5 +1,8 @@
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gdk = imports.gi.Gdk;
+const GdkX11 = imports.gi.GdkX11;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gtk = imports.gi.Gtk;
 const GtkClutter = imports.gi.GtkClutter;
 const Clutter = imports.gi.Clutter;
@@ -205,6 +208,12 @@ MainWindow.prototype = {
                                           factor: yFactor })
         yAlign.set_align_axis(Clutter.AlignAxis.Y_AXIS);
         this._texture.add_constraint(yAlign);
+    },
+
+    setParent : function(xid) {
+        let parent = GdkX11.X11Window.foreign_new_for_display(this._gtkWindow.get_display(),
+                                                              xid);
+        this._gtkWindow.get_window().set_transient_for(parent);
     },
 
     showAll : function() {
