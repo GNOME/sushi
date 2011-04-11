@@ -21,7 +21,7 @@ const SushiIface = {
                  inSignature: "",
                  outSignature: "" },
                { name: "showFile",
-                 inSignature: "",
+                 inSignature: "si",
                  outSignature: "" } ],
 
     signals: [ { name: "nextFile",
@@ -94,8 +94,11 @@ Application.prototype = {
         this._mainWindow.showAll();
     },
 
-    showFile : function(uri) {
+    showFile : function(uri, xid) {
         this._mainWindow.setFile(Gio.file_new_for_uri(uri));
+
+        if (xid)
+            this._mainWindow.setParent(xid);
     },
 
     quit : function() {
