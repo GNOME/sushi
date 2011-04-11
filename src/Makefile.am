@@ -4,6 +4,7 @@ AM_CPPFLAGS = \
     -L$(top_srcdir)/src \
     -DNAUTILUS_PREVIEW_LIBDIR=\"$(libdir)\" \
     -DNAUTILUS_PREVIEW_DATADIR=\"$(datadir)\" \
+    -DNAUTILUS_PREVIEW_PKGDATADIR=\"$(pkgdatadir)\" \
     -DNAUTILUS_PREVIEW_TOP_SRCDIR=\"$(abs_top_srcdir)\" \
     -DNAUTILUS_PREVIEW_BUILDDIR=\"$(abs_top_builddir)\"
 

@@ -71,6 +71,42 @@ settings_notify_cb (GtkSettings *settings,
   update_font_options (settings);
 }
 
+static void
+register_all_viewers (GjsContext *ctx)
+{
+  GDir *dir;
+  const gchar *name;
+  gchar *path;
+  GError *error = NULL;
+
+  dir = g_dir_open (NAUTILUS_PREVIEW_PKGDATADIR "/js/viewers", 0, &error);
+
+  if (dir == NULL) {
+    g_warning ("Can't open module directory: %s\n", error->message);
+    g_error_free (error);
+    return;
+  }
+ 
+  name = g_dir_read_name (dir);
+
+  while (name != NULL) {
+    path = g_build_filename (NAUTILUS_PREVIEW_PKGDATADIR "/js/viewers",
+                             name);
+    if (!gjs_context_eval_file (ctx,
+                                path,
+                                NULL,
+                                &error)) {
+      g_warning ("Unable to parse viewer %s: %s", name, error->message);
+      g_error_free (error);
+    }
+
+    g_free (path);
+    name = g_dir_read_name (dir);
+  }
+
+  g_dir_close (dir);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -100,6 +136,8 @@ main (int argc, char **argv)
   update_font_options (settings);
 
   error = NULL;
+
+  register_all_viewers (js_context);
 
   if (!gjs_context_eval (js_context,
                          "const Main = imports.ui.main;\n"

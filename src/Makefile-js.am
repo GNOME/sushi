@@ -2,7 +2,12 @@ jsuidir = $(pkgdatadir)/js/ui
 dist_jsui_DATA = \
     js/ui/main.js \
     js/ui/application.js \
-    js/ui/mainWindow.js
+    js/ui/mainWindow.js \
+    js/ui/mimeHandler.js
+
+jsviewersdir = $(pkgdatadir)/js/viewers
+dist_jsviewers_DATA = \
+    js/viewers/image.js
 
 jsutildir = $(pkgdatadir)/js/util
 jsutil_built_sources = \

@@ -10,6 +10,8 @@ const Lang = imports.lang;
 
 const Mainloop = imports.mainloop;
 
+const MimeHandler = imports.ui.mimeHandler;
+
 const VIEW_MIN = 400;
 const VIEW_PADDING_Y = 28;
 const VIEW_PADDING_X = 4;
@@ -23,6 +25,8 @@ function MainWindow(args) {
 MainWindow.prototype = {
     _init : function(args) {
         args = args || {};
+
+        this._mimeHandler = new MimeHandler.MimeHandler();
 
         this._application = args.application;
         this._createGtkWindow();
@@ -211,8 +215,7 @@ MainWindow.prototype = {
         if (this._texture)
             this._texture.destroy();
 
-        this._texture = new Clutter.Texture({ filename: file.get_path(),
-                                             "keep-aspect-ratio": true });
+        this._texture = this._mimeHandler.getObject("image/png").render(file);
 
         this._positionTexture();
         this._stage.add_actor(this._texture);
