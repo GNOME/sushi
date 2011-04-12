@@ -1,3 +1,6 @@
+@define-color np_fg_color #ddddde;
+@define-color np_bg_color #333;
+
 * {
    background-color: alpha(#000, 0.0);
 }
@@ -7,16 +10,16 @@
     border-radius: 3;
     border-width: 0;
 
-    background-color: #333;
-    color: #fff;
+    background-color: @np_bg_color;
+    color: @np_fg_color;
 }
 
 .np-decoration {
-    color: #ddddde;
+    color: @np_fg_color;
 }
 
 .np-decoration.button {
-    color: #ddddee;
+    color: @np_fg_color;
     background-image: none;
 
     border-style: none;
@@ -56,5 +59,21 @@
 }
 
 .np-toolbar-button:hover {
-    background-color: alpha(#333, 0.75);
+    background-color: alpha(@np_bg_color, 0.75);
+}
+
+.np-toolbar GtkScale.slider {
+    background-image: none;
+    background-color: @np_bg_color;
+    border-color: shade (@np_fg_color, 0.8);
+}
+
+.np-toolbar GtkScale.trough {
+    border-color: shade (@np_fg_color, 0.8);
+    border-width: 1;
+    border-style: solid;
+    background-image: -gtk-gradient (linear,
+                                     left top, left bottom,
+                                     from (shade(#333, 1.10)),
+                                     to (shade (#333, 1.30)));
 }

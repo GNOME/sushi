@@ -36,7 +36,6 @@ MainWindow.prototype = {
         this._createClutterEmbed();
 
         this._connectStageSignals();
-        this._createToolbar();
     },
 
     _createGtkWindow : function() {
@@ -83,55 +82,6 @@ MainWindow.prototype = {
                             Lang.bind(this, this._onMotionEvent));
     },
 
-    _createToolbar : function () {
-        this._mainToolbar = new Gtk.Toolbar();
-        this._mainToolbar.get_style_context().add_class("np-toolbar");
-        this._mainToolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR);
-        this._mainToolbar.show();
-
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
-        this._toolbarActor.add_constraint(
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: 0.5 }));
-
-        let yConstraint = 
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.Y,
-                                         offset: this._stage.height - 52 });
-        this._toolbarActor.add_constraint(yConstraint);
-
-        this._toolbarActor.set_size(100, 40);
-        this._toolbarActor.set_opacity(0);
-        this._stage.add_actor(this._toolbarActor);
-
-        this._stage.connect("notify::height",
-                            Lang.bind(this, function() {
-                                yConstraint.set_offset(this._stage.height - 52);
-                            }));
-
-        this._toolbarNext = new Gtk.ToolButton();
-        this._toolbarNext.set_icon_name("go-next-symbolic");
-        this._toolbarNext.show();
-        this._toolbarNext.set_expand(true);
-        this._mainToolbar.insert(this._toolbarNext, 0);
-
-        this._toolbarZoom = new Gtk.ToolButton();
-        this._toolbarZoom.set_icon_name("view-fullscreen-symbolic");
-        this._toolbarZoom.set_expand(true);
-        this._toolbarZoom.show();
-        this._mainToolbar.insert(this._toolbarZoom, 0);
-
-        this._isFullscreen = false;
-        this._toolbarZoom.connect("clicked",
-                                  Lang.bind(this, this._toggleFullScreen));
-
-        this._toolbarPrev = new Gtk.ToolButton();
-        this._toolbarPrev.set_icon_name("go-previous-symbolic");
-        this._toolbarPrev.set_expand(true);
-        this._toolbarPrev.show();
-        this._mainToolbar.insert(this._toolbarPrev, 0);
-    },
-
     _onWindowDeleteEvent : function() {
         this._application.quit();
     },
@@ -148,7 +98,7 @@ MainWindow.prototype = {
             this._application.quit();
     },
 
-    _toggleFullScreen : function() {
+    toggleFullScreen : function() {
         /* FIXME: this doesn't work well, but I don't really understand why...*/
         if(this._isFullScreen) {
             this._isFullScreen = false;
@@ -223,6 +173,24 @@ MainWindow.prototype = {
 
         this.refreshSize();
         this._stage.add_actor(this._texture);
+
+        this._toolbarActor = this._renderer.createToolbar();
+        this._stage.add_actor(this._toolbarActor);
+
+        this._toolbarActor.add_constraint(
+            new Clutter.AlignConstraint({ source: this._stage,
+                                          factor: 0.5 }));
+
+        let yConstraint = 
+            new Clutter.BindConstraint({ source: this._stage,
+                                         coordinate: Clutter.BindCoordinate.Y,
+                                         offset: this._stage.height - 52 });
+        this._toolbarActor.add_constraint(yConstraint);
+
+        this._stage.connect("notify::height",
+                            Lang.bind(this, function() {
+                                yConstraint.set_offset(this._stage.height - 52);
+                            }));
 
         this._createTitle(file);
     },
@@ -302,6 +270,9 @@ MainWindow.prototype = {
     },
 
     _onMotionEvent : function() {
+        if (!this._toolbarActor)
+            return true;
+
         if (this._toolbarId) {
             GLib.source_remove(this._toolbarId);
             delete this._toolbarId;
