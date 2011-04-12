@@ -173,6 +173,7 @@ MainWindow.prototype = {
         this._stage.add_actor(this._texture);
 
         this._toolbarActor = this._renderer.createToolbar();
+        this._toolbarActor.set_reactive(true);
         this._stage.add_actor(this._toolbarActor);
 
         this._toolbarActor.add_constraint(
@@ -229,6 +230,7 @@ MainWindow.prototype = {
                                            this._application.quit));
 
         this._quitActor = new GtkClutter.Actor({ contents: this._quitButton });
+        this._quitActor.set_reactive(true);
         this._quitActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 1.0 }));
@@ -240,23 +242,11 @@ MainWindow.prototype = {
         /* TODO */
     },
 
-    _eventOnActor : function(coords, actor) {
-        let transformed_pos = actor.get_transformed_position();
-        if (((coords[0] >= transformed_pos[0]) &&
-             (coords[0] <= transformed_pos[0] + actor.get_width()) &&
-             (coords[1] >= transformed_pos[1]) &&
-             (coords[1] <= transformed_pos[1] + actor.get_height())))
-            return true;
-
-        return false;
-    },
-
     _onButtonPressEvent : function(actor, event) {        
         let win_coords = event.get_coords();
-        let eventOnToolbar = this._eventOnActor(win_coords, this._toolbarActor);
 
-        if ((this._toolbarId && eventOnToolbar) ||
-            this._eventOnActor(win_coords, this._quitActor)) {
+        if ((event.get_source() == this._toolbarActor) ||
+            (event.get_source() == this._quitActor)) {
             return false;
         }
 
@@ -264,10 +254,10 @@ MainWindow.prototype = {
             this._gtkWindow.get_window().get_root_coords(win_coords[0],
                                                          win_coords[1]);
 
-        this._gtkWindow.get_window().begin_move_drag(event.get_button(),
-                                                     root_coords[0],
-                                                     root_coords[1],
-                                                     event.get_time());
+        this._gtkWindow.begin_move_drag(event.get_button(),
+                                        root_coords[0],
+                                        root_coords[1],
+                                        event.get_time());
 
         return false;
     },
