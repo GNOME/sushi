@@ -63,7 +63,8 @@ PKG_CHECK_MODULES(NAUTILUS_PREVIEW,
                   gobject-2.0 >= $GLIB_MIN_VERSION
                   clutter-1.0 >= $CLUTTER_MIN_VERSION
                   gtk+-3.0 >= $GTK_MIN_VERSION
-                  clutter-gtk-1.0 >= $CLUTTER_GTK_MIN_VERSION)
+                  clutter-gtk-1.0 >= $CLUTTER_GTK_MIN_VERSION
+                  clutter-gst-1.0)
 
 GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
 AC_SUBST(GLIB_MKENUMS)

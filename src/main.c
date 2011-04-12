@@ -116,6 +116,7 @@ main (int argc, char **argv)
 
   clutter_x11_set_use_argb_visual (TRUE);
   gtk_clutter_init (&argc, &argv);
+  clutter_gst_init (0, NULL);
 
   parse_options (&argc, &argv);
 

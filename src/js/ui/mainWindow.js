@@ -52,6 +52,8 @@ MainWindow.prototype = {
 
         this._gtkWindow.connect("delete-event",
                                 Lang.bind(this, this._onWindowDeleteEvent));
+        this._gtkWindow.connect("configure-event",
+                                Lang.bind(this, this._onWindowConfigureEvent));
     },
 
     _createClutterEmbed : function() {
@@ -134,6 +136,11 @@ MainWindow.prototype = {
         this._application.quit();
     },
 
+    _onWindowConfigureEvent : function() {
+        if (this._renderer)
+            this.refreshSize();
+    },
+
     _onStageKeyPressEvent : function(actor, event) {
         let key = event.get_key_symbol();
 
@@ -145,51 +152,35 @@ MainWindow.prototype = {
         /* FIXME: this doesn't work well, but I don't really understand why...*/
         if(this._isFullScreen) {
             this._isFullScreen = false;
-            this._positionTexture();
             this._gtkWindow.unfullscreen();
         } else {
             this._isFullScreen = true;
-            this._positionTexture();
             this._gtkWindow.fullscreen();
         }
+
+        this.refreshSize();
     },
 
     _positionTexture : function() {
         let yFactor = 0;
-        let screen_size = [ this._gtkWindow.get_screen().get_width(),
+        let screenSize = [ this._gtkWindow.get_screen().get_width(),
                             this._gtkWindow.get_screen().get_height() ];
-        let base_size = this._texture.get_base_size();
 
-        let maxW = this._isFullScreen ?
-            screen_size[0] : VIEW_MAX_W;
-        let maxH = this._isFullScreen ?
-            screen_size[1] : VIEW_MAX_H;
+        let availableWidth = this._isFullScreen ? screenSize[0] : VIEW_MAX_W;
+        let availableHeight = this._isFullScreen ? screenSize[1] : VIEW_MAX_H;
 
-        let width = base_size[0];
-        let height = base_size[1];
+        let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight]);
+        this._texture.set_size(textureSize[0], textureSize[1]);
 
-        this._texture.clear_constraints();
+        if (!this._isFullScreen) {
+            let windowSize = textureSize;
+            
+            if (textureSize[0] < VIEW_MIN &&
+                textureSize[1] < VIEW_MIN) {
+                windowSize = [ VIEW_MIN, VIEW_MIN ];
+            }
 
-        if(width > maxW || height > maxH) {
-            let scale = 0;
-
-            if (width > height)
-                scale = maxW / width;
-            else
-                scale = maxH / height;
-
-            this._texture.set_size(width * scale,
-                                   height * scale);
-            this._gtkWindow.resize(this._texture.width + VIEW_PADDING_X,
-                                   this._texture.height + VIEW_PADDING_Y);
-        } else if (width < VIEW_MIN &&
-                   height < VIEW_MIN) {
-            this._gtkWindow.resize(VIEW_MIN + VIEW_PADDING_X,
-                                   VIEW_MIN + VIEW_PADDING_Y);
-            yFactor = 0.52;
-        } else {
-            this._gtkWindow.resize(width + VIEW_PADDING_X,
-                                   height + VIEW_PADDING_Y);
+            this._gtkWindow.resize(windowSize[0] + VIEW_PADDING_X, windowSize[1] + VIEW_PADDING_Y);
         }
 
         this._texture.add_constraint(
@@ -224,12 +215,20 @@ MainWindow.prototype = {
         if (this._texture)
             this._texture.destroy();
 
-        this._texture = this._mimeHandler.getObject("image/png").render(file);
+        let info = file.query_info("standard::content-type",
+                                   0, null);
+        this._renderer = this._mimeHandler.getObject(info.get_content_type());
 
-        this._positionTexture();
+        this._texture = this._renderer.render(file, this);
+
+        this.refreshSize();
         this._stage.add_actor(this._texture);
 
         this._createTitle(file);
+    },
+
+    refreshSize : function() {
+        this._positionTexture();
     },
 
     _createTitle : function(file) {
