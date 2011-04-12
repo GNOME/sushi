@@ -40,10 +40,8 @@ ImageRenderer.prototype = {
             scale = allocation[1] / baseSize[1];
         } else if (baseSize[0] > allocation[0] &&
                    baseSize[1] > allocation[1]) {
-            if (baseSize[0] > baseSize[1])
-                scale = allocation[0] / baseSize[0];
-            else
-                scale = allocation[1] / baseSize[1];
+            scale = Math.min(allocation[0] / baseSize[0], 
+                             allocation[1] / baseSize[1]);
         }
 
         return [ baseSize[0] * scale, baseSize[1] * scale ];

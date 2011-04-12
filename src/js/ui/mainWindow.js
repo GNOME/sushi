@@ -102,10 +102,10 @@ MainWindow.prototype = {
         /* FIXME: this doesn't work well, but I don't really understand why...*/
         if(this._isFullScreen) {
             this._isFullScreen = false;
-            this._gtkWindow.unfullscreen();
+            this._gtkWindow.unmaximize();
         } else {
             this._isFullScreen = true;
-            this._gtkWindow.fullscreen();
+            this._gtkWindow.maximize();
         }
 
         this.refreshSize();
@@ -113,23 +113,24 @@ MainWindow.prototype = {
 
     _positionTexture : function() {
         let yFactor = 0;
-        let screenSize = [ this._gtkWindow.get_screen().get_width(),
-                            this._gtkWindow.get_screen().get_height() ];
+        let screenSize = [ this._gtkWindow.get_window().get_width(),
+                            this._gtkWindow.get_window().get_height() ];
 
         let availableWidth = this._isFullScreen ? screenSize[0] : VIEW_MAX_W;
-        let availableHeight = this._isFullScreen ? screenSize[1] : VIEW_MAX_H;
+        let availableHeight = this._isFullScreen ? screenSize[1] - VIEW_PADDING_Y : VIEW_MAX_H;
 
         let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight]);
         this._texture.set_size(textureSize[0], textureSize[1]);
 
-        if (!this._isFullScreen) {
-            let windowSize = textureSize;
+        let windowSize = textureSize;
             
-            if (textureSize[0] < VIEW_MIN &&
-                textureSize[1] < VIEW_MIN) {
-                windowSize = [ VIEW_MIN, VIEW_MIN ];
-            }
+        if (textureSize[0] < VIEW_MIN &&
+            textureSize[1] < VIEW_MIN) {
+            windowSize = [ VIEW_MIN, VIEW_MIN ];
+            yFactor = 0.52;
+        }
 
+        if (!this._isFullScreen) {
             this._gtkWindow.resize(windowSize[0] + VIEW_PADDING_X, windowSize[1] + VIEW_PADDING_Y);
         }
 
@@ -138,9 +139,6 @@ MainWindow.prototype = {
                                           factor: 0.5 }));
 
         if (yFactor == 0) {
-            if (this._isFullScreen)
-                yFactor = 0.52;
-            else        
                 yFactor = 0.92;
         }
 
@@ -238,6 +236,10 @@ MainWindow.prototype = {
         this._stage.add_actor(this._quitActor);
     },
 
+    _createGrip : function() {
+        /* TODO */
+    },
+
     _eventOnActor : function(coords, actor) {
         let transformed_pos = actor.get_transformed_position();
         if (((coords[0] >= transformed_pos[0]) &&
@@ -251,11 +253,12 @@ MainWindow.prototype = {
 
     _onButtonPressEvent : function(actor, event) {        
         let win_coords = event.get_coords();
+        let eventOnToolbar = this._eventOnActor(win_coords, this._toolbarActor);
 
-        if ((this._toolbarId &&
-             this._eventOnActor(win_coords, this._toolbarActor)) ||
-            this._eventOnActor(win_coords, this._quitActor))
+        if ((this._toolbarId && eventOnToolbar) ||
+            this._eventOnActor(win_coords, this._quitActor)) {
             return false;
+        }
 
         let root_coords = 
             this._gtkWindow.get_window().get_root_coords(win_coords[0],
@@ -266,13 +269,10 @@ MainWindow.prototype = {
                                                      root_coords[1],
                                                      event.get_time());
 
-        return true;
+        return false;
     },
 
-    _onMotionEvent : function() {
-        if (!this._toolbarActor)
-            return true;
-
+    _resetToolbar : function() {
         if (this._toolbarId) {
             GLib.source_remove(this._toolbarId);
             delete this._toolbarId;
@@ -291,6 +291,11 @@ MainWindow.prototype = {
         this._toolbarId = Mainloop.timeout_add(1500,
                                                Lang.bind(this,
                                                          this._onToolbarTimeout));
+    },
+
+    _onMotionEvent : function() {
+        if (this._toolbarActor)
+            this._resetToolbar();
 
         return true;
     },

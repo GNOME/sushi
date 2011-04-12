@@ -115,6 +115,7 @@ GstRenderer.prototype = {
         this._progressBar =
             Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,
                                      0, 1000, 10);
+        this._progressBar.set_value(0);
         this._progressBar.set_draw_value(false);
         this._progressBar.connect("value-changed",
                                   Lang.bind(this, function() {
