@@ -20,20 +20,22 @@ AudioRenderer.prototype = {
         this._box.pack_start(image, false, false, 0);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                                 spacing: 6 });
+                                 spacing: 1,
+                                 "margin-top": 48,
+                                 "margin-right": 12 });
         this._box.pack_start(vbox, false, false, 0);
 
         this._titleLabel = new Gtk.Label({ label: 'Title: ' + file.get_basename() });
         this._titleLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._titleLabel, false, false, 6);
+        vbox.pack_start(this._titleLabel, false, false, 0);
 
         this._authorLabel = new Gtk.Label({ label: 'Author: '});
         this._authorLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._authorLabel, false, false, 6);
+        vbox.pack_start(this._authorLabel, false, false, 0);
 
         this._albumLabel = new Gtk.Label({ label: 'Album: ' });
         this._albumLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._albumLabel, false, false, 6);
+        vbox.pack_start(this._albumLabel, false, false, 0);
 
         this._box.show_all();
         this._actor = new GtkClutter.Actor({ contents: this._box });
@@ -54,6 +56,20 @@ AudioRenderer.prototype = {
         this._player.connect("notify::state",
                              Lang.bind(this,
                                        this._onPlayerStateChanged));
+        this._player.connect("notify::taglist",
+                             Lang.bind(this,
+                                       this._onTagListChanged));
+    },
+
+    _onTagListChanged : function() {
+        let tags = this._player.taglist;
+        let albumName = tags.get_string("album")[1];
+        let artistName = tags.get_string("artist")[1];
+        let titleName = tags.get_string("title")[1];
+
+        this._albumLabel.set_markup("<small><i>from  </i>" + albumName + "</small>");
+        this._authorLabel.set_markup("<small><i>by  </i><b>" + artistName + "</b></small>");
+        this._titleLabel.set_markup("<b>" + titleName + "</b>");
     },
 
     _updateProgressBar : function() {

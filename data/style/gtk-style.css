@@ -2,7 +2,11 @@
 @define-color np_bg_color #333;
 
 * {
-   background-color: alpha(#000, 0.0);
+    background-color: alpha(#000, 0.0);
+}
+
+GtkLabel {
+    color: #fff;
 }
 
 .np-toolbar {
@@ -78,10 +82,7 @@
                                      to (shade (#333, 1.30)));
 }
 
-GtkLabel {
-    color: @np_fg_color;
-}
-
 .np-toolbar GtkLabel {
     font: Cantarell 8;
+    color: @np_fg_color;
 }
