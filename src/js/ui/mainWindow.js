@@ -15,6 +15,8 @@ const Mainloop = imports.mainloop;
 
 const MimeHandler = imports.ui.mimeHandler;
 
+const Sushi = imports.gi.Sushi;
+
 const VIEW_MIN = 400;
 const VIEW_PADDING_Y = 28;
 const VIEW_PADDING_X = 4;
@@ -64,13 +66,19 @@ MainWindow.prototype = {
 
         this._stage = this._clutterEmbed.get_stage();
         this._stage.set_use_alpha(true);
-        this._stage.set_opacity(221);
-        this._stage.set_color(new Clutter.Color({ red: 0,
-                                                  green: 0,
-                                                  blue: 0, 
-                                                  alpha: 255 }));
-        this._stage.set_size(VIEW_MIN, VIEW_MIN);
+        this._stage.set_opacity(0);
         this._gtkWindow.resize(VIEW_MIN, VIEW_MIN);
+
+        this._background = Sushi.create_rounded_background();
+        this._background.add_constraint(
+            new Clutter.BindConstraint({ source: this._stage,
+                                         coordinate: Clutter.BindCoordinate.POSITION }));
+        this._background.add_constraint(
+            new Clutter.BindConstraint({ source: this._stage,
+                                         coordinate: Clutter.BindCoordinate.SIZE }));
+        this._background.set_opacity(221);
+
+        this._stage.add_actor(this._background);
     },
 
     _connectStageSignals : function() {
