@@ -89,6 +89,8 @@ sushi_sound_player_destroy_discoverer (SushiSoundPlayer *player)
   priv->discoverer = NULL;
 
   g_object_notify (G_OBJECT (player), "taglist");
+
+  g_clear_object (&priv->taglist);
 }
 
 static void
@@ -767,7 +769,7 @@ sushi_sound_player_class_init (SushiSoundPlayerClass *klass)
                          "Taglist",
                          "Taglist for the current URI",
                          GST_TYPE_TAG_LIST,
-                         G_PARAM_READWRITE));
+                         G_PARAM_READABLE));
 }
 
 static void
