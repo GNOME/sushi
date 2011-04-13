@@ -1,0 +1,1 @@
+let VIEW_MIN = 400;

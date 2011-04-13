@@ -12,6 +12,9 @@ dist_jsviewers_DATA = \
     js/viewers/audio.js
 
 jsutildir = $(pkgdatadir)/js/util
+dist_jsutil_DATA = \
+    js/util/constants.js
+
 jsutil_built_sources = \
     $(srcdir)/js/util/path.js
 
