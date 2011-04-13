@@ -77,3 +77,11 @@
                                      from (shade(#333, 1.10)),
                                      to (shade (#333, 1.30)));
 }
+
+GtkLabel {
+    color: @np_fg_color;
+}
+
+.np-toolbar GtkLabel {
+    font: Cantarell 8;
+}

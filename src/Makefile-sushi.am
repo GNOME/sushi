@@ -1,0 +1,71 @@
+sushi_cflags = \
+    -I$(top_srcdir)/src \
+    -DPREFIX=\"$(prefix)\" \
+    -DLIBDIR=\"$(libdir)\" \
+    -DG_LOG_DOMAIN=\"Sushi\" \
+    -DG_DISABLE_DEPRECATED \
+    $(SUSHI_CFLAGS)
+
+sushi_built_sources = \
+    sushi-enum-types.h \
+    sushi-enum-types.c
+
+BUILT_SOURCES += $(sushi_built_sources)
+SUSHI_STAMP_FILES = stamp-sushi-enum-types.h
+
+sushi_source_h = \
+    sushi/sushi-sound-player.h
+
+sushi_source_c = \
+    sushi/sushi-sound-player.c
+
+sushi-enum-types.h: stamp-sushi-enum-types.h Makefile
+	@true
+
+stamp-sushi-enum-types.h: $(sushi_source_h) sushi/sushi-enum-types.h.in
+	$(AM_V_GEN) ( cd $(srcdir) && \
+	$(GLIB_MKENUMS) \
+	  --template $(srcdir)/sushi/sushi-enum-types.h.in \
+	  $(sushi_source_h) ) >> xgen-beth && \
+	(cmp -s xgen-beth sushi-enum-types.h || cp xgen-beth sushi-enum-types.h) && \
+	rm -f xgen-beth && \
+	echo timestamp > $(@F)
+
+sushi-enum-types.c: stamp-sushi-enum-types.h sushi/sushi-enum-types.c.in
+	$(AM_V_GEN) ( cd $(srcdir) && \
+	$(GLIB_MKENUMS) \
+	  --template $(srcdir)/sushi/sushi-enum-types.c.in \
+	  $(sushi_source_h) ) >> xgen-betc && \
+	cp xgen-betc sushi-enum-types.c && \
+	rm -f xgen-betc
+
+lib_LTLIBRARIES += libsushi-1.0.la
+
+libsushi_1_0_la_LIBADD = \
+    $(SUSHI_LIBS)
+
+libsushi_1_0_la_CPPFLAGS = \
+    $(sushi_cflags)
+
+libsushi_1_0_la_SOURCES = \
+    $(sushi_source_h) \
+    $(sushi_source_c) \
+    $(sushi_built_sources)
+
+INTROSPECTION_GIRS += Sushi-1.0.gir
+
+Sushi-1.0.gir: libsushi-1.0.la Makefile
+Sushi_1_0_gir_NAMESPACE = Sushi
+Sushi_1_0_gir_VERSION = 1.0
+Sushi_1_0_gir_LIBS = libsushi-1.0.la
+Sushi_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(sushi_cflags)
+Sushi_1_0_gir_SCANNERFLAGS = --warn-all --symbol-prefix=sushi --identifier-prefix=Sushi
+Sushi_1_0_gir_INCLUDES = \
+    Clutter-1.0 \
+    GdkPixbuf-2.0 \
+    Gtk-3.0
+
+Sushi_1_0_gir_FILES = \
+    $(addprefix $(srcdir)/,$(sushi_source_h)) \
+    $(addprefix $(srcdir)/,$(sushi_source_c)) \
+    $(srcdir)/sushi-enum-types.h

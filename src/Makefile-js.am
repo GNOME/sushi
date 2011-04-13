@@ -8,7 +8,8 @@ dist_jsui_DATA = \
 jsviewersdir = $(pkgdatadir)/js/viewers
 dist_jsviewers_DATA = \
     js/viewers/image.js \
-    js/viewers/gst.js
+    js/viewers/gst.js \
+    js/viewers/audio.js
 
 jsutildir = $(pkgdatadir)/js/util
 jsutil_built_sources = \
