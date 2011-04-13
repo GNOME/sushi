@@ -66,7 +66,9 @@ PKG_CHECK_MODULES(SUSHI,
                   clutter-gtk-1.0 >= $CLUTTER_GTK_MIN_VERSION
                   clutter-gst-1.0
                   gstreamer-0.10
-                  gstreamer-pbutils-0.10)
+                  gstreamer-pbutils-0.10
+                  gstreamer-tag-0.10
+                  libmusicbrainz3)
 
 GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
 AC_SUBST(GLIB_MKENUMS)

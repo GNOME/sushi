@@ -14,10 +14,12 @@ BUILT_SOURCES += $(sushi_built_sources)
 SUSHI_STAMP_FILES = stamp-sushi-enum-types.h
 
 sushi_source_h = \
+    sushi/sushi-cover-art.h \
     sushi/sushi-sound-player.h \
     sushi/sushi-utils.h
 
 sushi_source_c = \
+    sushi/sushi-cover-art.c \
     sushi/sushi-sound-player.c \
     sushi/sushi-utils.c
 
@@ -65,6 +67,7 @@ Sushi_1_0_gir_SCANNERFLAGS = --warn-all --symbol-prefix=sushi --identifier-prefi
 Sushi_1_0_gir_INCLUDES = \
     Clutter-1.0 \
     GstPbutils-0.10 \
+    GstTag-0.10 \
     GdkPixbuf-2.0 \
     Gtk-3.0
 
