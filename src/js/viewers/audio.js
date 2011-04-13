@@ -151,7 +151,7 @@ AudioRenderer.prototype = {
     createToolbar : function () {
         this._mainToolbar = new Gtk.Toolbar();
         this._mainToolbar.get_style_context().add_class("np-toolbar");
-        this._mainToolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR);
+        this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
         this._mainToolbar.show();
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
@@ -169,6 +169,8 @@ AudioRenderer.prototype = {
         this._mainToolbar.insert(this._toolbarPlay, 0);
 
         this._currentLabel = new Gtk.Label();
+        this._currentLabel.set_margin_left(6);
+        this._currentLabel.set_margin_right(3);
         let item = new Gtk.ToolItem();
         item.set_expand(false);
         item.add(this._currentLabel);
@@ -200,6 +202,7 @@ AudioRenderer.prototype = {
         this._mainToolbar.insert(item, 2);
 
         this._durationLabel = new Gtk.Label();
+        this._durationLabel.set_margin_left(3);
         let item = new Gtk.ToolItem();
         item.set_expand(false);
         item.add(this._durationLabel);

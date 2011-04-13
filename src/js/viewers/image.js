@@ -50,21 +50,19 @@ ImageRenderer.prototype = {
     createToolbar : function () {
         this._mainToolbar = new Gtk.Toolbar();
         this._mainToolbar.get_style_context().add_class("np-toolbar");
-        this._mainToolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR);
+        this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
         this._mainToolbar.show();
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
-        this._toolbarActor.set_size(40, 40);
+        this._toolbarActor.set_size(38, 38);
         this._toolbarActor.set_opacity(0);
 
-        this._toolbarZoom = new Gtk.ToolButton();
-        this._toolbarZoom.set_icon_name("view-fullscreen-symbolic");
-        this._toolbarZoom.set_expand(true);
+        this._toolbarZoom = new Gtk.ToolButton({ expand: false,
+                                                 "icon-name": "view-fullscreen-symbolic" });
         this._toolbarZoom.show();
         this._mainToolbar.insert(this._toolbarZoom, 0);
 
-        this._isFullscreen = false;
         this._toolbarZoom.connect("clicked",
                                   Lang.bind(this, function () {
                                       this._mainWindow.toggleFullScreen();
