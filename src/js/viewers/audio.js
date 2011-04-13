@@ -18,25 +18,26 @@ AudioRenderer.prototype = {
 
         this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                   spacing: 6 });
-        let image = new Gtk.Image({ "icon-name": "media-optical-symbolic",
-                                    "pixel-size": 256 });
-        this._box.pack_start(image, false, false, 0);
+        this._image = new Gtk.Image({ "icon-name": "media-optical-symbolic",
+                                      "pixel-size": 256 });
+        this._box.pack_start(this._image, false, false, 0);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
                                  "margin-top": 48,
+                                 "margin-left": 12,
                                  "margin-right": 12 });
         this._box.pack_start(vbox, false, false, 0);
 
-        this._titleLabel = new Gtk.Label({ label: 'Title: ' + file.get_basename() });
+        this._titleLabel = new Gtk.Label();
         this._titleLabel.set_halign(Gtk.Align.START);
         vbox.pack_start(this._titleLabel, false, false, 0);
 
-        this._authorLabel = new Gtk.Label({ label: 'Author: '});
+        this._authorLabel = new Gtk.Label();
         this._authorLabel.set_halign(Gtk.Align.START);
         vbox.pack_start(this._authorLabel, false, false, 0);
 
-        this._albumLabel = new Gtk.Label({ label: 'Album: ' });
+        this._albumLabel = new Gtk.Label();
         this._albumLabel.set_halign(Gtk.Align.START);
         vbox.pack_start(this._albumLabel, false, false, 0);
 
