@@ -16,7 +16,12 @@ GstRenderer.prototype = {
 
     render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
+        this._createVideo(file);
 
+        return this._video;
+    },
+
+    _createVideo : function(file) {
         this._video =
             new ClutterGst.VideoTexture({ "sync-size": false });
 
@@ -27,8 +32,93 @@ GstRenderer.prototype = {
             this._video.connect("size-change",
                                 Lang.bind(this,
                                           this._onVideoSizeChange));
+        this._video.connect("notify::playing",
+                            Lang.bind(this,
+                                      this._onVideoPlayingChange))
+        this._video.connect("notify::progress",
+                            Lang.bind(this,
+                                      this._onVideoProgressChange));
+        this._video.connect("notify::duration",
+                            Lang.bind(this,
+                                      this._onVideoDurationChange));
+    },
 
-        return this._video;
+    _updateProgressBar : function() {
+        if (!this._mainToolbar)
+            return;
+
+        this._isSettingValue = true;
+        this._progressBar.set_value(this._video.progress * 1000);
+        this._isSettingValue = false;
+    },
+
+    _formatTimeComponent : function(n) {
+        // FIXME: we need a sprinf equivalent to do
+        // proper formatting here.
+        return (n >= 10 ? n : "0" + n);
+    },
+
+    _updateCurrentLabel : function() {
+        if (!this._mainToolbar)
+            return;
+
+        let currentTime =
+            Math.floor(this._video.duration * this._video.progress);
+
+        let hours = Math.floor(currentTime / 3600);
+        currentTime -= hours * 3600;
+
+        let minutes = Math.floor(currentTime / 60);
+        currentTime -= minutes * 60;
+
+        let seconds = Math.floor(currentTime);
+
+        let current = this._formatTimeComponent(minutes) + ":" +
+            this._formatTimeComponent(seconds);
+        if (hours > 0) {
+            current = this._formatTimeComponent(hours) + ":" + current;
+        }
+
+        this._currentLabel.set_text(current);
+    },
+
+    _updateDurationLabel : function() {
+        if (!this._mainToolbar)
+            return;
+
+        let totalTime = this._video.duration;
+
+        let hours = Math.floor(totalTime / 3600);
+        totalTime -= hours * 3600;
+
+        let minutes = Math.floor(totalTime / 60);
+        totalTime -= minutes * 60;
+
+        let seconds = Math.floor(totalTime);
+
+        let total = this._formatTimeComponent(minutes) + ":" +
+            this._formatTimeComponent(seconds);
+        if (hours > 0) {
+            this._formatTimeComponent(hours) + ":" + total;
+        }
+
+        this._durationLabel.set_text(total);
+    },
+
+    _onVideoProgressChange : function() {
+        this._updateCurrentLabel();
+        this._updateProgressBar();
+    },
+
+    _onVideoDurationChange : function() {
+        this._updateDurationLabel();
+    },
+
+    _onVideoPlayingChange : function() {
+        if (this._video.playing)
+            this._toolbarPlay.set_icon_name("media-playback-pause-symbolic");
+        else
+            this._toolbarPlay.set_icon_name("media-playback-start-symbolic");
     },
 
     getSizeForAllocation : function(allocation) {
@@ -81,35 +171,32 @@ GstRenderer.prototype = {
     },
 
     createToolbar : function () {
-        this._mainToolbar = new Gtk.Toolbar();
+        this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
         this._mainToolbar.get_style_context().add_class("np-toolbar");
-        this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
         this._mainToolbar.show();
 
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
-        this._toolbarActor.set_opacity(0);
-
+        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
+                                                    opacity: 0 });
         this._toolbarActor.add_constraint(
             new Clutter.BindConstraint({ source: this._video,
                                          coordinate: Clutter.BindCoordinate.WIDTH,
                                          offset: -50 }));
 
-        this._toolbarPlay = new Gtk.ToolButton();
-        this._toolbarPlay.set_icon_name("media-playback-pause-symbolic");
-        this._toolbarPlay.set_expand(false);
+        this._toolbarPlay = new Gtk.ToolButton({ "icon-name": "media-playback-pause-symbolic" });
         this._toolbarPlay.show();
         this._mainToolbar.insert(this._toolbarPlay, 0);
-        this._videoPlaying = true;
+
+        this._currentLabel = new Gtk.Label({ "margin-left": 6,
+                                             "margin-right": 3 });
+        let item = new Gtk.ToolItem();
+        item.add(this._currentLabel);
+        item.show_all();
+        this._mainToolbar.insert(item, 1);
 
         this._toolbarPlay.connect("clicked",
                                   Lang.bind(this, function () {
-                                      this._videoPlaying = !this._videoPlaying;
-                                      this._video.set_playing(this._videoPlaying);
-                                      
-                                      if (!this._videoPlaying)
-                                          this._toolbarPlay.set_icon_name("media-playback-start-symbolic");
-                                      else
-                                          this._toolbarPlay.set_icon_name("media-playback-pause-symbolic");
+                                      let playing = !this._video.playing;
+                                      this._video.playing = playing;
                                   }));
 
         this._progressBar =
@@ -119,33 +206,27 @@ GstRenderer.prototype = {
         this._progressBar.set_draw_value(false);
         this._progressBar.connect("value-changed",
                                   Lang.bind(this, function() {
-                                      if (this._progressBar.get_value() != this._videoProgress * 1000)
-                                          this._video.set_progress(this._progressBar.get_value() / 1000);
+                                      if(!this._isSettingValue)
+                                          this._video.progress = this._progressBar.get_value() / 1000;
                                   }));
-
-        this._videoProgress = 0;
-        this._video.connect("notify::progress",
-                            Lang.bind(this, function () {
-                                if (this._video.get_progress() == this.videoProgress)
-                                    return;
-
-                                this._videoProgress = this._video.get_progress();
-                                this._progressBar.set_value(this._videoProgress * 1000);
-                            }));
 
         let item = new Gtk.ToolItem();
         item.set_expand(true);
         item.add(this._progressBar);
         item.show_all();
-        this._mainToolbar.insert(item, 1);
+        this._mainToolbar.insert(item, 2);
 
-        this._toolbarZoom = new Gtk.ToolButton();
-        this._toolbarZoom.set_icon_name("view-fullscreen-symbolic");
-        this._toolbarZoom.set_expand(false);
+        this._durationLabel = new Gtk.Label({ "margin-left": 3,
+                                              "margin-right": 6 });
+        let item = new Gtk.ToolItem();
+        item.add(this._durationLabel);
+        item.show_all();
+        this._mainToolbar.insert(item, 3);
+
+        this._toolbarZoom = new Gtk.ToolButton({ "icon-name": "view-fullscreen-symbolic" });
         this._toolbarZoom.show();
-        this._mainToolbar.insert(this._toolbarZoom, 2);
+        this._mainToolbar.insert(this._toolbarZoom, 4);
 
-        this._isFullscreen = false;
         this._toolbarZoom.connect("clicked",
                                   Lang.bind(this, function () {
                                       this._mainWindow.toggleFullScreen();
