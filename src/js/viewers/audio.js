@@ -154,29 +154,23 @@ AudioRenderer.prototype = {
         this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
         this._mainToolbar.show();
 
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
-        this._toolbarActor.set_opacity(0);
-
+        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
+                                                    opacity: 0});
         this._toolbarActor.add_constraint(
             new Clutter.BindConstraint({ source: this._actor,
                                          coordinate: Clutter.BindCoordinate.WIDTH,
                                          offset: -50 }));
 
-        this._toolbarPlay = new Gtk.ToolButton();
-        this._toolbarPlay.set_icon_name("media-playback-pause-symbolic");
-        this._toolbarPlay.set_expand(false);
+        this._toolbarPlay = new Gtk.ToolButton({ "icon-name": "media-playback-pause-symbolic" });
         this._toolbarPlay.show();
         this._mainToolbar.insert(this._toolbarPlay, 0);
 
-        this._currentLabel = new Gtk.Label();
-        this._currentLabel.set_margin_left(6);
-        this._currentLabel.set_margin_right(3);
+        this._currentLabel = new Gtk.Label({ "margin-left": 6,
+                                             "margin-right": 3 });
         let item = new Gtk.ToolItem();
-        item.set_expand(false);
         item.add(this._currentLabel);
         item.show_all();
         this._mainToolbar.insert(item, 1);
-
 
         this._toolbarPlay.connect("clicked",
                                   Lang.bind(this, function () {
@@ -201,10 +195,8 @@ AudioRenderer.prototype = {
         item.show_all();
         this._mainToolbar.insert(item, 2);
 
-        this._durationLabel = new Gtk.Label();
-        this._durationLabel.set_margin_left(3);
+        this._durationLabel = new Gtk.Label({ "margin-left": 3 });
         let item = new Gtk.ToolItem();
-        item.set_expand(false);
         item.add(this._durationLabel);
         item.show_all();
         this._mainToolbar.insert(item, 3);
