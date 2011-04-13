@@ -1,5 +1,8 @@
 const Gst = imports.gi.Gst;
+const Gio = imports.gi.Gio;
 const Sushi = imports.gi.Sushi;
+
+const Constants = imports.util.constants;
 
 function AudioRenderer(args) {
     this._init(args);
@@ -156,6 +159,11 @@ AudioRenderer.prototype = {
     getSizeForAllocation : function(allocation) {
         let width = this._box.get_preferred_width();
         let height = this._box.get_preferred_height();
+
+        if (width[1] < Constants.VIEW_MIN &&
+            height[1] < Constants.VIEW_MIN) {
+            width[1] = Constants.VIEW_MIN;
+        }
 
         /* return the natural */
         return [ width[1], height[1] ];

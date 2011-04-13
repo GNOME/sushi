@@ -14,10 +14,10 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const MimeHandler = imports.ui.mimeHandler;
+const Constants = imports.util.constants;
 
 const Sushi = imports.gi.Sushi;
 
-const VIEW_MIN = 400;
 const VIEW_PADDING_Y = 28;
 const VIEW_PADDING_X = 4;
 const VIEW_MAX_W = 800;
@@ -67,7 +67,7 @@ MainWindow.prototype = {
         this._stage = this._clutterEmbed.get_stage();
         this._stage.set_use_alpha(true);
         this._stage.set_opacity(0);
-        this._gtkWindow.resize(VIEW_MIN, VIEW_MIN);
+        this._gtkWindow.resize(Constants.VIEW_MIN, Constants.VIEW_MIN);
 
         this._background = Sushi.create_rounded_background();
         this._background.add_constraint(
@@ -131,9 +131,9 @@ MainWindow.prototype = {
 
         let windowSize = textureSize;
             
-        if (textureSize[0] < VIEW_MIN &&
-            textureSize[1] < VIEW_MIN) {
-            windowSize = [ VIEW_MIN, VIEW_MIN ];
+        if (textureSize[0] < Constants.VIEW_MIN &&
+            textureSize[1] < Constants.VIEW_MIN) {
+            windowSize = [ Contants.VIEW_MIN, Constants.VIEW_MIN ];
             yFactor = 0.52;
         }
 
