@@ -1,6 +1,5 @@
 const Gst = imports.gi.Gst;
 const Gio = imports.gi.Gio;
-const Sushi = imports.gi.Sushi;
 
 const Constants = imports.util.constants;
 
@@ -10,6 +9,7 @@ function AudioRenderer(args) {
 
 AudioRenderer.prototype = {
     _init : function() {
+        this.moveOnClick = true;
     },
 
     render : function(file, mainWindow) {

@@ -15,11 +15,13 @@ SUSHI_STAMP_FILES = stamp-sushi-enum-types.h
 
 sushi_source_h = \
     sushi/sushi-cover-art.h \
+    sushi/sushi-pdf-loader.h \
     sushi/sushi-sound-player.h \
     sushi/sushi-utils.h
 
 sushi_source_c = \
     sushi/sushi-cover-art.c \
+    sushi/sushi-pdf-loader.c \
     sushi/sushi-sound-player.c \
     sushi/sushi-utils.c
 
@@ -69,7 +71,8 @@ Sushi_1_0_gir_INCLUDES = \
     GstPbutils-0.10 \
     GstTag-0.10 \
     GdkPixbuf-2.0 \
-    Gtk-3.0
+    Gtk-3.0 \
+    EvinceDocument-3.0
 
 Sushi_1_0_gir_FILES = \
     $(addprefix $(srcdir)/,$(sushi_source_h)) \

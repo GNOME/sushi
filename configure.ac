@@ -68,7 +68,9 @@ PKG_CHECK_MODULES(SUSHI,
                   gstreamer-0.10
                   gstreamer-pbutils-0.10
                   gstreamer-tag-0.10
-                  libmusicbrainz3)
+                  libmusicbrainz3
+                  evince-document-3.0
+                  evince-view-3.0)
 
 GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
 AC_SUBST(GLIB_MKENUMS)

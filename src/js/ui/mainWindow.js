@@ -248,11 +248,12 @@ MainWindow.prototype = {
         /* TODO */
     },
 
-    _onButtonPressEvent : function(actor, event) {        
+    _onButtonPressEvent : function(actor, event) {
         let win_coords = event.get_coords();
 
         if ((event.get_source() == this._toolbarActor) ||
-            (event.get_source() == this._quitActor)) {
+            (event.get_source() == this._quitActor) ||
+            !this._renderer.moveOnClick) {
 
             if (event.get_source() == this._toolbarActor)
                 this._resetToolbar();

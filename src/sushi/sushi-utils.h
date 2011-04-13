@@ -2,6 +2,7 @@
 #define __SUSHI_UTILS_H__
 
 #include <clutter/clutter.h>
+#include <evince-document.h>
 
 G_BEGIN_DECLS
 

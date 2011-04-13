@@ -12,6 +12,7 @@ function GstRenderer(args) {
 
 GstRenderer.prototype = {
     _init : function(args) {
+        this.moveOnClick = true;
     },
 
     render : function(file, mainWindow) {
