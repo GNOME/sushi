@@ -1,3 +1,7 @@
+/* this code is mostly copied and renamed from TheBoard, see
+ * the-board/src/tb/tb-sound-player.[ch]
+ */
+
 #include <glib.h>
 #include <glib-object.h>
 #include <gst/gst.h>
