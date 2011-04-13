@@ -14,10 +14,12 @@ BUILT_SOURCES += $(sushi_built_sources)
 SUSHI_STAMP_FILES = stamp-sushi-enum-types.h
 
 sushi_source_h = \
-    sushi/sushi-sound-player.h
+    sushi/sushi-sound-player.h \
+    sushi/sushi-utils.h
 
 sushi_source_c = \
-    sushi/sushi-sound-player.c
+    sushi/sushi-sound-player.c \
+    sushi/sushi-utils.c
 
 sushi-enum-types.h: stamp-sushi-enum-types.h Makefile
 	@true
