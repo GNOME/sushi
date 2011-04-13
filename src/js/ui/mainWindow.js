@@ -107,7 +107,6 @@ MainWindow.prototype = {
     },
 
     toggleFullScreen : function() {
-        /* FIXME: this doesn't work well, but I don't really understand why...*/
         if(this._isFullScreen) {
             this._isFullScreen = false;
             this._gtkWindow.unmaximize();
@@ -146,9 +145,8 @@ MainWindow.prototype = {
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5 }));
 
-        if (yFactor == 0) {
-                yFactor = 0.92;
-        }
+        if (yFactor == 0)
+            yFactor = this._isFullScreen ? 0.52 : 0.92;
 
         let yAlign =                 
             new Clutter.AlignConstraint({ source: this._stage,
