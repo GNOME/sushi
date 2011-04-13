@@ -63,6 +63,41 @@ AudioRenderer.prototype = {
         this._player.connect("notify::taglist",
                              Lang.bind(this,
                                        this._onTagListChanged));
+        this._player.connect("notify::cover",
+                             Lang.bind(this,
+                                       this._onCoverArtChanged));
+    },
+
+    _ensurePixbufSize : function(cover) {
+        let width, height;
+
+        width = cover.get_width();
+        height = cover.get_height();
+
+        if (width > 256 ||
+            height > 256) {
+            if (width > height) {
+                this._coverArt = cover.scale_simple(256,
+                                                    height * 256 / width,
+                                                    GdkPixbuf.InterpType.BILINEAR);
+            } else {
+                this._coverArt = cover.scale_simple(width * 256 / height,
+                                                    256,
+                                                    GdkPixbuf.InterpType.BILINEAR);
+            }
+        } else {
+            this._coverArt = cover;
+        }
+    },
+
+    _onCoverArtChanged : function() {
+        if (!this._artFetcher.cover) {
+            this._image.set_from_icon_name("media-optical-symbolic");
+            return;
+        }
+
+        this._ensurePixbufSize(this._artFetcher.cover);
+        this._image.set_from_pixbuf(this._coverArt);
     },
 
     _onTagListChanged : function() {
@@ -71,9 +106,23 @@ AudioRenderer.prototype = {
         let artistName = tags.get_string("artist")[1];
         let titleName = tags.get_string("title")[1];
 
-        this._albumLabel.set_markup("<small><i>from  </i>" + albumName + "</small>");
-        this._authorLabel.set_markup("<small><i>by  </i><b>" + artistName + "</b></small>");
+        if (!titleName) {
+            let file = Gio.file_new_for_uri(this._player.uri);
+            titleName = file.get_basename();
+        }
+
+        if (albumName)
+            this._albumLabel.set_markup("<small><i>from  </i>" + albumName + "</small>");
+        if (artistName)
+            this._authorLabel.set_markup("<small><i>by  </i><b>" + artistName + "</b></small>");
+
         this._titleLabel.set_markup("<b>" + titleName + "</b>");
+
+        this._artFetcher = new Sushi.CoverArtFetcher();
+        this._artFetcher.connect("notify::cover",
+                                 Lang.bind(this, this._onCoverArtChanged));
+
+        this._artFetcher.taglist = tags;
     },
 
     _updateProgressBar : function() {
