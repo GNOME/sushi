@@ -10,7 +10,7 @@ enum {
 };
 
 struct _SushiPdfLoaderPrivate {
-  EvDocumentModel *document;
+  EvDocument *document;
   gchar *uri;
 };
 
@@ -27,11 +27,8 @@ load_job_done (EvJob *job,
     return;
   }
 
-  self->priv->document = ev_document_model_new ();
-  ev_document_model_set_document (self->priv->document, job->document);
+  self->priv->document = g_object_ref (job->document);
   g_object_unref (job);
-
-  g_print ("done loading\n");
 
   g_object_notify (G_OBJECT (self), "document");
 }
@@ -45,8 +42,6 @@ start_loading_document (SushiPdfLoader *self)
   g_signal_connect (job, "finished",
                     G_CALLBACK (load_job_done), self);
 
-  g_print ("start loading");
-
   ev_job_scheduler_push_job (job, EV_JOB_PRIORITY_NONE);
 }
 
@@ -56,8 +51,6 @@ sushi_pdf_loader_set_uri (SushiPdfLoader *self,
 {
   g_clear_object (&self->priv->document);
   g_free (self->priv->uri);
-
-  g_print ("SET URI\n\n\n");
 
   self->priv->uri = g_strdup (uri);
   start_loading_document (self);
@@ -129,7 +122,7 @@ sushi_pdf_loader_class_init (SushiPdfLoaderClass *klass)
        g_param_spec_object ("document",
                             "Document",
                             "The loaded document",
-                            EV_TYPE_DOCUMENT_MODEL,
+                            EV_TYPE_DOCUMENT,
                             G_PARAM_READABLE));
 
     g_object_class_install_property
@@ -159,4 +152,22 @@ sushi_pdf_loader_new (const gchar *uri)
   return g_object_new (SUSHI_TYPE_PDF_LOADER,
                        "uri", uri,
                        NULL);
+}
+
+/**
+ * sushi_pdf_loader_get_max_page_size:
+ * @self:
+ * @width: (out):
+ * @height: (out):
+ *
+ */
+void
+sushi_pdf_loader_get_max_page_size (SushiPdfLoader *self,
+                                    gdouble *width,
+                                    gdouble *height)
+{
+  if (self->priv->document == NULL)
+    return;
+
+  ev_document_get_max_page_size (self->priv->document, width, height);
 }
