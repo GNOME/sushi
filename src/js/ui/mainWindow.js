@@ -133,7 +133,7 @@ MainWindow.prototype = {
             
         if (textureSize[0] < Constants.VIEW_MIN &&
             textureSize[1] < Constants.VIEW_MIN) {
-            windowSize = [ Contants.VIEW_MIN, Constants.VIEW_MIN ];
+            windowSize = [ Constants.VIEW_MIN, Constants.VIEW_MIN ];
             yFactor = 0.52;
         }
 
