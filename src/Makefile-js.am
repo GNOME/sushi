@@ -3,7 +3,8 @@ dist_jsui_DATA = \
     js/ui/main.js \
     js/ui/application.js \
     js/ui/mainWindow.js \
-    js/ui/mimeHandler.js
+    js/ui/mimeHandler.js \
+    js/ui/utils.js
 
 jsviewersdir = $(pkgdatadir)/js/viewers
 dist_jsviewers_DATA = \
