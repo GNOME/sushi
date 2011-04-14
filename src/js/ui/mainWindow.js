@@ -258,7 +258,8 @@ MainWindow.prototype = {
 
         if ((event.get_source() == this._toolbarActor) ||
             (event.get_source() == this._quitActor) ||
-            !this._renderer.moveOnClick) {
+            (event.get_source() == this._texture &&
+             !this._renderer.moveOnClick)) {
 
             if (event.get_source() == this._toolbarActor)
                 this._resetToolbar();
