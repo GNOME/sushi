@@ -6,6 +6,9 @@ const GObject = imports.gi.GObject;
 
 const Lang = imports.lang;
 
+let Utils = imports.ui.utils;
+let Constants = imports.util.constants;
+
 function GstRenderer(args) {
     this._init(args);
 }
@@ -125,40 +128,12 @@ GstRenderer.prototype = {
     getSizeForAllocation : function(allocation) {
         if (!this._videoWidth ||
             !this._videoHeight) {
-            this._allocatedSize = [ 400, 400 ];
-            return this._allocatedSize;
+            return [ Constants.VIEW_MIN, Constants.VIEW_MIN ];
         }
 
         let baseSize = [ this._videoWidth, this._videoHeight ];
-        let scale = 0;
 
-        if (baseSize[0] <= allocation[0] &&
-            baseSize[1] <= allocation[1]) {
-            /* upscale */
-            if (baseSize[0] > baseSize[1])
-                scale = allocation[0] / baseSize[0];
-            else
-                scale = allocation[1] / baseSize[1];
-        } else if (baseSize[0] > allocation[0] &&
-                   baseSize[1] <= allocation[1]) {
-            /* downscale x */
-            scale = allocation[0] / baseSize[0];
-        } else if (baseSize[0] <= allocation[0] &&
-                   baseSize[1] > allocation[1]) {
-            /* downscale y */
-            scale = allocation[1] / baseSize[1];
-        } else if (baseSize[0] > allocation[0] &&
-                   baseSize[1] > allocation[1]) {
-            /* downscale x/y */
-            if (baseSize[0] > baseSize[1])
-                scale = allocation[0] / baseSize[0];
-            else
-                scale = allocation[1] / baseSize[1];
-        }
-
-        this._allocatedSize = [ baseSize[0] * scale, baseSize[1] * scale ];
-
-        return this._allocatedSize;
+        return Utils.getScaledSize(baseSize, allocation, true);
     },
 
     clear : function() {

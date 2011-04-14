@@ -2,6 +2,8 @@ const GdkPixbuf = imports.gi.GdkPixbuf;
 const GtkClutter = imports.gi.GtkClutter;
 const Gtk = imports.gi.Gtk;
 
+let Utils = imports.ui.utils;
+
 function ImageRenderer(args) {
     this._init(args);
 }
@@ -26,26 +28,7 @@ ImageRenderer.prototype = {
     getSizeForAllocation : function(allocation) {
         let baseSize = this._texture.get_base_size();
 
-        if (baseSize[0] <= allocation[0] &&
-            baseSize[1] <= allocation[1]) {
-            return baseSize;
-        }
-
-        let scale = 0;
-
-        if (baseSize[0] > allocation[0] &&
-            baseSize[1] <= allocation[1]) {
-            scale = allocation[0] / baseSize[0];
-        } else if (baseSize[0] <= allocation[0] &&
-                   baseSize[1] > allocation[1]) {
-            scale = allocation[1] / baseSize[1];
-        } else if (baseSize[0] > allocation[0] &&
-                   baseSize[1] > allocation[1]) {
-            scale = Math.min(allocation[0] / baseSize[0], 
-                             allocation[1] / baseSize[1]);
-        }
-
-        return [ baseSize[0] * scale, baseSize[1] * scale ];
+        return Utils.getScaledSize(baseSize, allocation, false);
     },
 
     createToolbar : function () {

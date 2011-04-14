@@ -1,7 +1,7 @@
 const Gst = imports.gi.Gst;
 const Gio = imports.gi.Gio;
 
-const Constants = imports.util.constants;
+let Constants = imports.util.constants;
 
 function AudioRenderer(args) {
     this._init(args);
