@@ -29,6 +29,8 @@ rounded_background_allocation_cb (ClutterActor *texture)
   cairo_t *cr;
   ClutterActorBox allocation;
 
+  clutter_cairo_texture_clear (CLUTTER_CAIRO_TEXTURE (texture));
+  
   clutter_actor_get_allocation_box (texture, &allocation);
   clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (texture),
                                           clutter_actor_box_get_width (&allocation),
