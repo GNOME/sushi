@@ -145,8 +145,13 @@ MainWindow.prototype = {
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5 }));
 
-        if (yFactor == 0)
-            yFactor = this._isFullScreen ? 0.52 : 0.92;
+        if (yFactor == 0) {
+            if(this._isFullScreen && 
+               (textureSize[0] > textureSize[1]))
+                yFactor = 0.52;
+            else
+                yFactor = 0.92;
+        }
 
         let yAlign =                 
             new Clutter.AlignConstraint({ source: this._stage,
