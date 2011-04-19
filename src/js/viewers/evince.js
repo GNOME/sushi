@@ -129,4 +129,5 @@ if (Features.HAVE_UNOCONV) {
     handler.registerMime("application/msword", renderer);
     handler.registerMime("application/vnd.ms-excel", renderer);
     handler.registerMime("application/vnd.ms-powerpoint", renderer);
+    handler.registerMime("application/rtf", renderer);
 }
