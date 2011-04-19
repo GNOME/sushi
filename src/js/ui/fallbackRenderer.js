@@ -1,3 +1,5 @@
+const Constants = imports.util.constants;
+
 function FallbackRenderer(args) {
     this._init(args);
 }
@@ -16,7 +18,7 @@ FallbackRenderer.prototype = {
     },
 
     getSizeForAllocation: function(allocation) {
-        return [ 400, 400 ];
+        return [ Constants.VIEW_MIN, Constants.VIEW_MIN ];
     },
 
     createToolbar: function() {
