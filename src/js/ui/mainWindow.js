@@ -123,7 +123,7 @@ MainWindow.prototype = {
         let availableWidth = this._isFullScreen ? screenSize[0] : VIEW_MAX_W;
         let availableHeight = this._isFullScreen ? screenSize[1] - VIEW_PADDING_Y : VIEW_MAX_H;
 
-        let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight]);
+        let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight], this._isFullScreen);
 
         return textureSize;
     },

@@ -25,10 +25,13 @@ ImageRenderer.prototype = {
         return this._texture;
     },
 
-    getSizeForAllocation : function(allocation) {
+    getSizeForAllocation : function(allocation, fullScreen) {
+        if (!fullScreen)
+            fullScreen = false;
+
         let baseSize = this._texture.get_base_size();
 
-        return Utils.getScaledSize(baseSize, allocation, false);
+        return Utils.getScaledSize(baseSize, allocation, fullScreen);
     },
 
     createToolbar : function () {
