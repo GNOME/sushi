@@ -19,12 +19,16 @@ dist_jsutil_DATA = \
     js/util/constants.js
 
 jsutil_built_sources = \
+    $(srcdir)/js/util/features.js \
     $(srcdir)/js/util/path.js
 
 BUILT_SOURCES += $(jsutil_built_sources)
 
 js/util/path.js: Makefile js/util/path.js.in
 	$(AM_V_GEN) $(do_subst) $(srcdir)/js/util/path.js.in > $@
+
+js/util/features.js: Makefile js/util/features.js.in
+	$(AM_V_GEN) $(do_subst) $(srcdir)/js/util/features.js.in > $@
 
 nodist_jsutil_DATA = \
     $(jsutil_built_sources)

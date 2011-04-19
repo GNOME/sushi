@@ -26,8 +26,9 @@ do_subst = sed -e 's|@abs_top_srcdir[@]|$(abs_top_srcdir)|g' \
                -e 's|@localedir[@]|$(localedir)|g' \
                -e 's|@bindir[@]|$(bindir)|g' \
                -e 's|@libexecdir[@]|$(libexecdir)|g' \
-	       -e 's|@pkglibdir[@]|$(pkglibdir)|g' \
-	       -e 's|@pkgdatadir[@]|$(pkgdatadir)|g'
+               -e 's|@pkglibdir[@]|$(pkglibdir)|g' \
+               -e 's|@pkgdatadir[@]|$(pkgdatadir)|g' \
+               -e 's|@have_unoconv[@]|$(HAVE_UNOCONV)|g'
 
 include $(INTROSPECTION_MAKEFILE)
 

@@ -75,6 +75,15 @@ PKG_CHECK_MODULES(SUSHI,
 GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
 AC_SUBST(GLIB_MKENUMS)
 
+AC_PATH_PROG(UNOCONV, unoconv, 0)
+if test x$UNOCONV = x0; then
+   HAVE_UNOCONV=0
+else
+   HAVE_UNOCONV=1
+fi
+
+AC_SUBST(HAVE_UNOCONV)
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile

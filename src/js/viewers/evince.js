@@ -5,6 +5,7 @@ const EvView = imports.gi.EvinceView;
 let Gettext = imports.gettext.domain("sushi");
 
 let Utils = imports.ui.utils;
+let Features = imports.util.features;
 
 let PDF_X_PADDING = 40;
 let SPINBOX_SIZE = 150;
@@ -120,9 +121,12 @@ let handler = new MimeHandler.MimeHandler();
 let renderer = new EvinceRenderer();
 
 handler.registerMime("application/pdf", renderer);
-handler.registerMime("application/vnd.oasis.opendocument.text", renderer);
-handler.registerMime("application/vnd.oasis.opendocument.presentation", renderer);
-handler.registerMime("application/vnd.oasis.opendocument.spreadsheet", renderer);
-handler.registerMime("application/msword", renderer);
-handler.registerMime("application/vnd.ms-excel", renderer);
-handler.registerMime("application/vnd.ms-powerpoint", renderer);
+
+if (Features.HAVE_UNOCONV) {
+    handler.registerMime("application/vnd.oasis.opendocument.text", renderer);
+    handler.registerMime("application/vnd.oasis.opendocument.presentation", renderer);
+    handler.registerMime("application/vnd.oasis.opendocument.spreadsheet", renderer);
+    handler.registerMime("application/msword", renderer);
+    handler.registerMime("application/vnd.ms-excel", renderer);
+    handler.registerMime("application/vnd.ms-powerpoint", renderer);
+}
