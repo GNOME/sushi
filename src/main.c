@@ -25,7 +25,7 @@ parse_options (int *argc, char ***argv)
 
   if (!g_option_context_parse (ctx, argc, argv, &error))
     {
-      g_print ("nautilus-preview: %s\n", error->message);
+      g_print ("sushi: %s\n", error->message);
       exit(1);
     }
 
@@ -79,7 +79,7 @@ register_all_viewers (GjsContext *ctx)
   gchar *path;
   GError *error = NULL;
 
-  dir = g_dir_open (NAUTILUS_PREVIEW_PKGDATADIR "/js/viewers", 0, &error);
+  dir = g_dir_open (SUSHI_PKGDATADIR "/js/viewers", 0, &error);
 
   if (dir == NULL) {
     g_warning ("Can't open module directory: %s\n", error->message);
@@ -90,7 +90,7 @@ register_all_viewers (GjsContext *ctx)
   name = g_dir_read_name (dir);
 
   while (name != NULL) {
-    path = g_build_filename (NAUTILUS_PREVIEW_PKGDATADIR "/js/viewers",
+    path = g_build_filename (SUSHI_PKGDATADIR "/js/viewers",
                              name);
     if (!gjs_context_eval_file (ctx,
                                 path,

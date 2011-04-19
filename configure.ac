@@ -1,6 +1,6 @@
 dnl -*- mode: m4 -*-
 AC_PREREQ(2.63)
-AC_INIT([nautilus-preview],[0.0.1],[],[nautilus-preview])
+AC_INIT([sushi],[0.0.1],[],[sushi])
 
 AM_CONFIG_HEADER(config/config.h)
 AC_CONFIG_SRCDIR([src/main.c])
@@ -88,7 +88,7 @@ AC_OUTPUT
 dnl ==========================================================================
 echo "
 
-        Nautilus Preview $VERSION
+        Sushi $VERSION
         ==================
 
         prefix:    ${prefix}

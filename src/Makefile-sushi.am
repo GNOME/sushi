@@ -14,33 +14,33 @@ BUILT_SOURCES += $(sushi_built_sources)
 SUSHI_STAMP_FILES = stamp-sushi-enum-types.h
 
 sushi_source_h = \
-    sushi/sushi-cover-art.h \
-    sushi/sushi-pdf-loader.h \
-    sushi/sushi-sound-player.h \
-    sushi/sushi-utils.h
+    libsushi/sushi-cover-art.h \
+    libsushi/sushi-pdf-loader.h \
+    libsushi/sushi-sound-player.h \
+    libsushi/sushi-utils.h
 
 sushi_source_c = \
-    sushi/sushi-cover-art.c \
-    sushi/sushi-pdf-loader.c \
-    sushi/sushi-sound-player.c \
-    sushi/sushi-utils.c
+    libsushi/sushi-cover-art.c \
+    libsushi/sushi-pdf-loader.c \
+    libsushi/sushi-sound-player.c \
+    libsushi/sushi-utils.c
 
 sushi-enum-types.h: stamp-sushi-enum-types.h Makefile
 	@true
 
-stamp-sushi-enum-types.h: $(sushi_source_h) sushi/sushi-enum-types.h.in
+stamp-sushi-enum-types.h: $(sushi_source_h) libsushi/sushi-enum-types.h.in
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	$(GLIB_MKENUMS) \
-	  --template $(srcdir)/sushi/sushi-enum-types.h.in \
+	  --template $(srcdir)/libsushi/sushi-enum-types.h.in \
 	  $(sushi_source_h) ) >> xgen-beth && \
 	(cmp -s xgen-beth sushi-enum-types.h || cp xgen-beth sushi-enum-types.h) && \
 	rm -f xgen-beth && \
 	echo timestamp > $(@F)
 
-sushi-enum-types.c: stamp-sushi-enum-types.h sushi/sushi-enum-types.c.in
+sushi-enum-types.c: stamp-sushi-enum-types.h libsushi/sushi-enum-types.c.in
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	$(GLIB_MKENUMS) \
-	  --template $(srcdir)/sushi/sushi-enum-types.c.in \
+	  --template $(srcdir)/libsushi/sushi-enum-types.c.in \
 	  $(sushi_source_h) ) >> xgen-betc && \
 	cp xgen-betc sushi-enum-types.c && \
 	rm -f xgen-betc

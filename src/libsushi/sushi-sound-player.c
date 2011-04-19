@@ -9,7 +9,7 @@
 #include <gst/pbutils/pbutils.h>
 
 #include "sushi-enum-types.h"
-#include "sushi/sushi-sound-player.h"
+#include "sushi-sound-player.h"
 
 G_DEFINE_TYPE (SushiSoundPlayer, sushi_sound_player, G_TYPE_OBJECT);
 

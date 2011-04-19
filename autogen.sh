@@ -4,7 +4,7 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-PKG_NAME="nautilus-preview"
+PKG_NAME="sushi"
 
 (test -f $srcdir/src/main.c) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"

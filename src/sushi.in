@@ -27,4 +27,4 @@ if test x"$FONTCONFIG_FILE" = x ; then
     export FONTCONFIG_FILE=@pkgdatadir@/fonts.conf
 fi
 
-@libexecdir@/nautilus-preview-start
+@libexecdir@/sushi-start

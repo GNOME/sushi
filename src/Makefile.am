@@ -2,11 +2,11 @@ AM_CPPFLAGS = \
     -I$(top_builddir)/config \
     -I$(top_srcdir)	\
     -L$(top_srcdir)/src \
-    -DNAUTILUS_PREVIEW_LIBDIR=\"$(libdir)\" \
-    -DNAUTILUS_PREVIEW_DATADIR=\"$(datadir)\" \
-    -DNAUTILUS_PREVIEW_PKGDATADIR=\"$(pkgdatadir)\" \
-    -DNAUTILUS_PREVIEW_TOP_SRCDIR=\"$(abs_top_srcdir)\" \
-    -DNAUTILUS_PREVIEW_BUILDDIR=\"$(abs_top_builddir)\"
+    -DSUSHI_LIBDIR=\"$(libdir)\" \
+    -DSUSHI_DATADIR=\"$(datadir)\" \
+    -DSUSHI_PKGDATADIR=\"$(pkgdatadir)\" \
+    -DSUSHI_TOP_SRCDIR=\"$(abs_top_srcdir)\" \
+    -DSUSHI_BUILDDIR=\"$(abs_top_builddir)\"
 
 girdir = $(datadir)/gir-1.0
 typelibdir = $(libdir)/girepository-1.0
@@ -37,23 +37,23 @@ include Makefile-sushi.am
 gir_DATA += $(INTROSPECTION_GIRS)
 typelib_DATA += $(gir_DATA:.gir=.typelib)
 
-libexec_PROGRAMS = nautilus-preview-start
+libexec_PROGRAMS = sushi-start
 
-nautilus_preview_start_SOURCES = main.c
+sushi_start_SOURCES = main.c
 
-nautilus_preview_start_LDADD = \
+sushi_start_LDADD = \
     libsushi-1.0.la \
     $(SUSHI_LIBS)
-nautilus_preview_start_CPPFLAGS = \
+sushi_start_CPPFLAGS = \
     $(SUSHI_CFLAGS) \
     $(AM_CPPFLAGS) \
     -DLOCALEDIR=\"$(datadir)/locale\"
 
-bin_SCRIPTS = nautilus-preview
+bin_SCRIPTS = sushi
 
-nautilus-preview: nautilus-preview.in
+sushi: sushi.in
 	$(AM_V_GEN) $(do_subst) $< > $@
 	chmod +x $@
 
-CLEANFILES += nautilus-preview
-EXTRA_DIST += nautilus-preview.in
+CLEANFILES += sushi
+EXTRA_DIST += sushi.in
