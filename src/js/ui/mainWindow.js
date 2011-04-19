@@ -195,10 +195,16 @@ MainWindow.prototype = {
         this._toolbarActor.set_opacity(0);
         this._removeToolbarTimeout();
 
+        /* wait for the next stage allocation to fade in the texture 
+         * and background again.
+         */
         this._unFullScreenId =
             this._stage.connect("notify::allocation",
                                 Lang.bind(this, this._onStageUnFullScreen));
 
+        /* quickly fade out background and texture,
+         * and then unfullscreen the (empty) window.
+         */
         Tweener.addTween(this._stage,
                          { opacity: 0,
                            time: 0.10,
@@ -258,7 +264,7 @@ MainWindow.prototype = {
                                 Lang.bind(this, this._onStageFullScreen));
 
         /* quickly fade out background and texture,
-         * and them fullscreen the (empty window).
+         * and then fullscreen the (empty) window.
          */
         Tweener.addTween(this._background,
                          { opacity: 0,
