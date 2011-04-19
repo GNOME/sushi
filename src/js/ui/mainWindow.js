@@ -237,7 +237,12 @@ MainWindow.prototype = {
 
         /* zoom in the texture now */
         this._savedYFactor = this._textureYAlign.factor;
-        this._textureYAlign.factor = 0.52;
+
+        if (this._texture.width > this._texture.height)
+            this._textureYAlign.factor = 0.52;
+        else
+            this._textureYAlign.factor = 0.92;
+
         let textureSize = this._getTextureSize();
 
         Tweener.addTween(this._texture,
