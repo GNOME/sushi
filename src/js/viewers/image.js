@@ -39,7 +39,7 @@ ImageRenderer.prototype = {
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
-        this._toolbarActor.set_size(50, 50);
+        this._toolbarActor.set_size(32, 32);
         this._toolbarActor.set_opacity(0);
 
         this._toolbarZoom = new Gtk.ToolButton({ expand: false,

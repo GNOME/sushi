@@ -92,7 +92,7 @@ EvinceRenderer.prototype = {
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
                                                     opacity: 0});
-        this._toolbarActor.set_size(38, 38);
+        this._toolbarActor.set_size(32, 32);
 
         return this._toolbarActor;
     }
