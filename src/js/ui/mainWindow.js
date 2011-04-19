@@ -18,11 +18,6 @@ const Constants = imports.util.constants;
 
 const Sushi = imports.gi.Sushi;
 
-const VIEW_PADDING_Y = 28;
-const VIEW_PADDING_X = 4;
-const VIEW_MAX_W = 800;
-const VIEW_MAX_H = 600;
-
 function MainWindow(args) {
     this._init(args);
 }
@@ -120,8 +115,8 @@ MainWindow.prototype = {
         let screenSize = [ this._gtkWindow.get_window().get_width(),
                            this._gtkWindow.get_window().get_height() ];
 
-        let availableWidth = this._isFullScreen ? screenSize[0] : VIEW_MAX_W;
-        let availableHeight = this._isFullScreen ? screenSize[1] - VIEW_PADDING_Y : VIEW_MAX_H;
+        let availableWidth = this._isFullScreen ? screenSize[0] : Constants.VIEW_MAX_W;
+        let availableHeight = this._isFullScreen ? screenSize[1] - Constants.VIEW_PADDING_Y : Constants.VIEW_MAX_H;
 
         let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight], this._isFullScreen);
 
@@ -138,8 +133,8 @@ MainWindow.prototype = {
         }
 
         if (!this._isFullScreen) {
-            windowSize = [ windowSize[0] + VIEW_PADDING_X,
-                           windowSize[1] + VIEW_PADDING_Y ];
+            windowSize = [ windowSize[0] + Constants.VIEW_PADDING_X,
+                           windowSize[1] + Constants.VIEW_PADDING_Y ];
         }
 
         return windowSize;
