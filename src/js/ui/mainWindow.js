@@ -235,11 +235,12 @@ MainWindow.prototype = {
 
         /* zoom in the texture now */
         this._savedYFactor = this._textureYAlign.factor;
+        let yFactor = this._savedFactor;
 
         if (this._texture.width > this._texture.height)
-            this._textureYAlign.factor = 0.52;
+            yFactor = 0.52;
         else
-            this._textureYAlign.factor = 0.92;
+            yFactor = 0.92;
 
         let textureSize = this._getTextureSize();
 
@@ -247,6 +248,12 @@ MainWindow.prototype = {
                          { opacity: 255,
                            width: textureSize[0],
                            height: textureSize[1],
+                           time: 0.15,
+                           transition: 'easeOutQuad'
+                         });
+
+        Tweener.addTween(this._textureYAlign,
+                         { factor: yFactor,
                            time: 0.15,
                            transition: 'easeOutQuad'
                          });
