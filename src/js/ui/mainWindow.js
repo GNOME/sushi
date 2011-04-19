@@ -100,6 +100,9 @@ MainWindow.prototype = {
                           });
     },
 
+    /**************************************************************************
+     ****************** main object event callbacks ***************************
+     **************************************************************************/
     _onWindowDeleteEvent : function() {
         this._application.quit();
     },
@@ -111,6 +114,42 @@ MainWindow.prototype = {
             this._application.quit();
     },
 
+    _onButtonPressEvent : function(actor, event) {
+        let win_coords = event.get_coords();
+
+        if ((event.get_source() == this._toolbarActor) ||
+            (event.get_source() == this._quitActor) ||
+            (event.get_source() == this._texture &&
+             !this._renderer.moveOnClick)) {
+
+            if (event.get_source() == this._toolbarActor)
+                this._resetToolbar();
+
+            return false;
+        }
+
+        let root_coords = 
+            this._gtkWindow.get_window().get_root_coords(win_coords[0],
+                                                         win_coords[1]);
+
+        this._gtkWindow.begin_move_drag(event.get_button(),
+                                        root_coords[0],
+                                        root_coords[1],
+                                        event.get_time());
+
+        return false;
+    },
+
+    _onMotionEvent : function() {
+        if (this._toolbarActor)
+            this._resetToolbar();
+
+        return false;
+    },
+
+    /**************************************************************************
+     *********************** texture allocation *******************************
+     **************************************************************************/
     _getTextureSize : function() {
         let screenSize = [ this._gtkWindow.get_window().get_width(),
                            this._gtkWindow.get_window().get_height() ];
@@ -166,6 +205,41 @@ MainWindow.prototype = {
             this._gtkWindow.resize(windowSize[0], windowSize[1]);
     },
 
+    _createRenderer : function(file) {
+        if (this._renderer)
+            delete this._renderer;
+
+        let info = file.query_info("standard::content-type",
+                                   0, null);
+        this._renderer = this._mimeHandler.getObject(info.get_content_type());        
+    },
+
+    _createTexture : function(file) {
+        if (this._texture) {
+            this._texture.destroy();
+            delete this._texture;
+        }
+
+        this._texture = this._renderer.render(file, this);
+
+        this._textureXAlign = 
+            new Clutter.AlignConstraint({ source: this._stage,
+                                          factor: 0.5 });
+        this._textureYAlign =
+            new Clutter.AlignConstraint({ source: this._stage,
+                                          factor: 0.5,
+                                          "align-axis": Clutter.AlignAxis.Y_AXIS })
+
+        this._texture.add_constraint(this._textureXAlign);
+        this._texture.add_constraint(this._textureYAlign);
+
+        this.refreshSize();
+        this._stage.add_actor(this._texture);
+    },
+
+    /**************************************************************************
+     ************************** fullscreen ************************************
+     **************************************************************************/
     _onStageUnFullScreen : function() {
         this._stage.disconnect(this._unFullScreenId);
         delete this._unFullScreenId;
@@ -293,38 +367,6 @@ MainWindow.prototype = {
                          });
     },
 
-    _createRenderer : function(file) {
-        if (this._renderer)
-            delete this._renderer;
-
-        let info = file.query_info("standard::content-type",
-                                   0, null);
-        this._renderer = this._mimeHandler.getObject(info.get_content_type());        
-    },
-
-    _createTexture : function(file) {
-        if (this._texture) {
-            this._texture.destroy();
-            delete this._texture;
-        }
-
-        this._texture = this._renderer.render(file, this);
-
-        this._textureXAlign = 
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: 0.5 });
-        this._textureYAlign =
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: 0.5,
-                                          "align-axis": Clutter.AlignAxis.Y_AXIS })
-
-        this._texture.add_constraint(this._textureXAlign);
-        this._texture.add_constraint(this._textureYAlign);
-
-        this.refreshSize();
-        this._stage.add_actor(this._texture);
-    },
-
     /**************************************************************************
      ************************* toolbar helpers ********************************
      **************************************************************************/
@@ -384,6 +426,16 @@ MainWindow.prototype = {
                                                          this._onToolbarTimeout));
     },
 
+    _onToolbarTimeout : function() {
+        delete this._toolbarId;
+        Tweener.addTween(this._toolbarActor,
+                         { opacity: 0,
+                           time: 0.25,
+                           transition: 'easeOutQuad'
+                         });
+        return false;
+    },
+
     /**************************************************************************
      ************************ titlebar helpers ********************************
      **************************************************************************/
@@ -428,6 +480,9 @@ MainWindow.prototype = {
         this._stage.add_actor(this._quitActor);
     },
 
+    /**************************************************************************
+     ************************ public methods **********************************
+     **************************************************************************/
     setParent : function(xid) {
         let parent = GdkX11.X11Window.foreign_new_for_display(this._gtkWindow.get_display(),
                                                               xid);
@@ -460,48 +515,5 @@ MainWindow.prototype = {
         } else {
             this._enterFullScreen();
         }
-    },
-
-    _onButtonPressEvent : function(actor, event) {
-        let win_coords = event.get_coords();
-
-        if ((event.get_source() == this._toolbarActor) ||
-            (event.get_source() == this._quitActor) ||
-            (event.get_source() == this._texture &&
-             !this._renderer.moveOnClick)) {
-
-            if (event.get_source() == this._toolbarActor)
-                this._resetToolbar();
-
-            return false;
-        }
-
-        let root_coords = 
-            this._gtkWindow.get_window().get_root_coords(win_coords[0],
-                                                         win_coords[1]);
-
-        this._gtkWindow.begin_move_drag(event.get_button(),
-                                        root_coords[0],
-                                        root_coords[1],
-                                        event.get_time());
-
-        return false;
-    },
-
-    _onMotionEvent : function() {
-        if (this._toolbarActor)
-            this._resetToolbar();
-
-        return false;
-    },
-
-    _onToolbarTimeout : function() {
-        delete this._toolbarId;
-        Tweener.addTween(this._toolbarActor,
-                         { opacity: 0,
-                           time: 0.25,
-                           transition: 'easeOutQuad'
-                         });
-        return false;
     }
 }
