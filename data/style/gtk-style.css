@@ -31,6 +31,7 @@ GtkLabel {
     border-style: none;
     border-radius: 3;
     border-width: 0;
+    padding: 0;
 
     background-color: @np_bg_color;
     color: @np_fg_color;
@@ -43,6 +44,7 @@ GtkLabel {
 .np-decoration.button {
     color: @np_fg_color;
     background-image: none;
+    padding: 0;
 
     border-style: none;
     border-radius: 0;
