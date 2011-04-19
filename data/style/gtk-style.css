@@ -9,6 +9,10 @@ GtkLabel {
     color: #fff;
 }
 
+.spinner {
+    color: @np_fg_color;
+}
+
 .scrollbar.slider,
 .scrollbar.button {
     color: shade (@np_bg_color, 1.30);

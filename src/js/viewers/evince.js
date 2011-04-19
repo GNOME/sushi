@@ -2,9 +2,12 @@ const Sushi = imports.gi.Sushi;
 const EvDoc = imports.gi.EvinceDocument;
 const EvView = imports.gi.EvinceView;
 
+let Gettext = imports.gettext.domain("sushi");
+
 let Utils = imports.ui.utils;
 
-const PDF_X_PADDING = 40;
+let PDF_X_PADDING = 40;
+let SPINBOX_SIZE = 150;
 
 function EvinceRenderer(args) {
     this._init(args);
@@ -24,29 +27,46 @@ EvinceRenderer.prototype = {
                                 Lang.bind(this, this._onDocumentLoaded));
         this._pdfLoader.uri = file.get_uri();
 
-        this._view = EvView.View.new();
-        this._view.show();
+        this._spinnerBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12);
+        this._spinnerBox.show();
 
-        this._scrolledWin = Gtk.ScrolledWindow.new(null, null);
-        this._scrolledWin.set_min_content_width(Constants.VIEW_MIN);
-        this._scrolledWin.set_min_content_height(Constants.VIEW_MIN);
-        this._scrolledWin.add(this._view);
-        this._scrolledWin.show();
+        let spinner = Gtk.Spinner.new();
+        spinner.show();
+        spinner.start();
+        this._spinnerBox.pack_start(spinner, true, true, 0);
 
-        this._actor = new GtkClutter.Actor({ contents: this._scrolledWin });
+        let label = new Gtk.Label();
+        label.set_text(Gettext.gettext("Loading..."));
+        label.show();
+        this._spinnerBox.pack_start(label, true, true, 0);
+
+        this._actor = new GtkClutter.Actor({ contents: this._spinnerBox });
         this._actor.set_reactive(true);
 
         return this._actor;
     },
 
     _onDocumentLoaded : function() {
+        this._spinnerBox.destroy();
+
         this._document = this._pdfLoader.document;
         this._model = EvView.DocumentModel.new_with_document(this._document);
 
         this._model.set_sizing_mode(EvView.SizingMode.FIT_WIDTH);
 	this._model.set_continuous(true);
 
+        this._view = EvView.View.new();
+        this._view.show();
+
+        this._scrolledWin = Gtk.ScrolledWindow.new(null, null);
+        this._scrolledWin.set_min_content_width(Constants.VIEW_MIN);
+        this._scrolledWin.set_min_content_height(Constants.VIEW_MIN);
+        this._scrolledWin.show();
+
         this._view.set_model(this._model);
+        this._scrolledWin.add(this._view);
+
+        this._actor.get_widget().add(this._scrolledWin);
 
         let pageSize = this._pdfLoader.get_max_page_size();
         this._pageWidth = Math.floor(pageSize[0]);
@@ -60,9 +80,7 @@ EvinceRenderer.prototype = {
         let height = this._pageHeight;
 
         if (!this._document) {
-            let swSize = this._scrolledWin.get_preferred_size()[1];
-            width = swSize.width;
-            height = swSize.height;
+            [ width, height ] = [ SPINBOX_SIZE, SPINBOX_SIZE ];
         } else {
             let scaledSize = Utils.getScaledSize([ width, height ],
                                                  allocation,
@@ -102,3 +120,9 @@ let handler = new MimeHandler.MimeHandler();
 let renderer = new EvinceRenderer();
 
 handler.registerMime("application/pdf", renderer);
+handler.registerMime("application/vnd.oasis.opendocument.text", renderer);
+handler.registerMime("application/vnd.oasis.opendocument.presentation", renderer);
+handler.registerMime("application/vnd.oasis.opendocument.spreadsheet", renderer);
+handler.registerMime("application/msword", renderer);
+handler.registerMime("application/vnd.ms-excel", renderer);
+handler.registerMime("application/vnd.ms-powerpoint", renderer);

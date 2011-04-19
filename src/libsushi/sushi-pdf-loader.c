@@ -12,6 +12,7 @@ enum {
 struct _SushiPdfLoaderPrivate {
   EvDocument *document;
   gchar *uri;
+  gchar *pdf_path;
 };
 
 static void
@@ -34,15 +35,137 @@ load_job_done (EvJob *job,
 }
 
 static void
-start_loading_document (SushiPdfLoader *self)
+load_pdf (SushiPdfLoader *self,
+          const gchar *uri)
 {
   EvJob *job;
 
-  job = ev_job_load_new (self->priv->uri);
+  job = ev_job_load_new (uri);
   g_signal_connect (job, "finished",
                     G_CALLBACK (load_job_done), self);
 
   ev_job_scheduler_push_job (job, EV_JOB_PRIORITY_NONE);
+}
+
+static void
+unoconv_child_watch_cb (GPid pid,
+                        gint status,
+                        gpointer user_data)
+{
+  SushiPdfLoader *self = user_data;
+  GFile *file;
+  gchar *uri;
+
+  g_spawn_close_pid (pid);
+
+  file = g_file_new_for_path (self->priv->pdf_path);
+  uri = g_file_get_uri (file);
+  load_pdf (self, uri);
+
+  g_object_unref (file);
+  g_free (uri);
+}
+
+static void
+load_openoffice (SushiPdfLoader *self)
+{
+  gchar *doc_path, *pdf_path, *tmp_name;
+  GFile *file;
+  gboolean res;
+  gchar *cmd;
+
+  gint argc;
+  GPid pid;
+  gchar **argv = NULL;
+  GError *error = NULL;
+
+  file = g_file_new_for_uri (self->priv->uri);
+  doc_path = g_file_get_path (file);
+  g_object_unref (file);
+
+  tmp_name = g_strconcat ("sushi-", g_get_user_name (), "-tmp.pdf", NULL);
+  self->priv->pdf_path = pdf_path =
+    g_build_filename (g_get_tmp_dir (), tmp_name, NULL);
+  cmd = g_strdup_printf ("unoconv -f pdf -o %s %s", pdf_path, doc_path);
+
+  g_free (doc_path);
+  g_free (tmp_name);
+
+  res = g_shell_parse_argv (cmd, &argc, &argv, &error);
+  g_free (cmd);
+
+  if (!res) {
+    g_warning ("Error while parsing the unoconv command line: %s",
+               error->message);
+    g_error_free (error);
+
+    return;
+  }
+
+  res = g_spawn_async (NULL, argv, NULL,
+                       G_SPAWN_DO_NOT_REAP_CHILD |
+                       G_SPAWN_SEARCH_PATH,
+                       NULL, NULL,
+                       &pid, &error);
+
+  g_strfreev (argv);
+
+  if (!res) {
+    g_warning ("Error while spawning unoconv: %s",
+               error->message);
+    g_error_free (error);
+
+    return;
+  }
+
+  g_child_watch_add (pid, unoconv_child_watch_cb, self);
+}
+
+static void
+query_info_ready_cb (GObject *obj,
+                     GAsyncResult *res,
+                     gpointer user_data)
+{
+  SushiPdfLoader *self = user_data;
+  GError *error = NULL;
+  GFileInfo *info;
+  const gchar *content_type;
+
+  info = g_file_query_info_finish (G_FILE (obj),
+                                   res, &error);
+
+  if (error != NULL) {
+    g_warning ("Unable to query the mimetype of %s: %s",
+               self->priv->uri, error->message);
+    g_error_free (error);
+
+    return;
+  }
+
+  content_type = g_file_info_get_content_type (info);
+  g_object_unref (info);
+
+  if (g_content_type_is_a (content_type, "application/pdf"))
+    load_pdf (self, self->priv->uri);
+  else
+    load_openoffice (self);
+}
+
+static void
+start_loading_document (SushiPdfLoader *self)
+{
+  GFile *file;
+
+  file = g_file_new_for_uri (self->priv->uri);
+  g_file_query_info_async (file,
+                           G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                           G_FILE_QUERY_INFO_NONE,
+                           G_PRIORITY_DEFAULT,
+                           NULL,
+                           query_info_ready_cb,
+                           self);
+
+  g_object_unref (file);
 }
 
 static void
@@ -63,6 +186,11 @@ sushi_pdf_loader_dispose (GObject *object)
 
   g_clear_object (&self->priv->document);
   g_free (self->priv->uri);
+
+  if (self->priv->pdf_path) {
+    g_unlink (self->priv->pdf_path);
+    g_free (self->priv->pdf_path);
+  }
 
   G_OBJECT_CLASS (sushi_pdf_loader_parent_class)->dispose (object);
 }
