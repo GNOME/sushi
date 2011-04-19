@@ -335,6 +335,10 @@ MainWindow.prototype = {
         }
 
         this._toolbarActor = this._renderer.createToolbar();
+
+        if (!this._toolbarActor)
+            return;
+
         this._toolbarActor.set_reactive(true);
         this._stage.add_actor(this._toolbarActor);
 

@@ -1,3 +1,5 @@
+const FallbackRenderer = imports.ui.fallbackRenderer;
+
 let _mimeHandler = null;
 
 function MimeHandler() {
@@ -16,6 +18,8 @@ function init() {
 MimeHandler.prototype = {
     _init: function() {
         this._mimeTypes = [];
+
+        this._fallbackRenderer = new FallbackRenderer.FallbackRenderer();
     },
 
     registerMime: function(mime, obj) {
@@ -25,6 +29,9 @@ MimeHandler.prototype = {
     },
 
     getObject: function(mime) {
-        return this._mimeTypes[mime];
+        if (this._mimeTypes[mime])
+            return this._mimeTypes[mime];
+        else
+            return this._fallbackRenderer;
     }
 }
