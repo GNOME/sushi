@@ -213,8 +213,6 @@ MainWindow.prototype = {
 
         Tweener.addTween(this._texture,
                          { opacity: 0,
-                           width: this._texture.width / 2,
-                           height: this._texture.height / 2,
                            time: 0.10,
                            transition: 'easeOutQuad',
                            onComplete: function() {
