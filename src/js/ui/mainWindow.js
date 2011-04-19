@@ -93,10 +93,16 @@ MainWindow.prototype = {
         this._background.add_constraint(
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.SIZE }));
-        this._background.set_opacity(Constants.VIEW_BACKGROUND_OPACITY);
+        this._background.set_opacity(0);
 
         this._stage.add_actor(this._background);
         this._background.lower_bottom();
+
+        Tweener.addTween (this._background,
+                          { opacity: Constants.VIEW_BACKGROUND_OPACITY,
+                            time: 0.10,
+                            transition: 'easeOutQuad'
+                          });
     },
 
     _onWindowDeleteEvent : function() {
