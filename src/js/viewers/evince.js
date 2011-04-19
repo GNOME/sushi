@@ -71,7 +71,7 @@ EvinceRenderer.prototype = {
             [ width, height ] = scaledSize;
         }
 
-        return [ Math.floor(width), Math.floor(height) ];
+        return [ width, height ];
     },
 
     createToolbar : function() {

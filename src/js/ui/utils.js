@@ -25,5 +25,5 @@ function getScaledSize(baseSize, allocSize, upscale) {
     width *= scale;
     height *= scale;
 
-    return [ width, height ];
+    return [ Math.floor(width), Math.floor(height) ];
 }

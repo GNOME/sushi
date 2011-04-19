@@ -39,12 +39,13 @@ ImageRenderer.prototype = {
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
-        this._toolbarActor.set_size(38, 38);
+        this._toolbarActor.set_size(50, 50);
         this._toolbarActor.set_opacity(0);
 
         this._toolbarZoom = new Gtk.ToolButton({ expand: false,
                                                  "icon-name": "view-fullscreen-symbolic" });
         this._toolbarZoom.show();
+        this._toolbarZoom.set_expand(true);
         this._mainToolbar.insert(this._toolbarZoom, 0);
 
         this._toolbarZoom.connect("clicked",
