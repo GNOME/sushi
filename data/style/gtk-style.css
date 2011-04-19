@@ -48,7 +48,7 @@ GtkLabel {
 .np-decoration.button {
     color: @np_fg_color;
     background-image: none;
-    padding: 0;
+    padding: 4;
 
     border-style: none;
     border-radius: 0;
