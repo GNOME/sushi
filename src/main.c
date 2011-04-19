@@ -97,7 +97,7 @@ register_all_viewers (GjsContext *ctx)
                                 NULL,
                                 &error)) {
       g_warning ("Unable to parse viewer %s: %s", name, error->message);
-      g_error_free (error);
+      g_clear_error (&error);
     }
 
     g_free (path);
