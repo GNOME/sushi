@@ -44,7 +44,7 @@ MainWindow.prototype = {
         this._gtkWindow = new Gtk.Window({ type: Gtk.WindowType.TOPLEVEL,
                                            focusOnMap: true,
                                            decorated: false,
-                                           hasResizeGrip: true,
+                                           hasResizeGrip: false,
                                            skipPagerHint: true,
                                            skipTaskbarHint: true });
 
