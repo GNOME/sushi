@@ -442,6 +442,10 @@ MainWindow.prototype = {
         this._createTitle(file);
     },
 
+    setTitle : function(label) {
+        this._titleLabel.set_label(label);
+    },
+
     refreshSize : function() {
         this._positionTexture();
     },

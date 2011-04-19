@@ -105,10 +105,12 @@ AudioRenderer.prototype = {
         let albumName = tags.get_string("album")[1];
         let artistName = tags.get_string("artist")[1];
         let titleName = tags.get_string("title")[1];
+        let haveTitleTag = true;
 
         if (!titleName) {
             let file = Gio.file_new_for_uri(this._player.uri);
             titleName = file.get_basename();
+            haveTitleTag = false;
         }
 
         if (albumName)
@@ -117,6 +119,15 @@ AudioRenderer.prototype = {
             this._authorLabel.set_markup("<small><i>by  </i><b>" + artistName + "</b></small>");
 
         this._titleLabel.set_markup("<b>" + titleName + "</b>");
+
+        let windowTitle = "";
+
+        if (artistName && haveTitleTag)
+            windowTitle = artistName + " - " + titleName;
+        else
+            windowTitle = titleName;
+
+        this._mainWindow.setTitle(windowTitle);
 
         this._artFetcher = new Sushi.CoverArtFetcher();
         this._artFetcher.connect("notify::cover",
