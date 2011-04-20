@@ -57,6 +57,7 @@ GDK_PIXBUF_MIN_VERSION=2.22.1
 
 PKG_CHECK_MODULES(SUSHI,
                   glib-2.0 >= $GLIB_MIN_VERSION
+                  gthread-2.0
                   gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
                   gjs-1.0 >= $GJS_MIN_VERSION
                   gjs-dbus-1.0 >= $GJS_MIN_VERSION
