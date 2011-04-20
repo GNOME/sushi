@@ -1,4 +1,3 @@
-- add a plugin for folders
 - add all mimetypes supported by gstreamer for audio/video
 - integrate it with Nautilus
 - make sure there's a way to raise the window, or that it stays always on top
