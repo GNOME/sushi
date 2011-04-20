@@ -25,6 +25,10 @@ GstRenderer.prototype = {
         return this._video;
     },
 
+    clear : function() {
+        this._video.playing = false;
+    },
+
     _createVideo : function(file) {
         this._video =
             new ClutterGst.VideoTexture({ "sync-size": false });
