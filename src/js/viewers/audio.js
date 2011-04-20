@@ -68,6 +68,11 @@ AudioRenderer.prototype = {
                                        this._onCoverArtChanged));
     },
 
+    clear : function(file) {
+        this._player.playing = false;
+        delete this._player;
+    },
+
     _ensurePixbufSize : function(cover) {
         let width, height;
 
