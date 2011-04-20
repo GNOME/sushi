@@ -7,12 +7,14 @@
   G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME ","  \
   G_FILE_ATTRIBUTE_STANDARD_SIZE ","          \
   G_FILE_ATTRIBUTE_STANDARD_TYPE ","          \
+  G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","  \
   G_FILE_ATTRIBUTE_TIME_MODIFIED
 
 #define DEEP_COUNT_ATTRS                      \
   G_FILE_ATTRIBUTE_STANDARD_SIZE ","          \
   G_FILE_ATTRIBUTE_STANDARD_TYPE ","          \
   G_FILE_ATTRIBUTE_STANDARD_NAME ","          \
+  G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","  \
   G_FILE_ATTRIBUTE_UNIX_INODE
 
 G_DEFINE_TYPE (SushiFileLoader, sushi_file_loader, G_TYPE_OBJECT);
@@ -22,7 +24,8 @@ enum {
   PROP_SIZE,
   PROP_ICON,
   PROP_TIME,
-  PROP_FILE
+  PROP_FILE,
+  PROP_CONTENT_TYPE,
 };
 
 typedef struct {
@@ -299,6 +302,7 @@ query_info_async_ready_cb (GObject *source,
   g_object_notify (G_OBJECT (self), "icon");
   g_object_notify (G_OBJECT (self), "name");
   g_object_notify (G_OBJECT (self), "time");
+  g_object_notify (G_OBJECT (self), "content-type");
 
   if (g_file_info_get_file_type (info) != G_FILE_TYPE_DIRECTORY) {
     self->priv->loading = FALSE;
@@ -373,6 +377,9 @@ sushi_file_loader_get_property (GObject *object,
   case PROP_FILE:
     g_value_set_object (value, self->priv->file);
     break;
+  case PROP_CONTENT_TYPE:
+    g_value_take_string (value, sushi_file_loader_get_content_type_string (self));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     break;
@@ -443,6 +450,15 @@ sushi_file_loader_class_init (SushiFileLoaderClass *klass)
                           NULL,
                           G_PARAM_READABLE));
 
+  g_object_class_install_property
+    (oclass,
+     PROP_CONTENT_TYPE,
+     g_param_spec_string ("content-type",
+                          "Content Type",
+                          "The content type",
+                          NULL,
+                          G_PARAM_READABLE));
+  
   g_object_class_install_property
     (oclass,
      PROP_ICON,
@@ -606,6 +622,21 @@ sushi_file_loader_get_date_string (SushiFileLoader *self)
   g_date_time_unref (date);
 
   return retval;
+}
+
+/**
+ * sushi_file_loader_get_date_string:
+ * @self:
+ *
+ * Returns: (transfer full):
+ */
+gchar *
+sushi_file_loader_get_content_type_string (SushiFileLoader *self)
+{
+  if (self->priv->info == NULL)
+    return NULL;
+
+  return g_content_type_get_description (g_file_info_get_content_type (self->priv->info));
 }
 
 void
