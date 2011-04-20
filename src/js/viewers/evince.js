@@ -1,6 +1,7 @@
-const Sushi = imports.gi.Sushi;
 const EvDoc = imports.gi.EvinceDocument;
 const EvView = imports.gi.EvinceView;
+
+let Sushi = imports.gi.Sushi;
 
 let Gettext = imports.gettext.domain("sushi");
 

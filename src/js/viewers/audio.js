@@ -230,9 +230,6 @@ AudioRenderer.prototype = {
         return [ width[1], height[1] ];
     },
 
-    clear : function() {
-    },
-
     createToolbar : function () {
         this._mainToolbar = new Gtk.Toolbar();
         this._mainToolbar.get_style_context().add_class("np-toolbar");

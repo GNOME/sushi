@@ -136,16 +136,6 @@ GstRenderer.prototype = {
         return Utils.getScaledSize(baseSize, allocation, true);
     },
 
-    clear : function() {
-        if (this._videoSizeChangeId) {
-            this._video.disconnect(this._videoSizeChangeId);
-            delete this._videoSizeChangeId
-        }
-
-        delete this._videoWidth;
-        delete this._videoHeight;
-    },
-
     createToolbar : function () {
         this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
         this._mainToolbar.get_style_context().add_class("np-toolbar");

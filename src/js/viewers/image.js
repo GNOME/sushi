@@ -1,6 +1,6 @@
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const GtkClutter = imports.gi.GtkClutter;
-const Gtk = imports.gi.Gtk;
+let Gtk = imports.gi.Gtk;
 
 let Utils = imports.ui.utils;
 
@@ -34,7 +34,7 @@ ImageRenderer.prototype = {
         return Utils.getScaledSize(baseSize, allocation, fullScreen);
     },
 
-    createToolbar : function () {
+    createToolbar : function() {
         this._mainToolbar = new Gtk.Toolbar();
         this._mainToolbar.get_style_context().add_class("np-toolbar");
         this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
