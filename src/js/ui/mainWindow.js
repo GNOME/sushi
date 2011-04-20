@@ -206,8 +206,12 @@ MainWindow.prototype = {
     },
 
     _createRenderer : function(file) {
-        if (this._renderer)
+        if (this._renderer) {
+            if (this._renderer.clear)
+                this._renderer.clear();
+
             delete this._renderer;
+        }
 
         let info = file.query_info("standard::content-type",
                                    0, null);

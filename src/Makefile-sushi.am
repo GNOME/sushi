@@ -17,12 +17,14 @@ sushi_source_h = \
     libsushi/sushi-cover-art.h \
     libsushi/sushi-pdf-loader.h \
     libsushi/sushi-sound-player.h \
+    libsushi/sushi-file-loader.h \
     libsushi/sushi-utils.h
 
 sushi_source_c = \
     libsushi/sushi-cover-art.c \
     libsushi/sushi-pdf-loader.c \
     libsushi/sushi-sound-player.c \
+    libsushi/sushi-file-loader.c \
     libsushi/sushi-utils.c
 
 sushi-enum-types.h: stamp-sushi-enum-types.h Makefile
