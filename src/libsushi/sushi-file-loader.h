@@ -39,6 +39,8 @@ gchar *sushi_file_loader_get_size_string  (SushiFileLoader *self);
 gchar *sushi_file_loader_get_date_string  (SushiFileLoader *self);
 GdkPixbuf *sushi_file_loader_get_icon     (SushiFileLoader *self);
 
+gboolean sushi_file_loader_get_loading (SushiFileLoader *self);
+
 void sushi_file_loader_stop (SushiFileLoader *self);
 
 G_END_DECLS

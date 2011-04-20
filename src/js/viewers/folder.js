@@ -41,9 +41,17 @@ FolderRenderer.prototype = {
                                  "margin-right": 12 });
         this._box.pack_start(vbox, false, false, 0);
 
+        let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
+                                 spacing: 6 });
+        vbox.pack_start(hbox, false, false, 0);
+
         this._titleLabel = new Gtk.Label();
         this._titleLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._titleLabel, false, false, 0);
+        hbox.pack_start(this._titleLabel, false, false, 0);
+
+        this._spinner = new Gtk.Spinner();
+        hbox.pack_start(this._spinner, false, false, 0);
+        this._spinner.start();
 
         this._sizeLabel = new Gtk.Label();
         this._sizeLabel.set_halign(Gtk.Align.START);
@@ -83,6 +91,11 @@ FolderRenderer.prototype = {
     },
 
     _onFolderInfoChanged : function() {
+        if (!this._folderLoader.get_loading()) {
+            this._spinner.stop();
+            this._spinner.hide();
+        }
+
         this._applyLabels();
         this._image.set_from_pixbuf(this._folderLoader.icon);
         this._mainWindow.refreshSize();
@@ -94,6 +107,7 @@ FolderRenderer.prototype = {
 
     clear : function() {
         this._folderLoader.stop();
+        delete this._folderLoader;
     },
 
     getSizeForAllocation : function(allocation) {

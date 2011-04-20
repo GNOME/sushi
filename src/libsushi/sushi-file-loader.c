@@ -46,6 +46,8 @@ struct _SushiFileLoaderPrivate {
   gint unreadable_items;
 
   goffset total_size;
+
+  gboolean loading;
 };
 
 #define DIRECTORY_LOAD_ITEMS_PER_CALLBACK 100
@@ -122,6 +124,8 @@ deep_count_one (DeepCountState *state,
 static void
 deep_count_state_free (DeepCountState *state)
 {
+  state->self->priv->loading = FALSE;
+  
   if (state->enumerator) {
     if (!g_file_enumerator_is_closed (state->enumerator))
       g_file_enumerator_close_async (state->enumerator,
@@ -157,9 +161,11 @@ deep_count_next_dir (DeepCountState *state)
     deep_count_load (state, new_file);
     g_object_unref (new_file);
   } else {
-    g_object_notify (G_OBJECT (self), "size");
     deep_count_state_free (state);
   }
+
+  /* notify current or last size */
+  g_object_notify (G_OBJECT (self), "size");
 }
 
 static void
@@ -191,12 +197,12 @@ deep_count_more_files_callback (GObject *source_object,
     g_file_enumerator_close_async (state->enumerator, 0, NULL, NULL, NULL);
     g_object_unref (state->enumerator);
     state->enumerator = NULL;
-		
+
     deep_count_next_dir (state);
   } else {
     g_file_enumerator_next_files_async (state->enumerator,
                                         DIRECTORY_LOAD_ITEMS_PER_CALLBACK,
-                                        G_PRIORITY_LOW,
+                                        G_PRIORITY_DEFAULT,
                                         state->self->priv->cancellable,
                                         deep_count_more_files_callback,
                                         state);
@@ -298,15 +304,19 @@ query_info_async_ready_cb (GObject *source,
   g_object_notify (G_OBJECT (self), "name");
   g_object_notify (G_OBJECT (self), "time");
 
-  if (g_file_info_get_file_type (info) != G_FILE_TYPE_DIRECTORY)
+  if (g_file_info_get_file_type (info) != G_FILE_TYPE_DIRECTORY) {
+    self->priv->loading = FALSE;
     g_object_notify (G_OBJECT (self), "size");
-  else
+  } else {
     deep_count_start (self);
+  }
 }
 
 static void
 start_loading_file (SushiFileLoader *self)
 {
+  self->priv->loading = TRUE;
+
   g_file_query_info_async (self->priv->file,
                            LOADER_ATTRS,
                            G_FILE_QUERY_INFO_NONE,
@@ -567,6 +577,12 @@ sushi_file_loader_get_size_string (SushiFileLoader *self)
   }
 
   return NULL;
+}
+
+gboolean
+sushi_file_loader_get_loading (SushiFileLoader *self)
+{
+  return self->priv->loading;
 }
 
 /**
