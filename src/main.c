@@ -114,7 +114,6 @@ main (int argc, char **argv)
   GtkSettings *settings;
   GError *error;
 
-  g_thread_init (NULL);
   clutter_x11_set_use_argb_visual (TRUE);
   gtk_clutter_init (&argc, &argv);
   clutter_gst_init (0, NULL);
