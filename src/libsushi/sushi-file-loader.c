@@ -31,7 +31,7 @@ typedef struct {
   GFile *file;
   GFileEnumerator *enumerator;
   GList *deep_count_subdirectories;
-  GArray *seen_deep_count_inodes;
+  GHashTable *seen_deep_count_inodes;
 
 } DeepCountState;
 
@@ -67,12 +67,7 @@ seen_inode (DeepCountState *state,
   inode = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_UNIX_INODE);
 
   if (inode != 0) {
-    for (i = 0; i < state->seen_deep_count_inodes->len; i++) {
-      inode2 = g_array_index (state->seen_deep_count_inodes, guint64, i);
-
-      if (inode == inode2)
-        return TRUE;
-    }
+    return (g_hash_table_lookup (state->seen_deep_count_inodes, &inode) != NULL);
   }
 
   return FALSE;
@@ -87,7 +82,7 @@ mark_inode_as_seen (DeepCountState *state,
   inode = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_UNIX_INODE);
 
   if (inode != 0)
-    g_array_append_val (state->seen_deep_count_inodes, inode);
+    g_hash_table_insert (state->seen_deep_count_inodes, &inode, GINT_TO_POINTER (1));
 }
 
 static void
@@ -138,7 +133,7 @@ deep_count_state_free (DeepCountState *state)
   g_clear_object (&state->file);
 
   g_list_free_full (state->deep_count_subdirectories, g_object_unref);
-  g_array_free (state->seen_deep_count_inodes, TRUE);
+  g_hash_table_destroy (state->seen_deep_count_inodes);
 
   g_free (state);
 }
@@ -265,7 +260,8 @@ deep_count_start (SushiFileLoader *self)
 
   state = g_new0 (DeepCountState, 1);
   state->self = self;
-  state->seen_deep_count_inodes = g_array_new (FALSE, TRUE, sizeof (guint64));
+  state->seen_deep_count_inodes = g_hash_table_new (g_int64_hash,
+                                                    g_int64_equal);
 
   deep_count_load (state, self->priv->file);
 }
