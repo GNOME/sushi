@@ -12,25 +12,19 @@ const Gio = imports.gi.Gio;
 
 const MainWindow = imports.ui.mainWindow;
 
-const _SUSHI_DBUS_PATH = '/org/gnome/Sushi';
+const _SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
 
 const SushiIface = {
     name: 'org.gnome.NautilusPreviewer',
 
     methods: [ { name: "activate",
-                 inSignature: "",
-                 outSignature: "" },
-               { name: "showFile",
-                 inSignature: "si",
-                 outSignature: "" } ],
+                 inSignature: '',
+                 outSignature: '' },
+               { name: "ShowFile",
+                 inSignature: 'siii',
+                 outSignature: '' } ],
 
-    signals: [ { name: "nextFile",
-                 inSignature: "",
-                 outSignature: "" },
-               { name: "prevFile",
-                 inSignature: "",
-                 outSignature: "" }],
-
+    signals: [],
     properties: []
 };
 
