@@ -60,8 +60,6 @@ Application.prototype = {
 
         this._defineStyleAndThemes();
         this._createMainWindow();
-
-        this._mainWindow.showAll();
     },
 
     _onNameNotAcquired : function() {
@@ -85,7 +83,6 @@ Application.prototype = {
     },
 
     activate : function() {
-        this._mainWindow.showAll();
     },
 
     showFile : function(uri, xid) {
