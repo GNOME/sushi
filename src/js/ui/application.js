@@ -85,11 +85,12 @@ Application.prototype = {
     activate : function() {
     },
 
-    showFile : function(uri, xid) {
-        this._mainWindow.setFile(Gio.file_new_for_uri(uri));
-
+    ShowFile : function(uri, xid, x, y) {
         if (xid)
-            this._mainWindow.setParent(xid);
+            this._mainWindow.setParent(xid, x, y);
+        this._mainWindow.showAll();
+
+        this._mainWindow.setFile(Gio.file_new_for_uri(uri));
     },
 
     quit : function() {

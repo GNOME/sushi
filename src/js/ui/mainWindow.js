@@ -487,10 +487,17 @@ MainWindow.prototype = {
     /**************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
-    setParent : function(xid) {
-        let parent = GdkX11.X11Window.foreign_new_for_display(this._gtkWindow.get_display(),
-                                                              xid);
+    setParent : function(xid, x, y) {
+        let parent = Sushi.create_foreign_window(xid);
+        let root_x, root_y;
+        [ root_x, root_y ] = parent.get_root_origin();
+
+        if (!this._gtkWindow.get_realized())
+            this._gtkWindow.realize();
+
         this._gtkWindow.get_window().set_transient_for(parent);
+        this._gtkWindow.move(root_x + x,
+                             root_y + y);
     },
 
     showAll : function() {
