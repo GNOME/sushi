@@ -1,5 +1,7 @@
 #include "sushi-utils.h"
 
+#include <gdk/gdkx.h>
+
 static void
 _cairo_round_rectangle (cairo_t *cr,
 			gdouble	  x,
@@ -64,3 +66,21 @@ sushi_create_rounded_background (void)
 
   return retval;
 }
+/**
+ * sushi_create_foreign_window:
+ * @xid:
+ * @timestamp: (out):
+ *
+ * Returns: (transfer full): a #GdkWindow
+ */
+GdkWindow *
+sushi_create_foreign_window (guint xid)
+{
+  GdkWindow *retval;
+
+  retval = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
+                                                   xid);
+
+  return retval;
+}
+
