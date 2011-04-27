@@ -103,7 +103,7 @@ MainWindow.prototype = {
 
         if (key == Clutter.KEY_Escape ||
             key == Clutter.KEY_space)
-            this._application.quit();
+            this._fadeOutWindow();
     },
 
     _onButtonPressEvent : function(actor, event) {
@@ -484,6 +484,9 @@ MainWindow.prototype = {
         this._stage.add_actor(this._quitActor);
     },
 
+    /**************************************************************************
+     *********************** Window move/fade helpers *************************
+     **************************************************************************/
     _moveWindow : function() {
         let screen = this._gtkWindow.get_screen();
         let monitor = screen.get_monitor_at_window(this._parent);
@@ -509,6 +512,22 @@ MainWindow.prototype = {
                          { opacity: 255,
                            time: 0.3,
                            transition: 'easeOutQuad' });
+    },
+
+    _fadeOutWindow : function() {
+        Tweener.addTween(this._background,
+                         { opacity: 0,
+                           time: 0.15,
+                           transition: 'easeOutQuad' });
+        Tweener.addTween(this._texture,
+                         { opacity: 0,
+                           time: 0.15,
+                           transition: 'easeOutQuad',
+                           onComplete: function () {
+                               this._application.quit();
+                           },
+                           onCompleteScope: this
+                         });
     },
 
     /**************************************************************************
