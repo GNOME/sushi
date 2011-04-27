@@ -27,4 +27,10 @@ if test x"$FONTCONFIG_FILE" = x ; then
     export FONTCONFIG_FILE=@pkgdatadir@/fonts.conf
 fi
 
+if test x"$GI_TYPELIB_PATH" = x ; then
+    export GI_TYPELIB_PATH=@libdir@/girepository-1.0
+else
+    export GI_TYPELIB_PATH=@libdir@/girepository-1.0:$GI_TYPELIB_PATH
+fi
+
 @libexecdir@/sushi-start
