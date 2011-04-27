@@ -42,7 +42,7 @@ FallbackRenderer.prototype = {
                                  spacing: 1,
                                  "margin-top": 48,
                                  "margin-left": 12,
-                                 "margin-right": 6 });
+                                 "margin-right": 12 });
         this._box.pack_start(vbox, false, false, 0);
 
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
