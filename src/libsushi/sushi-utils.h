@@ -9,6 +9,7 @@ G_BEGIN_DECLS
 
 ClutterActor * sushi_create_rounded_background (void);
 GdkWindow *    sushi_create_foreign_window (guint xid);
+gchar **       sushi_query_supported_document_types (void);
 
 G_END_DECLS
 

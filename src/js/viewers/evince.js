@@ -121,7 +121,10 @@ EvinceRenderer.prototype = {
 let handler = new MimeHandler.MimeHandler();
 let renderer = new EvinceRenderer();
 
-handler.registerMime("application/pdf", renderer);
+let mimeTypes = Sushi.query_supported_document_types();
+for (mime in mimeTypes) {
+    handler.registerMime(mimeTypes[mime]);
+}
 
 if (Features.HAVE_UNOCONV) {
     handler.registerMime("application/vnd.oasis.opendocument.text", renderer);

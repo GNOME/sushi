@@ -84,3 +84,36 @@ sushi_create_foreign_window (guint xid)
   return retval;
 }
 
+/**
+ * sushi_query_supported_document_types:
+ *
+ * Returns: (transfer full):
+ */
+gchar **
+sushi_query_supported_document_types (void)
+{
+  GList *infos, *l;
+  gchar **retval = NULL;
+  GPtrArray *array;
+  EvTypeInfo *info;
+  gint idx;
+
+  infos = ev_backends_manager_get_all_types_info ();
+
+  if (infos == NULL)
+    return NULL;
+
+  array = g_ptr_array_new ();
+
+  for (l = infos; l != NULL; l = l->next) {
+    info = l->data;
+
+    for (idx = 0; info->mime_types[idx] != NULL; idx++)
+      g_ptr_array_add (array, g_strdup (info->mime_types[idx]));
+  }
+
+  g_ptr_array_add (array, NULL);
+  retval = (gchar **) g_ptr_array_free (array, FALSE);
+
+  return retval;
+}
