@@ -139,6 +139,8 @@ AudioRenderer.prototype = {
                                  Lang.bind(this, this._onCoverArtChanged));
 
         this._artFetcher.taglist = tags;
+
+        this._mainWindow.refreshSize();
     },
 
     _updateProgressBar : function() {
