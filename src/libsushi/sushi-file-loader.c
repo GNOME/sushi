@@ -2,6 +2,8 @@
 
 #include <gtk/gtk.h>
 
+#include <glib/gi18n.h>
+
 #define LOADER_ATTRS                          \
   G_FILE_ATTRIBUTE_STANDARD_ICON ","          \
   G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME ","  \
@@ -586,6 +588,8 @@ sushi_file_loader_get_size_string (SushiFileLoader *self)
     g_free (str);
 
     return retval;
+  } else if (!self->priv->loading) {
+    return g_strdup (_("Empty Folder"));
   }
 
   return NULL;
