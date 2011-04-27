@@ -1,4 +1,6 @@
 #include "sushi-pdf-loader.h"
+
+#include "sushi-utils.h"
 #include <evince-document.h>
 #include <evince-view.h>
 
@@ -121,6 +123,26 @@ load_openoffice (SushiPdfLoader *self)
   g_child_watch_add (pid, unoconv_child_watch_cb, self);
 }
 
+static gboolean
+content_type_is_native (const gchar *content_type)
+{
+  gchar **native_types;
+  gint idx;
+  gboolean found = FALSE;
+
+  native_types = sushi_query_supported_document_types ();
+
+  for (idx = 0; native_types[idx] != NULL; idx++) {
+    found = g_content_type_is_a (content_type, native_types[idx]);
+    if (found)
+      break;
+  }
+
+  g_strfreev (native_types);
+
+  return found;
+}
+
 static void
 query_info_ready_cb (GObject *obj,
                      GAsyncResult *res,
@@ -145,7 +167,7 @@ query_info_ready_cb (GObject *obj,
   content_type = g_file_info_get_content_type (info);
   g_object_unref (info);
 
-  if (g_content_type_is_a (content_type, "application/pdf"))
+  if (content_type_is_native (content_type))
     load_pdf (self, self->priv->uri);
   else
     load_openoffice (self);
