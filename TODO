@@ -1,7 +1,4 @@
-- add all mimetypes supported by gstreamer for audio/video
 - integrate it with Nautilus
-- make sure there's a way to raise the window, or that it stays always on top
-  (basically test that transient works).
 - make preview window resizable, and save per-file preview size
   in gvfs metadata
 - add a zoom-in/zoom-out effect when opening/closing
