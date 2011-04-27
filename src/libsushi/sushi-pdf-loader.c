@@ -15,6 +15,8 @@ struct _SushiPdfLoaderPrivate {
   EvDocument *document;
   gchar *uri;
   gchar *pdf_path;
+
+  GPid unoconv_pid;
 };
 
 static void
@@ -59,6 +61,7 @@ unoconv_child_watch_cb (GPid pid,
   gchar *uri;
 
   g_spawn_close_pid (pid);
+  self->priv->unoconv_pid = -1;
 
   file = g_file_new_for_path (self->priv->pdf_path);
   uri = g_file_get_uri (file);
@@ -121,6 +124,7 @@ load_openoffice (SushiPdfLoader *self)
   }
 
   g_child_watch_add (pid, unoconv_child_watch_cb, self);
+  self->priv->unoconv_pid = pid;
 }
 
 static gboolean
@@ -201,18 +205,29 @@ sushi_pdf_loader_set_uri (SushiPdfLoader *self,
   start_loading_document (self);
 }
 
+void
+sushi_pdf_loader_cleanup_document (SushiPdfLoader *self)
+{
+  if (self->priv->pdf_path) {
+    g_unlink (self->priv->pdf_path);
+    g_free (self->priv->pdf_path);
+  }
+
+  if (self->priv->unoconv_pid != -1) {
+    kill (self->priv->unoconv_pid, SIGKILL);
+    self->priv->unoconv_pid = -1;
+  }
+}
+
 static void
 sushi_pdf_loader_dispose (GObject *object)
 {
   SushiPdfLoader *self = SUSHI_PDF_LOADER (object);
 
+  sushi_pdf_loader_cleanup_document (self);
+
   g_clear_object (&self->priv->document);
   g_free (self->priv->uri);
-
-  if (self->priv->pdf_path) {
-    g_unlink (self->priv->pdf_path);
-    g_free (self->priv->pdf_path);
-  }
 
   G_OBJECT_CLASS (sushi_pdf_loader_parent_class)->dispose (object);
 }
@@ -294,6 +309,7 @@ sushi_pdf_loader_init (SushiPdfLoader *self)
     G_TYPE_INSTANCE_GET_PRIVATE (self,
                                  SUSHI_TYPE_PDF_LOADER,
                                  SushiPdfLoaderPrivate);
+  self->priv->unoconv_pid = -1;
 }
 
 SushiPdfLoader *

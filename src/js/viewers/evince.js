@@ -115,6 +115,12 @@ EvinceRenderer.prototype = {
         this._toolbarActor.set_size(32, 32);
 
         return this._toolbarActor;
+    },
+
+    clear : function() {
+        this._pdfLoader.cleanup_document();
+        delete this._document;
+        delete this._pdfLoader;
     }
 }
 

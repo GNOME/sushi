@@ -31,9 +31,10 @@ struct _SushiPdfLoaderClass
 GType    sushi_pdf_loader_get_type     (void) G_GNUC_CONST;
 
 SushiPdfLoader *sushi_pdf_loader_new (const gchar *uri);
-void     sushi_pdf_loader_get_max_page_size (SushiPdfLoader *self,
-                                             gdouble *width,
-                                             gdouble *height);
+void sushi_pdf_loader_cleanup_document (SushiPdfLoader *self);
+void sushi_pdf_loader_get_max_page_size (SushiPdfLoader *self,
+                                         gdouble *width,
+                                         gdouble *height);
 
 
 G_END_DECLS
