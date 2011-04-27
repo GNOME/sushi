@@ -39,6 +39,8 @@ include Makefile-sushi.am
 gir_DATA += $(INTROSPECTION_GIRS)
 typelib_DATA += $(gir_DATA:.gir=.typelib)
 
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
+
 libexec_PROGRAMS = sushi-start
 
 sushi_start_SOURCES = main.c

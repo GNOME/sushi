@@ -60,6 +60,12 @@ libsushi_1_0_la_SOURCES = \
     $(sushi_source_c) \
     $(sushi_built_sources)
 
+CLEANFILES += $(SUSHI_STAMP_FILES) $(BUILT_SOURCES)
+
+EXTRA_DIST += \
+    libsushi/sushi-enum-types.h.in \
+    libsushi/sushi-enum-types.c.in
+
 INTROSPECTION_GIRS += Sushi-1.0.gir
 
 Sushi-1.0.gir: libsushi-1.0.la Makefile
