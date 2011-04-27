@@ -66,10 +66,10 @@ sushi_create_rounded_background (void)
 
   return retval;
 }
+
 /**
  * sushi_create_foreign_window:
  * @xid:
- * @timestamp: (out):
  *
  * Returns: (transfer full): a #GdkWindow
  */
