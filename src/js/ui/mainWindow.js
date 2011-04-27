@@ -96,7 +96,7 @@ MainWindow.prototype = {
      ****************** main object event callbacks ***************************
      **************************************************************************/
     _onWindowDeleteEvent : function() {
-        this._application.quit();
+        this._clearAndQuit();
     },
 
     _onStageKeyPressEvent : function(actor, event) {
@@ -473,8 +473,8 @@ MainWindow.prototype = {
         this._quitButton.show();
 
         this._quitButton.connect("clicked",
-                                 Lang.bind(this._application,
-                                           this._application.quit));
+                                 Lang.bind(this,
+                                           this._clearAndQuit));
 
         this._quitActor = new GtkClutter.Actor({ contents: this._quitButton });
         this._quitActor.set_reactive(true);
@@ -534,10 +534,17 @@ MainWindow.prototype = {
                            time: 0.15,
                            transition: 'easeOutQuad',
                            onComplete: function () {
-                               this._application.quit();
+                               this._clearAndQuit();
                            },
                            onCompleteScope: this
                          });
+    },
+
+    _clearAndQuit : function() {
+        if (this._renderer.clear)
+            this._renderer.clear();
+
+        this._application.quit();
     },
 
     /**************************************************************************
