@@ -260,7 +260,7 @@ MainWindow.prototype = {
                          { opacity: 255,
                            time: 0.15,
                            transition: 'easeOutQuad',
-                         });        
+                         });
     },
 
     _exitFullScreen : function() {

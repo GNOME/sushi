@@ -1,5 +1,5 @@
-const EvDoc = imports.gi.EvinceDocument;
-const EvView = imports.gi.EvinceView;
+let EvDoc = imports.gi.EvinceDocument;
+let EvView = imports.gi.EvinceView;
 
 let Sushi = imports.gi.Sushi;
 
