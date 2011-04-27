@@ -517,6 +517,14 @@ MainWindow.prototype = {
     },
 
     _fadeOutWindow : function() {
+        if (this._toolbarId) {
+            this._removeToolbarTimeout();
+            Tweener.addTween(this._toolbarActor,
+                             { opacity: 0,
+                               time: 0.15,
+                               transition: 'easeOutQuad' });
+        }
+
         Tweener.addTween(this._background,
                          { opacity: 0,
                            time: 0.15,
