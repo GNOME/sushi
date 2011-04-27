@@ -481,17 +481,13 @@ MainWindow.prototype = {
     /**************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
-    setParent : function(xid, x, y) {
-        let parent = Sushi.create_foreign_window(xid);
-        let root_x, root_y;
-        [ root_x, root_y ] = parent.get_root_origin();
+    setParent : function(xid) {
+        this._parent = Sushi.create_foreign_window(xid);
 
-        if (!this._gtkWindow.get_realized())
+        if (!this._gtkWindow.get_realized()) {
             this._gtkWindow.realize();
-
-        this._gtkWindow.get_window().set_transient_for(parent);
-        this._gtkWindow.move(root_x + x,
-                             root_y + y);
+            this._gtkWindow.get_window().set_transient_for(this._parent);
+        }
     },
 
     showAll : function() {
