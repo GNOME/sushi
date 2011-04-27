@@ -123,7 +123,7 @@ let renderer = new EvinceRenderer();
 
 let mimeTypes = Sushi.query_supported_document_types();
 for (mime in mimeTypes) {
-    handler.registerMime(mimeTypes[mime]);
+    handler.registerMime(mimeTypes[mime], renderer);
 }
 
 if (Features.HAVE_UNOCONV) {
