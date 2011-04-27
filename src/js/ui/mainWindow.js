@@ -249,6 +249,7 @@ MainWindow.prototype = {
         delete this._unFullScreenId;
 
         this._createAlphaBackground();
+        this._background.set_opacity(Constants.VIEW_BACKGROUND_OPACITY);
         this._textureYAlign.factor = this._savedYFactor;
 
         let textureSize = this._getTextureSize();
