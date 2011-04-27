@@ -48,6 +48,7 @@ MainWindow.prototype = {
 
         this._gtkWindow.connect("delete-event",
                                 Lang.bind(this, this._onWindowDeleteEvent));
+        this._gtkWindow.set_gravity(Gdk.Gravity.CENTER);
     },
 
     _createClutterEmbed : function() {
