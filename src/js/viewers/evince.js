@@ -9,7 +9,7 @@ let Utils = imports.ui.utils;
 let Features = imports.util.features;
 
 let PDF_X_PADDING = 40;
-let SPINBOX_SIZE = 150;
+let SPINNER_SIZE = 48;
 
 function EvinceRenderer(args) {
     this._init(args);
@@ -35,6 +35,8 @@ EvinceRenderer.prototype = {
         let spinner = Gtk.Spinner.new();
         spinner.show();
         spinner.start();
+        spinner.set_size_request(SPINNER_SIZE, SPINNER_SIZE);
+        
         this._spinnerBox.pack_start(spinner, true, true, 0);
 
         let label = new Gtk.Label();
@@ -82,7 +84,8 @@ EvinceRenderer.prototype = {
         let height = this._pageHeight;
 
         if (!this._document) {
-            [ width, height ] = [ SPINBOX_SIZE, SPINBOX_SIZE ];
+            [ width, height ] = [ this._spinnerBox.get_preferred_size()[0].width,
+                                  this._spinnerBox.get_preferred_size()[0].height ];
         } else {
             let scaledSize = Utils.getScaledSize([ width, height ],
                                                  allocation,
