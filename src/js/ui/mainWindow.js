@@ -101,7 +101,8 @@ MainWindow.prototype = {
     _onStageKeyPressEvent : function(actor, event) {
         let key = event.get_key_symbol();
 
-        if (key == Clutter.Escape)
+        if (key == Clutter.KEY_Escape ||
+            key == Clutter.KEY_space)
             this._application.quit();
     },
 
