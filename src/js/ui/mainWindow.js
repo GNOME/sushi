@@ -64,8 +64,6 @@ MainWindow.prototype = {
                                                   green: 0,
                                                   blue: 0,
                                                   alpha: 255 }));
-
-        this._gtkWindow.resize(Constants.VIEW_MIN, Constants.VIEW_MIN);
     },
 
     _connectStageSignals : function() {
@@ -88,7 +86,6 @@ MainWindow.prototype = {
         this._background.add_constraint(
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.SIZE }));
-        this._background.set_opacity(Constants.VIEW_BACKGROUND_OPACITY);
 
         this._stage.add_actor(this._background);
         this._background.lower_bottom();
@@ -195,8 +192,16 @@ MainWindow.prototype = {
         this._texture.set_size(textureSize[0], textureSize[1]);
         this._textureYAlign.factor = yFactor;
 
-        if (!this._isFullScreen)
+        if (this._lastWindowSize &&
+            windowSize[0] == this._lastWindowSize[0] &&
+            windowSize[1] == this._lastWindowSize[1])
+            return;
+
+        this._lastWindowSize = windowSize;
+
+        if (!this._isFullScreen) {
             this._gtkWindow.resize(windowSize[0], windowSize[1]);
+        }
     },
 
     _createRenderer : function(file) {
@@ -478,6 +483,33 @@ MainWindow.prototype = {
         this._stage.add_actor(this._quitActor);
     },
 
+    _moveWindow : function() {
+        let screen = this._gtkWindow.get_screen();
+        let monitor = screen.get_monitor_at_window(this._parent);
+        let geometry = screen.get_monitor_geometry(monitor);
+        let windowSize = this._getWindowSize();
+
+        this._gtkWindow.resize(windowSize[0], windowSize[1]);
+        this._gtkWindow.move((geometry.width - windowSize[0]) / 2,
+                             (geometry.height - windowSize[1]) / 2);
+    },
+
+    _fadeInWindow : function() {
+        this._background.set_opacity(0);
+        this._texture.set_opacity(0);
+
+        this._gtkWindow.show_all();
+
+        Tweener.addTween(this._background,
+                         { opacity: Constants.VIEW_BACKGROUND_OPACITY,
+                           time: 0.3,
+                           transition: 'easeOutQuad' });
+        Tweener.addTween(this._texture,
+                         { opacity: 255,
+                           time: 0.3,
+                           transition: 'easeOutQuad' });
+    },
+
     /**************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
@@ -487,11 +519,13 @@ MainWindow.prototype = {
         if (!this._gtkWindow.get_realized()) {
             this._gtkWindow.realize();
             this._gtkWindow.get_window().set_transient_for(this._parent);
-        }
-    },
 
-    showAll : function() {
-        this._gtkWindow.show_all();
+            /* FIXME: I don't know why I need to call this before
+             * drawing the background.
+             */
+            this._gtkWindow.show_all();
+            this._gtkWindow.hide();
+        }
     },
 
     setFile : function(file) {
@@ -500,6 +534,11 @@ MainWindow.prototype = {
         this._createTexture(file);
         this._createToolbar();
         this._createTitle(file);
+
+        if (!this._gtkWindow.get_visible()) {
+            this._moveWindow();
+            this._fadeInWindow();
+        }
     },
 
     setTitle : function(label) {
