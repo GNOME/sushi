@@ -4,6 +4,7 @@ let Gettext = imports.gettext.domain("sushi");
 let Sushi = imports.gi.Sushi;
 
 let Constants = imports.util.constants;
+let Utils = imports.ui.utils;
 
 function FolderRenderer(args) {
     this._init(args);
@@ -16,6 +17,9 @@ FolderRenderer.prototype = {
 
     render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
+        this.lastWidth = 0;
+        this.lastHeight = 0;
+
         this._folderLoader = new Sushi.FileLoader();
         this._folderLoader.connect("notify::size",
                                    Lang.bind(this, this._onFolderInfoChanged));
@@ -111,16 +115,7 @@ FolderRenderer.prototype = {
     },
 
     getSizeForAllocation : function(allocation) {
-        let width = this._box.get_preferred_width();
-        let height = this._box.get_preferred_height();
-
-        if (width[1] < Constants.VIEW_MIN &&
-            height[1] < Constants.VIEW_MIN) {
-            width[1] = Constants.VIEW_MIN;
-        }
-
-        /* return the natural */
-        return [ width[1], height[1] ];
+        return Utils.getStaticSize(this, this._box);
     }
 }
 

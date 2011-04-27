@@ -4,6 +4,7 @@ let Gettext = imports.gettext.domain("sushi");
 let Sushi = imports.gi.Sushi;
 
 let Constants = imports.util.constants;
+let Utils = imports.ui.utils;
 
 function FallbackRenderer(args) {
     this._init(args);
@@ -16,6 +17,9 @@ FallbackRenderer.prototype = {
 
     render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
+        this.lastWidth = 0;
+        this.lastHeight = 0;
+
         this._fileLoader = new Sushi.FileLoader();
         this._fileLoader.connect("notify::size",
                                  Lang.bind(this, this._onFileInfoChanged));
@@ -38,7 +42,7 @@ FallbackRenderer.prototype = {
                                  spacing: 1,
                                  "margin-top": 48,
                                  "margin-left": 12,
-                                 "margin-right": 12 });
+                                 "margin-right": 6 });
         this._box.pack_start(vbox, false, false, 0);
 
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
@@ -123,15 +127,6 @@ FallbackRenderer.prototype = {
     },
 
     getSizeForAllocation : function(allocation) {
-        let width = this._box.get_preferred_width();
-        let height = this._box.get_preferred_height();
-
-        if (width[1] < Constants.VIEW_MIN &&
-            height[1] < Constants.VIEW_MIN) {
-            width[1] = Constants.VIEW_MIN;
-        }
-
-        /* return the natural */
-        return [ width[1], height[1] ];
+        return Utils.getStaticSize(this, this._box);
     }
 }
