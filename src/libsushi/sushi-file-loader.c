@@ -19,6 +19,8 @@
   G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","  \
   G_FILE_ATTRIBUTE_UNIX_INODE
 
+#define NOTIFICATION_TIMEOUT 300
+
 G_DEFINE_TYPE (SushiFileLoader, sushi_file_loader, G_TYPE_OBJECT);
 
 enum {
@@ -53,12 +55,37 @@ struct _SushiFileLoaderPrivate {
   goffset total_size;
 
   gboolean loading;
+
+  guint size_notify_timeout_id;
 };
 
 #define DIRECTORY_LOAD_ITEMS_PER_CALLBACK 100
 
 static void deep_count_load (DeepCountState *state,
                              GFile *file);
+
+static gboolean
+size_notify_timeout_cb (gpointer user_data)
+{
+  SushiFileLoader *self = user_data;
+
+  self->priv->size_notify_timeout_id = 0;
+
+  g_object_notify (G_OBJECT (self), "size");
+
+  return FALSE;
+}
+
+static void
+queue_size_notify (SushiFileLoader *self)
+{
+  if (self->priv->size_notify_timeout_id != 0)
+    return;
+
+  self->priv->size_notify_timeout_id =
+    g_timeout_add (NOTIFICATION_TIMEOUT,
+                   size_notify_timeout_cb, self);
+}
 
 /* adapted from nautilus/libnautilus-private/nautilus-directory-async.c */
 
@@ -164,8 +191,8 @@ deep_count_next_dir (DeepCountState *state)
     deep_count_state_free (state);
   }
 
-  /* notify current or last size */
-  g_object_notify (G_OBJECT (self), "size");
+  /* queue notify */
+  queue_size_notify (self);
 }
 
 static void
@@ -350,6 +377,11 @@ sushi_file_loader_dispose (GObject *object)
   if (self->priv->cancellable != NULL) {
     g_cancellable_cancel (self->priv->cancellable);
     g_clear_object (&self->priv->cancellable);
+  }
+
+  if (self->priv->size_notify_timeout_id != 0) {
+    g_source_remove (self->priv->size_notify_timeout_id);
+    self->priv->size_notify_timeout_id = 0;
   }
 
   G_OBJECT_CLASS (sushi_file_loader_parent_class)->dispose (object);
