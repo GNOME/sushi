@@ -496,8 +496,8 @@ MainWindow.prototype = {
         let windowSize = this._getWindowSize();
 
         this._gtkWindow.resize(windowSize[0], windowSize[1]);
-        this._gtkWindow.move((geometry.width - windowSize[0]) / 2,
-                             (geometry.height - windowSize[1]) / 2);
+        this._gtkWindow.move(geometry.x + ((geometry.width - windowSize[0]) / 2),
+                             geometry.y + ((geometry.height - windowSize[1]) / 2));
     },
 
     _fadeInWindow : function() {
