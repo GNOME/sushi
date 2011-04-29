@@ -1,3 +1,4 @@
+let MimeHandler = imports.ui.mimeHandler;
 let EvDoc = imports.gi.EvinceDocument;
 let EvView = imports.gi.EvinceView;
 

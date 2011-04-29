@@ -1,3 +1,4 @@
+let MimeHandler = imports.ui.mimeHandler;
 let Gst = imports.gi.Gst;
 let Gio = imports.gi.Gio;
 

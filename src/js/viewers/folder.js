@@ -1,3 +1,4 @@
+let MimeHandler = imports.ui.mimeHandler;
 let Gtk = imports.gi.Gtk;
 let Gettext = imports.gettext.domain("sushi");
 

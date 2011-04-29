@@ -1,3 +1,4 @@
+let MimeHandler = imports.ui.mimeHandler;
 let GdkPixbuf = imports.gi.GdkPixbuf;
 let GtkClutter = imports.gi.GtkClutter;
 let Gtk = imports.gi.Gtk;
