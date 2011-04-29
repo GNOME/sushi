@@ -130,6 +130,9 @@ MainWindow.prototype = {
         if (key == Clutter.KEY_Escape ||
             key == Clutter.KEY_space)
             this._fadeOutWindow();
+
+        if (key == Clutter.KEY_f)
+            this.toggleFullScreen();
     },
 
     _onButtonPressEvent : function(actor, event) {
