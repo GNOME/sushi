@@ -91,7 +91,7 @@ register_all_viewers (GjsContext *ctx)
 
   while (name != NULL) {
     path = g_build_filename (SUSHI_PKGDATADIR "/js/viewers",
-                             name);
+                             name, NULL);
     if (!gjs_context_eval_file (ctx,
                                 path,
                                 NULL,
