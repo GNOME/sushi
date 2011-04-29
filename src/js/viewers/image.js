@@ -1,5 +1,5 @@
-const GdkPixbuf = imports.gi.GdkPixbuf;
-const GtkClutter = imports.gi.GtkClutter;
+let GdkPixbuf = imports.gi.GdkPixbuf;
+let GtkClutter = imports.gi.GtkClutter;
 let Gtk = imports.gi.Gtk;
 
 let Utils = imports.ui.utils;

@@ -1,5 +1,5 @@
-const Gst = imports.gi.Gst;
-const Gio = imports.gi.Gio;
+let Gst = imports.gi.Gst;
+let Gio = imports.gi.Gio;
 
 let Constants = imports.util.constants;
 

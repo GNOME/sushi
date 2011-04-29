@@ -1,10 +1,10 @@
-const MimeHandler = imports.ui.mimeHandler;
-const ClutterGst = imports.gi.ClutterGst;
-const Clutter = imports.gi.Clutter;
-const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
+let MimeHandler = imports.ui.mimeHandler;
+let ClutterGst = imports.gi.ClutterGst;
+let Clutter = imports.gi.Clutter;
+let Gdk = imports.gi.Gdk;
+let GObject = imports.gi.GObject;
 
-const Lang = imports.lang;
+let Lang = imports.lang;
 
 let Utils = imports.ui.utils;
 let Constants = imports.util.constants;
