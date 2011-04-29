@@ -608,5 +608,9 @@ MainWindow.prototype = {
         } else {
             this._enterFullScreen();
         }
+    },
+
+    close : function() {
+        this._fadeOutWindow();
     }
 }
