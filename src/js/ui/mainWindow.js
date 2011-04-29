@@ -442,18 +442,33 @@ MainWindow.prototype = {
         return false;
     },
 
+
+    _updateLabel : function(file) {
+	file.query_info_async(Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, null,
+			      function (obj, res) {
+				  try {
+				      let info = obj.query_info_finish(res);
+
+				      if (info.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME))
+					  this._titleLabel.set_label(info.get_attribute_string(Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME));
+				  } catch (e) {
+				  }
+			      });
+    },
+
     /**************************************************************************
      ************************ titlebar helpers ********************************
      **************************************************************************/
     _createTitle : function(file) {
         if (this._titleLabel) {
-            this._titleLabel.set_label(file.get_basename());
+            this._updateLabel(file);
             this._titleActor.raise_top();
             this._quitActor.raise_top();
             return;
         }
 
-        this._titleLabel = new Gtk.Label({ label: file.get_basename() });
+        this._titleLabel = new Gtk.Label({ label: "" });
+        this._updateLabel(file);
         this._titleLabel.get_style_context().add_class("np-decoration");
         
         this._titleLabel.show();
