@@ -459,16 +459,17 @@ MainWindow.prototype = {
 
 
     _updateLabel : function(file) {
-	file.query_info_async(Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, null,
-			      function (obj, res) {
-				  try {
-				      let info = obj.query_info_finish(res);
-
-				      if (info.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME))
-					  this._titleLabel.set_label(info.get_attribute_string(Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME));
-				  } catch (e) {
-				  }
-			      });
+	file.query_info_async(Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+                              Gio.FileQueryInfoFlags.NONE,
+                              GLib.PRIORITY_DEFAULT, null,
+			      Lang.bind (this, 
+                                         function (obj, res) {
+				             try {
+				                 let info = obj.query_info_finish(res);
+				                 this._titleLabel.set_label(info.get_display_name());
+				             } catch (e) {
+				             }
+                                         }));
     },
 
     /**************************************************************************
