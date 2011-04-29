@@ -33,6 +33,7 @@ MainWindow.prototype = {
         this._createClutterEmbed();
 
         this._connectStageSignals();
+	this.file = null;
     },
 
     _createGtkWindow : function() {
@@ -582,6 +583,7 @@ MainWindow.prototype = {
     },
 
     setFile : function(file) {
+	this.file = file;
         this._createAlphaBackground();
         this._createRenderer(file);
         this._createTexture(file);
