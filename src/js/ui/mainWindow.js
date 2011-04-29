@@ -78,11 +78,33 @@ MainWindow.prototype = {
                             Lang.bind(this, this._onMotionEvent));
     },
 
+    _createSolidBackground: function() {
+        if (this._background)
+            return;
+
+        this._background = new Clutter.Rectangle();
+        this._background.set_opacity(255);
+        this._background.set_color(new Clutter.Color({ red: 0,
+                                                       green: 0,
+                                                       blue: 0,
+                                                       alpha: 255 }));
+        this._background.add_constraint(
+            new Clutter.BindConstraint({ source: this._stage,
+                                         coordinate: Clutter.BindCoordinate.POSITION }));
+        this._background.add_constraint(
+            new Clutter.BindConstraint({ source: this._stage,
+                                         coordinate: Clutter.BindCoordinate.SIZE }));
+
+        this._uiGroup.add_actor(this._background);
+        this._background.lower_bottom();
+    },
+
     _createAlphaBackground: function() {
         if (this._background)
             return;
 
         this._background = Sushi.create_rounded_background();
+        this._background.set_opacity(Constants.VIEW_BACKGROUND_OPACITY);
         this._background.add_constraint(
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.POSITION }));
@@ -251,15 +273,18 @@ MainWindow.prototype = {
         this._stage.disconnect(this._unFullScreenId);
         delete this._unFullScreenId;
 
+	/* We want the alpha background back now */
+        this._background.destroy();
+        delete this._background;
         this._createAlphaBackground();
-        this._background.set_opacity(Constants.VIEW_BACKGROUND_OPACITY);
+
         this._textureYAlign.factor = this._savedYFactor;
 
         let textureSize = this._getTextureSize();
         this._texture.set_size(textureSize[0],
                                textureSize[1]);
 
-        Tweener.addTween(this._texture,
+        Tweener.addTween(this._uiGroup,
                          { opacity: 255,
                            time: 0.15,
                            transition: 'easeOutQuad',
@@ -279,16 +304,10 @@ MainWindow.prototype = {
             this._stage.connect("notify::allocation",
                                 Lang.bind(this, this._onStageUnFullScreen));
 
-        /* quickly fade out background and texture,
+        /* quickly fade out everything,
          * and then unfullscreen the (empty) window.
          */
-        Tweener.addTween(this._stage,
-                         { opacity: 0,
-                           time: 0.10,
-                           transition: 'easeOutQuad'
-                         });
-
-        Tweener.addTween(this._texture,
+        Tweener.addTween(this._uiGroup,
                          { opacity: 0,
                            time: 0.10,
                            transition: 'easeOutQuad',
@@ -303,8 +322,13 @@ MainWindow.prototype = {
         this._stage.disconnect(this._fullScreenId);
         delete this._fullScreenId;
 
-        /* fade in the solid black background */
-        Tweener.addTween(this._stage,
+        /* We want a solid black background */
+        this._background.destroy();
+        delete this._background;
+	this._createSolidBackground();
+
+	/* Fade in everything */
+        Tweener.addTween(this._uiGroup,
                          { opacity: 255,
                            time: 0.15,
                            transition: 'easeOutQuad'
@@ -322,8 +346,7 @@ MainWindow.prototype = {
         let textureSize = this._getTextureSize();
 
         Tweener.addTween(this._texture,
-                         { opacity: 255,
-                           width: textureSize[0],
+                         { width: textureSize[0],
                            height: textureSize[1],
                            time: 0.15,
                            transition: 'easeOutQuad'
@@ -350,21 +373,10 @@ MainWindow.prototype = {
             this._stage.connect("notify::allocation",
                                 Lang.bind(this, this._onStageFullScreen));
 
-        /* quickly fade out background and texture,
+        /* quickly fade out everything,
          * and then fullscreen the (empty) window.
          */
-        Tweener.addTween(this._background,
-                         { opacity: 0,
-                           time: 0.10,
-                           transition: 'easeOutQuad',
-                           onComplete: function () {
-                               this._background.destroy();
-                               delete this._background;
-                           },
-                           onCompleteScope: this
-                         });
-
-        Tweener.addTween(this._texture,
+        Tweener.addTween(this._uiGroup,
                          { opacity: 0,
                            time: 0.10,
                            transition: 'easeOutQuad',
@@ -518,16 +530,11 @@ MainWindow.prototype = {
     },
 
     _fadeInWindow : function() {
-        this._background.set_opacity(0);
-        this._texture.set_opacity(0);
+        this._uiGroup.set_opacity(0);
 
         this._gtkWindow.show_all();
 
-        Tweener.addTween(this._background,
-                         { opacity: Constants.VIEW_BACKGROUND_OPACITY,
-                           time: 0.3,
-                           transition: 'easeOutQuad' });
-        Tweener.addTween(this._texture,
+        Tweener.addTween(this._uiGroup,
                          { opacity: 255,
                            time: 0.3,
                            transition: 'easeOutQuad' });
@@ -536,17 +543,9 @@ MainWindow.prototype = {
     _fadeOutWindow : function() {
         if (this._toolbarId) {
             this._removeToolbarTimeout();
-            Tweener.addTween(this._toolbarActor,
-                             { opacity: 0,
-                               time: 0.15,
-                               transition: 'easeOutQuad' });
         }
 
-        Tweener.addTween(this._background,
-                         { opacity: 0,
-                           time: 0.15,
-                           transition: 'easeOutQuad' });
-        Tweener.addTween(this._texture,
+        Tweener.addTween(this._uiGroup,
                          { opacity: 0,
                            time: 0.15,
                            transition: 'easeOutQuad',
