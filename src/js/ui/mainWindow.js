@@ -8,7 +8,7 @@ const GtkClutter = imports.gi.GtkClutter;
 const Clutter = imports.gi.Clutter;
 
 const Cairo = imports.cairo;
-const Tweener = imports.tweener.tweener;
+const Tweener = imports.ui.tweener;
 const Lang = imports.lang;
 
 const Mainloop = imports.mainloop;
