@@ -75,10 +75,16 @@ FolderRenderer.prototype = {
     },
 
     _applyLabels : function() {
-        let titleStr = 
-            "<b><big>" + 
-            ((this._folderLoader.name) ? (this._folderLoader.name) : (this._folderLoader.file.get_basename()))
-            + "</big></b>";
+	let name = this._folderLoader.name;
+	if (!name) {
+	    try {
+		name = this._folderLoader.file.get_basename()
+	    } catch (e) {
+		name = "";
+	    }
+	}
+        let titleStr =
+            "<b><big>" + name + "</big></b>";
 
         let sizeStr =
             "<small><b>" + Gettext.gettext("Size") + "  </b>" +
