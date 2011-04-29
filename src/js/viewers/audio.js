@@ -11,6 +11,7 @@ function AudioRenderer(args) {
 AudioRenderer.prototype = {
     _init : function() {
         this.moveOnClick = true;
+        this.canFullScreen = false;
     },
 
     render : function(file, mainWindow) {

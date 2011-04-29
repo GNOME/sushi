@@ -20,6 +20,7 @@ EvinceRenderer.prototype = {
     _init : function(args) {
         EvDoc.init();
         this.moveOnClick = false;
+        this.canFullScreen = true;
     },
 
     render : function(file, mainWindow) {

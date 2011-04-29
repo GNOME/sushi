@@ -609,6 +609,9 @@ MainWindow.prototype = {
     },
 
     toggleFullScreen : function() {
+        if (!this._renderer.canFullScreen)
+            return;
+
         if (this._isFullScreen) {
             this._exitFullScreen();
         } else {

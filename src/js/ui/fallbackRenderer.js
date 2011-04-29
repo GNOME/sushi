@@ -12,7 +12,8 @@ function FallbackRenderer(args) {
 
 FallbackRenderer.prototype = {
     _init : function() {
-        this._moveOnClick = true;
+        this.moveOnClick = true;
+        this.canFullScreen = false;
     },
 
     render : function(file, mainWindow) {
