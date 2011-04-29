@@ -65,6 +65,8 @@ MainWindow.prototype = {
                                                   green: 0,
                                                   blue: 0,
                                                   alpha: 255 }));
+        this._uiGroup =  new Clutter.Group();
+        this._stage.add_actor(this._uiGroup);
     },
 
     _connectStageSignals : function() {
@@ -88,7 +90,7 @@ MainWindow.prototype = {
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.SIZE }));
 
-        this._stage.add_actor(this._background);
+        this._uiGroup.add_actor(this._background);
         this._background.lower_bottom();
     },
 
@@ -239,7 +241,7 @@ MainWindow.prototype = {
         this._texture.add_constraint(this._textureYAlign);
 
         this.refreshSize();
-        this._stage.add_actor(this._texture);
+        this._uiGroup.add_actor(this._texture);
     },
 
     /**************************************************************************
@@ -388,7 +390,7 @@ MainWindow.prototype = {
             return;
 
         this._toolbarActor.set_reactive(true);
-        this._stage.add_actor(this._toolbarActor);
+        this._uiGroup.add_actor(this._toolbarActor);
 
         this._toolbarActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
@@ -497,8 +499,8 @@ MainWindow.prototype = {
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 1.0 }));
 
-        this._stage.add_actor(this._titleActor);
-        this._stage.add_actor(this._quitActor);
+        this._uiGroup.add_actor(this._titleActor);
+        this._uiGroup.add_actor(this._quitActor);
     },
 
     /**************************************************************************
