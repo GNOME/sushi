@@ -1,4 +1,14 @@
-- integrate it with Nautilus
+Bugs:
+- things don't work well over remote mounts yet
+
+New plugins:
+- Text files
+- HTML viewer
+- Source code
+- Fonts
+
+Ideas:
+
 - make preview window resizable, and save per-file preview size
   in gvfs metadata
 - add a zoom-in/zoom-out effect when opening/closing
