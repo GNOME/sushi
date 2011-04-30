@@ -1,1 +1,6 @@
 [encoding: UTF-8]
+src/libsushi/sushi-file-loader.c
+src/js/ui/fallbackRenderer.js
+src/js/viewers/evince.js
+src/js/viewers/folder.js
+
