@@ -43,6 +43,7 @@ GtkLabel {
 
 .np-decoration {
     color: @np_fg_color;
+    font: bold;
 }
 
 .np-decoration.button {
