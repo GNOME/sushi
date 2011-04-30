@@ -66,8 +66,11 @@ MainWindow.prototype = {
                                                   green: 0,
                                                   blue: 0,
                                                   alpha: 255 }));
-        this._uiGroup =  new Clutter.Group();
-        this._stage.add_actor(this._uiGroup);
+        this._mainGroup =  new Clutter.Group();
+        this._stage.add_actor(this._mainGroup);
+
+        this._titleGroup =  new Clutter.Group();
+        this._stage.add_actor(this._titleGroup);
     },
 
     _connectStageSignals : function() {
@@ -96,7 +99,7 @@ MainWindow.prototype = {
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.SIZE }));
 
-        this._uiGroup.add_actor(this._background);
+        this._mainGroup.add_actor(this._background);
         this._background.lower_bottom();
     },
 
@@ -113,7 +116,7 @@ MainWindow.prototype = {
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.SIZE }));
 
-        this._uiGroup.add_actor(this._background);
+        this._mainGroup.add_actor(this._background);
         this._background.lower_bottom();
     },
 
@@ -176,7 +179,7 @@ MainWindow.prototype = {
                            this._gtkWindow.get_window().get_height() ];
 
         let availableWidth = this._isFullScreen ? screenSize[0] : Constants.VIEW_MAX_W;
-        let availableHeight = this._isFullScreen ? screenSize[1] - Constants.VIEW_PADDING_Y : Constants.VIEW_MAX_H;
+        let availableHeight = this._isFullScreen ? screenSize[1] : Constants.VIEW_MAX_H;
 
         let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight], this._isFullScreen);
 
@@ -267,7 +270,7 @@ MainWindow.prototype = {
         this._texture.add_constraint(this._textureYAlign);
 
         this.refreshSize();
-        this._uiGroup.add_actor(this._texture);
+        this._mainGroup.add_actor(this._texture);
     },
 
     /**************************************************************************
@@ -288,7 +291,12 @@ MainWindow.prototype = {
         this._texture.set_size(textureSize[0],
                                textureSize[1]);
 
-        Tweener.addTween(this._uiGroup,
+        Tweener.addTween(this._mainGroup,
+                         { opacity: 255,
+                           time: 0.15,
+                           transition: 'easeOutQuad',
+                         });
+        Tweener.addTween(this._titleGroup,
                          { opacity: 255,
                            time: 0.15,
                            transition: 'easeOutQuad',
@@ -311,7 +319,7 @@ MainWindow.prototype = {
         /* quickly fade out everything,
          * and then unfullscreen the (empty) window.
          */
-        Tweener.addTween(this._uiGroup,
+        Tweener.addTween(this._mainGroup,
                          { opacity: 0,
                            time: 0.10,
                            transition: 'easeOutQuad',
@@ -331,8 +339,8 @@ MainWindow.prototype = {
         delete this._background;
 	this._createSolidBackground();
 
-	/* Fade in everything */
-        Tweener.addTween(this._uiGroup,
+	/* Fade in everything but the title */
+        Tweener.addTween(this._mainGroup,
                          { opacity: 255,
                            time: 0.15,
                            transition: 'easeOutQuad'
@@ -380,7 +388,12 @@ MainWindow.prototype = {
         /* quickly fade out everything,
          * and then fullscreen the (empty) window.
          */
-        Tweener.addTween(this._uiGroup,
+        Tweener.addTween(this._titleGroup,
+                         { opacity: 0,
+                           time: 0.10,
+                           transition: 'easeOutQuad'
+                         });
+        Tweener.addTween(this._mainGroup,
                          { opacity: 0,
                            time: 0.10,
                            transition: 'easeOutQuad',
@@ -406,7 +419,7 @@ MainWindow.prototype = {
             return;
 
         this._toolbarActor.set_reactive(true);
-        this._uiGroup.add_actor(this._toolbarActor);
+        this._mainGroup.add_actor(this._toolbarActor);
 
         this._toolbarActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
@@ -516,8 +529,8 @@ MainWindow.prototype = {
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 1.0 }));
 
-        this._uiGroup.add_actor(this._titleActor);
-        this._uiGroup.add_actor(this._quitActor);
+        this._titleGroup.add_actor(this._titleActor);
+        this._titleGroup.add_actor(this._quitActor);
     },
 
     /**************************************************************************
@@ -535,11 +548,16 @@ MainWindow.prototype = {
     },
 
     _fadeInWindow : function() {
-        this._uiGroup.set_opacity(0);
+        this._mainGroup.set_opacity(0);
+        this._titleGroup.set_opacity(0);
 
         this._gtkWindow.show_all();
 
-        Tweener.addTween(this._uiGroup,
+        Tweener.addTween(this._mainGroup,
+                         { opacity: 255,
+                           time: 0.3,
+                           transition: 'easeOutQuad' });
+        Tweener.addTween(this._titleGroup,
                          { opacity: 255,
                            time: 0.3,
                            transition: 'easeOutQuad' });
@@ -550,7 +568,17 @@ MainWindow.prototype = {
             this._removeToolbarTimeout();
         }
 
-        Tweener.addTween(this._uiGroup,
+        Tweener.addTween(this._titleGroup,
+                         { opacity: 0,
+                           time: 0.15,
+                           transition: 'easeOutQuad',
+                           onComplete: function () {
+                               this._clearAndQuit();
+                           },
+                           onCompleteScope: this
+                         });
+
+        Tweener.addTween(this._mainGroup,
                          { opacity: 0,
                            time: 0.15,
                            transition: 'easeOutQuad',
