@@ -113,10 +113,6 @@ FolderRenderer.prototype = {
         this._mainWindow.refreshSize();
     },
 
-    createToolbar : function() {
-        return null;
-    },
-
     clear : function() {
         this._folderLoader.stop();
         delete this._folderLoader;

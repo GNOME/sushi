@@ -414,7 +414,8 @@ MainWindow.prototype = {
             delete this._toolbarActor;
         }
 
-        this._toolbarActor = this._renderer.createToolbar();
+        if (this._renderer.createToolbar)
+            this._toolbarActor = this._renderer.createToolbar();
 
         if (!this._toolbarActor)
             return;
