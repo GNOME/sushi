@@ -2,8 +2,12 @@ let MimeHandler = imports.ui.mimeHandler;
 let GdkPixbuf = imports.gi.GdkPixbuf;
 let GtkClutter = imports.gi.GtkClutter;
 let Gtk = imports.gi.Gtk;
+let GLib = imports.gi.GLib;
+let Gettext = imports.gettext.domain("sushi");
 
 let Utils = imports.ui.utils;
+
+let SPINNER_SIZE = 48;
 
 function ImageRenderer(args) {
     this._init(args);
@@ -18,22 +22,86 @@ ImageRenderer.prototype = {
     render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
 
-        let stream = file.read(null);
-        let pix = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
-        this._texture = new GtkClutter.Texture({ "keep-aspect-ratio": true });
-        
-        this._texture.set_from_pixbuf(pix);
+        this._spinnerBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12);
+        this._spinnerBox.show();
 
-        return this._texture;
+        let spinner = Gtk.Spinner.new();
+        spinner.show();
+        spinner.start();
+        spinner.set_size_request(SPINNER_SIZE, SPINNER_SIZE);
+
+        this._spinnerBox.pack_start(spinner, true, true, 0);
+
+        let label = new Gtk.Label();
+        label.set_text(Gettext.gettext("Loading..."));
+        label.show();
+        this._spinnerBox.pack_start(label, true, true, 0);
+
+        this._spinnerActor = new GtkClutter.Actor({ contents: this._spinnerBox });
+
+        this._group = new Clutter.Group({ clipToAllocation: true });
+        this._group.add_actor(this._spinnerActor);
+
+        this._spinnerActor.add_constraint(
+            new Clutter.AlignConstraint({ source: this._group,
+                                          "align-axis": Clutter.AlignAxis.Y_AXIS,
+                                          factor: 0.5 }));
+        this._spinnerActor.add_constraint(
+            new Clutter.AlignConstraint({ source: this._group,
+                                          "align-axis": Clutter.AlignAxis.X_AXIS,
+                                          factor: 0.5 }));
+
+        this._createImageTexture(file);
+
+        return this._group;
+    },
+
+    _createImageTexture : function(file) {
+        file.read_async
+        (GLib.PRIORITY_DEFAULT, null,
+         Lang.bind(this,
+                   function(obj, res) {
+                       try {
+                           let stream = obj.read_finish(res);
+                           this._textureFromStream(stream);
+                       } catch (e) {
+                       }
+                   }));
+    },
+
+    _textureFromStream : function(stream) {
+        GdkPixbuf.Pixbuf.new_from_stream_async
+        (stream, null,
+         Lang.bind(this, function(obj, res) {
+             try {
+                 let pix = GdkPixbuf.Pixbuf.new_from_stream_finish(res);
+
+                 this._texture = new GtkClutter.Texture({ "keep-aspect-ratio": true });
+                 this._texture.set_from_pixbuf(pix);
+
+                 this._texture.add_constraint(
+                     new Clutter.BindConstraint({ source: this._group,
+                                                  coordinate: Clutter.BindCoordinate.SIZE }));
+
+                 this._mainWindow.refreshSize();
+
+                 this._group.add_actor(this._texture);
+                 this._spinnerActor.destroy();
+             } catch(e) {
+             }}));
     },
 
     getSizeForAllocation : function(allocation, fullScreen) {
-        if (!fullScreen)
-            fullScreen = false;
+        if (!this._texture) {
+            [ width, height ] = [ this._spinnerBox.get_preferred_size()[0].width,
+                                  this._spinnerBox.get_preferred_size()[0].height ];
+        } else {
+            let baseSize = this._texture.get_base_size();
 
-        let baseSize = this._texture.get_base_size();
+            [ width, height ] = Utils.getScaledSize(baseSize, allocation, fullScreen);
+        }
 
-        return Utils.getScaledSize(baseSize, allocation, fullScreen);
+        return [ width, height ];
     },
 
     createToolbar : function() {
