@@ -131,7 +131,8 @@ MainWindow.prototype = {
         let key = event.get_key_symbol();
 
         if (key == Clutter.KEY_Escape ||
-            key == Clutter.KEY_space)
+            key == Clutter.KEY_space ||
+            key == Clutter.KEY_q)
             this._fadeOutWindow();
 
         if (key == Clutter.KEY_f)
