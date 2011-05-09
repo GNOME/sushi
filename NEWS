@@ -1,3 +1,12 @@
+0.0.2 - "Crab Conspiration"
+===========================
+
+Minor/bugfix release.
+
+- Load pixbufs asynchronously
+- Quit with 'Q'
+- Fix fullscreen scale mismatch in the image plugin
+
 0.0.1 - "Weapons of Mass Ave Destruction"
 =========================================
 
