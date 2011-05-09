@@ -574,10 +574,6 @@ MainWindow.prototype = {
                          { opacity: 0,
                            time: 0.15,
                            transition: 'easeOutQuad',
-                           onComplete: function () {
-                               this._clearAndQuit();
-                           },
-                           onCompleteScope: this
                          });
 
         Tweener.addTween(this._mainGroup,
