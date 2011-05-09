@@ -16,7 +16,10 @@ function getScaledSize(baseSize, allocSize, upscale) {
     if (((width <= allocW && height <= allocH) && upscale) ||
         (width > allocW && height > allocH)) {
         /* up/downscale both directions */
-        if (width > height)
+        let allocRatio = allocW / allocH;
+        let baseRatio = width / height;
+
+        if (baseRatio > allocRatio)
             scale = allocW / width;
         else
             scale = allocH / height;
