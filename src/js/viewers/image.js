@@ -87,6 +87,8 @@ ImageRenderer.prototype = {
 
                  this._group.add_actor(this._texture);
                  this._spinnerActor.destroy();
+
+                 this._toolbarActor.show();
              } catch(e) {
              }}));
     },
@@ -105,15 +107,13 @@ ImageRenderer.prototype = {
     },
 
     createToolbar : function() {
-        this._mainToolbar = new Gtk.Toolbar();
+        this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
         this._mainToolbar.get_style_context().add_class("np-toolbar");
-        this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
+        this._mainToolbar.set_show_arrow(false);
         this._mainToolbar.show();
 
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
-
-        this._toolbarActor.set_size(32, 32);
-        this._toolbarActor.set_opacity(0);
+        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
+                                                    "show-on-set-parent": false });
 
         this._toolbarZoom = new Gtk.ToolButton({ expand: false,
                                                  "icon-name": "view-fullscreen-symbolic" });
