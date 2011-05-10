@@ -22,6 +22,11 @@ struct _SushiCoverArtFetcherPrivate {
 
 static void sushi_cover_art_fetcher_set_taglist (SushiCoverArtFetcher *self,
                                                  GstTagList *taglist);
+static void sushi_cover_art_fetcher_get_uri_for_track_async (SushiCoverArtFetcher *self,
+                                                             const gchar *artist,
+                                                             const gchar *album,
+                                                             GAsyncReadyCallback callback,
+                                                             gpointer user_data);
 
 static void
 sushi_cover_art_fetcher_dispose (GObject *object)
@@ -115,10 +120,62 @@ sushi_cover_art_fetcher_class_init (SushiCoverArtFetcherClass *klass)
   g_type_class_add_private (klass, sizeof (SushiCoverArtFetcherPrivate));
 }
 
-static gchar *
-sushi_amazon_cover_uri_get_for_track (const gchar *artist,
-                                      const gchar *album)
+typedef struct {
+  SushiCoverArtFetcher *self;
+  GSimpleAsyncResult *result;
+  gchar *artist;
+  gchar *album;
+} FetchUriJob;
+
+static void
+fetch_uri_job_free (gpointer user_data)
 {
+  FetchUriJob *data = user_data;
+
+  g_clear_object (&data->self);
+  g_clear_object (&data->result);
+  g_free (data->artist);
+  g_free (data->album);
+
+  g_slice_free (FetchUriJob, data);
+}
+
+static FetchUriJob *
+fetch_uri_job_new (SushiCoverArtFetcher *self,
+                   const gchar *artist,
+                   const gchar *album,
+                   GAsyncReadyCallback callback,
+                   gpointer user_data)
+{
+  FetchUriJob *retval;
+
+  retval = g_slice_new0 (FetchUriJob);
+  retval->artist = g_strdup (artist);
+  retval->album = g_strdup (album);
+  retval->self = g_object_ref (self);
+  retval->result = g_simple_async_result_new (G_OBJECT (self), callback, user_data,
+                                              sushi_cover_art_fetcher_get_uri_for_track_async);
+
+  return retval;
+}
+
+static gboolean
+fetch_uri_job_callback (gpointer user_data)
+{
+  FetchUriJob *job = user_data;
+
+  g_simple_async_result_complete (job->result);
+  fetch_uri_job_free (job);
+
+  return FALSE;
+}
+
+static gboolean
+fetch_uri_job (GIOSchedulerJob *sched_job,
+               GCancellable *cancellable,
+               gpointer user_data)
+{
+  FetchUriJob *job = user_data;
   MbQuery query;
   MbReleaseFilter filter;
   MbRelease release;
@@ -129,8 +186,8 @@ sushi_amazon_cover_uri_get_for_track (const gchar *artist,
   query = mb_query_new (NULL, NULL);
 
   filter = mb_release_filter_new ();
-  filter = mb_release_filter_title (filter, album);
-  filter = mb_release_filter_artist_name (filter, artist);
+  filter = mb_release_filter_title (filter, job->album);
+  filter = mb_release_filter_artist_name (filter, job->artist);
 
   results = mb_query_get_releases (query, filter);
   results_len = mb_result_list_get_size (results);
@@ -148,7 +205,55 @@ sushi_amazon_cover_uri_get_for_track (const gchar *artist,
     }
   }
 
+  if (retval == NULL) {
+    /* FIXME: do we need a better error? */
+    g_simple_async_result_set_error (job->result,
+                                     G_IO_ERROR,
+                                     0, "%s",
+                                     "Error getting the ASIN from MusicBrainz");
+  } else {
+    g_simple_async_result_set_op_res_gpointer (job->result,
+                                               retval, NULL);
+  }
+
+  g_io_scheduler_job_send_to_mainloop_async (sched_job,
+                                             fetch_uri_job_callback,
+                                             job, NULL);
+
+  return FALSE;
+}
+
+static gchar *
+sushi_cover_art_fetcher_get_uri_for_track_finish (SushiCoverArtFetcher *self,
+                                                  GAsyncResult *result,
+                                                  GError **error)
+{
+  gchar *retval;
+
+  if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result),
+                                             error))
+    return NULL;
+
+  retval = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (result));
+
   return retval;
+}
+
+static void
+sushi_cover_art_fetcher_get_uri_for_track_async (SushiCoverArtFetcher *self,
+                                                 const gchar *artist,
+                                                 const gchar *album,
+                                                 GAsyncReadyCallback callback,
+                                                 gpointer user_data)
+{
+  GSimpleAsyncResult *result;
+  FetchUriJob *job;
+  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
+
+  job = fetch_uri_job_new (self, artist, album, callback, user_data);
+  g_io_scheduler_push_job (fetch_uri_job,
+                           job, NULL,
+                           G_PRIORITY_DEFAULT, NULL);
 }
 
 static void
@@ -199,10 +304,39 @@ asin_uri_read_cb (GObject *source,
 }
 
 static void
+amazon_cover_uri_async_ready_cb (GObject *source,
+                                 GAsyncResult *res,
+                                 gpointer user_data)
+{
+  SushiCoverArtFetcher *self = SUSHI_COVER_ART_FETCHER (source);
+  GError *error = NULL;
+  gchar *asin;
+  GFile *file;
+
+  asin = sushi_cover_art_fetcher_get_uri_for_track_finish
+    (self, res, &error);
+
+  if (error != NULL) {
+    g_print ("Unable to fetch the Amazon cover art uri from MusicBrainz: %s\n",
+             error->message);
+    g_error_free (error);
+
+    return;
+  }
+
+  file = g_file_new_for_uri (asin);
+  g_file_read_async (file, G_PRIORITY_DEFAULT,
+                     NULL, asin_uri_read_cb,
+                     self);
+
+  g_object_unref (file);
+  g_free (asin);
+}
+
+static void
 try_fetch_from_amazon (SushiCoverArtFetcher *self)
 {
   SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
-  gchar *asin;
   gchar *artist = NULL;
   gchar *album = NULL;
   GFile *file;
@@ -218,21 +352,12 @@ try_fetch_from_amazon (SushiCoverArtFetcher *self)
     return;
   }
 
-  asin = sushi_amazon_cover_uri_get_for_track (artist, album);
+  sushi_cover_art_fetcher_get_uri_for_track_async
+    (self, artist, album,
+     amazon_cover_uri_async_ready_cb, NULL);
 
-  if (asin == NULL) {
-    g_free (artist);
-    g_free (album);
-
-    return;
-  }
-
-  file = g_file_new_for_uri (asin);
-  g_file_read_async (file, G_PRIORITY_DEFAULT,
-                     NULL, asin_uri_read_cb,
-                     self);
-
-  g_object_unref (file);
+  g_free (artist);
+  g_free (album);
 }
 
 /* code taken from Totem */
