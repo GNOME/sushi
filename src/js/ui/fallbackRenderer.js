@@ -1,7 +1,8 @@
 let Gtk = imports.gi.Gtk;
-let Gettext = imports.gettext.domain("sushi");
-
 let Sushi = imports.gi.Sushi;
+
+let Gettext = imports.gettext.domain("sushi");
+let _ = Gettext.gettext;
 
 let Constants = imports.util.constants;
 let Utils = imports.ui.utils;
@@ -85,18 +86,18 @@ FallbackRenderer.prototype = {
             + "</big></b>";
 
         let typeStr =
-            "<small><b>" + Gettext.gettext("Type") + "  </b>" +
-            ((this._fileLoader.contentType) ? (this._fileLoader.contentType) : (Gettext.gettext("Loading...")))
+            "<small><b>" + _("Type") + "  </b>" +
+            ((this._fileLoader.contentType) ? (this._fileLoader.contentType) : (_("Loading...")))
              + "</small>";
 
         let sizeStr =
-            "<small><b>" + Gettext.gettext("Size") + "  </b>" +
-            ((this._fileLoader.size) ? (this._fileLoader.size) : (Gettext.gettext("Loading...")))
+            "<small><b>" + _("Size") + "  </b>" +
+            ((this._fileLoader.size) ? (this._fileLoader.size) : (_("Loading...")))
              + "</small>";
 
         let dateStr =
-            "<small><b>" + Gettext.gettext("Modified") + "  </b>" +
-             ((this._fileLoader.time) ? (this._fileLoader.time) : (Gettext.gettext("Loading...")))
+            "<small><b>" + _("Modified") + "  </b>" +
+             ((this._fileLoader.time) ? (this._fileLoader.time) : (_("Loading...")))
              + "</small>";
 
         this._titleLabel.set_markup(titleStr);

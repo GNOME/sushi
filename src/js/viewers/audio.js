@@ -2,6 +2,9 @@ let MimeHandler = imports.ui.mimeHandler;
 let Gst = imports.gi.Gst;
 let Gio = imports.gi.Gio;
 
+let Gettext = imports.gettext.domain("sushi");
+let _ = Gettext.gettext;
+
 let Constants = imports.util.constants;
 
 function AudioRenderer(args) {
@@ -121,9 +124,9 @@ AudioRenderer.prototype = {
         }
 
         if (albumName)
-            this._albumLabel.set_markup("<small><i>from  </i>" + albumName + "</small>");
+            this._albumLabel.set_markup("<small><i>" + _("from") + "  </i>" + albumName + "</small>");
         if (artistName)
-            this._authorLabel.set_markup("<small><i>by  </i><b>" + artistName + "</b></small>");
+            this._authorLabel.set_markup("<small><i>" + _("by") + "  </i><b>" + artistName + "</b></small>");
 
         this._titleLabel.set_markup("<b>" + titleName + "</b>");
 

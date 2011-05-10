@@ -1,8 +1,9 @@
 let MimeHandler = imports.ui.mimeHandler;
 let Gtk = imports.gi.Gtk;
-let Gettext = imports.gettext.domain("sushi");
-
 let Sushi = imports.gi.Sushi;
+
+let Gettext = imports.gettext.domain("sushi");
+let _ = Gettext.gettext;
 
 let Constants = imports.util.constants;
 let Utils = imports.ui.utils;
@@ -88,13 +89,13 @@ FolderRenderer.prototype = {
             "<b><big>" + name + "</big></b>";
 
         let sizeStr =
-            "<small><b>" + Gettext.gettext("Size") + "  </b>" +
-            ((this._folderLoader.size) ? (this._folderLoader.size) : (Gettext.gettext("Loading...")))
+            "<small><b>" + _("Size") + "  </b>" +
+            ((this._folderLoader.size) ? (this._folderLoader.size) : (_("Loading...")))
              + "</small>";
 
         let dateStr =
-            "<small><b>" + Gettext.gettext("Modified") + "  </b>" +
-             ((this._folderLoader.time) ? (this._folderLoader.time) : (Gettext.gettext("Loading...")))
+            "<small><b>" + _("Modified") + "  </b>" +
+             ((this._folderLoader.time) ? (this._folderLoader.time) : (_("Loading...")))
              + "</small>";
 
         this._titleLabel.set_markup(titleStr);
