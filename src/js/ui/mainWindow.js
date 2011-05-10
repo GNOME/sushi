@@ -421,6 +421,7 @@ MainWindow.prototype = {
             return;
 
         this._toolbarActor.set_reactive(true);
+        this._toolbarActor.set_opacity(0);
         this._mainGroup.add_actor(this._toolbarActor);
 
         this._toolbarActor.add_constraint(
