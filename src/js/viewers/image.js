@@ -3,7 +3,9 @@ let GdkPixbuf = imports.gi.GdkPixbuf;
 let GtkClutter = imports.gi.GtkClutter;
 let Gtk = imports.gi.Gtk;
 let GLib = imports.gi.GLib;
+
 let Gettext = imports.gettext.domain("sushi");
+let _ = Gettext.gettext;
 
 let Utils = imports.ui.utils;
 
@@ -33,7 +35,7 @@ ImageRenderer.prototype = {
         this._spinnerBox.pack_start(spinner, true, true, 0);
 
         let label = new Gtk.Label();
-        label.set_text(Gettext.gettext("Loading..."));
+        label.set_text(_("Loading..."));
         label.show();
         this._spinnerBox.pack_start(label, true, true, 0);
 

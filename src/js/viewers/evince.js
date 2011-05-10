@@ -5,6 +5,7 @@ let EvView = imports.gi.EvinceView;
 let Sushi = imports.gi.Sushi;
 
 let Gettext = imports.gettext.domain("sushi");
+let _ = Gettext.gettext;
 
 let Utils = imports.ui.utils;
 let Features = imports.util.features;
@@ -51,6 +52,15 @@ EvinceRenderer.prototype = {
         return this._actor;
     },
 
+    _updatePageLabel : function() {
+        let curPage, totPages;
+
+        curPage = this._model.get_page();
+        totPages = this._document.get_n_pages();
+        
+        this._pageLabel.set_text(_("%d of %d").format(curPage + 1, totPages));
+    },
+
     _onDocumentLoaded : function() {
         this._spinnerBox.destroy();
 
@@ -59,6 +69,12 @@ EvinceRenderer.prototype = {
 
         this._model.set_sizing_mode(EvView.SizingMode.FIT_WIDTH);
 	this._model.set_continuous(true);
+
+        this._model.connect("page-changed",
+                            Lang.bind(this, function() {
+                                this._updatePageLabel();
+                            }));
+        this._updatePageLabel();
 
         this._view = EvView.View.new();
         this._view.show();
@@ -73,6 +89,9 @@ EvinceRenderer.prototype = {
 
         this._actor.get_widget().add(this._scrolledWin);
         this._mainWindow.refreshSize();
+
+        /* let the toolbar fade on motion now */
+        this._toolbarActor.show();
     },
 
     getSizeForAllocation : function(allocation) {
@@ -87,11 +106,27 @@ EvinceRenderer.prototype = {
         return [ width, height ];
     },
 
+    _createLabelItem : function() {
+        this._pageLabel = new Gtk.Label();
+        this._pageLabel.set_margin_left(2);
+        this._pageLabel.set_margin_right(2);
+
+        let item = new Gtk.ToolItem();
+        item.set_expand(true);
+        item.add(this._pageLabel);
+        item.show_all();
+
+        return item;
+    },
+
     createToolbar : function() {
-        this._mainToolbar = new Gtk.Toolbar();
+        this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
         this._mainToolbar.get_style_context().add_class("np-toolbar");
-        this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
+        this._mainToolbar.set_show_arrow(false);
         this._mainToolbar.show();
+
+        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
+                                                    "show-on-set-parent": false });
 
         this._toolbarZoom = new Gtk.ToolButton({ expand: false,
                                                  "icon-name": "view-fullscreen-symbolic" });
@@ -103,9 +138,32 @@ EvinceRenderer.prototype = {
                                       this._mainWindow.toggleFullScreen();
                                   }));
 
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
-                                                    opacity: 0});
-        this._toolbarActor.set_size(32, 32);
+        let separator = new Gtk.SeparatorToolItem();
+        separator.show();
+        this._mainToolbar.insert(separator, 1);
+
+        this._toolbarBack = new Gtk.ToolButton({ expand: false,
+                                                 "icon-name": "go-previous-symbolic" });
+        this._toolbarBack.show();
+        this._mainToolbar.insert(this._toolbarBack, 2);
+
+        this._toolbarBack.connect("clicked",
+                                  Lang.bind(this, function () {
+                                      this._view.previous_page();
+                                  }));
+
+        let labelItem = this._createLabelItem();
+        this._mainToolbar.insert(labelItem, 3);
+
+        this._toolbarForward = new Gtk.ToolButton({ expand: false,
+                                                 "icon-name": "go-next-symbolic" });
+        this._toolbarForward.show();
+        this._mainToolbar.insert(this._toolbarForward, 4);
+
+        this._toolbarForward.connect("clicked",
+                                     Lang.bind(this, function () {
+                                         this._view.next_page();
+                                     }));
 
         return this._toolbarActor;
     },
