@@ -57,6 +57,9 @@ EvinceRenderer.prototype = {
 
         curPage = this._model.get_page();
         totPages = this._document.get_n_pages();
+
+        this._toolbarBack.set_sensitive(curPage > 0);
+        this._toolbarForward.set_sensitive(curPage < totPages - 1);
         
         this._pageLabel.set_text(_("%d of %d").format(curPage + 1, totPages));
     },
