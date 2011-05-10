@@ -9,7 +9,6 @@ let Gettext = imports.gettext.domain("sushi");
 let Utils = imports.ui.utils;
 let Features = imports.util.features;
 
-let PDF_X_PADDING = 40;
 let SPINNER_SIZE = 48;
 
 function EvinceRenderer(args) {
@@ -73,27 +72,16 @@ EvinceRenderer.prototype = {
         this._scrolledWin.add(this._view);
 
         this._actor.get_widget().add(this._scrolledWin);
-
-        let pageSize = this._pdfLoader.get_max_page_size();
-        this._pageWidth = Math.floor(pageSize[0]);
-        this._pageHeight = Math.floor(pageSize[1]);
-
         this._mainWindow.refreshSize();
     },
 
     getSizeForAllocation : function(allocation) {
-        let width = this._pageWidth + PDF_X_PADDING;
-        let height = this._pageHeight;
-
         if (!this._document) {
             [ width, height ] = [ this._spinnerBox.get_preferred_size()[0].width,
                                   this._spinnerBox.get_preferred_size()[0].height ];
         } else {
-            let scaledSize = Utils.getScaledSize([ width, height ],
-                                                 allocation,
-                                                 true);
-
-            [ width, height ] = scaledSize;
+            /* always give the view the maximum possible allocation */
+            [ width, height ] = allocation;
         }
 
         return [ width, height ];
