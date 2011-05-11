@@ -1,0 +1,57 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Aviary.pl
+# Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
+# pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
+# gnomepl@aviary.pl
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-05-11 14:47+0200\n"
+"PO-Revision-Date: 2011-05-11 14:49+0200\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"Language-Team: Polish <gnomepl@aviary.pl>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Poedit-Language: Polish\n"
+"X-Poedit-Country: Poland\n"
+
+#: ../src/libsushi/sushi-file-loader.c:614
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d element"
+msgstr[1] "%d elementy"
+msgstr[2] "%d elementów"
+
+#: ../src/libsushi/sushi-file-loader.c:624
+msgid "Empty Folder"
+msgstr "Pusty katalog"
+
+#: ../src/js/ui/fallbackRenderer.js:89
+msgid "Type"
+msgstr "Typ"
+
+#: ../src/js/ui/fallbackRenderer.js:90 ../src/js/ui/fallbackRenderer.js:95
+#: ../src/js/ui/fallbackRenderer.js:100 ../src/js/viewers/evince.js:45
+#: ../src/js/viewers/folder.js:93 ../src/js/viewers/folder.js:98
+msgid "Loading..."
+msgstr "Wczytywanie..."
+
+#: ../src/js/ui/fallbackRenderer.js:94 ../src/js/viewers/folder.js:92
+msgid "Size"
+msgstr "Rozmiar"
+
+#: ../src/js/ui/fallbackRenderer.js:99 ../src/js/viewers/folder.js:97
+msgid "Modified"
+msgstr "Zmodyfikowano"
+
+#: ../src/js/viewers/evince.js:64
+#, c-format
+msgid "%d of %d"
+msgstr "%d z %d"
