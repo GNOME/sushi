@@ -8,6 +8,10 @@
     background-color: alpha(#000, 0.0);
 }
 
+*:selected {
+    background-color: shade (@np_bg_color, 1.55);
+}
+
 GtkLabel {
     color: #fff;
 }
