@@ -12,6 +12,11 @@ GtkLabel {
     color: #fff;
 }
 
+SushiFontWidget {
+    color: @np_fg_color;
+    padding: 2;
+}
+
 .spinner {
     color: @np_fg_color;
 }
