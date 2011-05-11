@@ -307,8 +307,10 @@ MainWindow.prototype = {
     _exitFullScreen : function() {
         this._isFullScreen = false;
 
-        this._toolbarActor.set_opacity(0);
-        this._removeToolbarTimeout();
+        if (this._toolbarActor) {
+            this._toolbarActor.set_opacity(0);
+            this._removeToolbarTimeout();
+        }
 
         /* wait for the next stage allocation to fade in the texture 
          * and background again.
@@ -375,9 +377,11 @@ MainWindow.prototype = {
     _enterFullScreen : function() {
         this._isFullScreen = true;
 
-        /* prepare the toolbar */
-        this._toolbarActor.set_opacity(0);
-        this._removeToolbarTimeout();
+        if (this._toolbarActor) {
+            /* prepare the toolbar */
+            this._toolbarActor.set_opacity(0);
+            this._removeToolbarTimeout();
+        }
 
         /* wait for the next stage allocation to fade in the texture 
          * and background again.
