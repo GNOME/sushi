@@ -137,8 +137,6 @@ let renderer = new ImageRenderer();
 
 let formats = GdkPixbuf.Pixbuf.get_formats();
 for (idx in formats) {
-    let mimetypes = formats[idx].get_mime_types();
-    for (mime in mimetypes) {
-        handler.registerMime(mimetypes[mime], renderer);
-    }
+    let mimeTypes = formats[idx].get_mime_types();
+    handler.registerMimeTypes(mimeTypes, renderer);
 }

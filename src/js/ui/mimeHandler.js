@@ -28,6 +28,11 @@ MimeHandler.prototype = {
         log ("Register mimetype " + mime);
     },
 
+    registerMimeTypes: function(mimeTypes, obj) {
+        for (idx in mimeTypes)
+            this.registerMime(mimeTypes[idx], obj);
+    },
+
     getObject: function(mime) {
         if (this._mimeTypes[mime])
             return this._mimeTypes[mime];

@@ -182,16 +182,18 @@ let handler = new MimeHandler.MimeHandler();
 let renderer = new EvinceRenderer();
 
 let mimeTypes = Sushi.query_supported_document_types();
-for (mime in mimeTypes) {
-    handler.registerMime(mimeTypes[mime], renderer);
-}
+handler.registerMimeTypes(mimeTypes, renderer);
 
 if (Features.HAVE_UNOCONV) {
-    handler.registerMime("application/vnd.oasis.opendocument.text", renderer);
-    handler.registerMime("application/vnd.oasis.opendocument.presentation", renderer);
-    handler.registerMime("application/vnd.oasis.opendocument.spreadsheet", renderer);
-    handler.registerMime("application/msword", renderer);
-    handler.registerMime("application/vnd.ms-excel", renderer);
-    handler.registerMime("application/vnd.ms-powerpoint", renderer);
-    handler.registerMime("application/rtf", renderer);
+    let officeTypes = [
+        "application/vnd.oasis.opendocument.text",
+        "application/vnd.oasis.opendocument.presentation",
+        "application/vnd.oasis.opendocument.spreadsheet",
+        "application/msword",
+        "application/vnd.ms-excel",
+        "application/vnd.ms-powerpoint",
+        "application/rtf"
+    ];
+
+    handler.registerMimeTypes(officeTypes, renderer);
 }

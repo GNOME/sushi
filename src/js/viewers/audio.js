@@ -347,5 +347,4 @@ let audioTypes = [
     "audio/x-xm",
 ];
 
-for (idx in audioTypes)
-    handler.registerMime(audioTypes[idx], renderer);
+handler.registerMimeTypes(audioTypes, renderer);

@@ -60,5 +60,4 @@ let mimeTypes = [
     "application/x-font-type1"
 ];
 
-for (idx in mimeTypes)
-    handler.registerMime(mimeTypes[idx], renderer);
+handler.registerMimeTypes(mimeTypes, renderer);

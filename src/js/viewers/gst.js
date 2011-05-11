@@ -274,5 +274,4 @@ let videoTypes = [
     "video/x-totem-stream"
 ];
 
-for (idx in videoTypes)
-    handler.registerMime(videoTypes[idx], renderer);
+handler.registerMimeTypes(videoTypes, renderer);
