@@ -40,8 +40,6 @@ FontRenderer.prototype = {
         let size = [ this._fontWidget.get_preferred_size()[1].width,
                      this._fontWidget.get_preferred_size()[1].height ];
 
-        log ("allocation " + allocation[0] + " " + allocation[1] + " size " + size[0] + " " + size[1]);
-
         if (size[0] > allocation[0])
             size[0] = allocation[0];
 
@@ -55,4 +53,12 @@ FontRenderer.prototype = {
 let handler = new MimeHandler.MimeHandler();
 let renderer = new FontRenderer();
 
-handler.registerMime("application/x-font-ttf", renderer);
+let mimeTypes = [
+    "application/x-font-ttf",
+    "application/x-font-otf",
+    "application/x-font-pcf",
+    "application/x-font-type1"
+];
+
+for (idx in mimeTypes)
+    handler.registerMime(mimeTypes[idx], renderer);
