@@ -76,3 +76,21 @@ function createFullScreenButton(mainWindow) {
 
     return toolbarZoom;
 }
+
+function createRunButton(file) {
+    let toolbarRun = new Gtk.ToolButton({ expand: false,
+                                          "icon-name": "system-run-symbolic" });
+    toolbarRun.show();
+    toolbarRun.connect("clicked",
+                       function () {
+                           let timestamp = Gtk.get_current_event_time();
+                           try {
+                               Gtk.show_uri(toolbarRun.get_screen(),
+                                            file.get_uri(),
+                                            timestamp);
+                           } catch (e) {
+                           }
+                       });
+
+    return toolbarRun;
+}
