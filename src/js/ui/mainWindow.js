@@ -179,8 +179,8 @@ MainWindow.prototype = {
         let screenSize = [ this._gtkWindow.get_window().get_width(),
                            this._gtkWindow.get_window().get_height() ];
 
-        let availableWidth = this._isFullScreen ? screenSize[0] : Constants.VIEW_MAX_W;
-        let availableHeight = this._isFullScreen ? screenSize[1] : Constants.VIEW_MAX_H;
+        let availableWidth = this._isFullScreen ? screenSize[0] : Constants.VIEW_MAX_W - 2 * Constants.VIEW_PADDING_X;
+        let availableHeight = this._isFullScreen ? screenSize[1] : Constants.VIEW_MAX_H - Constants.VIEW_PADDING_Y;
 
         let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight], this._isFullScreen);
 
@@ -197,7 +197,7 @@ MainWindow.prototype = {
         }
 
         if (!this._isFullScreen) {
-            windowSize = [ windowSize[0] + Constants.VIEW_PADDING_X,
+            windowSize = [ windowSize[0] + 2 * Constants.VIEW_PADDING_X,
                            windowSize[1] + Constants.VIEW_PADDING_Y ];
         }
 
