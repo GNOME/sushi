@@ -4,3 +4,4 @@ let VIEW_PADDING_Y = 28;
 let VIEW_PADDING_X = 2;
 let VIEW_MAX_W = 800;
 let VIEW_MAX_H = 600;
+let TOOLBAR_SPACING = 60;

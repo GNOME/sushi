@@ -435,12 +435,12 @@ MainWindow.prototype = {
         let yConstraint = 
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.Y,
-                                         offset: this._stage.height - 52 });
+                                         offset: this._stage.height - Constants.TOOLBAR_SPACING });
         this._toolbarActor.add_constraint(yConstraint);
 
         this._stage.connect("notify::height",
                             Lang.bind(this, function() {
-                                yConstraint.set_offset(this._stage.height - 52);
+                                yConstraint.set_offset(this._stage.height - Constants.TOOLBAR_SPACING);
                             }));
     },
 
