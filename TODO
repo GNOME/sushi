@@ -5,10 +5,10 @@ New plugins:
 - Text files
 - HTML viewer
 - Source code
-- Fonts
 
 Ideas:
 
 - make preview window resizable, and save per-file preview size
   in gvfs metadata
+- save/share cover art with Rhythmbox/Banshee?
 - add a zoom-in/zoom-out effect when opening/closing
