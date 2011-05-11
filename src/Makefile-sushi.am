@@ -18,6 +18,8 @@ sushi_source_h = \
     libsushi/sushi-pdf-loader.h \
     libsushi/sushi-sound-player.h \
     libsushi/sushi-file-loader.h \
+    libsushi/sushi-font-loader.h \
+    libsushi/sushi-font-widget.h \
     libsushi/sushi-utils.h
 
 sushi_source_c = \
@@ -25,6 +27,8 @@ sushi_source_c = \
     libsushi/sushi-pdf-loader.c \
     libsushi/sushi-sound-player.c \
     libsushi/sushi-file-loader.c \
+    libsushi/sushi-font-loader.c \
+    libsushi/sushi-font-widget.c \
     libsushi/sushi-utils.c
 
 sushi-enum-types.h: stamp-sushi-enum-types.h Makefile
