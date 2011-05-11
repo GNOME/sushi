@@ -389,6 +389,13 @@ sushi_font_widget_finalize (GObject *object)
 
   g_free (self->priv->uri);
 
+  if (self->priv->face != NULL) {
+    FT_Done_Face (self->priv->face);
+    self->priv->face = NULL;
+  }
+
+  g_free (self->priv->face_contents);
+
   G_OBJECT_CLASS (sushi_font_widget_parent_class)->finalize (object);
 }
 
