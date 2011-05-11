@@ -64,3 +64,15 @@ function getStaticSize(renderer, widget) {
     /* return the natural */
     return [ width, height ];
 }
+
+function createFullScreenButton(mainWindow) {
+    let toolbarZoom = new Gtk.ToolButton({ expand: false,
+                                           "icon-name": "view-fullscreen-symbolic" });
+    toolbarZoom.show();
+    toolbarZoom.connect("clicked",
+                        function () {
+                            mainWindow.toggleFullScreen();
+                        });
+
+    return toolbarZoom;
+}

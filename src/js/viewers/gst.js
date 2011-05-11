@@ -194,14 +194,8 @@ GstRenderer.prototype = {
         item.show_all();
         this._mainToolbar.insert(item, 3);
 
-        this._toolbarZoom = new Gtk.ToolButton({ "icon-name": "view-fullscreen-symbolic" });
-        this._toolbarZoom.show();
+        this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         this._mainToolbar.insert(this._toolbarZoom, 4);
-
-        this._toolbarZoom.connect("clicked",
-                                  Lang.bind(this, function () {
-                                      this._mainWindow.toggleFullScreen();
-                                  }));
 
         return this._toolbarActor;
     },

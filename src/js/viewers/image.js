@@ -117,16 +117,8 @@ ImageRenderer.prototype = {
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
                                                     "show-on-set-parent": false });
 
-        this._toolbarZoom = new Gtk.ToolButton({ expand: false,
-                                                 "icon-name": "view-fullscreen-symbolic" });
-        this._toolbarZoom.show();
-        this._toolbarZoom.set_expand(true);
+        this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         this._mainToolbar.insert(this._toolbarZoom, 0);
-
-        this._toolbarZoom.connect("clicked",
-                                  Lang.bind(this, function () {
-                                      this._mainWindow.toggleFullScreen();
-                                  }));
 
         return this._toolbarActor;
     },
