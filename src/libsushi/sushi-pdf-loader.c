@@ -74,7 +74,7 @@ unoconv_child_watch_cb (GPid pid,
 static void
 load_openoffice (SushiPdfLoader *self)
 {
-  gchar *doc_path, *pdf_path, *tmp_name;
+  gchar *doc_path, *pdf_path, *tmp_name, *tmp_path;
   GFile *file;
   gboolean res;
   gchar *cmd;
@@ -88,13 +88,17 @@ load_openoffice (SushiPdfLoader *self)
   doc_path = g_file_get_path (file);
   g_object_unref (file);
 
-  tmp_name = g_strconcat ("sushi-", g_get_user_name (), "-tmp.pdf", NULL);
+  tmp_name = g_strdup_printf ("sushi-%d.pdf", getpid ());
+  tmp_path = g_build_filename (g_get_user_cache_dir (), "sushi", NULL);
   self->priv->pdf_path = pdf_path =
-    g_build_filename (g_get_tmp_dir (), tmp_name, NULL);
+    g_build_filename (tmp_path, tmp_name, NULL);
+  g_mkdir_with_parents (tmp_path, 0700);
+
   cmd = g_strdup_printf ("unoconv -f pdf -o %s %s", pdf_path, doc_path);
 
   g_free (doc_path);
   g_free (tmp_name);
+  g_free (tmp_path);
 
   res = g_shell_parse_argv (cmd, &argc, &argv, &error);
   g_free (cmd);
