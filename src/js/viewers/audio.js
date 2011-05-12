@@ -7,6 +7,8 @@ let _ = Gettext.gettext;
 
 let Constants = imports.util.constants;
 
+let Utils = imports.ui.utils;
+
 function AudioRenderer(args) {
     this._init(args);
 }
@@ -157,12 +159,6 @@ AudioRenderer.prototype = {
         this._isSettingValue = false;
     },
 
-    _formatTimeComponent : function(n) {
-        // FIXME: we need a sprinf equivalent to do
-        // proper formatting here.
-        return (n >= 10 ? n : "0" + n);
-    },
-
     _updateCurrentLabel : function() {
         if (!this._mainToolbar)
             return;
@@ -170,21 +166,7 @@ AudioRenderer.prototype = {
         let currentTime =
             Math.floor(this._player.duration * this._player.progress);
 
-        let hours = Math.floor(currentTime / 3600);
-        currentTime -= hours * 3600;
-
-        let minutes = Math.floor(currentTime / 60);
-        currentTime -= minutes * 60;
-
-        let seconds = Math.floor(currentTime);
-
-        let current = this._formatTimeComponent(minutes) + ":" +
-            this._formatTimeComponent(seconds);
-        if (hours > 0) {
-            current = this._formatTimeComponent(hours) + ":" + current;
-        }
-
-        this._currentLabel.set_text(current);
+        this._currentLabel.set_text(Utils.formatTimeString(currentTime));
     },
 
     _updateDurationLabel : function() {
@@ -193,21 +175,7 @@ AudioRenderer.prototype = {
 
         let totalTime = this._player.duration;
 
-        let hours = Math.floor(totalTime / 3600);
-        totalTime -= hours * 3600;
-
-        let minutes = Math.floor(totalTime / 60);
-        totalTime -= minutes * 60;
-
-        let seconds = Math.floor(totalTime);
-
-        let total = this._formatTimeComponent(minutes) + ":" +
-            this._formatTimeComponent(seconds);
-        if (hours > 0) {
-            this._formatTimeComponent(hours) + ":" + total;
-        }
-
-        this._durationLabel.set_text(total);
+        this._durationLabel.set_text(Utils.formatTimeString(totalTime));
     },
 
     _onPlayerProgressChanged : function() {
