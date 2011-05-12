@@ -16,7 +16,8 @@ dist_jsviewers_DATA = \
     js/viewers/evince.js \
     js/viewers/folder.js \
     js/viewers/font.js \
-    js/viewers/html.js
+    js/viewers/html.js \
+    js/viewers/text.js
 
 jsutildir = $(pkgdatadir)/js/util
 dist_jsutil_DATA = \

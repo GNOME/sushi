@@ -21,6 +21,11 @@ SushiFontWidget {
     padding: 2;
 }
 
+GtkSourceView {
+    background-color: shade (@np_fg_color, 1.10);
+    font: Monospace 10;
+}
+
 .spinner {
     color: @np_fg_color;
 }

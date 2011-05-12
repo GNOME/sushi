@@ -20,6 +20,7 @@ sushi_source_h = \
     libsushi/sushi-file-loader.h \
     libsushi/sushi-font-loader.h \
     libsushi/sushi-font-widget.h \
+    libsushi/sushi-text-loader.h \
     libsushi/sushi-utils.h
 
 sushi_source_c = \
@@ -29,6 +30,7 @@ sushi_source_c = \
     libsushi/sushi-file-loader.c \
     libsushi/sushi-font-loader.c \
     libsushi/sushi-font-widget.c \
+    libsushi/sushi-text-loader.c \
     libsushi/sushi-utils.c
 
 sushi-enum-types.h: stamp-sushi-enum-types.h Makefile
@@ -84,7 +86,8 @@ Sushi_1_0_gir_INCLUDES = \
     GstTag-0.10 \
     GdkPixbuf-2.0 \
     Gtk-3.0 \
-    EvinceDocument-3.0
+    EvinceDocument-3.0 \
+    GtkSource-3.0
 
 Sushi_1_0_gir_FILES = \
     $(addprefix $(srcdir)/,$(sushi_source_h)) \
