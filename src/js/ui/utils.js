@@ -94,3 +94,20 @@ function createRunButton(file) {
 
     return toolbarRun;
 }
+
+function formatTimeString(timeVal) {
+    let hours = Math.floor(timeVal / 3600);
+    timeVal -= hours * 3600;
+
+    let minutes = Math.floor(timeVal / 60);
+    timeVal -= minutes * 60;
+
+    let seconds = Math.floor(timeVal);
+
+    let str = ("%02d:%02d").format(minutes, seconds);
+    if (hours > 0) {
+        current = ("%d").format(hours) + ":" + current;
+    }
+
+    return str;
+}
