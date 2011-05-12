@@ -97,11 +97,11 @@ check_font_contain_text (FT_Face face,
   return retval;
 }
 
-static GString *
+static gchar *
 build_charlist_for_face (FT_Face face)
 {
   GString *string;
-  gunichar c;
+  gulong c;
   guint glyph;  
 
   string = g_string_new (NULL);
@@ -112,35 +112,38 @@ build_charlist_for_face (FT_Face face)
 
   do {
     c = FT_Get_Next_Char (face, c, &glyph);
-    g_string_append_unichar (string, c);
+    g_string_append_unichar (string, (gunichar) c);
   } while (glyph != 0);
 
-  return string;
+  return g_string_free (string, FALSE);
 }
 
 static gchar *
 random_string_from_available_chars (FT_Face face,
                                     gint n_chars)
 {
-  GString *chars;
-  gint idx, rand;
-  gchar *retval;
+  gchar *chars;
+  gint idx, rand, total_chars;
+  GString *retval;
+  gchar *ptr, *end;
 
   idx = 0;
   chars = build_charlist_for_face (face);
 
-  retval = g_malloc (sizeof (char) * (n_chars + 1));
-  retval[n_chars] = '\0';
+  retval = g_string_new (NULL);
+  total_chars = g_utf8_strlen (chars, -1);
 
   while (idx < n_chars) {
-    rand = g_random_int_range (0, chars->len);
-    retval[idx] = chars->str[idx];
+    rand = g_random_int_range (0, total_chars);
+
+    ptr = g_utf8_offset_to_pointer (chars, rand);
+    end = g_utf8_find_next_char (ptr, NULL);
+
+    g_string_append_len (retval, ptr, end - ptr);
     idx++;
   }
 
-  g_string_free (chars, TRUE);
-
-  return retval;
+  return g_string_free (retval, FALSE);
 }
 
 static void
