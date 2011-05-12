@@ -1,5 +1,7 @@
 const FallbackRenderer = imports.ui.fallbackRenderer;
 
+let Gio = imports.gi.Gio;
+
 let _mimeHandler = null;
 
 function MimeHandler() {
@@ -34,9 +36,20 @@ MimeHandler.prototype = {
     },
 
     getObject: function(mime) {
-        if (this._mimeTypes[mime])
+        if (this._mimeTypes[mime]) {
+            /* first, try a direct match with the mimetype itself */
             return this._mimeTypes[mime];
-        else
+        } else {
+            /* if this fails, try to see if we have any handlers
+             * registered for a parent type.
+             */
+            for (key in this._mimeTypes) {
+                if (Gio.content_type_is_a (mime, key))
+                    return this._mimeTypes[key];
+            }
+
+            /* finally, resort to the fallback renderer */
             return this._fallbackRenderer;
+        }
     }
 }
