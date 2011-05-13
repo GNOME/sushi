@@ -35,6 +35,7 @@ static guint signals[NUM_SIGNALS] = { 0, };
 
 G_DEFINE_TYPE (SushiFontWidget, sushi_font_widget, GTK_TYPE_DRAWING_AREA);
 
+#define SURFACE_SIZE 4
 #define SECTION_SPACING 16
 
 static const gchar lowercase_text_stock[] = "abcdefghijklmnopqrstuvwxyz";
@@ -234,6 +235,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   cairo_font_face_t *font;
   gint *sizes = NULL, n_sizes, alpha_size;
   cairo_t *cr;
+  cairo_surface_t *surface;
   FT_Face face = priv->face;
   GtkStyleContext *context;
   GtkStateFlags state;
@@ -248,7 +250,9 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
     return;
   }
 
-  cr = gdk_cairo_create (gtk_widget_get_window (drawing_area));
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                        SURFACE_SIZE, SURFACE_SIZE);
+  cr = cairo_create (surface);
   context = gtk_widget_get_style_context (drawing_area);
   state = gtk_style_context_get_state (context);
   gtk_style_context_get_padding (context, state, &padding);
@@ -314,6 +318,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
     *height = pixmap_height;
 
   cairo_destroy (cr);
+  cairo_surface_destroy (surface);
   g_free (sizes);
 }
 
