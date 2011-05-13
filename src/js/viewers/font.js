@@ -32,7 +32,7 @@ FontRenderer.prototype = {
         this._callback();
     },
 
-    render : function(file, mainWindow) {
+    render : function() {
         return this._fontActor;
     },
 

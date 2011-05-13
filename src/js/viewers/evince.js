@@ -32,7 +32,7 @@ EvinceRenderer.prototype = {
         this._pdfLoader.uri = file.get_uri();
     },
 
-    render : function(file, mainWindow) {
+    render : function() {
         return this._actor;
     },
 
