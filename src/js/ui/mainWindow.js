@@ -15,6 +15,7 @@ const Mainloop = imports.mainloop;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Constants = imports.util.constants;
+const SpinnerBox = imports.ui.spinnerBox;
 
 const Sushi = imports.gi.Sushi;
 
@@ -246,18 +247,50 @@ MainWindow.prototype = {
             delete this._renderer;
         }
 
-        let info = file.query_info("standard::content-type",
-                                   0, null);
-        this._renderer = this._mimeHandler.getObject(info.get_content_type());        
+        /* create a temporary spinner renderer, that will timeout and show itself
+         * if the loading takes too long.
+         */
+        this._renderer = new SpinnerBox.SpinnerBox();
+        this._renderer.startTimeout();
+
+        file.query_info_async
+        (Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME + "," +
+         Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+         Gio.FileQueryInfoFlags.NONE,
+         GLib.PRIORITY_DEFAULT, null,
+         Lang.bind (this,
+                    function(obj, res) {
+                        try {
+                            this._fileInfo = obj.query_info_finish(res);
+                            this._titleLabel.set_text(this._fileInfo.get_display_name());
+
+                            /* now prepare the real renderer */
+                            this._pendingRenderer = this._mimeHandler.getObject(this._fileInfo.get_content_type());
+                            this._pendingRenderer.prepare(file, this, Lang.bind(this, this._onRendererPrepared));
+                        } catch(e) {
+                            /* FIXME: report the error */
+                        }}));
     },
 
-    _createTexture : function(file) {
+    _onRendererPrepared : function() {
+        /* destroy the spinner renderer */
+        this._renderer.destroy();
+
+        this._renderer = this._pendingRenderer;
+        delete this._pendingRenderer;
+
+        /* generate the texture and toolbar for the new renderer */
+        this._createTexture();
+        this._createToolbar();
+    },
+
+    _createTexture : function() {
         if (this._texture) {
             this._texture.destroy();
             delete this._texture;
         }
 
-        this._texture = this._renderer.render(file, this);
+        this._texture = this._renderer.render();
 
         this._textureXAlign = 
             new Clutter.AlignConstraint({ source: this._stage,
@@ -481,33 +514,17 @@ MainWindow.prototype = {
     },
 
 
-    _updateLabel : function(file) {
-	file.query_info_async(Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
-                              Gio.FileQueryInfoFlags.NONE,
-                              GLib.PRIORITY_DEFAULT, null,
-			      Lang.bind (this, 
-                                         function (obj, res) {
-				             try {
-				                 let info = obj.query_info_finish(res);
-				                 this._titleLabel.set_label(info.get_display_name());
-				             } catch (e) {
-				             }
-                                         }));
-    },
-
     /**************************************************************************
      ************************ titlebar helpers ********************************
      **************************************************************************/
-    _createTitle : function(file) {
+    _createTitle : function() {
         if (this._titleLabel) {
-            this._updateLabel(file);
             this._titleActor.raise_top();
             this._quitActor.raise_top();
             return;
         }
 
         this._titleLabel = new Gtk.Label({ label: "" });
-        this._updateLabel(file);
         this._titleLabel.get_style_context().add_class("np-decoration");
         
         this._titleLabel.show();
@@ -621,9 +638,9 @@ MainWindow.prototype = {
 	this.file = file;
         this._createAlphaBackground();
         this._createRenderer(file);
-        this._createTexture(file);
+        this._createTexture();
         this._createToolbar();
-        this._createTitle(file);
+        this._createTitle();
 
         if (!this._gtkWindow.get_visible()) {
             this._moveWindow();

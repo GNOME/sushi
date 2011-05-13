@@ -6,6 +6,7 @@ dist_jsui_DATA = \
     js/ui/fallbackRenderer.js \
     js/ui/mainWindow.js \
     js/ui/mimeHandler.js \
+    js/ui/spinnerBox.js \
     js/ui/utils.js
 
 jsviewersdir = $(pkgdatadir)/js/viewers
