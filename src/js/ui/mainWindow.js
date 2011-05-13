@@ -192,12 +192,10 @@ MainWindow.prototype = {
         let textureSize = this._getTextureSize();
         let windowSize = textureSize;
 
-        if (textureSize[0] < Constants.VIEW_MIN &&
-            textureSize[1] < Constants.VIEW_MIN) {
+        if (textureSize[0] < (Constants.VIEW_MIN - 2 * Constants.VIEW_PADDING_X) &&
+            textureSize[1] < (Constants.VIEW_MIN - Constants.VIEW_PADDING_Y)) {
             windowSize = [ Constants.VIEW_MIN, Constants.VIEW_MIN ];
-        }
-
-        if (!this._isFullScreen) {
+        } else if (!this._isFullScreen) {
             windowSize = [ windowSize[0] + 2 * Constants.VIEW_PADDING_X,
                            windowSize[1] + Constants.VIEW_PADDING_Y ];
         }
