@@ -18,39 +18,22 @@ TextRenderer.prototype = {
         this.canFullScreen = true;
     },
 
-    render : function(file, mainWindow) {
+    prepare : function(file, mainWindow, callback) {
         this._mainWindow = mainWindow;
         this._file = file;
+        this._callback = callback;
 
         this._textLoader = new Sushi.TextLoader();
         this._textLoader.connect("loaded",
                                  Lang.bind(this, this._onBufferLoaded));
         this._textLoader.uri = file.get_uri();
+    },
 
-        this._spinnerBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12);
-        this._spinnerBox.show();
-
-        let spinner = Gtk.Spinner.new();
-        spinner.show();
-        spinner.start();
-        spinner.set_size_request(SPINNER_SIZE, SPINNER_SIZE);
-        
-        this._spinnerBox.pack_start(spinner, true, true, 0);
-
-        let label = new Gtk.Label();
-        label.set_text(_("Loading..."));
-        label.show();
-        this._spinnerBox.pack_start(label, true, true, 0);
-
-        this._actor = new GtkClutter.Actor({ contents: this._spinnerBox });
-        this._actor.set_reactive(true);
-
+    render : function() {
         return this._actor;
     },
 
     _onBufferLoaded : function(loader, buffer) {
-        this._spinnerBox.destroy();
-
         this._buffer = buffer;
         this._buffer["highlight-syntax"] = true;
 
@@ -84,21 +67,12 @@ TextRenderer.prototype = {
         this._scrolledWin.add(this._view);
         this._scrolledWin.show_all();    
 
-        this._actor.get_widget().add(this._scrolledWin);
-        this._mainWindow.refreshSize();    
+        this._actor = new GtkClutter.Actor({ contents: this._scrolledWin });
+        this._callback();
     },
 
     getSizeForAllocation : function(allocation) {
-        let baseSize = [];
-
-        if (!this._view) {
-            baseSize = [ this._spinnerBox.get_preferred_size()[0].width,
-                         this._spinnerBox.get_preferred_size()[0].height ];
-        } else {
-            baseSize = allocation;
-        }
-
-        return baseSize;
+        return allocation;
     }
 }
 

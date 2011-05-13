@@ -10,8 +10,6 @@ let _ = Gettext.gettext;
 let Utils = imports.ui.utils;
 let Features = imports.util.features;
 
-let SPINNER_SIZE = 48;
-
 function EvinceRenderer(args) {
     this._init(args);
 }
@@ -23,32 +21,18 @@ EvinceRenderer.prototype = {
         this.canFullScreen = true;
     },
 
-    render : function(file, mainWindow) {
+    prepare : function(file, mainWindow, callback) {
         this._mainWindow = mainWindow;
+        this._file = file;
+        this._callback = callback;
 
         this._pdfLoader = new Sushi.PdfLoader();
         this._pdfLoader.connect("notify::document",
                                 Lang.bind(this, this._onDocumentLoaded));
         this._pdfLoader.uri = file.get_uri();
+    },
 
-        this._spinnerBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12);
-        this._spinnerBox.show();
-
-        let spinner = Gtk.Spinner.new();
-        spinner.show();
-        spinner.start();
-        spinner.set_size_request(SPINNER_SIZE, SPINNER_SIZE);
-        
-        this._spinnerBox.pack_start(spinner, true, true, 0);
-
-        let label = new Gtk.Label();
-        label.set_text(_("Loading..."));
-        label.show();
-        this._spinnerBox.pack_start(label, true, true, 0);
-
-        this._actor = new GtkClutter.Actor({ contents: this._spinnerBox });
-        this._actor.set_reactive(true);
-
+    render : function(file, mainWindow) {
         return this._actor;
     },
 
@@ -65,8 +49,6 @@ EvinceRenderer.prototype = {
     },
 
     _onDocumentLoaded : function() {
-        this._spinnerBox.destroy();
-
         this._document = this._pdfLoader.document;
         this._model = EvView.DocumentModel.new_with_document(this._document);
 
@@ -77,7 +59,6 @@ EvinceRenderer.prototype = {
                             Lang.bind(this, function() {
                                 this._updatePageLabel();
                             }));
-        this._updatePageLabel();
 
         this._view = EvView.View.new();
         this._view.show();
@@ -90,23 +71,15 @@ EvinceRenderer.prototype = {
         this._view.set_model(this._model);
         this._scrolledWin.add(this._view);
 
-        this._actor.get_widget().add(this._scrolledWin);
-        this._mainWindow.refreshSize();
+        this._actor = new GtkClutter.Actor({ contents: this._scrolledWin });
+        this._actor.set_reactive(true);
 
-        /* let the toolbar fade on motion now */
-        this._toolbarActor.show();
+        this._callback();
     },
 
     getSizeForAllocation : function(allocation) {
-        if (!this._document) {
-            [ width, height ] = [ this._spinnerBox.get_preferred_size()[0].width,
-                                  this._spinnerBox.get_preferred_size()[0].height ];
-        } else {
-            /* always give the view the maximum possible allocation */
-            [ width, height ] = allocation;
-        }
-
-        return [ width, height ];
+        /* always give the view the maximum possible allocation */
+        return allocation;
     },
 
     _createLabelItem : function() {
@@ -128,8 +101,7 @@ EvinceRenderer.prototype = {
         this._mainToolbar.set_show_arrow(false);
         this._mainToolbar.show();
 
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
-                                                    "show-on-set-parent": false });
+        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
         this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         this._mainToolbar.insert(this._toolbarZoom, 0);
@@ -160,6 +132,8 @@ EvinceRenderer.prototype = {
                                      Lang.bind(this, function () {
                                          this._view.next_page();
                                      }));
+
+        this._updatePageLabel();
 
         return this._toolbarActor;
     },

@@ -19,10 +19,16 @@ GstRenderer.prototype = {
         this.canFullScreen = true;
     },
 
-    render : function(file, mainWindow) {
+    prepare : function(file, mainWindow, callback) {
         this._mainWindow = mainWindow;
-        this._createVideo(file);
+        this._file = file;
+        this._callback = callback;
 
+        this._createVideo(file);
+        this._callback();
+    },
+
+    render : function() {
         return this._video;
     },
 
@@ -59,12 +65,6 @@ GstRenderer.prototype = {
         this._isSettingValue = true;
         this._progressBar.set_value(this._video.progress * 1000);
         this._isSettingValue = false;
-    },
-
-    _formatTimeComponent : function(n) {
-        // FIXME: we need a sprinf equivalent to do
-        // proper formatting here.
-        return (n >= 10 ? n : "0" + n);
     },
 
     _updateCurrentLabel : function() {

@@ -9,8 +9,6 @@ let _ = Gettext.gettext;
 
 let Utils = imports.ui.utils;
 
-let SPINNER_SIZE = 48;
-
 function ImageRenderer(args) {
     this._init(args);
 }
@@ -21,41 +19,16 @@ ImageRenderer.prototype = {
         this.canFullScreen = true;
     },
 
-    render : function(file, mainWindow) {
+    prepare : function(file, mainWindow, callback) {
         this._mainWindow = mainWindow;
-
-        this._spinnerBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12);
-        this._spinnerBox.show();
-
-        let spinner = Gtk.Spinner.new();
-        spinner.show();
-        spinner.start();
-        spinner.set_size_request(SPINNER_SIZE, SPINNER_SIZE);
-
-        this._spinnerBox.pack_start(spinner, true, true, 0);
-
-        let label = new Gtk.Label();
-        label.set_text(_("Loading..."));
-        label.show();
-        this._spinnerBox.pack_start(label, true, true, 0);
-
-        this._spinnerActor = new GtkClutter.Actor({ contents: this._spinnerBox });
-
-        this._group = new Clutter.Group({ clipToAllocation: true });
-        this._group.add_actor(this._spinnerActor);
-
-        this._spinnerActor.add_constraint(
-            new Clutter.AlignConstraint({ source: this._group,
-                                          "align-axis": Clutter.AlignAxis.Y_AXIS,
-                                          factor: 0.5 }));
-        this._spinnerActor.add_constraint(
-            new Clutter.AlignConstraint({ source: this._group,
-                                          "align-axis": Clutter.AlignAxis.X_AXIS,
-                                          factor: 0.5 }));
+        this._file = file;
+        this._callback = callback;
 
         this._createImageTexture(file);
+    },
 
-        return this._group;
+    render : function() {
+        return this._texture;
     },
 
     _createImageTexture : function(file) {
@@ -75,37 +48,22 @@ ImageRenderer.prototype = {
         GdkPixbuf.Pixbuf.new_from_stream_async
         (stream, null,
          Lang.bind(this, function(obj, res) {
-             try {
-                 let pix = GdkPixbuf.Pixbuf.new_from_stream_finish(res);
+             let pix = GdkPixbuf.Pixbuf.new_from_stream_finish(res);
 
-                 this._texture = new GtkClutter.Texture({ "keep-aspect-ratio": true });
-                 this._texture.set_from_pixbuf(pix);
+             this._texture = new GtkClutter.Texture({ "keep-aspect-ratio": true });
+             this._texture.set_from_pixbuf(pix);
 
-                 this._texture.add_constraint(
-                     new Clutter.BindConstraint({ source: this._group,
-                                                  coordinate: Clutter.BindCoordinate.SIZE }));
+             /* we're ready now */
+             this._callback();
 
-                 this._mainWindow.refreshSize();
-
-                 this._group.add_actor(this._texture);
-                 this._spinnerActor.destroy();
-
-                 this._toolbarActor.show();
-             } catch(e) {
-             }}));
+             stream.close_async(GLib.PRIORITY_DEFAULT,
+                                null, null, null);
+         }));
     },
 
     getSizeForAllocation : function(allocation, fullScreen) {
-        if (!this._texture) {
-            [ width, height ] = [ this._spinnerBox.get_preferred_size()[0].width,
-                                  this._spinnerBox.get_preferred_size()[0].height ];
-        } else {
-            let baseSize = this._texture.get_base_size();
-
-            [ width, height ] = Utils.getScaledSize(baseSize, allocation, fullScreen);
-        }
-
-        return [ width, height ];
+        let baseSize = this._texture.get_base_size();
+        return Utils.getScaledSize(baseSize, allocation, fullScreen);
     },
 
     createToolbar : function() {
@@ -114,8 +72,7 @@ ImageRenderer.prototype = {
         this._mainToolbar.set_show_arrow(false);
         this._mainToolbar.show();
 
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
-                                                    "show-on-set-parent": false });
+        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
         this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         this._mainToolbar.insert(this._toolbarZoom, 0);

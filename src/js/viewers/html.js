@@ -18,9 +18,10 @@ HTMLRenderer.prototype = {
         this.canFullScreen = true;
     },
 
-    render : function(file, mainWindow) {
+    prepare : function(file, mainWindow, callback) {
         this._mainWindow = mainWindow;
         this._file = file;
+        this._callback = callback;
 
         this._webView = WebKit.WebView.new();
         this._scrolledWin = Gtk.ScrolledWindow.new (null, null);
@@ -36,6 +37,10 @@ HTMLRenderer.prototype = {
         this._actor = new GtkClutter.Actor({ contents: this._scrolledWin });
         this._actor.set_reactive(true);
 
+        this._callback();
+    },
+
+    render : function() {
         return this._actor;
     },
 

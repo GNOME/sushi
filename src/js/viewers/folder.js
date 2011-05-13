@@ -18,8 +18,11 @@ FolderRenderer.prototype = {
         this.canFullScreen = false;
     },
 
-    render : function(file, mainWindow) {
+    prepare : function(file, mainWindow, callback) {
         this._mainWindow = mainWindow;
+        this._file = file;
+        this._callback = callback;
+
         this.lastWidth = 0;
         this.lastHeight = 0;
 
@@ -73,6 +76,10 @@ FolderRenderer.prototype = {
         this._box.show_all();
         this._actor = new GtkClutter.Actor({ contents: this._box });
 
+        this._callback();
+    },
+
+    render : function() {
         return this._actor;
     },
 

@@ -19,8 +19,11 @@ AudioRenderer.prototype = {
         this.canFullScreen = false;
     },
 
-    render : function(file, mainWindow) {
+    prepare : function(file, mainWindow, callback) {
         this._mainWindow = mainWindow;
+        this._file = file;
+        this._callback = callback;
+
         this._createPlayer(file);
 
         this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
@@ -51,6 +54,10 @@ AudioRenderer.prototype = {
         this._box.show_all();
         this._actor = new GtkClutter.Actor({ contents: this._box });
 
+        this._callback();
+    },
+
+    render : function(file, mainWindow) {
         return this._actor;
     },
 

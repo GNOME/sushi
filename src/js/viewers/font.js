@@ -15,24 +15,24 @@ FontRenderer.prototype = {
         this.canFullScreen = false;
     },
 
-    render : function(file, mainWindow) {
+    prepare : function(file, mainWindow, callback) {
+        this._mainWindow = mainWindow;
+        this._file = file;
+        this._callback = callback;
+
         this._fontWidget = new Sushi.FontWidget({ uri: file.get_uri() });
         this._fontWidget.show();
-
-        this._fontWidget.connect
-        ("loaded",
-         Lang.bind (this,
-                    function() {
-                        if (this._fontWidget.get_realized())
-                            mainWindow.refreshSize();
-                        else
-                            this._fontWidget.connect("realize",
-                                                     function() {
-                                                         mainWindow.refreshSize();
-                                                     })}));
+        this._fontWidget.connect("loaded",
+                                 Lang.bind(this, this._onFontLoaded));
 
         this._fontActor = new GtkClutter.Actor({ contents: this._fontWidget });
+    },
 
+    _onFontLoaded : function() {
+        this._callback();
+    },
+
+    render : function(file, mainWindow) {
         return this._fontActor;
     },
 
