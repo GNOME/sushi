@@ -1,13 +1,13 @@
 Bugs:
-- things don't work well over remote mounts yet
+- shouldn't probably steal focus from the nautilus window when open ?
+- error handling from plugins should be catched and a fail-whale of
+  some sort be displayed
+- album arts not square should be canvased into a square shape
 
-New plugins:
-- Text files
-- HTML viewer
-- Source code
+Low-priority bugs:
+- videos over remote mounts should have some some sort of buffering
 
-Ideas:
-
+Ideas (to be validated):
 - make preview window resizable, and save per-file preview size
   in gvfs metadata
 - save/share cover art with Rhythmbox/Banshee?
