@@ -43,14 +43,15 @@ MainWindow.prototype = {
                                            decorated: false,
                                            hasResizeGrip: false,
                                            skipPagerHint: true,
-                                           skipTaskbarHint: true });
+                                           skipTaskbarHint: true,
+                                           windowPosition: Gtk.WindowPosition.CENTER,
+                                           gravity: Gdk.Gravity.CENTER });
 
         let screen = Gdk.Screen.get_default();
         this._gtkWindow.set_visual(screen.get_rgba_visual());
 
         this._gtkWindow.connect("delete-event",
                                 Lang.bind(this, this._onWindowDeleteEvent));
-        this._gtkWindow.set_gravity(Gdk.Gravity.CENTER);
     },
 
     _createClutterEmbed : function() {
@@ -558,17 +559,6 @@ MainWindow.prototype = {
     /**************************************************************************
      *********************** Window move/fade helpers *************************
      **************************************************************************/
-    _moveWindow : function() {
-        let screen = this._gtkWindow.get_screen();
-        let monitor = screen.get_monitor_at_window(this._parent);
-        let geometry = screen.get_monitor_geometry(monitor);
-        let windowSize = this._getWindowSize();
-
-        this._gtkWindow.resize(windowSize[0], windowSize[1]);
-        this._gtkWindow.move(geometry.x + ((geometry.width - windowSize[0]) / 2),
-                             geometry.y + ((geometry.height - windowSize[1]) / 2));
-    },
-
     _fadeInWindow : function() {
         this._mainGroup.set_opacity(0);
         this._titleGroup.set_opacity(0);
@@ -640,10 +630,8 @@ MainWindow.prototype = {
         this._createToolbar();
         this._createTitle();
 
-        if (!this._gtkWindow.get_visible()) {
-            this._moveWindow();
+        if (!this._gtkWindow.get_visible())
             this._fadeInWindow();
-        }
     },
 
     setTitle : function(label) {
