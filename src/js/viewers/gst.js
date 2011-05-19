@@ -40,7 +40,7 @@ GstRenderer.prototype = {
         this._video =
             new ClutterGst.VideoTexture({ "sync-size": false });
 
-        this._video.set_uri(file.get_uri());
+        this._video.set_filename(file.get_path());
         this._video.playing = true;
 
         this._videoSizeChangeId =
