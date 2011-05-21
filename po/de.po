@@ -1,0 +1,56 @@
+# German translation for sushi.
+# Copyright (C) 2011 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+# Mario Blättermann <mariobl@freenet.de>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-05-19 06:04+0000\n"
+"PO-Revision-Date: 2011-05-21 18:28+0100\n"
+"Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
+"Language-Team: German <gnome-de@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/libsushi/sushi-file-loader.c:614
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d Objekt"
+msgstr[1] "%d Objekte"
+
+#: ../src/libsushi/sushi-file-loader.c:624
+msgid "Empty Folder"
+msgstr "Leerer Ordner"
+
+#: ../src/js/ui/fallbackRenderer.js:93
+msgid "Type"
+msgstr "Typ"
+
+#: ../src/js/ui/fallbackRenderer.js:94
+#: ../src/js/ui/fallbackRenderer.js:99
+#: ../src/js/ui/fallbackRenderer.js:104
+#: ../src/js/viewers/folder.js:100
+#: ../src/js/viewers/folder.js:105
+msgid "Loading..."
+msgstr "Ladevorgang …"
+
+#: ../src/js/ui/fallbackRenderer.js:98
+#: ../src/js/viewers/folder.js:99
+msgid "Size"
+msgstr "Größe"
+
+#: ../src/js/ui/fallbackRenderer.js:103
+#: ../src/js/viewers/folder.js:104
+msgid "Modified"
+msgstr "Geändert"
+
+#: ../src/js/viewers/evince.js:48
+#, c-format
+msgid "%d of %d"
+msgstr "%d von %d"
+
