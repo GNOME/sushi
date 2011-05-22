@@ -1,4 +1,4 @@
-# Slovenian translation for sushi.
+# Slovenian translations for sushi.
 # Copyright (C) 2011 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
 #
