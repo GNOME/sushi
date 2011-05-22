@@ -1,0 +1,59 @@
+# Slovenian translation for sushi.
+# Copyright (C) 2011 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+#
+# Mira Metljak <miraov@gmail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-05-16 18:04+0000\n"
+"PO-Revision-Date: 2011-05-16 18:04+0000\n"
+"Last-Translator: Mira Metljak <miraov@gmail.com>, 2011.\n"
+"Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
+"Language: Slovenian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Poedit-Language: Slovenian\n"
+"X-Poedit-Country: SLOVENIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/libsushi/sushi-file-loader.c:614
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d predmetov"
+msgstr[1] "%d predmet"
+msgstr[2] "%d predmeta"
+msgstr[3] "%d predmeti"
+
+#: ../src/libsushi/sushi-file-loader.c:624
+msgid "Empty Folder"
+msgstr "Prazna mapa"
+
+#: ../src/js/ui/fallbackRenderer.js:93
+msgid "Type"
+msgstr "Vrsta"
+
+#: ../src/js/ui/fallbackRenderer.js:94 ../src/js/ui/fallbackRenderer.js:99
+#: ../src/js/ui/fallbackRenderer.js:104 ../src/js/viewers/folder.js:100
+#: ../src/js/viewers/folder.js:105
+msgid "Loading..."
+msgstr "Nalaganje ..."
+
+#: ../src/js/ui/fallbackRenderer.js:98 ../src/js/viewers/folder.js:99
+msgid "Size"
+msgstr "Velikost"
+
+#: ../src/js/ui/fallbackRenderer.js:103 ../src/js/viewers/folder.js:104
+msgid "Modified"
+msgstr "Spremenjeno"
+
+#: ../src/js/viewers/evince.js:48
+#, c-format
+msgid "%d of %d"
+msgstr "%d od %d"
