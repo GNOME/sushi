@@ -60,7 +60,7 @@ HTMLRenderer.prototype = {
         separator.show();
         this._mainToolbar.insert(separator, 1);
 
-        this._toolbarRun = Utils.createRunButton(this._file);
+        this._toolbarRun = Utils.createRunButton(this._file, this._mainWindow);
         this._mainToolbar.insert(this._toolbarRun, 2);
 
         this._mainToolbar.show();
