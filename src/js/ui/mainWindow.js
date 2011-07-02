@@ -264,7 +264,7 @@ MainWindow.prototype = {
                     function(obj, res) {
                         try {
                             this._fileInfo = obj.query_info_finish(res);
-                            this._titleLabel.set_text(this._fileInfo.get_display_name());
+                            this.setTitle(this._fileInfo.get_display_name());
 
                             /* now prepare the real renderer */
                             this._pendingRenderer = this._mimeHandler.getObject(this._fileInfo.get_content_type());
