@@ -1,8 +1,13 @@
 @define-color np_fg_color #ddddde;
 @define-color np_bg_color #333;
+@define-color np_text_color #2e3436;
 
 @define-color info_bg_color @np_bg_color;
 @define-color info_fg_color @np_fg_color;
+
+GtkWindow {
+    color: @np_fg_color;
+}
 
 * {
     background-color: alpha(#000, 0.0);
@@ -12,8 +17,8 @@
     background-color: shade (@np_bg_color, 1.55);
 }
 
-GtkLabel {
-    color: #fff;
+*:insensitive {
+    color: shade(@np_fg_color, 0.60);
 }
 
 SushiFontWidget {
@@ -22,6 +27,7 @@ SushiFontWidget {
 }
 
 GtkSourceView {
+    color: @np_text_color;
     background-color: shade (@np_fg_color, 1.10);
     font: Monospace 10;
 }
@@ -65,7 +71,7 @@ GtkSourceView {
 
     border-width: 1;
     border-style: solid;
-    border-color: @np_fg_color;
+    border-color: shade(@np_fg_color, 0.60);
 }
 
 .np-decoration {
@@ -78,13 +84,13 @@ GtkSourceView {
     background-image: none;
     padding: 4;
 
+    border-image: none;
     border-style: none;
     border-radius: 0;
     border-width: 0;
     background-color: alpha (#000, 0.0);
 
     -GtkWidget-focus-line-width: 0;
-    -adwaita-focus-fill-color: none;
 }
 
 .np-decoration.button:hover {
@@ -105,8 +111,13 @@ GtkSourceView {
                                     to(alpha(#333, 0.0)));
 }
 
-.np-toolbar-button,
-.np-toolbar.button {
+.np-toolbar {
+    padding: 0 4;
+}
+
+.np-toolbar .button {
+    border-image: none;
+    padding: 0 4;
     background-image: -gtk-gradient(linear,
                                     left top, left bottom,
                                     from(#333),
@@ -114,8 +125,12 @@ GtkSourceView {
                                     to (#333));
 }
 
-.np-toolbar-button:hover {
-    background-color: alpha(@np_bg_color, 0.75);
+.np-toolbar .button:hover {
+    background-image: -gtk-gradient(linear,
+                                    left top, left bottom,
+                                    from(shade(#333, 1.20)),
+                                    color-stop(0.50, shade (#333, 1.60)),
+                                    to (shade(#333, 1.20)));
 }
 
 .np-toolbar GtkScale.slider {
