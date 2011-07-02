@@ -85,7 +85,7 @@ function createFullScreenButton(mainWindow) {
     return toolbarZoom;
 }
 
-function createRunButton(file) {
+function createRunButton(file, mainWindow) {
     let toolbarRun = new Gtk.ToolButton({ expand: false,
                                           "icon-name": "system-run-symbolic" });
     toolbarRun.show();
@@ -96,6 +96,29 @@ function createRunButton(file) {
                                Gtk.show_uri(toolbarRun.get_screen(),
                                             file.get_uri(),
                                             timestamp);
+
+                               mainWindow.close();
+                           } catch (e) {
+                           }
+                       });
+
+    return toolbarRun;
+}
+
+function createEditButton(file, mainWindow) {
+    // FIXME: needs better icon
+    let toolbarRun = new Gtk.ToolButton({ expand: false,
+                                          "icon-name": "edit-cut-symbolic" });
+    toolbarRun.show();
+    toolbarRun.connect("clicked",
+                       function () {
+                           let timestamp = Gtk.get_current_event_time();
+                           try {
+                               Gtk.show_uri(toolbarRun.get_screen(),
+                                            file.get_uri(),
+                                            timestamp);
+
+                               mainWindow.close();
                            } catch (e) {
                            }
                        });
