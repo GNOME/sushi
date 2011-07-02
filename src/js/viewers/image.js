@@ -57,7 +57,13 @@ ImageRenderer.prototype = {
              this._callback();
 
              stream.close_async(GLib.PRIORITY_DEFAULT,
-                                null, null, null);
+                                null, function(object, res) {
+                                    try {
+                                        object.close_finish(res);
+                                    } catch (e) {
+                                        log("Unable to close the stream " + e.toString());
+                                    }
+                                });
          }));
     },
 
