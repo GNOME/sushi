@@ -116,14 +116,6 @@ GstRenderer.prototype = {
     createToolbar : function () {
         this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
         this._mainToolbar.get_style_context().add_class("np-toolbar");
-        this._mainToolbar.show();
-
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
-                                                    opacity: 0 });
-        this._toolbarActor.add_constraint(
-            new Clutter.BindConstraint({ source: this._video,
-                                         coordinate: Clutter.BindCoordinate.WIDTH,
-                                         offset: -50 }));
 
         this._toolbarPlay = new Gtk.ToolButton({ "icon-name": "media-playback-pause-symbolic" });
         this._toolbarPlay.show();
@@ -168,6 +160,14 @@ GstRenderer.prototype = {
 
         this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         this._mainToolbar.insert(this._toolbarZoom, 4);
+
+        this._mainToolbar.show();
+
+        this._toolbarActor = Utils.forcedSizeActor(this._mainToolbar);
+        this._toolbarActor.add_constraint(
+            new Clutter.BindConstraint({ source: this._video,
+                                         coordinate: Clutter.BindCoordinate.WIDTH,
+                                         offset: -50 }));
 
         return this._toolbarActor;
     },

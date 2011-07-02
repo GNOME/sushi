@@ -52,9 +52,6 @@ HTMLRenderer.prototype = {
         this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
         this._mainToolbar.get_style_context().add_class("np-toolbar");
         this._mainToolbar.set_show_arrow(false);
-        this._mainToolbar.show();
-
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
         this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         this._mainToolbar.insert(this._toolbarZoom, 0);
@@ -65,6 +62,10 @@ HTMLRenderer.prototype = {
 
         this._toolbarRun = Utils.createRunButton(this._file);
         this._mainToolbar.insert(this._toolbarRun, 2);
+
+        this._mainToolbar.show();
+
+        this._toolbarActor = Utils.forcedSizeActor(this._mainToolbar);
 
         return this._toolbarActor;
     }

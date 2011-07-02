@@ -530,7 +530,7 @@ MainWindow.prototype = {
         this._titleLabel.get_style_context().add_class("np-decoration");
         
         this._titleLabel.show();
-        this._titleActor = new GtkClutter.Actor({ contents: this._titleLabel });
+        this._titleActor = Utils.forcedSizeActor(this._titleLabel);
         this._titleActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5 }));
@@ -549,7 +549,7 @@ MainWindow.prototype = {
                                  Lang.bind(this,
                                            this._clearAndQuit));
 
-        this._quitActor = new GtkClutter.Actor({ contents: this._quitButton });
+        this._quitActor = Utils.forcedSizeActor(this._quitButton);
         this._quitActor.set_reactive(true);
         this._quitActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
@@ -630,6 +630,9 @@ MainWindow.prototype = {
 
     setTitle : function(label) {
         this._titleLabel.set_label(label);
+
+        //FIXME: why is this needed?
+        this._titleActor.set_size(this._titleLabel.get_preferred_width()[1], this._titleLabel.get_preferred_height()[1]);
     },
 
     refreshSize : function() {
