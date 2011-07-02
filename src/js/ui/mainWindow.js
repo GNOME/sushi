@@ -73,6 +73,9 @@ MainWindow.prototype = {
 
         this._titleGroup =  new Clutter.Group();
         this._stage.add_actor(this._titleGroup);
+
+        this._mainGroup.set_opacity(0);
+        this._titleGroup.set_opacity(0);
     },
 
     _connectStageSignals : function() {
@@ -609,17 +612,9 @@ MainWindow.prototype = {
      **************************************************************************/
     setParent : function(xid) {
         this._parent = Sushi.create_foreign_window(xid);
-
-        if (!this._gtkWindow.get_realized()) {
-            this._gtkWindow.realize();
-            this._gtkWindow.get_window().set_transient_for(this._parent);
-
-            /* FIXME: I don't know why I need to call this before
-             * drawing the background.
-             */
-            this._gtkWindow.show_all();
-            this._gtkWindow.hide();
-        }
+        this._gtkWindow.realize();
+        this._gtkWindow.get_window().set_transient_for(this._parent);
+        this._gtkWindow.show_all();
     },
 
     setFile : function(file) {
@@ -630,8 +625,7 @@ MainWindow.prototype = {
         this._createToolbar();
         this._createTitle();
 
-        if (!this._gtkWindow.get_visible())
-            this._fadeInWindow();
+        this._fadeInWindow();
     },
 
     setTitle : function(label) {
