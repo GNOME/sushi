@@ -44,23 +44,17 @@ TextRenderer.prototype = {
         this._view = new GtkSource.View({ buffer: this._buffer,
                                           editable: false,
                                           "cursor-visible": false });
+        this._view.set_can_focus(false);
 
         if (this._buffer.get_language())
             this._view.set_show_line_numbers(true);
 
-        /* block any button press event */
-        this._view.connect("button-press-event",
-                           Lang.bind(this, function() {
-                               return true;
-                           }));
-
-        /* we don't want the ibeam cursor, since we don't allow
-         * editing/selecting
-         */
-        this._view.connect("realize",
-                           Lang.bind(this, function() {
-                               let window = this._view.get_window(Gtk.TextWindowType.TEXT);
-                               window.set_cursor(null);
+        // FIXME: *very* ugly wokaround to the fact that we can't
+        // access event.button from a button-press callback to block
+        // right click
+        this._view.connect("populate-popup",
+                           Lang.bind(this, function(widget, menu) {
+                               menu.destroy();
                            }));
 
         this._scrolledWin = Gtk.ScrolledWindow.new(null, null);
@@ -68,6 +62,7 @@ TextRenderer.prototype = {
         this._scrolledWin.show_all();    
 
         this._actor = new GtkClutter.Actor({ contents: this._scrolledWin });
+        this._actor.set_reactive(true);
         this._callback();
     },
 
