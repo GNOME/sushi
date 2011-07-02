@@ -360,7 +360,18 @@ try_fetch_from_amazon (SushiCoverArtFetcher *self)
   g_free (album);
 }
 
-/* code taken from Totem */
+/* code taken from Totem; totem-gst-helpers.c
+ *
+ * Copyright (C) 2003-2007 the GStreamer project
+ *      Julien Moutte <julien@moutte.net>
+ *      Ronald Bultje <rbultje@ronald.bitfreak.net>
+ * Copyright (C) 2005-2008 Tim-Philipp Müller <tim centricular net>
+ * Copyright (C) 2009 Sebastian Dröge <sebastian.droege@collabora.co.uk>
+ * Copyright © 2009 Christian Persch
+ *
+ * License: GPLv2+
+ *
+ */
 static GdkPixbuf *
 totem_gst_buffer_to_pixbuf (GstBuffer *buffer)
 {
@@ -447,9 +458,7 @@ totem_gst_tag_list_get_cover (GstTagList *tag_list)
 
   return NULL;
 }
-
-/* end of code taken from Totem */
-
+/* */
 static void
 try_fetch_from_tags (SushiCoverArtFetcher *self)
 {

@@ -42,7 +42,13 @@ static const gchar lowercase_text_stock[] = "abcdefghijklmnopqrstuvwxyz";
 static const gchar uppercase_text_stock[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static const gchar punctuation_text_stock[] = "0123456789.:,;(*!?')";
 
-/* adapted from gnome-utils:font-viewer/font-view.c */
+/* adapted from gnome-utils:font-viewer/font-view.c
+ *
+ * Copyright (C) 2002-2003  James Henstridge <james@daa.com.au>
+ * Copyright (C) 2010 Cosimo Cecchi <cosimoc@gnome.org>
+ *
+ * License: GPLv2+
+ */
 static void
 draw_string (cairo_t *cr,
              GtkBorder padding,
