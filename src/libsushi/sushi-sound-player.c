@@ -131,6 +131,8 @@ sushi_sound_player_ensure_discoverer (SushiSoundPlayer *player)
                     G_CALLBACK (discoverer_discovered_cb), player);
   gst_discoverer_start (priv->discoverer);
   gst_discoverer_discover_uri_async (priv->discoverer, priv->uri);
+
+  return TRUE;
 }
 
 static void
@@ -143,8 +145,7 @@ sushi_sound_player_set_uri (SushiSoundPlayer *player,
 
   priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
 
-  if (priv->uri &&
-      !strcmp (priv->uri, uri))
+  if (!g_strcmp0 (priv->uri, uri))
     return;
 
   g_free (priv->uri);
@@ -588,7 +589,7 @@ sushi_sound_player_get_playing (SushiSoundPlayer *player)
   GstState state, pending;
   gboolean playing;
 
-  g_return_if_fail (SUSHI_IS_SOUND_PLAYER (player));
+  g_return_val_if_fail (SUSHI_IS_SOUND_PLAYER (player), FALSE);
 
   priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
 
