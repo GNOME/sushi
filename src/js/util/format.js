@@ -1,6 +1,34 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 /*
+ * Copyright (C) 2009-2011 Adel Gadllah <adel.gadllah@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+ * The Sushi project hereby grant permission for non-gpl compatible GStreamer
+ * plugins to be used and distributed together with GStreamer and Sushi. This
+ * permission is above and beyond the permissions granted by the GPL license
+ * Sushi is covered by.
+ *
+ * Authors: Adel Gadllah <adel.gadllah@gmail.com>
+ *          Florian Müllner <fmuellner@gnome.org>
+ *
+ */
+
+/*
  * This function is intended to extend the String object and provide
  * an String.format API for string formatting.
  * It has to be set up using String.prototype.format = Format.format;
