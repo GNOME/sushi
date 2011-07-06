@@ -369,7 +369,7 @@ try_fetch_from_amazon (SushiCoverArtFetcher *self)
  * Copyright (C) 2009 Sebastian Dröge <sebastian.droege@collabora.co.uk>
  * Copyright © 2009 Christian Persch
  *
- * License: GPLv2+
+ * License: GPLv2+ with exception clause, see COPYING
  *
  */
 static GdkPixbuf *

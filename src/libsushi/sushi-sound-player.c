@@ -1,7 +1,7 @@
 /* this code is mostly copied and renamed from TheBoard, see
  * the-board/src/tb/tb-sound-player.[ch]
  *
- * License: GPLv3
+ * License: GPLv2+ with exception clause, see COPYING
  */
 
 #include <glib.h>
