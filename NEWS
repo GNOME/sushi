@@ -1,3 +1,10 @@
+0.0.4 - "Bianca"
+================
+
+- Relicense to GPLv2 with an exception clause to allow use
+  non-free GStreamer plugins.
+- Fix some compilation warnings (Vincent Untz)
+
 0.0.3 - "Last Night"
 ====================
 
