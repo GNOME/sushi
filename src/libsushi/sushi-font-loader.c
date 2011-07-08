@@ -154,6 +154,10 @@ font_load_job (GIOSchedulerJob *sched_job,
   return FALSE;
 }
 
+/**
+ * sushi_new_ft_face_from_uri_async: (skip)
+ *
+ */
 void
 sushi_new_ft_face_from_uri_async (const gchar *uri,
                                   GAsyncReadyCallback callback,
@@ -172,6 +176,10 @@ sushi_new_ft_face_from_uri_async (const gchar *uri,
                            NULL);
 }
 
+/**
+ * sushi_new_ft_face_from_uri_finish: (skip)
+ *
+ */
 FT_Face
 sushi_new_ft_face_from_uri_finish (GAsyncResult *result,
                                    gchar **contents,
