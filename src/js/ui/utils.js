@@ -100,36 +100,35 @@ function getStaticSize(renderer, widget) {
     return [ width, height ];
 }
 
-function createFullScreenButton(mainWindow) {
-    let toolbarZoom = new Gtk.ToolButton({ expand: false,
-                                           "icon-name": "view-fullscreen-symbolic" });
-    toolbarZoom.show();
-    toolbarZoom.connect("clicked",
-                        function () {
-                            mainWindow.toggleFullScreen();
-                        });
+function createToolButton(iconName, callback) {
+    let button = new Gtk.ToolButton({ expand: false,
+                                      "icon-name": iconName });
+    button.show();
+    button.connect("clicked", callback);
 
-    return toolbarZoom;
+    return button;
+}
+
+function createFullScreenButton(mainWindow) {
+    return createToolButton("view-fullscreen-symbolic", Lang.bind(this, function() {
+        mainWindow.toggleFullScreen();
+    }));        
 }
 
 function createOpenButton(file, mainWindow) {
-    let toolbarOpen = new Gtk.ToolButton({ expand: false,
-                                           "icon-name": "document-open-symbolic" });
-    toolbarOpen.show();
-    toolbarOpen.connect("clicked",
-                        function () {
-                            let timestamp = Gtk.get_current_event_time();
-                            try {
-                                Gtk.show_uri(toolbarRun.get_screen(),
-                                             file.get_uri(),
-                                             timestamp);
+    return createToolButton("document-open-symbolic", Lang.bind(this, function(widget) {
+        let timestamp = Gtk.get_current_event_time();
+        try {
+            Gtk.show_uri(widget.get_screen(),
+                         file.get_uri(),
+                         timestamp);
 
-                                mainWindow.close();
-                            } catch (e) {
-                            }
-                        });
-
-    return toolbarOpen;
+            mainWindow.close();
+        } catch (e) {
+            log('Unable to execute the default application for ' + 
+                file.get_uri() + ' : ' + e.toString());
+        }
+    }));
 }
 
 function formatTimeString(timeVal) {
