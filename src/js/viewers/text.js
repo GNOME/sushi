@@ -102,7 +102,7 @@ TextRenderer.prototype = {
         this._mainToolbar.get_style_context().add_class("np-toolbar");
         this._mainToolbar.set_show_arrow(false);
 
-        this._toolbarRun = Utils.createEditButton(this._file, this._mainWindow);
+        this._toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
         this._mainToolbar.insert(this._toolbarRun, 0);
 
         this._mainToolbar.show();
