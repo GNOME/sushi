@@ -625,11 +625,11 @@ sushi_file_loader_get_size_string (SushiFileLoader *self)
 
   if (g_file_info_get_file_type (self->priv->info) != G_FILE_TYPE_DIRECTORY) {
     size = g_file_info_get_size (self->priv->info);
-    return g_format_size_for_display (size);
+    return g_format_size (size);
   }
 
   if (self->priv->total_size != -1) {
-    gchar *str, *retval;
+    gchar *str, *size_str, *retval;
     const gchar *items_str;
 
     size = self->priv->total_size;
@@ -642,9 +642,11 @@ sushi_file_loader_get_size_string (SushiFileLoader *self)
                              "%d items",
                              self->priv->file_items + self->priv->directory_items);
     str = g_strdup_printf (items_str, self->priv->file_items + self->priv->directory_items);
-
-    retval = g_strconcat (g_format_size_for_display (size), ", ", str, NULL);
+    size_str = g_format_size (size);
+    
+    retval = g_strconcat (size_str, ", ", str, NULL);
     g_free (str);
+    g_free (size_str);
 
     return retval;
   } else if (!self->priv->loading) {
