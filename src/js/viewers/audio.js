@@ -248,6 +248,14 @@ AudioRenderer.prototype = {
         this._mainToolbar = new Gtk.Toolbar();
         this._mainToolbar.get_style_context().add_class("np-toolbar");
         this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
+        this._mainToolbar.show();
+
+        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
+                                                    opacity: 0});
+        this._toolbarActor.add_constraint(
+            new Clutter.BindConstraint({ source: this._actor,
+                                         coordinate: Clutter.BindCoordinate.WIDTH,
+                                         offset: -50 }));
 
         this._toolbarPlay = new Gtk.ToolButton({ "icon-name": "media-playback-pause-symbolic" });
         this._toolbarPlay.show();
@@ -288,15 +296,6 @@ AudioRenderer.prototype = {
         item.add(this._durationLabel);
         item.show_all();
         this._mainToolbar.insert(item, 3);
-
-        this._mainToolbar.show();
-
-        this._toolbarActor = Utils.forcedSizeActor(this._mainToolbar);
-        this._toolbarActor.add_constraint(
-            new Clutter.BindConstraint({ source: this._actor,
-                                         coordinate: Clutter.BindCoordinate.WIDTH,
-                                         offset: -50 }));
-
 
         return this._toolbarActor;
     },

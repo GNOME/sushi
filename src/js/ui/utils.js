@@ -29,14 +29,6 @@ let Constants = imports.util.constants;
 
 let slowDownFactor = 0;
 
-// FIXME: why is this needed?
-function forcedSizeActor(widget) {
-    let actor = new GtkClutter.Actor({ contents: widget });
-    actor.set_size(widget.get_preferred_width()[1], widget.get_preferred_height()[1]);
-
-    return actor;
-}
-
 function setSlowDownFactor(factor) {
     slowDownFactor = factor;
 }
