@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-25 18:55+0200\n"
-"PO-Revision-Date: 2011-07-25 18:59+0200\n"
+"POT-Creation-Date: 2011-07-25 19:05+0200\n"
+"PO-Revision-Date: 2011-07-25 19:06+0200\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linu.it>\n"
 "Language: \n"
@@ -33,8 +33,8 @@ msgid "Type"
 msgstr "Tipo"
 
 #: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
-#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/viewers/folder.js:127
-#: ../src/js/viewers/folder.js:132
+#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
+#: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
 msgid "Loading..."
 msgstr "Caricamento..."
 
@@ -45,6 +45,14 @@ msgstr "Dimensione"
 #: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
 msgid "Modified"
 msgstr "Ultima modifica"
+
+#: ../src/js/viewers/audio.js:163
+msgid "from"
+msgstr "da"
+
+#: ../src/js/viewers/audio.js:165
+msgid "by"
+msgstr "di"
 
 #: ../src/js/viewers/evince.js:75
 #, c-format
