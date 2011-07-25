@@ -5,24 +5,11 @@
 @define-color info_bg_color @np_bg_color;
 @define-color info_fg_color @np_fg_color;
 
-GtkWindow {
-    color: @np_fg_color;
-}
-
 * {
     background-color: alpha(#000, 0.0);
 }
 
-*:selected {
-    background-color: shade (@np_bg_color, 1.55);
-}
-
-*:insensitive {
-    color: shade(@np_fg_color, 0.60);
-}
-
 SushiFontWidget {
-    color: @np_fg_color;
     padding: 2;
 }
 
@@ -32,37 +19,28 @@ GtkSourceView {
     font: Monospace 10;
 }
 
-.spinner {
-    color: @np_fg_color;
-}
-
 .scrollbar.slider,
 .scrollbar.button {
-    color: shade (@np_bg_color, 1.30);
     border-color: shade (@np_bg_color, 1.30);
 }
 
 .scrollbar.button:prelight,
 .scrollbar.slider:prelight {
     background-color: shade (@np_bg_color, 1.30);
-    color: shade (@np_fg_color, 0.75);
 }
 
 .scrollbar.button:prelight:active,
 .scrollbar.slider:prelight:active {
     background-color: shade (@np_bg_color, 1.55);
     border-color: shade (@np_bg_color, 1.55);
-    color: shade (@np_fg_color, 0.85);
 }
 
 .np-toolbar {
     border-style: none;
     border-radius: 3;
     border-width: 0;
-    padding: 0 2;
 
     background-color: @np_bg_color;
-    color: @np_fg_color;
 }
 
 .np-toolbar GtkSeparatorToolItem {
@@ -71,16 +49,34 @@ GtkSourceView {
 
     border-width: 1;
     border-style: solid;
-    border-color: shade(@np_fg_color, 0.60);
+}
+
+.np-toolbar .button {
+    border-image: none;
+    background-image: -gtk-gradient(linear,
+                                    left top, left bottom,
+                                    from(#333),
+                                    color-stop(0.50, shade (#333, 1.40)),
+                                    to (#333));
+}
+
+.np-toolbar .button:hover {
+    background-image: -gtk-gradient(linear,
+                                    left top, left bottom,
+                                    from(shade(#333, 1.20)),
+                                    color-stop(0.50, shade (#333, 1.60)),
+                                    to (shade(#333, 1.20)));
+}
+
+.np-toolbar GtkLabel {
+    font: Cantarell 8;
 }
 
 .np-decoration {
-    color: @np_fg_color;
     font: bold;
 }
 
 .np-decoration.button {
-    color: @np_fg_color;
     background-image: none;
     padding: 4;
 
@@ -109,47 +105,4 @@ GtkSourceView {
                                     from(alpha(#333, 0.0)),
                                     color-stop(0.50, #333),
                                     to(alpha(#333, 0.0)));
-}
-
-.np-toolbar {
-    padding: 0 4;
-}
-
-.np-toolbar .button {
-    border-image: none;
-    padding: 0 4;
-    background-image: -gtk-gradient(linear,
-                                    left top, left bottom,
-                                    from(#333),
-                                    color-stop(0.50, shade (#333, 1.40)),
-                                    to (#333));
-}
-
-.np-toolbar .button:hover {
-    background-image: -gtk-gradient(linear,
-                                    left top, left bottom,
-                                    from(shade(#333, 1.20)),
-                                    color-stop(0.50, shade (#333, 1.60)),
-                                    to (shade(#333, 1.20)));
-}
-
-.np-toolbar GtkScale.slider {
-    background-image: none;
-    background-color: @np_bg_color;
-    border-color: shade (@np_fg_color, 0.8);
-}
-
-.np-toolbar GtkScale.trough {
-    border-color: shade (@np_fg_color, 0.8);
-    border-width: 1;
-    border-style: solid;
-    background-image: -gtk-gradient (linear,
-                                     left top, left bottom,
-                                     from (shade(#333, 1.10)),
-                                     to (shade (#333, 1.30)));
-}
-
-.np-toolbar GtkLabel {
-    font: Cantarell 8;
-    color: @np_fg_color;
 }

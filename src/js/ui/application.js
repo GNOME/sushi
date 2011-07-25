@@ -107,6 +107,9 @@ Application.prototype = {
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  600);
+
+        let settings = Gtk.Settings.get_default();
+        settings.gtk_application_prefer_dark_theme = true;
     },
 
     activate : function() {
