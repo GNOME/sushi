@@ -1,3 +1,13 @@
+0.0.5 - "Coop"
+==============
+
+- Use "document-open-symbolic" for run/open toolbar buttons
+- Require latest clutter-gtk to fix underallocations with GTK+ 3.1
+- Use g_format_size() instead of g_format_size_for_display()
+- Use the GTK+ dark theme
+- UTF8-validate the text before inserting it into the
+  buffer (Ignacio Casal Quinteiro)
+
 0.0.4 - "Bianca"
 ================
 
