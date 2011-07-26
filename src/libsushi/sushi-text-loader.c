@@ -177,6 +177,14 @@ load_contents_async_ready_cb (GObject *source,
     return;
   }
 
+  if (!g_utf8_validate (contents, -1, NULL)) {
+    /* FIXME: we need to report the error */
+    g_print ("Can't load the text file as it has invalid characters");
+    g_free (contents);
+
+    return;
+  }
+
   gtk_source_buffer_begin_not_undoable_action (self->priv->buffer);
   gtk_text_buffer_set_text (GTK_TEXT_BUFFER (self->priv->buffer), contents, -1);
   gtk_source_buffer_end_not_undoable_action (self->priv->buffer);
