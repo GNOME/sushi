@@ -49,7 +49,10 @@ const SushiIface = {
                  outSignature: '' },
                { name: "ShowFile",
                  inSignature: 'sib',
-                 outSignature: '' } ],
+                 outSignature: '' },
+               { name: "Close",
+                 inSignature: '',
+                 outSignature: '' }],
 
     signals: [],
     properties: []
@@ -113,6 +116,10 @@ Application.prototype = {
     },
 
     Activate : function() {
+    },
+
+    Close: function() {
+        this.quit();
     },
 
     ShowFile : function(uri, xid, closeIfAlreadyShown) {
