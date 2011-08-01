@@ -44,7 +44,7 @@ const _SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
 const SushiIface = {
     name: 'org.gnome.NautilusPreviewer',
 
-    methods: [ { name: "activate",
+    methods: [ { name: "Activate",
                  inSignature: '',
                  outSignature: '' },
                { name: "ShowFile",
@@ -91,7 +91,7 @@ Application.prototype = {
 
     _onNameNotAcquired : function() {
         let remoteApp = new RemoteApplication();
-        remoteApp.activateRemote();
+        remoteApp.ActivateRemote();
 
         this.quit();
     },
@@ -112,7 +112,7 @@ Application.prototype = {
         settings.gtk_application_prefer_dark_theme = true;
     },
 
-    activate : function() {
+    Activate : function() {
     },
 
     ShowFile : function(uri, xid, closeIfAlreadyShown) {
