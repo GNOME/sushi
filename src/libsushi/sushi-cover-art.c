@@ -43,6 +43,10 @@ enum {
 struct _SushiCoverArtFetcherPrivate {
   GdkPixbuf *cover;
   GstTagList *taglist;
+
+  gchar *asin;
+  gboolean tried_cache;
+  GInputStream *input_stream;
 };
 
 #define AMAZON_IMAGE_FORMAT "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg"
@@ -54,6 +58,8 @@ static void sushi_cover_art_fetcher_get_uri_for_track_async (SushiCoverArtFetche
                                                              const gchar *album,
                                                              GAsyncReadyCallback callback,
                                                              gpointer user_data);
+static void try_read_from_file (SushiCoverArtFetcher *self,
+                                GFile *file);
 
 static void
 sushi_cover_art_fetcher_dispose (GObject *object)
@@ -61,11 +67,15 @@ sushi_cover_art_fetcher_dispose (GObject *object)
   SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (object);
 
   g_clear_object (&priv->cover);
+  g_clear_object (&priv->input_stream);
 
   if (priv->taglist != NULL) {
     gst_tag_list_free (priv->taglist);
     priv->taglist = NULL;
   }
+
+  g_free (priv->asin);
+  priv->asin = NULL;
 
   G_OBJECT_CLASS (sushi_cover_art_fetcher_parent_class)->dispose (object);
 }
@@ -227,7 +237,7 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
 
     if (asin != NULL &&
         asin[0] != '\0') {
-      retval = g_strdup_printf (AMAZON_IMAGE_FORMAT, asin);
+      retval = g_strdup (asin);
       break;
     }
   }
@@ -283,6 +293,92 @@ sushi_cover_art_fetcher_get_uri_for_track_async (SushiCoverArtFetcher *self,
                            G_PRIORITY_DEFAULT, NULL);
 }
 
+static GFile *
+get_gfile_for_amazon (SushiCoverArtFetcher *self)
+{
+  GFile *retval;
+  gchar *uri;
+
+  uri = g_strdup_printf (AMAZON_IMAGE_FORMAT, self->priv->asin);
+  retval = g_file_new_for_uri (uri);
+  g_free (uri);
+
+  return retval;
+}
+
+static GFile *
+get_gfile_for_cache (SushiCoverArtFetcher *self)
+{
+  GFile *retval;
+  gchar *cache_path;
+  gchar *filename, *path;
+
+  cache_path = g_build_filename (g_get_user_cache_dir (),
+                                 "sushi", NULL);
+  g_mkdir_with_parents (cache_path, 0700);
+
+  filename = g_strdup_printf ("%s.jpg", self->priv->asin);
+  path = g_build_filename (cache_path, filename, NULL);
+  retval = g_file_new_for_path (path);
+
+  g_free (filename);
+  g_free (path);
+  g_free (cache_path);
+
+  return retval;
+}
+
+static void
+cache_splice_ready_cb (GObject *source,
+                       GAsyncResult *res,
+                       gpointer user_data)
+{
+  GError *error = NULL;
+
+  g_output_stream_splice_finish (G_OUTPUT_STREAM (source),
+                                 res, &error);
+
+  if (error != NULL) {
+    g_warning ("Can't save the cover art image in the cache: %s\n", error->message);
+    g_error_free (error);
+
+    return;
+  }
+}
+
+static void
+cache_replace_ready_cb (GObject *source,
+                        GAsyncResult *res,
+                        gpointer user_data)
+{
+  GFileOutputStream *cache_stream;
+  GError *error = NULL;
+  SushiCoverArtFetcher *self = user_data;
+
+  cache_stream = g_file_replace_finish (G_FILE (source),
+                                        res, &error);
+
+  if (error != NULL) {
+    g_warning ("Can't save the cover art image in the cache: %s\n", error->message);
+    g_error_free (error);
+
+    return;
+  }
+
+  g_seekable_seek (G_SEEKABLE (self->priv->input_stream), 0, G_SEEK_SET,
+                   NULL, NULL);
+
+  g_output_stream_splice_async (G_OUTPUT_STREAM (cache_stream), 
+                                self->priv->input_stream,
+                                G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE |
+                                G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
+                                G_PRIORITY_DEFAULT,
+                                NULL,
+                                cache_splice_ready_cb, self);
+
+  g_object_unref (cache_stream);
+}
+
 static void
 pixbuf_from_stream_async_cb (GObject *source,
                              GAsyncResult *res,
@@ -292,42 +388,115 @@ pixbuf_from_stream_async_cb (GObject *source,
   SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
   GError *error = NULL;
   GdkPixbuf *pix;
+  GFile *file, *cache_file;
 
   pix = gdk_pixbuf_new_from_stream_finish (res, &error);
 
   if (error != NULL) {
-    g_print ("Unable to fetch Amazon cover art: %s\n", error->message);
+    if (!self->priv->tried_cache) {
+      self->priv->tried_cache = TRUE;
+
+      file = get_gfile_for_amazon (self);
+      try_read_from_file (self, file);
+
+      g_object_unref (file);
+    } else {
+      g_print ("Unable to fetch Amazon cover art: %s\n", error->message);
+    }
+
     g_error_free (error);
     return;
   }
 
   priv->cover = pix;
   g_object_notify (G_OBJECT (self), "cover");
+
+  if (self->priv->tried_cache) {
+    /* the pixbuf has been loaded. if we didn't hit the cache,
+     * save it now.
+     */
+    cache_file = get_gfile_for_cache (self);
+    g_file_replace_async (cache_file, 
+                          NULL, FALSE,
+                          G_FILE_CREATE_PRIVATE,
+                          G_PRIORITY_DEFAULT,
+                          NULL,
+                          cache_replace_ready_cb,
+                          self);
+
+    g_object_unref (cache_file);
+  }
 }
 
 static void
-asin_uri_read_cb (GObject *source,
-                  GAsyncResult *res,
-                  gpointer user_data)
+read_async_ready_cb (GObject *source,
+                     GAsyncResult *res,
+                     gpointer user_data)
 {
   SushiCoverArtFetcher *self = user_data;
   SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
   GFileInputStream *stream;
   GError *error = NULL;
+  GFile *file;
 
   stream = g_file_read_finish (G_FILE (source),
                                res, &error);
 
   if (error != NULL) {
-    g_print ("Unable to fetch Amazon cover art: %s\n", error->message);
+    if (!self->priv->tried_cache) {
+      self->priv->tried_cache = TRUE;
+
+      file = get_gfile_for_amazon (self);
+      try_read_from_file (self, file);
+
+      g_object_unref (file);
+    } else {
+      g_print ("Unable to fetch Amazon cover art: %s\n", error->message);
+    }
+
     g_error_free (error);
     return;
   }
 
-  gdk_pixbuf_new_from_stream_async (G_INPUT_STREAM (stream), NULL,
+  priv->input_stream = G_INPUT_STREAM (stream);
+  gdk_pixbuf_new_from_stream_async (priv->input_stream, NULL,
                                     pixbuf_from_stream_async_cb, self);
+}
 
-  g_object_unref (stream);
+static void
+try_read_from_file (SushiCoverArtFetcher *self,
+                    GFile *file)
+{
+  g_file_read_async (file,
+                     G_PRIORITY_DEFAULT, NULL,
+                     read_async_ready_cb, self);
+}
+
+static void
+cache_file_query_info_cb (GObject *source,
+                          GAsyncResult *res,
+                          gpointer user_data)
+{
+  GFileInfo *cache_info = NULL;
+  SushiCoverArtFetcher *self = user_data;
+  GError *error = NULL;
+  GFile *file;
+
+  cache_info = g_file_query_info_finish (G_FILE (source),
+                                         res, &error);
+
+  if (error != NULL) {
+    self->priv->tried_cache = TRUE;
+    file = get_gfile_for_amazon (self);
+    g_error_free (error);
+  } else {
+    file = g_object_ref (source);
+  }
+
+  try_read_from_file (self, file);
+
+  g_clear_object (&cache_info);
+  g_object_unref (file);
 }
 
 static void
@@ -337,10 +506,9 @@ amazon_cover_uri_async_ready_cb (GObject *source,
 {
   SushiCoverArtFetcher *self = SUSHI_COVER_ART_FETCHER (source);
   GError *error = NULL;
-  gchar *asin;
   GFile *file;
 
-  asin = sushi_cover_art_fetcher_get_uri_for_track_finish
+  self->priv->asin = sushi_cover_art_fetcher_get_uri_for_track_finish
     (self, res, &error);
 
   if (error != NULL) {
@@ -351,13 +519,14 @@ amazon_cover_uri_async_ready_cb (GObject *source,
     return;
   }
 
-  file = g_file_new_for_uri (asin);
-  g_file_read_async (file, G_PRIORITY_DEFAULT,
-                     NULL, asin_uri_read_cb,
-                     self);
+  file = get_gfile_for_cache (self);
+  g_file_query_info_async (file, G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                           G_FILE_QUERY_INFO_NONE,
+                           G_PRIORITY_DEFAULT, NULL, 
+                           cache_file_query_info_cb,
+                           self);
 
   g_object_unref (file);
-  g_free (asin);
 }
 
 static void
