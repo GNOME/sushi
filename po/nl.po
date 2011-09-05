@@ -1,6 +1,6 @@
 # Dutch translation for Sushi
 #
-# This file is distributed under the same license as the sush package.
+# This file is distributed under the same license as the sushi package.
 #
 # Wouter Bolsterlee <wbolster@gnome.org>, 2011
 #
