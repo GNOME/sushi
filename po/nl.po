@@ -1,4 +1,4 @@
-# Dutch translation for sush
+# Dutch translation for Sushi
 #
 # This file is distributed under the same license as the sush package.
 #
