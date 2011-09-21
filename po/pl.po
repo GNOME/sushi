@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-11 14:47+0200\n"
-"PO-Revision-Date: 2011-05-11 14:49+0200\n"
+"POT-Creation-Date: 2011-09-21 19:55+0200\n"
+"PO-Revision-Date: 2011-09-21 19:56+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -21,7 +21,7 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
-#: ../src/libsushi/sushi-file-loader.c:614
+#: ../src/libsushi/sushi-file-loader.c:641
 #, c-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -29,29 +29,37 @@ msgstr[0] "%d element"
 msgstr[1] "%d elementy"
 msgstr[2] "%d elementów"
 
-#: ../src/libsushi/sushi-file-loader.c:624
+#: ../src/libsushi/sushi-file-loader.c:653
 msgid "Empty Folder"
 msgstr "Pusty katalog"
 
-#: ../src/js/ui/fallbackRenderer.js:89
+#: ../src/js/ui/fallbackRenderer.js:120
 msgid "Type"
 msgstr "Typ"
 
-#: ../src/js/ui/fallbackRenderer.js:90 ../src/js/ui/fallbackRenderer.js:95
-#: ../src/js/ui/fallbackRenderer.js:100 ../src/js/viewers/evince.js:45
-#: ../src/js/viewers/folder.js:93 ../src/js/viewers/folder.js:98
+#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
+#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
+#: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
 msgid "Loading..."
 msgstr "Wczytywanie..."
 
-#: ../src/js/ui/fallbackRenderer.js:94 ../src/js/viewers/folder.js:92
+#: ../src/js/ui/fallbackRenderer.js:125 ../src/js/viewers/folder.js:126
 msgid "Size"
 msgstr "Rozmiar"
 
-#: ../src/js/ui/fallbackRenderer.js:99 ../src/js/viewers/folder.js:97
+#: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
 msgid "Modified"
 msgstr "Zmodyfikowano"
 
-#: ../src/js/viewers/evince.js:64
+#: ../src/js/viewers/audio.js:163
+msgid "from"
+msgstr "z"
+
+#: ../src/js/viewers/audio.js:165
+msgid "by"
+msgstr " "
+
+#: ../src/js/viewers/evince.js:75
 #, c-format
 msgid "%d of %d"
 msgstr "%d z %d"
