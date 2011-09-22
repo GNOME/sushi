@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi 0.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-19 11:24+0200\n"
-"PO-Revision-Date: 2011-07-19 11:27+0200\n"
+"POT-Creation-Date: 2011-09-22 10:11+0200\n"
+"PO-Revision-Date: 2011-09-22 10:11+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -24,7 +24,7 @@ msgid_plural "%d items"
 msgstr[0] "%d oppføring"
 msgstr[1] "%d oppføringer"
 
-#: ../src/libsushi/sushi-file-loader.c:651
+#: ../src/libsushi/sushi-file-loader.c:653
 msgid "Empty Folder"
 msgstr "Tom mappe"
 
@@ -33,8 +33,8 @@ msgid "Type"
 msgstr "Type"
 
 #: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
-#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/viewers/folder.js:127
-#: ../src/js/viewers/folder.js:132
+#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
+#: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
 msgid "Loading..."
 msgstr "Laster …"
 
@@ -45,6 +45,14 @@ msgstr "Størrelse"
 #: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
 msgid "Modified"
 msgstr "Endret"
+
+#: ../src/js/viewers/audio.js:163
+msgid "from"
+msgstr "fra"
+
+#: ../src/js/viewers/audio.js:165
+msgid "by"
+msgstr "av"
 
 #: ../src/js/viewers/evince.js:75
 #, c-format
