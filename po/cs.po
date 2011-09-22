@@ -3,23 +3,24 @@
 # This file is distributed under the same license as the sushi package.
 #
 # PW <petr.wudi@gmail.com>, 2011.
+# Marek Černocký <marek@manet.cz>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-16 18:04+0000\n"
-"PO-Revision-Date: 2011-05-16 18:04+0000\n"
-"Last-Translator: PW <petr.wudi@gmail.com>\n"
+"POT-Creation-Date: 2011-09-21 14:57+0000\n"
+"PO-Revision-Date: 2011-09-22 19:55+0200\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Language: cs\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../src/libsushi/sushi-file-loader.c:614
+#: ../src/libsushi/sushi-file-loader.c:641
 #, c-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -27,29 +28,37 @@ msgstr[0] "%d položka"
 msgstr[1] "%d položky"
 msgstr[2] "%d položek"
 
-#: ../src/libsushi/sushi-file-loader.c:624
+#: ../src/libsushi/sushi-file-loader.c:653
 msgid "Empty Folder"
 msgstr "Prázdná složka"
 
-#: ../src/js/ui/fallbackRenderer.js:93
+#: ../src/js/ui/fallbackRenderer.js:120
 msgid "Type"
 msgstr "Typ"
 
-#: ../src/js/ui/fallbackRenderer.js:94 ../src/js/ui/fallbackRenderer.js:99
-#: ../src/js/ui/fallbackRenderer.js:104 ../src/js/viewers/folder.js:100
-#: ../src/js/viewers/folder.js:105
+#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
+#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
+#: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
 msgid "Loading..."
 msgstr "Načítá se…"
 
-#: ../src/js/ui/fallbackRenderer.js:98 ../src/js/viewers/folder.js:99
+#: ../src/js/ui/fallbackRenderer.js:125 ../src/js/viewers/folder.js:126
 msgid "Size"
 msgstr "Velikost"
 
-#: ../src/js/ui/fallbackRenderer.js:103 ../src/js/viewers/folder.js:104
+#: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
 msgid "Modified"
 msgstr "Změněno"
 
-#: ../src/js/viewers/evince.js:48
+#: ../src/js/viewers/audio.js:163
+msgid "from"
+msgstr "z"
+
+#: ../src/js/viewers/audio.js:165
+msgid "by"
+msgstr "od"
+
+#: ../src/js/viewers/evince.js:75
 #, c-format
 msgid "%d of %d"
 msgstr "%d z %d"
