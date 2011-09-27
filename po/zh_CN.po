@@ -23,7 +23,6 @@ msgstr ""
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d 个条目"
-msgstr[1] "%d 个条目"
 
 #: ../src/libsushi/sushi-file-loader.c:653
 msgid "Empty Folder"
