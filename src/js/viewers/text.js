@@ -107,7 +107,7 @@ TextRenderer.prototype = {
 
         this._mainToolbar.show();
 
-        this._toolbarActor = Utils.forcedSizeActor(this._mainToolbar);
+        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
         return this._toolbarActor;
     }
