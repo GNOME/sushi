@@ -564,7 +564,7 @@ MainWindow.prototype = {
         this._titleActor.add_constraint(
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.Y,
-                                         offset: 3 }));
+                                         offset: 6 }));
 
         this._quitButton = 
             new Gtk.Button({ image: new Gtk.Image ({ "icon-size": Gtk.IconSize.MENU,
