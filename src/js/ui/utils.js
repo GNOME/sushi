@@ -134,7 +134,7 @@ function formatTimeString(timeVal) {
 
     let str = ("%02d:%02d").format(minutes, seconds);
     if (hours > 0) {
-        current = ("%d").format(hours) + ":" + current;
+        str = ("%d").format(hours) + ":" + str;
     }
 
     return str;
