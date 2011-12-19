@@ -142,7 +142,10 @@ main (int argc, char **argv)
   GError *error;
 
   clutter_x11_set_use_argb_visual (TRUE);
-  gtk_clutter_init (&argc, &argv);
+
+  if (gtk_clutter_init (&argc, &argv) < 0)
+    return EXIT_FAILURE;
+
   clutter_gst_init (0, NULL);
 
   parse_options (&argc, &argv);
