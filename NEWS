@@ -1,3 +1,17 @@
+0.3.0 - "Casa Gori"
+===================
+
+- Quote the file path before passing it to unoconv (Vincent Untz)
+- Build with latest clutter-gtk
+- Translation updates
+
+0.2.1 - "Here and now"
+======================
+
+- Fix OSD toolbar not appearing for text files previews
+- Make sure the decoration title is centered with the close button
+- Translation updates
+
 0.2.0 - "Fuuuuuuuu"
 ===================
 
