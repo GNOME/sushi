@@ -37,6 +37,11 @@
 #include <gjs/gjs.h>
 
 #include <gtk/gtk.h>
+
+#ifdef GDK_WINDOWING_X11
+#include <X11/Xlib.h>
+#endif
+
 #include <clutter/clutter.h>
 #include <clutter-gtk/clutter-gtk.h>
 
@@ -140,6 +145,10 @@ main (int argc, char **argv)
   GjsContext *js_context;
   GtkSettings *settings;
   GError *error;
+
+#ifdef GDK_WINDOWING_X11
+  XInitThreads ();
+#endif
 
   clutter_x11_set_use_argb_visual (TRUE);
 
