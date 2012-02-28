@@ -33,6 +33,7 @@ const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gtk = imports.gi.Gtk;
 const GtkClutter = imports.gi.GtkClutter;
 const Clutter = imports.gi.Clutter;
+const Pango = imports.gi.Pango;
 
 const Cairo = imports.cairo;
 const Tweener = imports.ui.tweener;
@@ -553,7 +554,8 @@ MainWindow.prototype = {
             return;
         }
 
-        this._titleLabel = new Gtk.Label({ label: "" });
+        this._titleLabel = new Gtk.Label({ label: "",
+					   ellipsize: Pango.EllipsizeMode.END });
         this._titleLabel.get_style_context().add_class("np-decoration");
         
         this._titleLabel.show();
@@ -561,10 +563,6 @@ MainWindow.prototype = {
         this._titleActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5 }));
-        this._titleActor.add_constraint(
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.Y,
-                                         offset: 6 }));
 
         this._quitButton = 
             new Gtk.Button({ image: new Gtk.Image ({ "icon-size": Gtk.IconSize.MENU,
@@ -581,6 +579,17 @@ MainWindow.prototype = {
         this._quitActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 1.0 }));
+
+        this._titleActor.add_constraint(
+            new Clutter.SnapConstraint({ source: this._stage,
+                                         from_edge: Clutter.SnapEdge.LEFT,
+                                         to_edge: Clutter.SnapEdge.LEFT,
+                                         offset: 6 }));
+        this._titleActor.add_constraint(
+            new Clutter.SnapConstraint({ source: this._quitActor,
+                                         from_edge: Clutter.SnapEdge.RIGHT,
+                                         to_edge: Clutter.SnapEdge.LEFT,
+                                         offset: -6 }));
 
         this._titleGroup.add_actor(this._titleActor);
         this._titleGroup.add_actor(this._quitActor);
