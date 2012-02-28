@@ -168,7 +168,8 @@ MainWindow.prototype = {
             key == Clutter.KEY_q)
             this._fadeOutWindow();
 
-        if (key == Clutter.KEY_f)
+        if (key == Clutter.KEY_f ||
+            key == Clutter.KEY_F11)
             this.toggleFullScreen();
     },
 
