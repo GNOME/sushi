@@ -10,7 +10,7 @@
 }
 
 SushiFontWidget {
-    padding: 2;
+    padding: 2px;
 }
 
 GtkSourceView {
@@ -37,7 +37,7 @@ GtkSourceView {
 
 .np-toolbar {
     border-style: none;
-    border-radius: 3;
+    border-radius: 3px;
     border-width: 0;
 
     background-color: @np_bg_color;
@@ -47,7 +47,7 @@ GtkSourceView {
     -GtkWidget-wide-separators: 1;
     -GtkWidget-separator-width: 1;
 
-    border-width: 1;
+    border-width: 1px;
     border-style: solid;
 }
 
@@ -78,7 +78,7 @@ GtkSourceView {
 
 .np-decoration.button {
     background-image: none;
-    padding: 4;
+    padding: 4px;
 
     border-image: none;
     border-style: none;
