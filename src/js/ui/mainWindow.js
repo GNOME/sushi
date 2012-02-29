@@ -563,6 +563,7 @@ MainWindow.prototype = {
         this._titleActor = new GtkClutter.Actor({ contents: this._titleLabel });
         this._titleActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
+                                          align_axis: Clutter.AlignAxis.X_AXIS,
                                           factor: 0.5 }));
 
         this._quitButton = 
@@ -591,6 +592,10 @@ MainWindow.prototype = {
                                          from_edge: Clutter.SnapEdge.RIGHT,
                                          to_edge: Clutter.SnapEdge.LEFT,
                                          offset: -6 }));
+        this._titleActor.add_constraint(
+            new Clutter.BindConstraint({ source: this._stage,
+                                         coordinate: Clutter.BindCoordinate.Y,
+                                         offset: 6 }));
 
         this._titleGroup.add_actor(this._titleActor);
         this._titleGroup.add_actor(this._quitActor);
