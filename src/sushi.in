@@ -12,4 +12,12 @@ else
     export GI_TYPELIB_PATH=@libdir@/girepository-1.0:$GI_TYPELIB_PATH
 fi
 
+if test x"$GJS_DEBUG_OUTPUT" = x ; then
+    export GJS_DEBUG_OUTPUT=stderr
+fi
+
+if test x"$GJS_DEBUG_TOPICS" = x ; then
+    export GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
+fi
+
 @libexecdir@/sushi-start
