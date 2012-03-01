@@ -9,6 +9,10 @@
     background-color: alpha(#000, 0.0);
 }
 
+GtkWindow {
+    color: @np_fg_color;
+}
+
 SushiFontWidget {
     padding: 2px;
 }
