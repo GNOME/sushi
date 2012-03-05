@@ -1,3 +1,11 @@
+0.3.91 - "Estathé"
+==================
+
+- Ellipsize title for long filenames (Vadim Rutkovsky)
+- Use F11 as a keybinding for Fullscreen (Vadim Rutkovsky)
+- Initialize X11 threads (Gert Michael Kulyk)
+- Translation updates
+
 0.3.0 - "Casa Gori"
 ===================
 
