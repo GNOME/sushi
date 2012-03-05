@@ -120,8 +120,7 @@ static inline gboolean
 seen_inode (DeepCountState *state,
 	    GFileInfo *info)
 {
-  guint64 inode, inode2;
-  guint i;
+  guint64 inode;
 
   inode = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_UNIX_INODE);
 

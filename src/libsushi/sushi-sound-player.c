@@ -694,11 +694,7 @@ sushi_sound_player_set_property (GObject      *gobject,
                                  const GValue *value,
                                  GParamSpec   *pspec)
 {
-  SushiSoundPlayer *player;
-  SushiSoundPlayerPrivate *priv;
-  
-  player = SUSHI_SOUND_PLAYER (gobject);
-  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+  SushiSoundPlayer *player = SUSHI_SOUND_PLAYER (gobject);
 
   switch (prop_id)
     {
@@ -799,8 +795,6 @@ sushi_sound_player_class_init (SushiSoundPlayerClass *klass)
 static void
 sushi_sound_player_init (SushiSoundPlayer *player)
 {
-  SushiSoundPlayerPrivate *priv;
-
   player->priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
 
   player->priv->state = SUSHI_SOUND_PLAYER_STATE_UNKNOWN;

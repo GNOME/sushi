@@ -30,6 +30,7 @@
 #include "sushi-utils.h"
 #include <evince-document.h>
 #include <evince-view.h>
+#include <glib/gstdio.h>
 
 G_DEFINE_TYPE (SushiPdfLoader, sushi_pdf_loader, G_TYPE_OBJECT);
 

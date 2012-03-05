@@ -109,7 +109,6 @@ sushi_cover_art_fetcher_set_property (GObject    *gobject,
                                       GParamSpec *pspec)
 {
   SushiCoverArtFetcher *self = SUSHI_COVER_ART_FETCHER (gobject);
-  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
 
   switch (prop_id) {
   case PROP_TAGLIST:
@@ -283,9 +282,7 @@ sushi_cover_art_fetcher_get_uri_for_track_async (SushiCoverArtFetcher *self,
                                                  GAsyncReadyCallback callback,
                                                  gpointer user_data)
 {
-  GSimpleAsyncResult *result;
   FetchUriJob *job;
-  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
 
   job = fetch_uri_job_new (self, artist, album, callback, user_data);
   g_io_scheduler_push_job (fetch_uri_job,
@@ -535,7 +532,6 @@ try_fetch_from_amazon (SushiCoverArtFetcher *self)
   SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
   gchar *artist = NULL;
   gchar *album = NULL;
-  GFile *file;
 
   gst_tag_list_get_string (priv->taglist,
                            GST_TAG_ARTIST, &artist);

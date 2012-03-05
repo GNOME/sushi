@@ -98,7 +98,7 @@ create_face_from_contents (FontLoadJob *job,
   FT_Face retval;
 
   ft_error = FT_New_Memory_Face (job->library,
-                                 job->face_contents,
+                                 (const FT_Byte *) job->face_contents,
                                  (FT_Long) job->face_length,
                                  job->face_index,
                                  &retval);
@@ -135,10 +135,9 @@ font_load_job (GIOSchedulerJob *sched_job,
   GError *error = NULL;
   gchar *contents;
   gsize length;
-  gboolean res;
 
-  res = g_file_load_contents (job->file, NULL,
-                              &contents, &length, NULL, &error);
+  g_file_load_contents (job->file, NULL,
+                        &contents, &length, NULL, &error);
 
   if (error != NULL) {
     g_simple_async_result_take_error (job->result, error);

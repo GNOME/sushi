@@ -83,7 +83,6 @@ draw_string (cairo_t *cr,
 	     gint *pos_y)
 {
   cairo_text_extents_t extents;
-  gdouble cur_x, cur_y;
 
   cairo_text_extents (cr, text, &extents);
 
@@ -386,16 +385,12 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   SushiFontWidget *self = SUSHI_FONT_WIDGET (drawing_area);
   SushiFontWidgetPrivate *priv = self->priv;
   gint *sizes = NULL, n_sizes, alpha_size, pos_y = 0, i;
-  const gchar *text;
   cairo_font_face_t *font;
   FT_Face face = priv->face;
-  gboolean res;
   GtkStyleContext *context;
   GdkRGBA color;
   GtkBorder padding;
   GtkStateFlags state;
-  gint max_x = 0;
-  gchar *font_name;
 
   if (face == NULL)
     goto end;
@@ -455,12 +450,9 @@ font_face_async_ready_cb (GObject *object,
                           gpointer user_data)
 {
   SushiFontWidget *self = user_data;
-  FT_Face face;
-  gchar *contents = NULL;
   GError *error = NULL;
-  gint i, res;
 
-  face = self->priv->face =
+  self->priv->face =
     sushi_new_ft_face_from_uri_finish (result,
                                        &self->priv->face_contents,
                                        &error);

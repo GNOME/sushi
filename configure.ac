@@ -62,6 +62,7 @@ PKG_CHECK_MODULES(SUSHI,
                   gjs-dbus-1.0 >= $GJS_MIN_VERSION
                   gobject-2.0 >= $GLIB_MIN_VERSION
                   clutter-1.0 >= $CLUTTER_MIN_VERSION
+                  clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
                   gtk+-3.0 >= $GTK_MIN_VERSION
                   clutter-gtk-1.0 >= $CLUTTER_GTK_MIN_VERSION
                   clutter-gst-1.0

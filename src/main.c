@@ -43,6 +43,8 @@
 #endif
 
 #include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
+#include <clutter-gst/clutter-gst.h>
 #include <clutter-gtk/clutter-gtk.h>
 
 static void
