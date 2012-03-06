@@ -27,7 +27,7 @@
 
 #include "sushi-cover-art.h"
 
-#include <musicbrainz3/mb_c.h>
+#include <musicbrainz4/mb4_c.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_DEFINE_TYPE (SushiCoverArtFetcher, sushi_cover_art_fetcher, G_TYPE_OBJECT);
@@ -212,33 +212,50 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
                gpointer user_data)
 {
   FetchUriJob *job = user_data;
-  MbQuery query;
-  MbReleaseFilter filter;
-  MbRelease release;
-  MbResultList results;
-  gint results_len, idx;
+  Mb4Metadata metadata;
+  Mb4Query query;
+  Mb4Release release;
+  Mb4ReleaseList release_list;
   gchar *retval = NULL;
+  gchar **param_names = NULL;
+  gchar **param_values = NULL;
 
-  query = mb_query_new (NULL, NULL);
+  query = mb4_query_new ("sushi", NULL, 0);
 
-  filter = mb_release_filter_new ();
-  filter = mb_release_filter_title (filter, job->album);
-  filter = mb_release_filter_artist_name (filter, job->artist);
+  param_names = g_new (gchar*, 3);
+  param_values = g_new (gchar*, 3);
 
-  results = mb_query_get_releases (query, filter);
-  results_len = mb_result_list_get_size (results);
+  param_names[0] = g_strdup ("query");
+  param_values[0] = g_strdup_printf ("artist:%s AND release:%s", job->artist, job->album);
 
-  for (idx = 0; idx < results_len; idx++) {
-    gchar asin[255];
+  param_names[1] = g_strdup ("limit");
+  param_values[1] = g_strdup ("1");
 
-    release = mb_result_list_get_release (results, idx);
-    mb_release_get_asin (release, asin, 255);
+  param_names[2] = NULL;
+  param_values[2] = NULL;
 
-    if (asin != NULL &&
+  metadata = mb4_query_query (query, "release", "", "",
+                              2, param_names, param_values);
+
+  mb4_query_delete (query);
+
+  if (metadata) {
+    release_list = mb4_metadata_get_releaselist (metadata);
+    if (mb4_release_list_size (release_list) > 0) {
+      gchar asin[255];
+
+      release = mb4_release_list_item (release_list, 0);
+      mb4_release_get_asin (release, asin, 255);
+
+      if (asin != NULL &&
         asin[0] != '\0') {
-      retval = g_strdup (asin);
-      break;
+        retval = g_strdup (asin);
+      }
+      mb4_release_delete (release);
+      mb4_release_list_delete (release_list);
     }
+
+    mb4_metadata_delete (metadata);
   }
 
   if (retval == NULL) {
@@ -255,7 +272,8 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
   g_io_scheduler_job_send_to_mainloop_async (sched_job,
                                              fetch_uri_job_callback,
                                              job, NULL);
-
+  g_strfreev (param_names);
+  g_strfreev (param_values);
   return FALSE;
 }
 
