@@ -3,20 +3,24 @@
 # This file is distributed under the same license as the sushi package.
 #
 # artnay <jiri.gronroos@iki.fi>, 2012.
+# Gnome 2012-03 Finnish translation sprint participants:
+# Niklas Laxström
 msgid ""
 msgstr ""
+""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-07 12:49+0200\n"
-"PO-Revision-Date: 2012-01-05 18:12+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-01-28 16:52+0000\n"
+"PO-Revision-Date: 2012-03-12 09:05:15+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish <>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: MediaWiki 1.20alpha (r113129); Translate 2012-03-02\n"
+"X-POT-Import-Date: 2012-02-19 15:25:28+0000\n"
 
 #: ../src/libsushi/sushi-file-loader.c:641
 #, c-format
@@ -49,13 +53,14 @@ msgstr "Muokattu"
 
 #: ../src/js/viewers/audio.js:163
 msgid "from"
-msgstr ""
+msgstr "albumilta"
 
 #: ../src/js/viewers/audio.js:165
 msgid "by"
-msgstr ""
+msgstr "esittää"
 
 #: ../src/js/viewers/evince.js:75
 #, c-format
 msgid "%d of %d"
 msgstr "%d/%d"
+
