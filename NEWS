@@ -1,3 +1,10 @@
+0.3.92 - "Teasing Owl"
+=====================
+
+- Properly center the window title in the allocated space
+- Clear signal handlers when switching between viewers
+- Translation updates
+
 0.3.91 - "Estathé"
 ==================
 
