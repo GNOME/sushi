@@ -40,6 +40,9 @@ function FallbackRenderer(args) {
 
 FallbackRenderer.prototype = {
     _init : function() {
+        this._fileLoader = null;
+        this._fileLoaderId = 0;
+
         this.moveOnClick = true;
         this.canFullScreen = false;
     },
@@ -50,16 +53,10 @@ FallbackRenderer.prototype = {
         this.lastHeight = 0;
 
         this._fileLoader = new Sushi.FileLoader();
-        this._fileLoader.connect("notify::size",
-                                 Lang.bind(this, this._onFileInfoChanged));
-        this._fileLoader.connect("notify::icon",
-                                 Lang.bind(this, this._onFileInfoChanged));
-        this._fileLoader.connect("notify::time",
-                                 Lang.bind(this, this._onFileInfoChanged));
-        this._fileLoader.connect("notify::name",
-                                 Lang.bind(this, this._onFileInfoChanged));
-
         this._fileLoader.file = file;
+        this._fileLoaderId =
+            this._fileLoader.connect("notify",
+                                     Lang.bind(this, this._onFileInfoChanged));
 
         this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                   spacing: 6 });
@@ -155,8 +152,13 @@ FallbackRenderer.prototype = {
     },
 
     clear : function() {
-        this._fileLoader.stop();
-        delete this._fileLoader;
+        if (this._fileLoader) {
+            this._fileLoader.disconnect(this._fileLoaderId);
+            this._fileLoaderId = 0;
+
+            this._fileLoader.stop();
+            this._fileLoader = null;
+        }
     },
 
     getSizeForAllocation : function(allocation) {
