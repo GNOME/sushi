@@ -53,28 +53,21 @@ _cairo_round_rectangle (cairo_t *cr,
 }
 
 static void
-rounded_background_allocation_cb (ClutterActor *texture)
+rounded_background_draw_cb (ClutterCairoTexture *texture,
+                            cairo_t *cr)
 {
-  cairo_t *cr;
   ClutterActorBox allocation;
 
+  clutter_actor_get_allocation_box (CLUTTER_ACTOR (texture), &allocation);
   clutter_cairo_texture_clear (CLUTTER_CAIRO_TEXTURE (texture));
-  
-  clutter_actor_get_allocation_box (texture, &allocation);
-  clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (texture),
-                                          clutter_actor_box_get_width (&allocation),
-                                          clutter_actor_box_get_height (&allocation));
-
-  cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (texture));
 
   _cairo_round_rectangle (cr, allocation.x1, allocation.y1,
-                          clutter_actor_box_get_width (&allocation),
-                          clutter_actor_box_get_height (&allocation),
+                          allocation.x2 - allocation.x1,
+                          allocation.y2 - allocation.y1,
                           6.0);
   cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
 
   cairo_fill (cr);
-  cairo_destroy (cr);
 }
 
 /**
@@ -88,8 +81,10 @@ sushi_create_rounded_background (void)
   ClutterActor *retval;
 
   retval = clutter_cairo_texture_new (1, 1);
-  g_signal_connect (retval, "notify::allocation",
-                    G_CALLBACK (rounded_background_allocation_cb), NULL);
+  clutter_cairo_texture_set_auto_resize (CLUTTER_CAIRO_TEXTURE (retval), TRUE);
+
+  g_signal_connect (retval, "draw",
+                    G_CALLBACK (rounded_background_draw_cb), NULL);
 
   return retval;
 }
