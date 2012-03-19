@@ -25,18 +25,17 @@ GtkSourceView {
 
 .scrollbar.slider,
 .scrollbar.button {
-    border-color: shade (@np_bg_color, 1.30);
+    background-color: shade (@np_bg_color, 1.30);
 }
 
 .scrollbar.button:prelight,
 .scrollbar.slider:prelight {
-    background-color: shade (@np_bg_color, 1.30);
+    background-color: shade (@np_bg_color, 1.45);
 }
 
 .scrollbar.button:prelight:active,
 .scrollbar.slider:prelight:active {
-    background-color: shade (@np_bg_color, 1.55);
-    border-color: shade (@np_bg_color, 1.55);
+    background-color: shade (@np_bg_color, 1.70);
 }
 
 .np-toolbar {
