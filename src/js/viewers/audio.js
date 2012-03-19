@@ -293,14 +293,14 @@ AudioRenderer.prototype = {
                                           this._player.progress = this._progressBar.get_value() / 1000;
                                   }));
 
-        let item = new Gtk.ToolItem();
+        item = new Gtk.ToolItem();
         item.set_expand(true);
         item.add(this._progressBar);
         item.show_all();
         this._mainToolbar.insert(item, 2);
 
         this._durationLabel = new Gtk.Label({ "margin-left": 3 });
-        let item = new Gtk.ToolItem();
+        item = new Gtk.ToolItem();
         item.add(this._durationLabel);
         item.show_all();
         this._mainToolbar.insert(item, 3);
