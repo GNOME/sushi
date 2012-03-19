@@ -41,6 +41,9 @@ function FolderRenderer(args) {
 
 FolderRenderer.prototype = {
     _init : function() {
+        this._folderLoader = null;
+        this._folderLoaderId = 0;
+
         this.moveOnClick = true;
         this.canFullScreen = false;
     },
@@ -54,16 +57,10 @@ FolderRenderer.prototype = {
         this.lastHeight = 0;
 
         this._folderLoader = new Sushi.FileLoader();
-        this._folderLoader.connect("notify::size",
-                                   Lang.bind(this, this._onFolderInfoChanged));
-        this._folderLoader.connect("notify::icon",
-                                   Lang.bind(this, this._onFolderInfoChanged));
-        this._folderLoader.connect("notify::time",
-                                   Lang.bind(this, this._onFolderInfoChanged));
-        this._folderLoader.connect("notify::name",
-                                   Lang.bind(this, this._onFolderInfoChanged));
-
         this._folderLoader.file = file;
+        this._folderLoaderId =
+            this._folderLoader.connect("notify",
+                                       Lang.bind(this, this._onFolderInfoChanged));
 
         this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                   spacing: 6 });
@@ -114,7 +111,7 @@ FolderRenderer.prototype = {
 	let name = this._folderLoader.name;
 	if (!name) {
 	    try {
-		name = this._folderLoader.file.get_basename()
+		name = this._folderLoader.file.get_basename();
 	    } catch (e) {
 		name = "";
 	    }
@@ -149,8 +146,13 @@ FolderRenderer.prototype = {
     },
 
     clear : function() {
-        this._folderLoader.stop();
-        delete this._folderLoader;
+        if (this._folderLoader) {
+            this._folderLoader.disconnect(this._folderLoaderId);
+            this._folderLoaderId = 0;
+
+            this._folderLoader.stop();
+            this._folderLoader = null;
+        }
     },
 
     getSizeForAllocation : function(allocation) {
