@@ -98,12 +98,7 @@ MainWindow.prototype = {
                                                   alpha: 255 }));
         this._mainGroup =  new Clutter.Group();
         this._stage.add_actor(this._mainGroup);
-
-        this._titleGroup =  new Clutter.Group();
-        this._stage.add_actor(this._titleGroup);
-
         this._mainGroup.set_opacity(0);
-        this._titleGroup.set_opacity(0);
     },
 
     _connectStageSignals : function() {
@@ -549,22 +544,27 @@ MainWindow.prototype = {
      ************************ titlebar helpers ********************************
      **************************************************************************/
     _createTitle : function() {
-        if (this._titleLabel) {
-            this._titleActor.raise_top();
-            this._quitActor.raise_top();
+        if (this._titleGroup) {
+            this._titleGroup.raise_top();
             return;
         }
 
+        this._titleGroupLayout = new Clutter.BoxLayout();
+        this._titleGroup =  new Clutter.Box({ layout_manager: this._titleGroupLayout,
+                                              opacity: 0 });
+        this._stage.add_actor(this._titleGroup);
+
+        this._titleGroup.add_constraint(
+            new Clutter.BindConstraint({ source: this._stage,
+                                         coordinate: Clutter.BindCoordinate.WIDTH }));
+
         this._titleLabel = new Gtk.Label({ label: "",
-					   ellipsize: Pango.EllipsizeMode.END });
+					   ellipsize: Pango.EllipsizeMode.END,
+                                           margin: 6 });
         this._titleLabel.get_style_context().add_class("np-decoration");
         
         this._titleLabel.show();
         this._titleActor = new GtkClutter.Actor({ contents: this._titleLabel });
-        this._titleActor.add_constraint(
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          align_axis: Clutter.AlignAxis.X_AXIS,
-                                          factor: 0.5 }));
 
         this._quitButton = 
             new Gtk.Button({ image: new Gtk.Image ({ "icon-size": Gtk.IconSize.MENU,
@@ -578,27 +578,17 @@ MainWindow.prototype = {
 
         this._quitActor = new GtkClutter.Actor({ contents: this._quitButton });
         this._quitActor.set_reactive(true);
-        this._quitActor.add_constraint(
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: 1.0 }));
 
-        this._titleActor.add_constraint(
-            new Clutter.SnapConstraint({ source: this._stage,
-                                         from_edge: Clutter.SnapEdge.LEFT,
-                                         to_edge: Clutter.SnapEdge.LEFT,
-                                         offset: 6 }));
-        this._titleActor.add_constraint(
-            new Clutter.SnapConstraint({ source: this._quitActor,
-                                         from_edge: Clutter.SnapEdge.RIGHT,
-                                         to_edge: Clutter.SnapEdge.LEFT,
-                                         offset: -6 }));
-        this._titleActor.add_constraint(
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.Y,
-                                         offset: 6 }));
+        let hidden = new Clutter.Actor();
+        let size = this._quitButton.get_preferred_size()[1];
+        hidden.set_size(size.width, size.height);
 
-        this._titleGroup.add_actor(this._titleActor);
-        this._titleGroup.add_actor(this._quitActor);
+        this._titleGroupLayout.pack(hidden, false, false, false,
+                                    Clutter.BoxAlignment.START, Clutter.BoxAlignment.START);
+        this._titleGroupLayout.pack(this._titleActor, true, true, false,
+                                    Clutter.BoxAlignment.CENTER, Clutter.BoxAlignment.START);
+        this._titleGroupLayout.pack(this._quitActor, false, false, false,
+                                    Clutter.BoxAlignment.END, Clutter.BoxAlignment.START);
     },
 
     /**************************************************************************
