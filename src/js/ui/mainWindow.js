@@ -55,6 +55,9 @@ MainWindow.prototype = {
     _init : function(args) {
         args = args || {};
 
+        this._toolbarActor = null;
+        this._toolbarId = 0;
+
         this._mimeHandler = new MimeHandler.MimeHandler();
 
         this._application = args.application;
@@ -473,8 +476,9 @@ MainWindow.prototype = {
      **************************************************************************/
     _createToolbar : function() {
         if (this._toolbarActor) {
+            this._removeToolbarTimeout();
             this._toolbarActor.destroy();
-            delete this._toolbarActor;
+            this._toolbarActor = null;
         }
 
         if (this._renderer.createToolbar)
@@ -504,14 +508,14 @@ MainWindow.prototype = {
     },
 
     _removeToolbarTimeout: function() {
-        Mainloop.source_remove(this._toolbarId);
-        delete this._toolbarId;
+        if (this._toolbarId != 0) {
+            Mainloop.source_remove(this._toolbarId);
+            this._toolbarId = 0;
+        }
     },
 
     _resetToolbar : function() {
-        if (this._toolbarId) {
-            this._removeToolbarTimeout();
-        } else {
+        if (this._toolbarId == 0) {
             Tweener.removeTweens(this._toolbarActor);
 
             this._toolbarActor.raise_top();
@@ -524,13 +528,14 @@ MainWindow.prototype = {
                              });
         }
 
+        this._removeToolbarTimeout();
         this._toolbarId = Mainloop.timeout_add(1500,
                                                Lang.bind(this,
                                                          this._onToolbarTimeout));
     },
 
     _onToolbarTimeout : function() {
-        delete this._toolbarId;
+        this._toolbarId = 0;
         Tweener.addTween(this._toolbarActor,
                          { opacity: 0,
                            time: 0.25,
@@ -611,9 +616,7 @@ MainWindow.prototype = {
     },
 
     _fadeOutWindow : function() {
-        if (this._toolbarId) {
-            this._removeToolbarTimeout();
-        }
+        this._removeToolbarTimeout();
 
         Tweener.addTween(this._titleGroup,
                          { opacity: 0,
