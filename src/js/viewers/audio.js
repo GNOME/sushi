@@ -89,29 +89,37 @@ AudioRenderer.prototype = {
     },
 
     _createPlayer : function(file) {
+        this._playerNotifies = [];
+
         this._player = new Sushi.SoundPlayer({ uri: file.get_uri() });
         this._player.playing = true;
 
-        this._player.connect("notify::progress",
-                             Lang.bind(this,
-                                       this._onPlayerProgressChanged));
-        this._player.connect("notify::duration",
-                             Lang.bind(this,
-                                       this._onPlayerDurationChanged));
-        this._player.connect("notify::state",
-                             Lang.bind(this,
-                                       this._onPlayerStateChanged));
-        this._player.connect("notify::taglist",
-                             Lang.bind(this,
-                                       this._onTagListChanged));
-        this._player.connect("notify::cover",
-                             Lang.bind(this,
-                                       this._onCoverArtChanged));
+        this._playerNotifies.push(
+            this._player.connect("notify::progress",
+                                 Lang.bind(this, this._onPlayerProgressChanged)));
+        this._playerNotifies.push(
+            this._player.connect("notify::duration",
+                                 Lang.bind(this, this._onPlayerDurationChanged)));
+        this._playerNotifies.push(
+            this._player.connect("notify::state",
+                                 Lang.bind(this, this._onPlayerStateChanged)));
+        this._playerNotifies.push(
+            this._player.connect("notify::taglist",
+                                 Lang.bind(this, this._onTagListChanged)));
+        this._playerNotifies.push(
+            this._player.connect("notify::cover",
+                                 Lang.bind(this, this._onCoverArtChanged)));
     },
 
     clear : function(file) {
+        this._playerNotifies.forEach(Lang.bind(this,
+            function(id) {
+                this._player.disconnect(id);
+            }));
+
         this._player.playing = false;
-        delete this._player;
+        this._playerNotifies = [];
+        this._player = null;
     },
 
     _ensurePixbufSize : function(cover) {
