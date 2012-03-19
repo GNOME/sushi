@@ -44,6 +44,10 @@ function EvinceRenderer(args) {
 EvinceRenderer.prototype = {
     _init : function(args) {
         EvDoc.init();
+
+        this._pdfLoader = null;
+        this._document = null;
+
         this.moveOnClick = false;
         this.canFullScreen = true;
     },
@@ -167,8 +171,8 @@ EvinceRenderer.prototype = {
 
     clear : function() {
         this._pdfLoader.cleanup_document();
-        delete this._document;
-        delete this._pdfLoader;
+        this._document = null;
+        this._pdfLoader = null;
     }
 }
 

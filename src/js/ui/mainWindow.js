@@ -55,8 +55,14 @@ MainWindow.prototype = {
     _init : function(args) {
         args = args || {};
 
+        this._background = null;
+        this._pendingRenderer = null;
+        this._renderer = null;
+        this._texture = null;
         this._toolbarActor = null;
+        this._fullScreenId = 0;
         this._toolbarId = 0;
+        this._unFullScreenId = 0;
 
         this._mimeHandler = new MimeHandler.MimeHandler();
 
@@ -273,7 +279,7 @@ MainWindow.prototype = {
             if (this._renderer.clear)
                 this._renderer.clear();
 
-            delete this._renderer;
+            this._renderer = null;
         }
 
         /* create a temporary spinner renderer, that will timeout and show itself
@@ -306,7 +312,7 @@ MainWindow.prototype = {
         this._renderer.destroy();
 
         this._renderer = this._pendingRenderer;
-        delete this._pendingRenderer;
+        this._pendingRenderer = null;
 
         /* generate the texture and toolbar for the new renderer */
         this._createTexture();
@@ -316,7 +322,7 @@ MainWindow.prototype = {
     _createTexture : function() {
         if (this._texture) {
             this._texture.destroy();
-            delete this._texture;
+            this._texture = null;
         }
 
         this._texture = this._renderer.render();
@@ -341,11 +347,11 @@ MainWindow.prototype = {
      **************************************************************************/
     _onStageUnFullScreen : function() {
         this._stage.disconnect(this._unFullScreenId);
-        delete this._unFullScreenId;
+        this._unFullScreenId = 0;
 
 	/* We want the alpha background back now */
         this._background.destroy();
-        delete this._background;
+        this._background = null;
         this._createAlphaBackground();
 
         this._textureYAlign.factor = this._savedYFactor;
@@ -397,11 +403,11 @@ MainWindow.prototype = {
 
     _onStageFullScreen : function() {
         this._stage.disconnect(this._fullScreenId);
-        delete this._fullScreenId;
+        this._fullScreenId = 0;
 
         /* We want a solid black background */
         this._background.destroy();
-        delete this._background;
+        this._background = null;
 	this._createSolidBackground();
 
 	/* Fade in everything but the title */

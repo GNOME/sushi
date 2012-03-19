@@ -36,12 +36,15 @@ let TIMEOUT = 500;
 
 function SpinnerBox(args) {
     this._init(args);
-    this.canFullScreen = false;
-    this.moveOnClick = true;
 }
 
 SpinnerBox.prototype = {
     _init : function(args) {
+        this._timeoutId = 0;
+
+        this.canFullScreen = false;
+        this.moveOnClick = true;
+
         this._spinnerBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12);
         this._spinnerBox.show();
 
@@ -82,7 +85,7 @@ SpinnerBox.prototype = {
     destroy : function() {
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
-            delete this._timeoutId;
+            this._timeoutId = 0;
         }
 
         Tweener.addTween(this.actor,
@@ -97,7 +100,7 @@ SpinnerBox.prototype = {
     },
 
     _onTimeoutCompleted : function() {
-        delete this._timeoutId;
+        this._timeoutId = 0;
 
         Tweener.addTween(this.actor,
                          { opacity: 255,
