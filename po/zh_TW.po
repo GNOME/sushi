@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-03 19:19+0800\n"
-"PO-Revision-Date: 2011-09-03 17:39+0800\n"
-"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
+"POT-Creation-Date: 2012-03-27 11:45+0800\n"
+"PO-Revision-Date: 2012-03-27 02:26+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <chinese-l10n@googlegroups.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -17,43 +17,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/libsushi/sushi-file-loader.c:641
+#: ../src/libsushi/sushi-file-loader.c:640
 #, c-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d 個項目"
 
-#: ../src/libsushi/sushi-file-loader.c:653
+#: ../src/libsushi/sushi-file-loader.c:652
 msgid "Empty Folder"
 msgstr "空資料夾"
 
-#: ../src/js/ui/fallbackRenderer.js:120
+#: ../src/js/ui/fallbackRenderer.js:117
 msgid "Type"
 msgstr "類型"
 
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
-#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
-#: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
+#: ../src/js/ui/fallbackRenderer.js:118 ../src/js/ui/fallbackRenderer.js:123
+#: ../src/js/ui/fallbackRenderer.js:128 ../src/js/ui/spinnerBox.js:57
+#: ../src/js/viewers/folder.js:124 ../src/js/viewers/folder.js:129
 msgid "Loading..."
 msgstr "正在載入…"
 
-#: ../src/js/ui/fallbackRenderer.js:125 ../src/js/viewers/folder.js:126
+#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/viewers/folder.js:123
 msgid "Size"
 msgstr "大小"
 
-#: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
+#: ../src/js/ui/fallbackRenderer.js:127 ../src/js/viewers/folder.js:128
 msgid "Modified"
 msgstr "已修改"
 
-#: ../src/js/viewers/audio.js:163
+#: ../src/js/viewers/audio.js:171
 msgid "from"
-msgstr "從"
+msgstr "來自"
 
-#: ../src/js/viewers/audio.js:165
+#: ../src/js/viewers/audio.js:173
 msgid "by"
-msgstr "於"
+msgstr "專輯"
 
-#: ../src/js/viewers/evince.js:75
+#: ../src/js/viewers/evince.js:79
 #, c-format
 msgid "%d of %d"
 msgstr "%d / %d"
