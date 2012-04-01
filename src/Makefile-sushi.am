@@ -53,10 +53,13 @@ sushi-enum-types.c: stamp-sushi-enum-types.h libsushi/sushi-enum-types.c.in
 	cp xgen-betc sushi-enum-types.c && \
 	rm -f xgen-betc
 
-lib_LTLIBRARIES += libsushi-1.0.la
+pkglib_LTLIBRARIES += libsushi-1.0.la
 
 libsushi_1_0_la_LIBADD = \
     $(SUSHI_LIBS)
+
+libsushi_1_0_la_LDFLAGS = \
+    -avoid-version
 
 libsushi_1_0_la_CPPFLAGS = \
     $(sushi_cflags)
