@@ -226,6 +226,8 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
   filter = mb_release_filter_artist_name (filter, job->artist);
 
   results = mb_query_get_releases (query, filter);
+  mb_query_free (query);
+  mb_release_filter_free (filter);
 
   if (results)
     results_len = mb_result_list_get_size (results);
@@ -236,12 +238,17 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
     release = mb_result_list_get_release (results, idx);
     mb_release_get_asin (release, asin, 255);
 
+    mb_release_free (release);
+
     if (asin != NULL &&
         asin[0] != '\0') {
       retval = g_strdup (asin);
       break;
     }
   }
+
+  if (results)
+    mb_result_list_free (results);
 
   if (retval == NULL) {
     /* FIXME: do we need a better error? */
