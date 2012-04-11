@@ -89,6 +89,10 @@ MainWindow.prototype = {
 
         this._gtkWindow.connect("delete-event",
                                 Lang.bind(this, this._onWindowDeleteEvent));
+        this._gtkWindow.connect("realize", Lang.bind(this,
+            function() {
+                this._gtkWindow.get_window().set_type_hint(Gdk.WindowTypeHint.DIALOG);
+            }));
     },
 
     _createClutterEmbed : function() {
