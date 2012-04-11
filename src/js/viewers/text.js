@@ -30,6 +30,7 @@ let GtkClutter = imports.gi.GtkClutter;
 let Gtk = imports.gi.Gtk;
 let GLib = imports.gi.GLib;
 let GtkSource = imports.gi.GtkSource;
+let Gio = imports.gi.Gio;
 
 let Sushi = imports.gi.Sushi;
 
@@ -54,6 +55,17 @@ TextRenderer.prototype = {
         this._textLoader.connect("loaded",
                                  Lang.bind(this, this._onBufferLoaded));
         this._textLoader.uri = file.get_uri();
+
+        this._geditScheme = "tango";
+        let schemaName = "org.gnome.gedit.preferences.editor";
+        let installedSchemas = Gio.Settings.list_schemas();
+        if (installedSchemas.indexOf(schemaName) > -1) {
+            let geditSettings = new Gio.Settings({ schema: schema_name });
+            let geditSchemeName = geditSettings.get_string('scheme');
+            if (geditSchemeName != '') 
+                this._geditScheme = geditSchemeName;
+        }
+
     },
 
     render : function() {
@@ -65,7 +77,7 @@ TextRenderer.prototype = {
         this._buffer["highlight-syntax"] = true;
 
         let styleManager = GtkSource.StyleSchemeManager.get_default();
-        let scheme = styleManager.get_scheme("tango");
+        let scheme = styleManager.get_scheme(this._geditScheme);
         this._buffer.set_style_scheme(scheme);
 
         this._view = new GtkSource.View({ buffer: this._buffer,
