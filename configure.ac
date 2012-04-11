@@ -69,7 +69,7 @@ PKG_CHECK_MODULES(SUSHI,
                   gstreamer-0.10
                   gstreamer-pbutils-0.10
                   gstreamer-tag-0.10
-                  libmusicbrainz3
+                  libmusicbrainz4
                   evince-document-3.0
                   evince-view-3.0
                   gtksourceview-3.0
