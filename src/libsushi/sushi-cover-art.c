@@ -216,7 +216,7 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
   MbReleaseFilter filter;
   MbRelease release;
   MbResultList results;
-  gint results_len, idx;
+  gint results_len = 0, idx;
   gchar *retval = NULL;
 
   query = mb_query_new (NULL, NULL);
@@ -226,7 +226,9 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
   filter = mb_release_filter_artist_name (filter, job->artist);
 
   results = mb_query_get_releases (query, filter);
-  results_len = mb_result_list_get_size (results);
+
+  if (results)
+    results_len = mb_result_list_get_size (results);
 
   for (idx = 0; idx < results_len; idx++) {
     gchar asin[255];
