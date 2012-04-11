@@ -134,17 +134,10 @@ EvinceRenderer.prototype = {
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
-        this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
-        this._mainToolbar.insert(this._toolbarZoom, 0);
-
-        let separator = new Gtk.SeparatorToolItem();
-        separator.show();
-        this._mainToolbar.insert(separator, 1);
-
         this._toolbarBack = new Gtk.ToolButton({ expand: false,
                                                  "icon-name": "go-previous-symbolic" });
         this._toolbarBack.show();
-        this._mainToolbar.insert(this._toolbarBack, 2);
+        this._mainToolbar.insert(this._toolbarBack, -1);
 
         this._toolbarBack.connect("clicked",
                                   Lang.bind(this, function () {
@@ -152,17 +145,24 @@ EvinceRenderer.prototype = {
                                   }));
 
         let labelItem = this._createLabelItem();
-        this._mainToolbar.insert(labelItem, 3);
+        this._mainToolbar.insert(labelItem, -1);
 
         this._toolbarForward = new Gtk.ToolButton({ expand: false,
                                                  "icon-name": "go-next-symbolic" });
         this._toolbarForward.show();
-        this._mainToolbar.insert(this._toolbarForward, 4);
+        this._mainToolbar.insert(this._toolbarForward, -1);
 
         this._toolbarForward.connect("clicked",
                                      Lang.bind(this, function () {
                                          this._view.next_page();
                                      }));
+
+        let separator = new Gtk.SeparatorToolItem();
+        separator.show();
+        this._mainToolbar.insert(separator, -1);
+
+        this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
+        this._mainToolbar.insert(this._toolbarZoom, -1);
 
         this._updatePageLabel();
 
