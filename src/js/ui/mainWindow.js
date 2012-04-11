@@ -91,7 +91,10 @@ MainWindow.prototype = {
                                 Lang.bind(this, this._onWindowDeleteEvent));
         this._gtkWindow.connect("realize", Lang.bind(this,
             function() {
-                this._gtkWindow.get_window().set_type_hint(Gdk.WindowTypeHint.DIALOG);
+                // don't support maximize and minimize
+                this._gtkWindow.get_window().set_functions(Gdk.WMFunction.MOVE |
+                                                           Gdk.WMFunction.RESIZE |
+                                                           Gdk.WMFunction.CLOSE);
             }));
     },
 
