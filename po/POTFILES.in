@@ -1,8 +1,8 @@
 [encoding: UTF-8]
-src/libsushi/sushi-file-loader.c
+data/org.gnome.sushi.gschema.xml.in
 src/js/ui/fallbackRenderer.js
 src/js/ui/spinnerBox.js
 src/js/viewers/audio.js
 src/js/viewers/evince.js
 src/js/viewers/folder.js
-
+src/libsushi/sushi-file-loader.c
