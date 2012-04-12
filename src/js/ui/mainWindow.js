@@ -75,9 +75,12 @@ MainWindow.prototype = {
     },
 
     _createGtkWindow : function() {
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.sushi' });
+        this._clientDecorated = this._settings.get_boolean('client-decoration');
+
         this._gtkWindow = new Gtk.Window({ type: Gtk.WindowType.TOPLEVEL,
                                            focusOnMap: true,
-                                           decorated: false,
+                                           decorated: !this._clientDecorated,
                                            hasResizeGrip: false,
                                            skipPagerHint: true,
                                            skipTaskbarHint: true,
@@ -151,7 +154,16 @@ MainWindow.prototype = {
         if (this._background)
             return;
 
-        this._background = Sushi.create_rounded_background();
+        if (this._clientDecorated) {
+            this._background = Sushi.create_rounded_background();
+        } else {
+            this._background = new Clutter.Rectangle();
+            this._background.set_color(new Clutter.Color({ red: 0,
+                                                           green: 0,
+                                                           blue: 0,
+                                                           alpha: 255 }));
+        }
+
         this._background.set_opacity(Constants.VIEW_BACKGROUND_OPACITY);
         this._background.add_constraint(
             new Clutter.BindConstraint({ source: this._stage,
@@ -223,9 +235,10 @@ MainWindow.prototype = {
     _getTextureSize : function() {
         let screenSize = [ this._gtkWindow.get_window().get_width(),
                            this._gtkWindow.get_window().get_height() ];
+        let yPadding = this._clientDecorated ? Constants.VIEW_PADDING_Y : 0;
 
         let availableWidth = this._isFullScreen ? screenSize[0] : Constants.VIEW_MAX_W - 2 * Constants.VIEW_PADDING_X;
-        let availableHeight = this._isFullScreen ? screenSize[1] : Constants.VIEW_MAX_H - Constants.VIEW_PADDING_Y;
+        let availableHeight = this._isFullScreen ? screenSize[1] : Constants.VIEW_MAX_H - yPadding;
 
         let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight], this._isFullScreen);
 
@@ -235,13 +248,14 @@ MainWindow.prototype = {
     _getWindowSize : function() {
         let textureSize = this._getTextureSize();
         let windowSize = textureSize;
+        let yPadding = this._clientDecorated ? Constants.VIEW_PADDING_Y : 0;
 
         if (textureSize[0] < (Constants.VIEW_MIN - 2 * Constants.VIEW_PADDING_X) &&
-            textureSize[1] < (Constants.VIEW_MIN - Constants.VIEW_PADDING_Y)) {
+            textureSize[1] < (Constants.VIEW_MIN - yPadding)) {
             windowSize = [ Constants.VIEW_MIN, Constants.VIEW_MIN ];
         } else if (!this._isFullScreen) {
             windowSize = [ windowSize[0] + 2 * Constants.VIEW_PADDING_X,
-                           windowSize[1] + Constants.VIEW_PADDING_Y ];
+                           windowSize[1] + yPadding ];
         }
 
         return windowSize;
@@ -576,6 +590,10 @@ MainWindow.prototype = {
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.WIDTH }));
 
+        // if we don't draw client decorations, just create an empty actor
+        if (!this._clientDecorated)
+            return;
+
         this._titleLabel = new Gtk.Label({ label: "",
 					   ellipsize: Pango.EllipsizeMode.END,
                                            margin: 6 });
@@ -679,7 +697,10 @@ MainWindow.prototype = {
     },
 
     setTitle : function(label) {
-        this._titleLabel.set_label(label);
+        if (this._clientDecorated)
+            this._titleLabel.set_label(label);
+
+        this._gtkWindow.set_title(label);
     },
 
     refreshSize : function() {

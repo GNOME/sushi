@@ -1,0 +1,9 @@
+<schemalist gettext-domain="sushi">
+  <schema id="org.gnome.sushi" path="/org/gnome/sushi/">
+    <key name="client-decoration" type="b">
+      <default>true</default>
+      <_summary>Client decoration</_summary>
+      <_description>Whether the window draws WM decorations itself</_description>
+    </key>
+  </schema>
+</schemalist>

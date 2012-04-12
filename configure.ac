@@ -44,6 +44,8 @@ AC_PROG_LIBTOOL
 ## don't rerun to this point if we abort
 AC_CACHE_SAVE
 
+GLIB_GSETTINGS
+
 GJS_JS_DIR=`$PKG_CONFIG --variable=datadir gjs-1.0`/gjs-1.0
 AC_SUBST(GJS_JS_DIR)
 
