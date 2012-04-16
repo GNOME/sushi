@@ -1,3 +1,11 @@
+0.4.1 - "Marmot"
+================
+
+- Fix a crash when fetching album cover art
+- Move the window to the current desktop workspace when shown
+- Avoid maximization and window snapping
+- Plug some memory leaks
+
 0.4.0 - "Walking Donut"
 =======================
 
