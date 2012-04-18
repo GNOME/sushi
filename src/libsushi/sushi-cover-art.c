@@ -226,7 +226,7 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
   param_values = g_new (gchar*, 3);
 
   param_names[0] = g_strdup ("query");
-  param_values[0] = g_strdup_printf ("artist:%s AND release:%s", job->artist, job->album);
+  param_values[0] = g_strdup_printf ("artist:\"%s\" AND release:\"%s\"", job->artist, job->album);
 
   param_names[1] = g_strdup ("limit");
   param_values[1] = g_strdup ("1");
@@ -241,22 +241,22 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
 
   if (metadata) {
     release_list = mb4_metadata_get_releaselist (metadata);
-    if (mb4_release_list_size (release_list) > 0) {
+    int i;
+    int release_list_length = mb4_release_list_size (release_list);
+    for (i = 0; i < release_list_length; i++) {
       gchar asin[255];
 
-      release = mb4_release_list_item (release_list, 0);
+      release = mb4_release_list_item (release_list, i);
       mb4_release_get_asin (release, asin, 255);
 
       if (asin != NULL &&
         asin[0] != '\0') {
         retval = g_strdup (asin);
+        break;
       }
-      mb4_release_delete (release);
-      mb4_release_list_delete (release_list);
     }
-
-    mb4_metadata_delete (metadata);
   }
+  mb4_metadata_delete (metadata);
 
   if (retval == NULL) {
     /* FIXME: do we need a better error? */
