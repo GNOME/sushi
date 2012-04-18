@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-27 11:45+0800\n"
-"PO-Revision-Date: 2012-03-27 02:26+0800\n"
+"POT-Creation-Date: 2012-04-18 18:17+0800\n"
+"PO-Revision-Date: 2012-04-17 12:52+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <chinese-l10n@googlegroups.com>\n"
 "Language: \n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/libsushi/sushi-file-loader.c:640
-#, c-format
-msgid "%d item"
-msgid_plural "%d items"
-msgstr[0] "%d 個項目"
+#: ../data/org.gnome.sushi.gschema.xml.in.h:1
+#, fuzzy
+msgid "Client decoration"
+msgstr "客戶端裝飾"
 
-#: ../src/libsushi/sushi-file-loader.c:652
-msgid "Empty Folder"
-msgstr "空資料夾"
+#: ../data/org.gnome.sushi.gschema.xml.in.h:2
+#, fuzzy
+msgid "Whether the window draws WM decorations itself"
+msgstr "視窗要是否描繪自身的視窗管理裝飾"
 
 #: ../src/js/ui/fallbackRenderer.js:117
 msgid "Type"
@@ -57,3 +57,13 @@ msgstr "專輯"
 #, c-format
 msgid "%d of %d"
 msgstr "%d / %d"
+
+#: ../src/libsushi/sushi-file-loader.c:640
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d 個項目"
+
+#: ../src/libsushi/sushi-file-loader.c:652
+msgid "Empty Folder"
+msgstr "空資料夾"
