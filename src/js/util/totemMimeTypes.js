@@ -1,6 +1,6 @@
 /* generated with mime-type-imports.sh in the totem module, don't edit or
    commit in the sushi module without filing a bug against totem */
-let videoTypes = [
+let audioTypes = [
     "audio/3gpp",
     "audio/ac3",
     "audio/AMR",
@@ -46,6 +46,9 @@ let videoTypes = [
     "audio/x-vorbis+ogg",
     "audio/x-xm",
     "application/x-flac",
+];
+
+let videoTypes = [
     "application/mxf",
     "application/ogg",
     "application/ram",

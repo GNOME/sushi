@@ -33,6 +33,7 @@ let Gettext = imports.gettext.domain("sushi");
 let _ = Gettext.gettext;
 
 let Constants = imports.util.constants;
+let TotemMimeTypes = imports.util.totemMimeTypes;
 
 let Utils = imports.ui.utils;
 
@@ -312,49 +313,4 @@ AudioRenderer.prototype = {
 let handler = new MimeHandler.MimeHandler();
 let renderer = new AudioRenderer();
 
-let audioTypes = [
-    "audio/3gpp",
-    "audio/ac3",
-    "audio/AMR",
-    "audio/AMR-WB",
-    "audio/basic",
-    "audio/flac",
-    "audio/midi",
-    "audio/mp2",
-    "audio/mp4",
-    "audio/mpeg",
-    "audio/ogg",
-    "audio/prs.sid",
-    "audio/vnd.rn-realaudio",
-    "audio/x-aiff",
-    "audio/x-ape",
-    "audio/x-flac",
-    "audio/x-gsm",
-    "audio/x-it",
-    "audio/x-m4a",
-    "audio/x-matroska",
-    "audio/x-mod",
-    "audio/x-mp3",
-    "audio/x-mpeg",
-    "audio/x-ms-asf",
-    "audio/x-ms-asx",
-    "audio/x-ms-wax",
-    "audio/x-ms-wma",
-    "audio/x-musepack",
-    "audio/x-pn-aiff",
-    "audio/x-pn-au",
-    "audio/x-pn-wav",
-    "audio/x-pn-windows-acm",
-    "audio/x-realaudio",
-    "audio/x-real-audio",
-    "audio/x-sbc",
-    "audio/x-speex",
-    "audio/x-tta",
-    "audio/x-wav",
-    "audio/x-wavpack",
-    "audio/x-vorbis",
-    "audio/x-vorbis+ogg",
-    "audio/x-xm",
-];
-
-handler.registerMimeTypes(audioTypes, renderer);
+handler.registerMimeTypes(TotemMimeTypes.audioTypes, renderer);

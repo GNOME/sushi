@@ -35,7 +35,7 @@ let Lang = imports.lang;
 
 let Utils = imports.ui.utils;
 let Constants = imports.util.constants;
-let totemMimeTypes = imports.util.totemMimeTypes;
+let TotemMimeTypes = imports.util.totemMimeTypes;
 
 function GstRenderer(args) {
     this._init(args);
@@ -211,4 +211,4 @@ GstRenderer.prototype = {
 let handler = new MimeHandler.MimeHandler();
 let renderer = new GstRenderer();
 
-handler.registerMimeTypes(totemMimeTypes.videoTypes, renderer);
+handler.registerMimeTypes(TotemMimeTypes.videoTypes, renderer);
