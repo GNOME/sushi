@@ -44,13 +44,13 @@ const _SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
 const SushiIface = {
     name: 'org.gnome.NautilusPreviewer',
 
-    methods: [ { name: "Activate",
+    methods: [ { name: 'Activate',
                  inSignature: '',
                  outSignature: '' },
-               { name: "ShowFile",
+               { name: 'ShowFile',
                  inSignature: 'sib',
                  outSignature: '' },
-               { name: "Close",
+               { name: 'Close',
                  inSignature: '',
                  outSignature: '' }],
 
@@ -106,7 +106,7 @@ Application.prototype = {
 
     _defineStyleAndThemes : function() {
         let provider = new Gtk.CssProvider();
-        provider.load_from_path(Path.STYLE_DIR + "gtk-style.css");
+        provider.load_from_path(Path.STYLE_DIR + 'gtk-style.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  600);

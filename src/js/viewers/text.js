@@ -52,17 +52,17 @@ TextRenderer.prototype = {
         this._callback = callback;
 
         this._textLoader = new Sushi.TextLoader();
-        this._textLoader.connect("loaded",
+        this._textLoader.connect('loaded',
                                  Lang.bind(this, this._onBufferLoaded));
         this._textLoader.uri = file.get_uri();
 
-        this._geditScheme = "tango";
-        let schemaName = "org.gnome.gedit.preferences.editor";
+        this._geditScheme = 'tango';
+        let schemaName = 'org.gnome.gedit.preferences.editor';
         let installedSchemas = Gio.Settings.list_schemas();
         if (installedSchemas.indexOf(schemaName) > -1) {
             let geditSettings = new Gio.Settings({ schema: schema_name });
             let geditSchemeName = geditSettings.get_string('scheme');
-            if (geditSchemeName != '') 
+            if (geditSchemeName != '')
                 this._geditScheme = geditSchemeName;
         }
 
@@ -74,7 +74,7 @@ TextRenderer.prototype = {
 
     _onBufferLoaded : function(loader, buffer) {
         this._buffer = buffer;
-        this._buffer["highlight-syntax"] = true;
+        this._buffer.highlight_syntax = true;
 
         let styleManager = GtkSource.StyleSchemeManager.get_default();
         let scheme = styleManager.get_scheme(this._geditScheme);
@@ -82,7 +82,7 @@ TextRenderer.prototype = {
 
         this._view = new GtkSource.View({ buffer: this._buffer,
                                           editable: false,
-                                          "cursor-visible": false });
+                                          cursor_visible: false });
         this._view.set_can_focus(false);
 
         if (this._buffer.get_language())
@@ -91,14 +91,14 @@ TextRenderer.prototype = {
         // FIXME: *very* ugly wokaround to the fact that we can't
         // access event.button from a button-press callback to block
         // right click
-        this._view.connect("populate-popup",
+        this._view.connect('populate-popup',
                            Lang.bind(this, function(widget, menu) {
                                menu.destroy();
                            }));
 
         this._scrolledWin = Gtk.ScrolledWindow.new(null, null);
         this._scrolledWin.add(this._view);
-        this._scrolledWin.show_all();    
+        this._scrolledWin.show_all();
 
         this._actor = new GtkClutter.Actor({ contents: this._scrolledWin });
         this._actor.set_reactive(true);
@@ -110,8 +110,8 @@ TextRenderer.prototype = {
     },
 
     createToolbar : function() {
-        this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class("np-toolbar");
+        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
+        this._mainToolbar.get_style_context().add_class('np-toolbar');
         this._mainToolbar.set_show_arrow(false);
 
         this._toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
@@ -132,7 +132,7 @@ let renderer = new TextRenderer();
  * for child types.
  */
 let mimeTypes = [
-    "text/plain",
+    'text/plain'
 ];
 
 handler.registerMimeTypes(mimeTypes, renderer);

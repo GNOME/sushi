@@ -94,21 +94,21 @@ function getStaticSize(renderer, widget) {
 
 function createToolButton(iconName, callback) {
     let button = new Gtk.ToolButton({ expand: false,
-                                      "icon-name": iconName });
+                                      icon_name: iconName });
     button.show();
-    button.connect("clicked", callback);
+    button.connect('clicked', callback);
 
     return button;
 }
 
 function createFullScreenButton(mainWindow) {
-    return createToolButton("view-fullscreen-symbolic", Lang.bind(this, function() {
+    return createToolButton('view-fullscreen-symbolic', Lang.bind(this, function() {
         mainWindow.toggleFullScreen();
-    }));        
+    }));
 }
 
 function createOpenButton(file, mainWindow) {
-    return createToolButton("document-open-symbolic", Lang.bind(this, function(widget) {
+    return createToolButton('document-open-symbolic', Lang.bind(this, function(widget) {
         let timestamp = Gtk.get_current_event_time();
         try {
             Gtk.show_uri(widget.get_screen(),
@@ -117,7 +117,7 @@ function createOpenButton(file, mainWindow) {
 
             mainWindow.close();
         } catch (e) {
-            log('Unable to execute the default application for ' + 
+            log('Unable to execute the default application for ' +
                 file.get_uri() + ' : ' + e.toString());
         }
     }));
@@ -132,9 +132,9 @@ function formatTimeString(timeVal) {
 
     let seconds = Math.floor(timeVal);
 
-    let str = ("%02d:%02d").format(minutes, seconds);
+    let str = ('%02d:%02d').format(minutes, seconds);
     if (hours > 0) {
-        str = ("%d").format(hours) + ":" + str;
+        str = ('%d').format(hours) + ':' + str;
     }
 
     return str;

@@ -31,7 +31,7 @@ let GtkClutter = imports.gi.GtkClutter;
 let Gtk = imports.gi.Gtk;
 let GLib = imports.gi.GLib;
 
-let Gettext = imports.gettext.domain("sushi");
+let Gettext = imports.gettext.domain('sushi');
 let _ = Gettext.gettext;
 
 let Utils = imports.ui.utils;
@@ -77,7 +77,7 @@ ImageRenderer.prototype = {
          Lang.bind(this, function(obj, res) {
              let pix = GdkPixbuf.Pixbuf.new_from_stream_finish(res);
 
-             this._texture = new GtkClutter.Texture({ "keep-aspect-ratio": true });
+             this._texture = new GtkClutter.Texture({ keep_aspect_ratio: true });
              this._texture.set_from_pixbuf(pix);
 
              /* we're ready now */
@@ -88,7 +88,7 @@ ImageRenderer.prototype = {
                                     try {
                                         object.close_finish(res);
                                     } catch (e) {
-                                        log("Unable to close the stream " + e.toString());
+                                        log('Unable to close the stream ' + e.toString());
                                     }
                                 });
          }));
@@ -100,8 +100,8 @@ ImageRenderer.prototype = {
     },
 
     createToolbar : function() {
-        this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class("np-toolbar");
+        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
+        this._mainToolbar.get_style_context().add_class('np-toolbar');
         this._mainToolbar.set_show_arrow(false);
         this._mainToolbar.show();
 

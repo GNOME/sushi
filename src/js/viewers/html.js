@@ -57,7 +57,7 @@ HTMLRenderer.prototype = {
 
         /* disable the default context menu of the web view */
         let settings = this._webView.settings;
-        settings["enable-default-context-menu"] = false;
+        settings.enable_default_context_menu = false;
 
         this._webView.load_uri(file.get_uri());
 
@@ -76,8 +76,8 @@ HTMLRenderer.prototype = {
     },
 
     createToolbar : function() {
-        this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class("np-toolbar");
+        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
+        this._mainToolbar.get_style_context().add_class('np-toolbar');
         this._mainToolbar.set_show_arrow(false);
         this._mainToolbar.show();
 
@@ -101,7 +101,7 @@ let handler = new MimeHandler.MimeHandler();
 let renderer = new HTMLRenderer();
 
 let mimeTypes = [
-    "text/html",
+    'text/html'
 ];
 
 handler.registerMimeTypes(mimeTypes, renderer);

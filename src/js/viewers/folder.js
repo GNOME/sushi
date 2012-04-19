@@ -29,7 +29,7 @@ let MimeHandler = imports.ui.mimeHandler;
 let Gtk = imports.gi.Gtk;
 let Sushi = imports.gi.Sushi;
 
-let Gettext = imports.gettext.domain("sushi");
+let Gettext = imports.gettext.domain('sushi');
 let _ = Gettext.gettext;
 
 let Constants = imports.util.constants;
@@ -59,20 +59,20 @@ FolderRenderer.prototype = {
         this._folderLoader = new Sushi.FileLoader();
         this._folderLoader.file = file;
         this._folderLoaderId =
-            this._folderLoader.connect("notify",
+            this._folderLoader.connect('notify',
                                        Lang.bind(this, this._onFolderInfoChanged));
 
         this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                   spacing: 6 });
-        this._image = new Gtk.Image({ "icon-name": "folder",
-                                      "pixel-size": 256 });
+        this._image = new Gtk.Image({ icon_name: 'folder',
+                                      pixel_size: 256 });
         this._box.pack_start(this._image, false, false, 0);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
-                                 "margin-top": 48,
-                                 "margin-left": 12,
-                                 "margin-right": 12 });
+                                 margin_top: 48,
+                                 margin_left: 12,
+                                 margin_right: 12 });
         this._box.pack_start(vbox, false, false, 0);
 
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
@@ -113,21 +113,21 @@ FolderRenderer.prototype = {
 	    try {
 		name = this._folderLoader.file.get_basename();
 	    } catch (e) {
-		name = "";
+		name = '';
 	    }
 	}
         let titleStr =
-            "<b><big>" + name + "</big></b>";
+            '<b><big>' + name + '</big></b>';
 
         let sizeStr =
-            "<small><b>" + _("Size") + "  </b>" +
+            '<small><b>' + _("Size") + '  </b>' +
             ((this._folderLoader.size) ? (this._folderLoader.size) : (_("Loading...")))
-             + "</small>";
+             + '</small>';
 
         let dateStr =
-            "<small><b>" + _("Modified") + "  </b>" +
+            '<small><b>' + _("Modified") + '  </b>' +
              ((this._folderLoader.time) ? (this._folderLoader.time) : (_("Loading...")))
-             + "</small>";
+             + '</small>';
 
         this._titleLabel.set_markup(titleStr);
         this._sizeLabel.set_markup(sizeStr);
@@ -163,4 +163,4 @@ FolderRenderer.prototype = {
 let handler = new MimeHandler.MimeHandler();
 let renderer = new FolderRenderer();
 
-handler.registerMime("inode/directory", renderer);
+handler.registerMime('inode/directory', renderer);

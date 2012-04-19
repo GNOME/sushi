@@ -29,7 +29,7 @@ let MimeHandler = imports.ui.mimeHandler;
 let Gst = imports.gi.Gst;
 let Gio = imports.gi.Gio;
 
-let Gettext = imports.gettext.domain("sushi");
+let Gettext = imports.gettext.domain('sushi');
 let _ = Gettext.gettext;
 
 let Constants = imports.util.constants;
@@ -56,15 +56,15 @@ AudioRenderer.prototype = {
 
         this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                   spacing: 6 });
-        this._image = new Gtk.Image({ "icon-name": "media-optical-symbolic",
-                                      "pixel-size": 256 });
+        this._image = new Gtk.Image({ icon_name: 'media-optical-symbolic',
+                                      pixel_size: 256 });
         this._box.pack_start(this._image, false, false, 0);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
-                                 "margin-top": 48,
-                                 "margin-left": 12,
-                                 "margin-right": 12 });
+                                 margin_top: 48,
+                                 margin_left: 12,
+                                 margin_right: 12 });
         this._box.pack_start(vbox, false, false, 0);
 
         this._titleLabel = new Gtk.Label();
@@ -96,19 +96,19 @@ AudioRenderer.prototype = {
         this._player.playing = true;
 
         this._playerNotifies.push(
-            this._player.connect("notify::progress",
+            this._player.connect('notify::progress',
                                  Lang.bind(this, this._onPlayerProgressChanged)));
         this._playerNotifies.push(
-            this._player.connect("notify::duration",
+            this._player.connect('notify::duration',
                                  Lang.bind(this, this._onPlayerDurationChanged)));
         this._playerNotifies.push(
-            this._player.connect("notify::state",
+            this._player.connect('notify::state',
                                  Lang.bind(this, this._onPlayerStateChanged)));
         this._playerNotifies.push(
-            this._player.connect("notify::taglist",
+            this._player.connect('notify::taglist',
                                  Lang.bind(this, this._onTagListChanged)));
         this._playerNotifies.push(
-            this._player.connect("notify::cover",
+            this._player.connect('notify::cover',
                                  Lang.bind(this, this._onCoverArtChanged)));
     },
 
@@ -147,7 +147,7 @@ AudioRenderer.prototype = {
 
     _onCoverArtChanged : function() {
         if (!this._artFetcher.cover) {
-            this._image.set_from_icon_name("media-optical-symbolic");
+            this._image.set_from_icon_name('media-optical-symbolic');
             return;
         }
 
@@ -157,9 +157,9 @@ AudioRenderer.prototype = {
 
     _onTagListChanged : function() {
         let tags = this._player.taglist;
-        let albumName = tags.get_string("album")[1];
-        let artistName = tags.get_string("artist")[1];
-        let titleName = tags.get_string("title")[1];
+        let albumName = tags.get_string('album')[1];
+        let artistName = tags.get_string('artist')[1];
+        let titleName = tags.get_string('title')[1];
         let haveTitleTag = true;
 
         if (!titleName) {
@@ -169,23 +169,23 @@ AudioRenderer.prototype = {
         }
 
         if (albumName)
-            this._albumLabel.set_markup("<small><i>" + _("from") + "  </i>" + albumName + "</small>");
+            this._albumLabel.set_markup('<small><i>' + _("from") + '  </i>' + albumName + '</small>');
         if (artistName)
-            this._authorLabel.set_markup("<small><i>" + _("by") + "  </i><b>" + artistName + "</b></small>");
+            this._authorLabel.set_markup('<small><i>' + _("by") + '  </i><b>' + artistName + '</b></small>');
 
-        this._titleLabel.set_markup("<b>" + titleName + "</b>");
+        this._titleLabel.set_markup('<b>' + titleName + '</b>');
 
-        let windowTitle = "";
+        let windowTitle = '';
 
         if (artistName && haveTitleTag)
-            windowTitle = artistName + " - " + titleName;
+            windowTitle = artistName + ' - ' + titleName;
         else
             windowTitle = titleName;
 
         this._mainWindow.setTitle(windowTitle);
 
         this._artFetcher = new Sushi.CoverArtFetcher();
-        this._artFetcher.connect("notify::cover",
+        this._artFetcher.connect('notify::cover',
                                  Lang.bind(this, this._onCoverArtChanged));
 
         this._artFetcher.taglist = tags;
@@ -233,10 +233,10 @@ AudioRenderer.prototype = {
     _onPlayerStateChanged : function() {
         switch(this._player.state) {
         case Sushi.SoundPlayerState.PLAYING:
-            this._toolbarPlay.set_icon_name("media-playback-pause-symbolic");
+            this._toolbarPlay.set_icon_name('media-playback-pause-symbolic');
             break;
         default:
-            this._toolbarPlay.set_icon_name("media-playback-start-symbolic");
+            this._toolbarPlay.set_icon_name('media-playback-start-symbolic');
         }
     },
 
@@ -255,7 +255,7 @@ AudioRenderer.prototype = {
 
     createToolbar : function () {
         this._mainToolbar = new Gtk.Toolbar();
-        this._mainToolbar.get_style_context().add_class("np-toolbar");
+        this._mainToolbar.get_style_context().add_class('np-toolbar');
         this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
         this._mainToolbar.show();
 
@@ -266,18 +266,18 @@ AudioRenderer.prototype = {
                                          coordinate: Clutter.BindCoordinate.WIDTH,
                                          offset: -50 }));
 
-        this._toolbarPlay = new Gtk.ToolButton({ "icon-name": "media-playback-pause-symbolic" });
+        this._toolbarPlay = new Gtk.ToolButton({ icon_name: 'media-playback-pause-symbolic' });
         this._toolbarPlay.show();
         this._mainToolbar.insert(this._toolbarPlay, 0);
 
-        this._currentLabel = new Gtk.Label({ "margin-left": 6,
-                                             "margin-right": 3 });
+        this._currentLabel = new Gtk.Label({ margin_left: 6,
+                                             margin_right: 3 });
         let item = new Gtk.ToolItem();
         item.add(this._currentLabel);
         item.show_all();
         this._mainToolbar.insert(item, 1);
 
-        this._toolbarPlay.connect("clicked",
+        this._toolbarPlay.connect('clicked',
                                   Lang.bind(this, function () {
                                       let playing = !this._player.playing;
                                       this._player.playing = playing;
@@ -288,7 +288,7 @@ AudioRenderer.prototype = {
                                      0, 1000, 10);
         this._progressBar.set_value(0);
         this._progressBar.set_draw_value(false);
-        this._progressBar.connect("value-changed",
+        this._progressBar.connect('value-changed',
                                   Lang.bind(this, function() {
                                       if(!this._isSettingValue)
                                           this._player.progress = this._progressBar.get_value() / 1000;
@@ -300,7 +300,7 @@ AudioRenderer.prototype = {
         item.show_all();
         this._mainToolbar.insert(item, 2);
 
-        this._durationLabel = new Gtk.Label({ "margin-left": 3 });
+        this._durationLabel = new Gtk.Label({ margin_left: 3 });
         item = new Gtk.ToolItem();
         item.add(this._durationLabel);
         item.show_all();

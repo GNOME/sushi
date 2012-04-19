@@ -28,7 +28,7 @@
 let Gtk = imports.gi.Gtk;
 let Sushi = imports.gi.Sushi;
 
-let Gettext = imports.gettext.domain("sushi");
+let Gettext = imports.gettext.domain('sushi');
 let _ = Gettext.gettext;
 
 let Constants = imports.util.constants;
@@ -55,20 +55,20 @@ FallbackRenderer.prototype = {
         this._fileLoader = new Sushi.FileLoader();
         this._fileLoader.file = file;
         this._fileLoaderId =
-            this._fileLoader.connect("notify",
+            this._fileLoader.connect('notify',
                                      Lang.bind(this, this._onFileInfoChanged));
 
         this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                   spacing: 6 });
-        this._image = new Gtk.Image({ "icon-name": "document",
-                                      "pixel-size": 256 });
+        this._image = new Gtk.Image({ icon_name: 'document',
+                                      pixel_size: 256 });
         this._box.pack_start(this._image, false, false, 0);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
-                                 "margin-top": 48,
-                                 "margin-left": 12,
-                                 "margin-right": 12 });
+                                 margin_top: 48,
+                                 margin_left: 12,
+                                 margin_right: 12 });
         this._box.pack_start(vbox, false, false, 0);
 
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
@@ -108,25 +108,25 @@ FallbackRenderer.prototype = {
     },
 
     _applyLabels : function() {
-        let titleStr = 
-            "<b><big>" + 
+        let titleStr =
+            '<b><big>' +
             ((this._fileLoader.name) ? (this._fileLoader.name) : (this._fileLoader.file.get_basename()))
-            + "</big></b>";
+            + '</big></b>';
 
         let typeStr =
-            "<small><b>" + _("Type") + "  </b>" +
+            '<small><b>' + _("Type") + '  </b>' +
             ((this._fileLoader.contentType) ? (this._fileLoader.contentType) : (_("Loading...")))
-             + "</small>";
+             + '</small>';
 
         let sizeStr =
-            "<small><b>" + _("Size") + "  </b>" +
+            '<small><b>' + _("Size") + '  </b>' +
             ((this._fileLoader.size) ? (this._fileLoader.size) : (_("Loading...")))
-             + "</small>";
+             + '</small>';
 
         let dateStr =
-            "<small><b>" + _("Modified") + "  </b>" +
+            '<small><b>' + _("Modified") + '  </b>' +
              ((this._fileLoader.time) ? (this._fileLoader.time) : (_("Loading...")))
-             + "</small>";
+             + '</small>';
 
         this._titleLabel.set_markup(titleStr);
         this._typeLabel.set_markup(typeStr);

@@ -31,7 +31,7 @@ let EvView = imports.gi.EvinceView;
 
 let Sushi = imports.gi.Sushi;
 
-let Gettext = imports.gettext.domain("sushi");
+let Gettext = imports.gettext.domain('sushi');
 let _ = Gettext.gettext;
 
 let Utils = imports.ui.utils;
@@ -58,7 +58,7 @@ EvinceRenderer.prototype = {
         this._callback = callback;
 
         this._pdfLoader = new Sushi.PdfLoader();
-        this._pdfLoader.connect("notify::document",
+        this._pdfLoader.connect('notify::document',
                                 Lang.bind(this, this._onDocumentLoaded));
         this._pdfLoader.uri = file.get_uri();
     },
@@ -75,7 +75,7 @@ EvinceRenderer.prototype = {
 
         this._toolbarBack.set_sensitive(curPage > 0);
         this._toolbarForward.set_sensitive(curPage < totPages - 1);
-        
+
         this._pageLabel.set_text(_("%d of %d").format(curPage + 1, totPages));
     },
 
@@ -86,7 +86,7 @@ EvinceRenderer.prototype = {
         this._model.set_sizing_mode(EvView.SizingMode.FIT_WIDTH);
 	this._model.set_continuous(true);
 
-        this._model.connect("page-changed",
+        this._model.connect('page-changed',
                             Lang.bind(this, function() {
                                 this._updatePageLabel();
                             }));
@@ -127,19 +127,19 @@ EvinceRenderer.prototype = {
     },
 
     createToolbar : function() {
-        this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class("np-toolbar");
+        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
+        this._mainToolbar.get_style_context().add_class('np-toolbar');
         this._mainToolbar.set_show_arrow(false);
         this._mainToolbar.show();
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
         this._toolbarBack = new Gtk.ToolButton({ expand: false,
-                                                 "icon-name": "go-previous-symbolic" });
+                                                 icon_name: 'go-previous-symbolic' });
         this._toolbarBack.show();
         this._mainToolbar.insert(this._toolbarBack, -1);
 
-        this._toolbarBack.connect("clicked",
+        this._toolbarBack.connect('clicked',
                                   Lang.bind(this, function () {
                                       this._view.previous_page();
                                   }));
@@ -148,11 +148,11 @@ EvinceRenderer.prototype = {
         this._mainToolbar.insert(labelItem, -1);
 
         this._toolbarForward = new Gtk.ToolButton({ expand: false,
-                                                 "icon-name": "go-next-symbolic" });
+                                                    icon_name: 'go-next-symbolic' });
         this._toolbarForward.show();
         this._mainToolbar.insert(this._toolbarForward, -1);
 
-        this._toolbarForward.connect("clicked",
+        this._toolbarForward.connect('clicked',
                                      Lang.bind(this, function () {
                                          this._view.next_page();
                                      }));
@@ -184,13 +184,13 @@ handler.registerMimeTypes(mimeTypes, renderer);
 
 if (Features.HAVE_UNOCONV) {
     let officeTypes = [
-        "application/vnd.oasis.opendocument.text",
-        "application/vnd.oasis.opendocument.presentation",
-        "application/vnd.oasis.opendocument.spreadsheet",
-        "application/msword",
-        "application/vnd.ms-excel",
-        "application/vnd.ms-powerpoint",
-        "application/rtf"
+        'application/vnd.oasis.opendocument.text',
+        'application/vnd.oasis.opendocument.presentation',
+        'application/vnd.oasis.opendocument.spreadsheet',
+        'application/msword',
+        'application/vnd.ms-excel',
+        'application/vnd.ms-powerpoint',
+        'application/rtf'
     ];
 
     handler.registerMimeTypes(officeTypes, renderer);

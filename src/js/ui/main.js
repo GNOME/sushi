@@ -37,10 +37,10 @@ const Utils = imports.ui.utils;
 const Tweener = imports.ui.tweener;
 
 function run() {
-    Gettext.bindtextdomain("sushi", Path.LOCALE_DIR);
+    Gettext.bindtextdomain('sushi', Path.LOCALE_DIR);
     String.prototype.format = Format.format;
 
-    GLib.set_application_name("Sushi");
+    GLib.set_application_name('Sushi');
 
     let application = new Application.Application();
 

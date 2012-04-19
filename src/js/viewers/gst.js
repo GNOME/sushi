@@ -66,22 +66,22 @@ GstRenderer.prototype = {
 
     _createVideo : function(file) {
         this._video =
-            new ClutterGst.VideoTexture({ "sync-size": false });
+            new ClutterGst.VideoTexture({ sync_size: false });
 
         this._video.set_uri(file.get_uri());
         this._video.playing = true;
 
         this._videoSizeChangeId =
-            this._video.connect("size-change",
+            this._video.connect('size-change',
                                 Lang.bind(this,
                                           this._onVideoSizeChange));
-        this._video.connect("notify::playing",
+        this._video.connect('notify::playing',
                             Lang.bind(this,
-                                      this._onVideoPlayingChange))
-        this._video.connect("notify::progress",
+                                      this._onVideoPlayingChange));
+        this._video.connect('notify::progress',
                             Lang.bind(this,
                                       this._onVideoProgressChange));
-        this._video.connect("notify::duration",
+        this._video.connect('notify::duration',
                             Lang.bind(this,
                                       this._onVideoDurationChange));
     },
@@ -125,9 +125,9 @@ GstRenderer.prototype = {
 
     _onVideoPlayingChange : function() {
         if (this._video.playing)
-            this._toolbarPlay.set_icon_name("media-playback-pause-symbolic");
+            this._toolbarPlay.set_icon_name('media-playback-pause-symbolic');
         else
-            this._toolbarPlay.set_icon_name("media-playback-start-symbolic");
+            this._toolbarPlay.set_icon_name('media-playback-start-symbolic');
     },
 
     getSizeForAllocation : function(allocation) {
@@ -142,8 +142,8 @@ GstRenderer.prototype = {
     },
 
     createToolbar : function () {
-        this._mainToolbar = new Gtk.Toolbar({ "icon-size": Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class("np-toolbar");
+        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
+        this._mainToolbar.get_style_context().add_class('np-toolbar');
         this._mainToolbar.show();
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
@@ -153,18 +153,18 @@ GstRenderer.prototype = {
                                          coordinate: Clutter.BindCoordinate.WIDTH,
                                          offset: -50 }));
 
-        this._toolbarPlay = new Gtk.ToolButton({ "icon-name": "media-playback-pause-symbolic" });
+        this._toolbarPlay = new Gtk.ToolButton({ icon_name: 'media-playback-pause-symbolic' });
         this._toolbarPlay.show();
         this._mainToolbar.insert(this._toolbarPlay, 0);
 
-        this._currentLabel = new Gtk.Label({ "margin-left": 6,
-                                             "margin-right": 3 });
+        this._currentLabel = new Gtk.Label({ margin_left: 6,
+                                             margin_right: 3 });
         let item = new Gtk.ToolItem();
         item.add(this._currentLabel);
         item.show_all();
         this._mainToolbar.insert(item, 1);
 
-        this._toolbarPlay.connect("clicked",
+        this._toolbarPlay.connect('clicked',
                                   Lang.bind(this, function () {
                                       let playing = !this._video.playing;
                                       this._video.playing = playing;
@@ -175,21 +175,21 @@ GstRenderer.prototype = {
                                      0, 1000, 10);
         this._progressBar.set_value(0);
         this._progressBar.set_draw_value(false);
-        this._progressBar.connect("value-changed",
+        this._progressBar.connect('value-changed',
                                   Lang.bind(this, function() {
                                       if(!this._isSettingValue)
                                           this._video.progress = this._progressBar.get_value() / 1000;
                                   }));
 
-        let item = new Gtk.ToolItem();
+        item = new Gtk.ToolItem();
         item.set_expand(true);
         item.add(this._progressBar);
         item.show_all();
         this._mainToolbar.insert(item, 2);
 
-        this._durationLabel = new Gtk.Label({ "margin-left": 3,
-                                              "margin-right": 6 });
-        let item = new Gtk.ToolItem();
+        this._durationLabel = new Gtk.Label({ margin_left: 3,
+                                              margin_right: 6 });
+        item = new Gtk.ToolItem();
         item.add(this._durationLabel);
         item.show_all();
         this._mainToolbar.insert(item, 3);

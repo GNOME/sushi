@@ -49,7 +49,7 @@ FontRenderer.prototype = {
 
         this._fontWidget = new Sushi.FontWidget({ uri: file.get_uri() });
         this._fontWidget.show();
-        this._fontWidget.connect("loaded",
+        this._fontWidget.connect('loaded',
                                  Lang.bind(this, this._onFontLoaded));
 
         this._fontActor = new GtkClutter.Actor({ contents: this._fontWidget });
@@ -81,10 +81,10 @@ let handler = new MimeHandler.MimeHandler();
 let renderer = new FontRenderer();
 
 let mimeTypes = [
-    "application/x-font-ttf",
-    "application/x-font-otf",
-    "application/x-font-pcf",
-    "application/x-font-type1"
+    'application/x-font-ttf',
+    'application/x-font-otf',
+    'application/x-font-pcf',
+    'application/x-font-type1'
 ];
 
 handler.registerMimeTypes(mimeTypes, renderer);

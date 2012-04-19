@@ -90,9 +90,9 @@ MainWindow.prototype = {
         let screen = Gdk.Screen.get_default();
         this._gtkWindow.set_visual(screen.get_rgba_visual());
 
-        this._gtkWindow.connect("delete-event",
+        this._gtkWindow.connect('delete-event',
                                 Lang.bind(this, this._onWindowDeleteEvent));
-        this._gtkWindow.connect("realize", Lang.bind(this,
+        this._gtkWindow.connect('realize', Lang.bind(this,
             function() {
                 // don't support maximize and minimize
                 this._gtkWindow.get_window().set_functions(Gdk.WMFunction.MOVE |
@@ -121,11 +121,11 @@ MainWindow.prototype = {
     },
 
     _connectStageSignals : function() {
-        this._stage.connect("key-press-event",
+        this._stage.connect('key-press-event',
                             Lang.bind(this, this._onStageKeyPressEvent));
-        this._stage.connect("button-press-event",
+        this._stage.connect('button-press-event',
                             Lang.bind(this, this._onButtonPressEvent));
-        this._stage.connect("motion-event",
+        this._stage.connect('motion-event',
                             Lang.bind(this, this._onMotionEvent));
     },
 
@@ -210,7 +210,7 @@ MainWindow.prototype = {
             return false;
         }
 
-        let root_coords = 
+        let root_coords =
             this._gtkWindow.get_window().get_root_coords(win_coords[0],
                                                          win_coords[1]);
 
@@ -273,7 +273,7 @@ MainWindow.prototype = {
         }
 
         if (yFactor == 0) {
-            if (this._isFullScreen && 
+            if (this._isFullScreen &&
                (textureSize[0] > textureSize[1]))
                 yFactor = 0.52;
             else
@@ -310,7 +310,7 @@ MainWindow.prototype = {
         this._renderer.startTimeout();
 
         file.query_info_async
-        (Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME + "," +
+        (Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME + ',' +
          Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
          Gio.FileQueryInfoFlags.NONE,
          GLib.PRIORITY_DEFAULT, null,
@@ -348,13 +348,13 @@ MainWindow.prototype = {
 
         this._texture = this._renderer.render();
 
-        this._textureXAlign = 
+        this._textureXAlign =
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5 });
         this._textureYAlign =
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5,
-                                          "align-axis": Clutter.AlignAxis.Y_AXIS })
+                                          align_axis: Clutter.AlignAxis.Y_AXIS });
 
         this._texture.add_constraint(this._textureXAlign);
         this._texture.add_constraint(this._textureYAlign);
@@ -384,12 +384,12 @@ MainWindow.prototype = {
         Tweener.addTween(this._mainGroup,
                          { opacity: 255,
                            time: 0.15,
-                           transition: 'easeOutQuad',
+                           transition: 'easeOutQuad'
                          });
         Tweener.addTween(this._titleGroup,
                          { opacity: 255,
                            time: 0.15,
-                           transition: 'easeOutQuad',
+                           transition: 'easeOutQuad'
                          });
     },
 
@@ -401,11 +401,11 @@ MainWindow.prototype = {
             this._removeToolbarTimeout();
         }
 
-        /* wait for the next stage allocation to fade in the texture 
+        /* wait for the next stage allocation to fade in the texture
          * and background again.
          */
         this._unFullScreenId =
-            this._stage.connect("notify::allocation",
+            this._stage.connect('notify::allocation',
                                 Lang.bind(this, this._onStageUnFullScreen));
 
         /* quickly fade out everything,
@@ -472,11 +472,11 @@ MainWindow.prototype = {
             this._removeToolbarTimeout();
         }
 
-        /* wait for the next stage allocation to fade in the texture 
+        /* wait for the next stage allocation to fade in the texture
          * and background again.
          */
         this._fullScreenId =
-            this._stage.connect("notify::allocation",
+            this._stage.connect('notify::allocation',
                                 Lang.bind(this, this._onStageFullScreen));
 
         /* quickly fade out everything,
@@ -522,13 +522,13 @@ MainWindow.prototype = {
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5 }));
 
-        let yConstraint = 
+        let yConstraint =
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.Y,
                                          offset: this._stage.height - Constants.TOOLBAR_SPACING });
         this._toolbarActor.add_constraint(yConstraint);
 
-        this._stage.connect("notify::height",
+        this._stage.connect('notify::height',
                             Lang.bind(this, function() {
                                 yConstraint.set_offset(this._stage.height - Constants.TOOLBAR_SPACING);
                             }));
@@ -551,7 +551,7 @@ MainWindow.prototype = {
             Tweener.addTween(this._toolbarActor,
                              { opacity: 200,
                                time: 0.1,
-                               transition: 'easeOutQuad',
+                               transition: 'easeOutQuad'
                              });
         }
 
@@ -594,21 +594,21 @@ MainWindow.prototype = {
         if (!this._clientDecorated)
             return;
 
-        this._titleLabel = new Gtk.Label({ label: "",
+        this._titleLabel = new Gtk.Label({ label: '',
 					   ellipsize: Pango.EllipsizeMode.END,
                                            margin: 6 });
-        this._titleLabel.get_style_context().add_class("np-decoration");
-        
+        this._titleLabel.get_style_context().add_class('np-decoration');
+
         this._titleLabel.show();
         this._titleActor = new GtkClutter.Actor({ contents: this._titleLabel });
 
-        this._quitButton = 
-            new Gtk.Button({ image: new Gtk.Image ({ "icon-size": Gtk.IconSize.MENU,
-                                                     "icon-name": "window-close-symbolic" })});
-        this._quitButton.get_style_context().add_class("np-decoration");
+        this._quitButton =
+            new Gtk.Button({ image: new Gtk.Image ({ icon_size: Gtk.IconSize.MENU,
+                                                     icon_name: 'window-close-symbolic' })});
+        this._quitButton.get_style_context().add_class('np-decoration');
         this._quitButton.show();
 
-        this._quitButton.connect("clicked",
+        this._quitButton.connect('clicked',
                                  Lang.bind(this,
                                            this._clearAndQuit));
 
@@ -652,7 +652,7 @@ MainWindow.prototype = {
         Tweener.addTween(this._titleGroup,
                          { opacity: 0,
                            time: 0.15,
-                           transition: 'easeOutQuad',
+                           transition: 'easeOutQuad'
                          });
 
         Tweener.addTween(this._mainGroup,

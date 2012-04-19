@@ -25,4 +25,4 @@
  *
  */
 
-let HAVE_UNOCONV = @have_unoconv@
+let HAVE_UNOCONV = @have_unoconv@;
