@@ -139,3 +139,10 @@ function formatTimeString(timeVal) {
 
     return str;
 }
+
+function alphaGtkWidget(widget) {
+    widget.override_background_color(0, new Gdk.RGBA({ red: 0,
+                                                       green: 0,
+                                                       blue: 0,
+                                                       alpha: 0 }));
+}

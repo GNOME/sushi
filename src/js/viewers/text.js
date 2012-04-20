@@ -111,7 +111,7 @@ TextRenderer.prototype = {
 
     createToolbar : function() {
         this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class('np-toolbar');
+        this._mainToolbar.get_style_context().add_class('osd');
         this._mainToolbar.set_show_arrow(false);
 
         this._toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);

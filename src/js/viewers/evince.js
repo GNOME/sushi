@@ -114,9 +114,8 @@ EvinceRenderer.prototype = {
     },
 
     _createLabelItem : function() {
-        this._pageLabel = new Gtk.Label();
-        this._pageLabel.set_margin_left(2);
-        this._pageLabel.set_margin_right(2);
+        this._pageLabel = new Gtk.Label({ margin_left: 10,
+                                          margin_right: 10 });
 
         let item = new Gtk.ToolItem();
         item.set_expand(true);
@@ -128,7 +127,7 @@ EvinceRenderer.prototype = {
 
     createToolbar : function() {
         this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class('np-toolbar');
+        this._mainToolbar.get_style_context().add_class('osd');
         this._mainToolbar.set_show_arrow(false);
         this._mainToolbar.show();
 

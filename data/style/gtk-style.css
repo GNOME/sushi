@@ -38,43 +38,6 @@ GtkSourceView {
     background-color: shade (@np_bg_color, 1.70);
 }
 
-.np-toolbar {
-    border-style: none;
-    border-radius: 3px;
-    border-width: 0;
-
-    background-color: @np_bg_color;
-}
-
-.np-toolbar GtkSeparatorToolItem {
-    -GtkWidget-wide-separators: 1;
-    -GtkWidget-separator-width: 1;
-
-    border-width: 1px;
-    border-style: solid;
-}
-
-.np-toolbar .button {
-    border-image: none;
-    background-image: -gtk-gradient(linear,
-                                    left top, left bottom,
-                                    from(#333),
-                                    color-stop(0.50, shade (#333, 1.40)),
-                                    to (#333));
-}
-
-.np-toolbar .button:hover {
-    background-image: -gtk-gradient(linear,
-                                    left top, left bottom,
-                                    from(shade(#333, 1.20)),
-                                    color-stop(0.50, shade (#333, 1.60)),
-                                    to (shade(#333, 1.20)));
-}
-
-.np-toolbar GtkLabel {
-    font: Cantarell 8;
-}
-
 .np-decoration {
     font: bold;
 }

@@ -143,7 +143,7 @@ GstRenderer.prototype = {
 
     createToolbar : function () {
         this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class('np-toolbar');
+        this._mainToolbar.get_style_context().add_class('osd');
         this._mainToolbar.show();
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,

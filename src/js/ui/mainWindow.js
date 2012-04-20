@@ -44,6 +44,7 @@ const Mainloop = imports.mainloop;
 const MimeHandler = imports.ui.mimeHandler;
 const Constants = imports.util.constants;
 const SpinnerBox = imports.ui.spinnerBox;
+const Utils = imports.ui.utils;
 
 const Sushi = imports.gi.Sushi;
 
@@ -513,6 +514,8 @@ MainWindow.prototype = {
 
         if (!this._toolbarActor)
             return;
+
+        Utils.alphaGtkWidget(this._toolbarActor.get_widget());
 
         this._toolbarActor.set_reactive(true);
         this._toolbarActor.set_opacity(0);

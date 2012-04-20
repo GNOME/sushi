@@ -255,7 +255,7 @@ AudioRenderer.prototype = {
 
     createToolbar : function () {
         this._mainToolbar = new Gtk.Toolbar();
-        this._mainToolbar.get_style_context().add_class('np-toolbar');
+        this._mainToolbar.get_style_context().add_class('osd');
         this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
         this._mainToolbar.show();
 
