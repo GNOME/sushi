@@ -116,7 +116,9 @@ MainWindow.prototype = {
                                                   green: 0,
                                                   blue: 0,
                                                   alpha: 255 }));
-        this._mainGroup =  new Clutter.Group();
+
+        this._mainLayout = new Clutter.BinLayout();
+        this._mainGroup = new Clutter.Actor({ layout_manager: this._mainLayout });
         this._stage.add_actor(this._mainGroup);
         this._mainGroup.set_opacity(0);
     },
@@ -147,7 +149,7 @@ MainWindow.prototype = {
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.SIZE }));
 
-        this._mainGroup.add_actor(this._background);
+        this._mainGroup.add_child(this._background);
         this._background.lower_bottom();
     },
 
@@ -173,7 +175,7 @@ MainWindow.prototype = {
             new Clutter.BindConstraint({ source: this._stage,
                                          coordinate: Clutter.BindCoordinate.SIZE }));
 
-        this._mainGroup.add_actor(this._background);
+        this._mainGroup.add_child(this._background);
         this._background.lower_bottom();
     },
 
@@ -361,7 +363,7 @@ MainWindow.prototype = {
         this._texture.add_constraint(this._textureYAlign);
 
         this.refreshSize();
-        this._mainGroup.add_actor(this._texture);
+        this._mainGroup.add_child(this._texture);
     },
 
     /**************************************************************************
@@ -519,22 +521,13 @@ MainWindow.prototype = {
 
         this._toolbarActor.set_reactive(true);
         this._toolbarActor.set_opacity(0);
-        this._mainGroup.add_actor(this._toolbarActor);
-
         this._toolbarActor.add_constraint(
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5 }));
 
-        let yConstraint =
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.Y,
-                                         offset: this._stage.height - Constants.TOOLBAR_SPACING });
-        this._toolbarActor.add_constraint(yConstraint);
-
-        this._stage.connect('notify::height',
-                            Lang.bind(this, function() {
-                                yConstraint.set_offset(this._stage.height - Constants.TOOLBAR_SPACING);
-                            }));
+        this._toolbarActor.margin_bottom = Constants.TOOLBAR_SPACING;
+        this._mainLayout.add(this._toolbarActor,
+                             Clutter.BinAlignment.FIXED, Clutter.BinAlignment.END);
     },
 
     _removeToolbarTimeout: function() {
