@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sushi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-09 13:23+0300\n"
-"PO-Revision-Date: 2011-09-09 13:25+0200\n"
+"POT-Creation-Date: 2012-04-22 11:27+0300\n"
+"PO-Revision-Date: 2012-04-22 11:27+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -20,44 +20,58 @@ msgstr ""
 "X-Poedit-Country: ISRAEL\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: ../src/libsushi/sushi-file-loader.c:641
+#: ../data/org.gnome.sushi.gschema.xml.in.h:1
+msgid "Client decoration"
+msgstr "Client decoration"
+
+#: ../data/org.gnome.sushi.gschema.xml.in.h:2
+msgid "Whether the window draws WM decorations itself"
+msgstr "Whether the window draws WM decorations itself"
+
+#: ../src/js/ui/fallbackRenderer.js:117
+msgid "Type"
+msgstr "סוג"
+
+#: ../src/js/ui/fallbackRenderer.js:118
+#: ../src/js/ui/fallbackRenderer.js:123
+#: ../src/js/ui/fallbackRenderer.js:128
+#: ../src/js/ui/spinnerBox.js:57
+#: ../src/js/viewers/folder.js:124
+#: ../src/js/viewers/folder.js:129
+msgid "Loading..."
+msgstr "בטעינה..."
+
+#: ../src/js/ui/fallbackRenderer.js:122
+#: ../src/js/viewers/folder.js:123
+msgid "Size"
+msgstr "גודל"
+
+#: ../src/js/ui/fallbackRenderer.js:127
+#: ../src/js/viewers/folder.js:128
+msgid "Modified"
+msgstr "מועד השינוי"
+
+#: ../src/js/viewers/audio.js:172
+msgid "from"
+msgstr "מאת"
+
+#: ../src/js/viewers/audio.js:174
+msgid "by"
+msgstr "על ידי"
+
+#: ../src/js/viewers/evince.js:79
+#, c-format
+msgid "%d of %d"
+msgstr "%d מתוך %d"
+
+#: ../src/libsushi/sushi-file-loader.c:640
 #, c-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "פריט אחד"
 msgstr[1] "%d פריטים"
 
-#: ../src/libsushi/sushi-file-loader.c:653
+#: ../src/libsushi/sushi-file-loader.c:652
 msgid "Empty Folder"
 msgstr "תיקייה ריקה"
 
-#: ../src/js/ui/fallbackRenderer.js:120
-msgid "Type"
-msgstr "סוג"
-
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
-#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
-#: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
-msgid "Loading..."
-msgstr "בטעינה..."
-
-#: ../src/js/ui/fallbackRenderer.js:125 ../src/js/viewers/folder.js:126
-msgid "Size"
-msgstr "גודל"
-
-#: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
-msgid "Modified"
-msgstr "מועד השינוי"
-
-#: ../src/js/viewers/audio.js:163
-msgid "from"
-msgstr "מאת"
-
-#: ../src/js/viewers/audio.js:165
-msgid "by"
-msgstr "על ידי"
-
-#: ../src/js/viewers/evince.js:75
-#, c-format
-msgid "%d of %d"
-msgstr "%d מתוך %d"
