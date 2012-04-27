@@ -295,22 +295,17 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   pixmap_height = 0;
 
   font = cairo_ft_font_face_create_for_ft_face (face, 0);
-
-  if (self->priv->font_supports_title)
-    cairo_set_font_face (cr, font);
-
-  cairo_set_font_size (cr, alpha_size + 6);
-  cairo_text_extents (cr, self->priv->font_name, &extents);
-  pixmap_height += extents.height + extents.y_advance + padding.top + padding.bottom;
-  pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
-
-  if (!self->priv->font_supports_title)
-    cairo_set_font_face (cr, font);
-
+  cairo_set_font_face (cr, font);
   cairo_font_face_destroy (font);
 
-  pixmap_height += SECTION_SPACING / 2;
+  if (self->priv->font_supports_title) {
+      cairo_set_font_size (cr, alpha_size + 6);
+      cairo_text_extents (cr, self->priv->font_name, &extents);
+      pixmap_height += extents.height + extents.y_bearing + padding.top + padding.bottom;
+      pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
+  }
 
+  pixmap_height += SECTION_SPACING / 2;
   cairo_set_font_size (cr, alpha_size);
 
   if (self->priv->lowercase_text != NULL) {
@@ -404,21 +399,17 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   sizes = build_sizes_table (face, &n_sizes, &alpha_size);
 
   font = cairo_ft_font_face_create_for_ft_face (face, 0);
-
-  if (self->priv->font_supports_title)
-    cairo_set_font_face (cr, font);
-
-  /* draw text */
-  cairo_set_font_size (cr, alpha_size + 6);
-  draw_string (cr, padding, self->priv->font_name, &pos_y);
-
-  if (!self->priv->font_supports_title)
-    cairo_set_font_face (cr, font);
-
+  cairo_set_font_face (cr, font);
   cairo_font_face_destroy (font);
 
-  pos_y += SECTION_SPACING / 2;
+  /* draw text */
 
+  if (self->priv->font_supports_title) {
+    cairo_set_font_size (cr, alpha_size + 6);
+    draw_string (cr, padding, self->priv->font_name, &pos_y);
+  }
+
+  pos_y += SECTION_SPACING / 2;
   cairo_set_font_size (cr, alpha_size);
 
   if (self->priv->lowercase_text != NULL)
