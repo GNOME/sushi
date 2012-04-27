@@ -109,6 +109,22 @@ font_load_job_callback (gpointer user_data)
   return FALSE;
 }
 
+static void
+font_load_job_do_load (FontLoadJob *job,
+                       GError **error)
+{
+  gchar *contents;
+  gsize length;
+
+  g_file_load_contents (job->file, NULL,
+                        &contents, &length, NULL, error);
+
+  if (*error == NULL) {
+    job->face_contents = contents;
+    job->face_length = length;
+  }
+}
+
 static gboolean
 font_load_job (GIOSchedulerJob *sched_job,
                GCancellable *cancellable,
@@ -116,24 +132,40 @@ font_load_job (GIOSchedulerJob *sched_job,
 {
   FontLoadJob *job = user_data;
   GError *error = NULL;
-  gchar *contents;
-  gsize length;
 
-  g_file_load_contents (job->file, NULL,
-                        &contents, &length, NULL, &error);
+  font_load_job_do_load (job, &error);
 
-  if (error != NULL) {
+  if (error != NULL)
     g_simple_async_result_take_error (job->result, error);
-  } else {
-    job->face_contents = contents;
-    job->face_length = length;
-  }
 
   g_io_scheduler_job_send_to_mainloop_async (sched_job,
                                              font_load_job_callback,
                                              job, NULL);
 
   return FALSE;
+}
+
+/**
+ * sushi_new_ft_face_from_uri: (skip)
+ *
+ */
+FT_Face
+sushi_new_ft_face_from_uri (FT_Library library,
+                            const gchar *uri,
+                            gchar **contents,
+                            GError **error)
+{
+  FontLoadJob *job = NULL;
+
+  job = font_load_job_new (library, uri, NULL, NULL);
+  font_load_job_do_load (job, error);
+
+  if (*error != NULL) {
+    g_object_unref (job);
+    return NULL;
+  }
+
+  return create_face_from_contents (job, contents, error);
 }
 
 /**
