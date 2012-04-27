@@ -28,7 +28,6 @@
 #include "sushi-font-widget.h"
 #include "sushi-font-loader.h"
 
-#include <cairo/cairo-ft.h>
 #include <math.h>
 
 enum {
@@ -590,4 +589,14 @@ sushi_font_widget_new (const gchar *uri)
   return g_object_new (SUSHI_TYPE_FONT_WIDGET,
                        "uri", uri,
                        NULL);
+}
+
+/**
+ * sushi_font_widget_get_ft_face: (skip)
+ *
+ */
+FT_Face
+sushi_font_widget_get_ft_face (SushiFontWidget *self)
+{
+  return self->priv->face;
 }

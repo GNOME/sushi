@@ -30,6 +30,7 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <cairo/cairo-ft.h>
 
 G_BEGIN_DECLS
 
@@ -59,6 +60,8 @@ struct _SushiFontWidgetClass
 GType    sushi_font_widget_get_type     (void) G_GNUC_CONST;
 
 SushiFontWidget *sushi_font_widget_new (const gchar *uri);
+
+FT_Face sushi_font_widget_get_ft_face (SushiFontWidget *self);
 
 G_END_DECLS
 
