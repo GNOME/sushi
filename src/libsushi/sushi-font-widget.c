@@ -43,6 +43,7 @@ enum {
 struct _SushiFontWidgetPrivate {
   gchar *uri;
 
+  FT_Library library;
   FT_Face face;
   gchar *face_contents;
 
@@ -464,7 +465,8 @@ font_face_async_ready_cb (GObject *object,
 static void
 load_font_face (SushiFontWidget *self)
 {
-  sushi_new_ft_face_from_uri_async (self->priv->uri,
+  sushi_new_ft_face_from_uri_async (self->priv->library,
+                                    self->priv->uri,
                                     font_face_async_ready_cb,
                                     self);
 }
@@ -482,10 +484,16 @@ sushi_font_widget_set_uri (SushiFontWidget *self,
 static void
 sushi_font_widget_init (SushiFontWidget *self)
 {
+  FT_Error err;
+
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, SUSHI_TYPE_FONT_WIDGET,
                                             SushiFontWidgetPrivate);
 
   self->priv->face = NULL;
+  err = FT_Init_FreeType (&self->priv->library);
+
+  if (err != FT_Err_Ok)
+    g_error ("Unable to initialize FreeType");
 }
 
 static void
@@ -539,6 +547,11 @@ sushi_font_widget_finalize (GObject *object)
   g_free (self->priv->font_name);
   g_free (self->priv->sample_string);
   g_free (self->priv->face_contents);
+
+  if (self->priv->library != NULL) {
+    FT_Done_FreeType (self->priv->library);
+    self->priv->library = NULL;
+  }
 
   G_OBJECT_CLASS (sushi_font_widget_parent_class)->finalize (object);
 }

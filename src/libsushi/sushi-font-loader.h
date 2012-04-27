@@ -32,7 +32,8 @@
 #include FT_FREETYPE_H
 #include <gio/gio.h>
 
-void sushi_new_ft_face_from_uri_async (const gchar *uri,
+void sushi_new_ft_face_from_uri_async (FT_Library library,
+                                       const gchar *uri,
                                        GAsyncReadyCallback callback,
                                        gpointer user_data);
 

@@ -44,28 +44,12 @@ typedef struct {
 } FontLoadJob;
 
 static FontLoadJob *
-font_load_job_new (const gchar *uri,
+font_load_job_new (FT_Library library,
+                   const gchar *uri,
                    GAsyncReadyCallback callback,
                    gpointer user_data)
 {
-  FontLoadJob *job = NULL;
-  FT_Library library;
-  FT_Error res;
-  GError *error = NULL;
-
-  res = FT_Init_FreeType (&library);
-
-  if (res != 0) {
-    g_set_error_literal (&error,
-                         G_IO_ERROR, 0,
-                         "Can't initialize FreeType");
-    g_simple_async_report_take_gerror_in_idle (NULL,
-                                               callback, user_data,
-                                               error);
-    goto out;
-  }
-
-  job = g_slice_new0 (FontLoadJob);
+  FontLoadJob *job = g_slice_new0 (FontLoadJob);
 
   job->library = library;
   job->face_index = 0;
@@ -76,7 +60,6 @@ font_load_job_new (const gchar *uri,
 
   g_simple_async_result_set_op_res_gpointer (job->result, job, NULL);
 
- out:
   return job;
 }
 
@@ -158,17 +141,12 @@ font_load_job (GIOSchedulerJob *sched_job,
  *
  */
 void
-sushi_new_ft_face_from_uri_async (const gchar *uri,
+sushi_new_ft_face_from_uri_async (FT_Library library,
+                                  const gchar *uri,
                                   GAsyncReadyCallback callback,
                                   gpointer user_data)
 {
-  FontLoadJob *job = NULL;
-
-  job = font_load_job_new (uri, callback, user_data);
-
-  if (!job)
-    return;
-
+  FontLoadJob *job = font_load_job_new (library, uri, callback, user_data);
   g_io_scheduler_push_job (font_load_job,
                            job, NULL,
                            G_PRIORITY_DEFAULT,
