@@ -82,12 +82,15 @@ draw_string (cairo_t *cr,
 	     const gchar *text,
 	     gint *pos_y)
 {
+  cairo_font_extents_t font_extents;
   cairo_text_extents_t extents;
 
+  cairo_font_extents (cr, &font_extents);
   cairo_text_extents (cr, text, &extents);
 
   if (pos_y != NULL)
-    *pos_y += extents.height + extents.y_advance + padding.top;
+    *pos_y += font_extents.ascent + font_extents.descent +
+      extents.y_advance + padding.top;
 
   cairo_move_to (cr, padding.left, *pos_y);
   cairo_show_text (cr, text);
@@ -264,6 +267,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   SushiFontWidgetPrivate *priv = self->priv;
   gint i, pixmap_width, pixmap_height;
   cairo_text_extents_t extents;
+  cairo_font_extents_t font_extents;
   cairo_font_face_t *font;
   gint *sizes = NULL, n_sizes, alpha_size;
   cairo_t *cr;
@@ -301,29 +305,35 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
 
   if (self->priv->font_supports_title) {
       cairo_set_font_size (cr, alpha_size + 6);
+      cairo_font_extents (cr, &font_extents);
       cairo_text_extents (cr, self->priv->font_name, &extents);
-      pixmap_height += extents.height + extents.y_bearing + padding.top + padding.bottom;
+      pixmap_height += font_extents.ascent + font_extents.descent +
+        extents.y_advance + padding.top + padding.bottom;
       pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
   pixmap_height += SECTION_SPACING / 2;
   cairo_set_font_size (cr, alpha_size);
+  cairo_font_extents (cr, &font_extents);
 
   if (self->priv->lowercase_text != NULL) {
     cairo_text_extents (cr, self->priv->lowercase_text, &extents);
-    pixmap_height += extents.height + extents.y_advance + padding.top + padding.bottom;
+    pixmap_height += font_extents.ascent + font_extents.descent + 
+      extents.y_advance + padding.top + padding.bottom;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
   if (self->priv->uppercase_text != NULL) {
     cairo_text_extents (cr, self->priv->uppercase_text, &extents);
-    pixmap_height += extents.height + extents.y_advance + padding.top + padding.bottom;
+    pixmap_height += font_extents.ascent + font_extents.descent +
+      extents.y_advance + padding.top + padding.bottom;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
   if (self->priv->punctuation_text != NULL) {
     cairo_text_extents (cr, self->priv->punctuation_text, &extents);
-    pixmap_height += extents.height + extents.y_advance + padding.top + padding.bottom;
+    pixmap_height += font_extents.ascent + font_extents.descent +
+      extents.y_advance + padding.top + padding.bottom;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
@@ -331,8 +341,10 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
 
   for (i = 0; i < n_sizes; i++) {
     cairo_set_font_size (cr, sizes[i]);
+    cairo_font_extents (cr, &font_extents);
     cairo_text_extents (cr, self->priv->sample_string, &extents);
-    pixmap_height += extents.height + extents.y_advance + padding.top + padding.bottom;
+    pixmap_height += font_extents.ascent + font_extents.descent +
+      extents.y_advance + padding.top + padding.bottom;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
@@ -386,6 +398,7 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   GdkRGBA color;
   GtkBorder padding;
   GtkStateFlags state;
+  gint allocated_height;
 
   if (face == NULL)
     goto end;
@@ -403,6 +416,8 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   cairo_set_font_face (cr, font);
   cairo_font_face_destroy (font);
 
+  allocated_height = gtk_widget_get_allocated_height (drawing_area);
+
   /* draw text */
 
   if (self->priv->font_supports_title) {
@@ -410,23 +425,34 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
     draw_string (cr, padding, self->priv->font_name, &pos_y);
   }
 
+  if (pos_y > allocated_height)
+    goto end;
+
   pos_y += SECTION_SPACING / 2;
   cairo_set_font_size (cr, alpha_size);
 
   if (self->priv->lowercase_text != NULL)
     draw_string (cr, padding, self->priv->lowercase_text, &pos_y);
+  if (pos_y > allocated_height)
+    goto end;
 
   if (self->priv->uppercase_text != NULL)
     draw_string (cr, padding, self->priv->uppercase_text, &pos_y);
+  if (pos_y > allocated_height)
+    goto end;
 
   if (self->priv->punctuation_text != NULL)
     draw_string (cr, padding, self->priv->punctuation_text, &pos_y);
+  if (pos_y > allocated_height)
+    goto end;
 
   pos_y += SECTION_SPACING;
 
   for (i = 0; i < n_sizes; i++) {
     cairo_set_font_size (cr, sizes[i]);
     draw_string (cr, padding, self->priv->sample_string, &pos_y);
+    if (pos_y > allocated_height)
+      break;
   }
 
  end:
