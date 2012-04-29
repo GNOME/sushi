@@ -119,7 +119,7 @@ font_load_job_do_load (FontLoadJob *job,
   g_file_load_contents (job->file, NULL,
                         &contents, &length, NULL, error);
 
-  if (*error == NULL) {
+  if ((error != NULL) && (*error == NULL)) {
     job->face_contents = contents;
     job->face_length = length;
   }
@@ -160,7 +160,7 @@ sushi_new_ft_face_from_uri (FT_Library library,
   job = font_load_job_new (library, uri, NULL, NULL);
   font_load_job_do_load (job, error);
 
-  if (*error != NULL) {
+  if ((error != NULL) && (*error != NULL)) {
     g_object_unref (job);
     return NULL;
   }
