@@ -39,7 +39,7 @@ function FontRenderer(args) {
 FontRenderer.prototype = {
     _init : function(args) {
         this.moveOnClick = true;
-        this.canFullScreen = false;
+        this.canFullScreen = true;
     },
 
     prepare : function(file, mainWindow, callback) {
