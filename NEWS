@@ -1,3 +1,24 @@
+0.5.1 - "Let It Go"
+===================
+
+- Use libmusicbrainz v4 API
+- Add a preference to turn off client window decorations
+- Fix vertical interline spacing in the font viewer
+- Enable fullscreen for the font viewer
+- Use OSD style class for toolbars
+- Use GEdit GtkSourceView color scheme if available (Vadim Rutkovsky)
+- Don't install the private library in  the system libdir (Michael Biebl)
+- Use mime type list provided by Totem for gst and audio viewers
+  (Bastien Nocera)
+
+0.4.1 - "Marmot"
+================
+
+- Fix a crash when fetching album cover art
+- Move the window to the current desktop workspace when shown
+- Avoid maximization and window snapping
+- Plug some memory leaks
+
 0.4.0 - "Walking Donut"
 =======================
 
