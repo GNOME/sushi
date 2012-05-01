@@ -156,16 +156,20 @@ sushi_new_ft_face_from_uri (FT_Library library,
                             GError **error)
 {
   FontLoadJob *job = NULL;
+  FT_Face face;
 
   job = font_load_job_new (library, uri, NULL, NULL);
   font_load_job_do_load (job, error);
 
   if ((error != NULL) && (*error != NULL)) {
-    g_object_unref (job);
+    font_load_job_free (job);
     return NULL;
   }
 
-  return create_face_from_contents (job, contents, error);
+  face = create_face_from_contents (job, contents, error);
+  font_load_job_free (job);
+
+  return face;
 }
 
 /**
