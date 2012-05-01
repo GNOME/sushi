@@ -246,9 +246,10 @@ build_strings_for_face (SushiFontWidget *self)
   if (!set_pango_sample_string (self))
     self->priv->sample_string = random_string_from_available_chars (self->priv->face, 36);
 
-  if (self->priv->face->family_name == NULL) {
-    self->priv->font_name = NULL;
-  } else {
+  g_free (self->priv->font_name);
+  self->priv->font_name = NULL;
+
+  if (self->priv->face->family_name != NULL) {
     gchar *font_name = 
       g_strconcat (self->priv->face->family_name, " ",
                    self->priv->face->style_name, NULL);
