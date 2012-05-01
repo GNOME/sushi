@@ -54,7 +54,6 @@ struct _SushiFontWidgetPrivate {
   gchar *sample_string;
 
   gchar *font_name;
-  gboolean font_supports_title;
 };
 
 static GParamSpec *properties[NUM_PROPERTIES] = { NULL, };
@@ -212,11 +211,18 @@ build_strings_for_face (SushiFontWidget *self)
   else
     self->priv->sample_string = random_string_from_available_chars (self->priv->face, 36);
 
-  self->priv->font_name =
-    g_strconcat (self->priv->face->family_name, " ",
-                 self->priv->face->style_name, NULL);
-  self->priv->font_supports_title =
-    check_font_contain_text (self->priv->face, self->priv->font_name);
+  if (self->priv->face->family_name == NULL) {
+    self->priv->font_name = NULL;
+  } else {
+    gchar *font_name = 
+      g_strconcat (self->priv->face->family_name, " ",
+                   self->priv->face->style_name, NULL);
+
+    if (check_font_contain_text (self->priv->face, font_name))
+      self->priv->font_name = font_name;
+    else
+      g_free (font_name);
+  }
 }
 
 static gint *
@@ -326,7 +332,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   cairo_set_font_face (cr, font);
   cairo_font_face_destroy (font);
 
-  if (self->priv->font_supports_title) {
+  if (self->priv->font_name != NULL) {
       cairo_set_font_size (cr, title_size);
       cairo_font_extents (cr, &font_extents);
       cairo_text_extents (cr, self->priv->font_name, &extents);
@@ -450,7 +456,7 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
 
   /* draw text */
 
-  if (self->priv->font_supports_title) {
+  if (self->priv->font_name != NULL) {
     cairo_set_font_size (cr, title_size);
     draw_string (cr, padding, self->priv->font_name, &pos_y);
   }
