@@ -133,22 +133,26 @@ check_font_contain_text (FT_Face face,
 }
 
 static gchar *
-build_charlist_for_face (FT_Face face)
+build_charlist_for_face (FT_Face face,
+                         gint *length)
 {
   GString *string;
   gulong c;
-  guint glyph;  
+  guint glyph;
+  gint total_chars = 0;
 
   string = g_string_new (NULL);
 
-  /* exclude normal ASCII characters here */
-  c = 255;
-  glyph = 0;
+  c = FT_Get_First_Char (face, &glyph);
 
-  do {
-    c = FT_Get_Next_Char (face, c, &glyph);
+  while (glyph != 0) {
     g_string_append_unichar (string, (gunichar) c);
-  } while (glyph != 0);
+    c = FT_Get_Next_Char (face, c, &glyph);
+    total_chars++;
+  }
+
+  if (length)
+    *length = total_chars;
 
   return g_string_free (string, FALSE);
 }
@@ -163,10 +167,12 @@ random_string_from_available_chars (FT_Face face,
   gchar *ptr, *end;
 
   idx = 0;
-  chars = build_charlist_for_face (face);
+  chars = build_charlist_for_face (face, &total_chars);
+
+  if (total_chars == 0)
+    return NULL;
 
   retval = g_string_new (NULL);
-  total_chars = g_utf8_strlen (chars, -1);
 
   while (idx < n_chars) {
     rand = g_random_int_range (0, total_chars);
@@ -366,18 +372,20 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
-  pixmap_height += SECTION_SPACING;
+  if (self->priv->sample_string != NULL) {
+    pixmap_height += SECTION_SPACING;
 
-  for (i = 0; i < n_sizes; i++) {
-    cairo_set_font_size (cr, sizes[i]);
-    cairo_font_extents (cr, &font_extents);
-    cairo_text_extents (cr, self->priv->sample_string, &extents);
-    pixmap_height += font_extents.ascent + font_extents.descent +
-      extents.y_advance + padding.top + padding.bottom;
-    pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
+    for (i = 0; i < n_sizes; i++) {
+      cairo_set_font_size (cr, sizes[i]);
+      cairo_font_extents (cr, &font_extents);
+      cairo_text_extents (cr, self->priv->sample_string, &extents);
+      pixmap_height += font_extents.ascent + font_extents.descent +
+        extents.y_advance + padding.top + padding.bottom;
+      pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
 
-    if ((i == 7) && (min_height != NULL))
-      *min_height = pixmap_height;
+      if ((i == 7) && (min_height != NULL))
+        *min_height = pixmap_height;
+    }
   }
 
   pixmap_height += padding.bottom + SECTION_SPACING;
