@@ -297,6 +297,9 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
     return;
   }
 
+  if (min_height != NULL)
+    *min_height = -1;
+
   surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
                                         SURFACE_SIZE, SURFACE_SIZE);
   cr = cairo_create (surface);
@@ -363,6 +366,9 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   }
 
   pixmap_height += padding.bottom + SECTION_SPACING;
+
+  if (min_height != NULL && *min_height == -1)
+    *min_height = pixmap_height;
 
   if (width != NULL)
     *width = pixmap_width;
