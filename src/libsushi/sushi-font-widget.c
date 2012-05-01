@@ -247,8 +247,11 @@ build_sizes_table (FT_Face face,
     sizes[11] = 168;
     sizes[12] = 192;
     sizes[13] = 216;
+
     *alpha_size = 24;
   } else {
+    gint diff = G_MAXINT;
+
     /* use fixed sizes */
     *n_sizes = face->num_fixed_sizes;
     sizes = g_new (gint, *n_sizes);
@@ -257,9 +260,10 @@ build_sizes_table (FT_Face face,
     for (i = 0; i < face->num_fixed_sizes; i++) {
       sizes[i] = face->available_sizes[i].height;
 
-      /* work out which font size to render */
-      if (face->available_sizes[i].height <= 24)
-        *alpha_size = face->available_sizes[i].height;
+      if ((gint) (abs (sizes[i] - 24)) < diff) {
+        diff = (gint) abs (sizes[i] - 24);
+        *alpha_size = sizes[i];
+      }
     }
   }
 
