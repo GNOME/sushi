@@ -76,13 +76,18 @@ static const gchar punctuation_text_stock[] = "0123456789.:,;(*!?')";
  * License: GPLv2+
  */
 static void
-draw_string (cairo_t *cr,
+draw_string (SushiFontWidget *self,
+             cairo_t *cr,
              GtkBorder padding,
 	     const gchar *text,
 	     gint *pos_y)
 {
   cairo_font_extents_t font_extents;
   cairo_text_extents_t extents;
+  GtkTextDirection text_dir;
+  gint pos_x;
+
+  text_dir = gtk_widget_get_direction (GTK_WIDGET (self));
 
   cairo_font_extents (cr, &font_extents);
   cairo_text_extents (cr, text, &extents);
@@ -90,8 +95,14 @@ draw_string (cairo_t *cr,
   if (pos_y != NULL)
     *pos_y += font_extents.ascent + font_extents.descent +
       extents.y_advance + padding.top;
+  if (text_dir == GTK_TEXT_DIR_LTR)
+    pos_x = padding.left;
+  else {
+    pos_x = gtk_widget_get_allocated_width (GTK_WIDGET (self)) -
+      extents.x_advance - padding.right;
+  }
 
-  cairo_move_to (cr, padding.left, *pos_y);
+  cairo_move_to (cr, pos_x, *pos_y);
   cairo_show_text (cr, text);
 
   *pos_y += padding.bottom;
@@ -466,7 +477,7 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
 
   if (self->priv->font_name != NULL) {
     cairo_set_font_size (cr, title_size);
-    draw_string (cr, padding, self->priv->font_name, &pos_y);
+    draw_string (self, cr, padding, self->priv->font_name, &pos_y);
   }
 
   if (pos_y > allocated_height)
@@ -476,17 +487,17 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   cairo_set_font_size (cr, alpha_size);
 
   if (self->priv->lowercase_text != NULL)
-    draw_string (cr, padding, self->priv->lowercase_text, &pos_y);
+    draw_string (self, cr, padding, self->priv->lowercase_text, &pos_y);
   if (pos_y > allocated_height)
     goto end;
 
   if (self->priv->uppercase_text != NULL)
-    draw_string (cr, padding, self->priv->uppercase_text, &pos_y);
+    draw_string (self, cr, padding, self->priv->uppercase_text, &pos_y);
   if (pos_y > allocated_height)
     goto end;
 
   if (self->priv->punctuation_text != NULL)
-    draw_string (cr, padding, self->priv->punctuation_text, &pos_y);
+    draw_string (self, cr, padding, self->priv->punctuation_text, &pos_y);
   if (pos_y > allocated_height)
     goto end;
 
@@ -494,7 +505,7 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
 
   for (i = 0; i < n_sizes; i++) {
     cairo_set_font_size (cr, sizes[i]);
-    draw_string (cr, padding, self->priv->sample_string, &pos_y);
+    draw_string (self, cr, padding, self->priv->sample_string, &pos_y);
     if (pos_y > allocated_height)
       break;
   }
