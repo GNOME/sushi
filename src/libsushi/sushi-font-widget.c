@@ -198,11 +198,33 @@ random_string_from_available_chars (FT_Face face,
   return g_string_free (retval, FALSE);
 }
 
+static gboolean
+set_pango_sample_string (SushiFontWidget *self)
+{
+  const gchar *sample_string;
+  gboolean retval = FALSE;
+
+  sample_string = pango_language_get_sample_string (pango_language_from_string (NULL));
+  if (check_font_contain_text (self->priv->face, sample_string))
+    retval = TRUE;
+
+  if (!retval) {
+    sample_string = pango_language_get_sample_string (pango_language_from_string ("C"));
+    if (check_font_contain_text (self->priv->face, sample_string))
+      retval = TRUE;
+  }
+
+  if (retval) {
+    g_free (self->priv->sample_string);
+    self->priv->sample_string = g_strdup (sample_string);
+  }
+
+  return retval;
+}
+
 static void
 build_strings_for_face (SushiFontWidget *self)
 {
-  const gchar *sample_string;
-
   /* if we don't have lowercase/uppercase/punctuation text in the face,
    * we omit it directly, and render a random text below.
    */
@@ -221,11 +243,7 @@ build_strings_for_face (SushiFontWidget *self)
   else
     self->priv->punctuation_text = NULL;
 
-  sample_string = pango_language_get_sample_string (NULL);
-
-  if (check_font_contain_text (self->priv->face, sample_string))
-    self->priv->sample_string = g_strdup (sample_string);
-  else
+  if (!set_pango_sample_string (self))
     self->priv->sample_string = random_string_from_available_chars (self->priv->face, 36);
 
   if (self->priv->face->family_name == NULL) {
