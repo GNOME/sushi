@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-18 18:17+0800\n"
-"PO-Revision-Date: 2012-04-17 12:52+0800\n"
+"POT-Creation-Date: 2012-05-28 20:14+0800\n"
+"PO-Revision-Date: 2012-05-12 01:10+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <chinese-l10n@googlegroups.com>\n"
 "Language: \n"
@@ -45,13 +45,13 @@ msgstr "大小"
 msgid "Modified"
 msgstr "已修改"
 
-#: ../src/js/viewers/audio.js:171
+#: ../src/js/viewers/audio.js:172
 msgid "from"
-msgstr "來自"
-
-#: ../src/js/viewers/audio.js:173
-msgid "by"
 msgstr "專輯"
+
+#: ../src/js/viewers/audio.js:174
+msgid "by"
+msgstr "來自"
 
 #: ../src/js/viewers/evince.js:79
 #, c-format
