@@ -1,3 +1,11 @@
+0.5.2 - "No-one Needs To Know"
+==============================
+
+- Fall back to C locale when constructing the sample string before picking an
+  entirely random-glyph string in the font widget
+- Flip font widget orientation for RTL locales
+- Always pick a valid size for fixed-size fonts in the font widget
+
 0.5.1 - "Let It Go"
 ===================
 
