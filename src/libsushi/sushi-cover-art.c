@@ -229,7 +229,7 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
   param_values[0] = g_strdup_printf ("artist:\"%s\" AND release:\"%s\"", job->artist, job->album);
 
   param_names[1] = g_strdup ("limit");
-  param_values[1] = g_strdup ("1");
+  param_values[1] = g_strdup ("10");
 
   param_names[2] = NULL;
   param_values[2] = NULL;
