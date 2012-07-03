@@ -2,13 +2,6 @@
 @define-color np_bg_color #333;
 @define-color np_text_color #2e3436;
 
-@define-color info_bg_color @np_bg_color;
-@define-color info_fg_color @np_fg_color;
-
-* {
-    background-color: alpha(#000, 0.0);
-}
-
 GtkWindow {
     color: @np_fg_color;
 }
@@ -59,16 +52,16 @@ GtkSourceView {
     background-image: -gtk-gradient(linear,
                                     left top,
                                     left bottom,
-                                    from(alpha(#333, 0.0)),
-                                    color-stop(0.50, alpha(#333, 0.66)),
-                                    to(alpha(#333, 0.0)));
+                                    from(alpha(@np_bg_color, 0.0)),
+                                    color-stop(0.50, alpha(@np_bg_color, 0.66)),
+                                    to(alpha(@np_bg_color, 0.0)));
 }
 
 .np-decoration.button:hover:active {
     background-image: -gtk-gradient(linear,
                                     left top,
                                     left bottom,
-                                    from(alpha(#333, 0.0)),
-                                    color-stop(0.50, #333),
-                                    to(alpha(#333, 0.0)));
+                                    from(alpha(@np_bg_color, 0.0)),
+                                    color-stop(0.50, @np_bg_color),
+                                    to(alpha(@np_bg_color, 0.0)));
 }

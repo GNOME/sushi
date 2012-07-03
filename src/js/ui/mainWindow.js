@@ -597,6 +597,7 @@ MainWindow.prototype = {
 
         this._titleLabel.show();
         this._titleActor = new GtkClutter.Actor({ contents: this._titleLabel });
+        Utils.alphaGtkWidget(this._titleActor.get_widget());
 
         this._quitButton =
             new Gtk.Button({ image: new Gtk.Image ({ icon_size: Gtk.IconSize.MENU,
@@ -609,6 +610,7 @@ MainWindow.prototype = {
                                            this._clearAndQuit));
 
         this._quitActor = new GtkClutter.Actor({ contents: this._quitButton });
+        Utils.alphaGtkWidget(this._quitActor.get_widget());
         this._quitActor.set_reactive(true);
 
         let hidden = new Clutter.Actor();
