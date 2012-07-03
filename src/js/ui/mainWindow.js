@@ -118,6 +118,9 @@ MainWindow.prototype = {
 
         this._mainLayout = new Clutter.BinLayout();
         this._mainGroup = new Clutter.Actor({ layout_manager: this._mainLayout });
+        this._mainGroup.add_constraint(
+            new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.SIZE,
+                                         source: this._stage }));
         this._stage.add_actor(this._mainGroup);
         this._mainGroup.set_opacity(0);
 
@@ -139,14 +142,8 @@ MainWindow.prototype = {
                                                        green: 0,
                                                        blue: 0,
                                                        alpha: 255 }));
-        this._background.add_constraint(
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.POSITION }));
-        this._background.add_constraint(
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.SIZE }));
 
-        this._mainGroup.add_child(this._background);
+        this._mainLayout.add(this._background, Clutter.BinAlignment.FILL, Clutter.BinAlignment.FILL);
         this._background.lower_bottom();
     },
 
@@ -165,14 +162,8 @@ MainWindow.prototype = {
         }
 
         this._background.set_opacity(Constants.VIEW_BACKGROUND_OPACITY);
-        this._background.add_constraint(
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.POSITION }));
-        this._background.add_constraint(
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.SIZE }));
+        this._mainLayout.add(this._background, Clutter.BinAlignment.FILL, Clutter.BinAlignment.FILL);
 
-        this._mainGroup.add_child(this._background);
         this._background.lower_bottom();
     },
 
@@ -347,16 +338,10 @@ MainWindow.prototype = {
         }
 
         this._texture = this._renderer.render();
-
-        this._textureXAlign =
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: 0.5 });
         this._textureYAlign =
             new Clutter.AlignConstraint({ source: this._stage,
                                           factor: 0.5,
                                           align_axis: Clutter.AlignAxis.Y_AXIS });
-
-        this._texture.add_constraint(this._textureXAlign);
         this._texture.add_constraint(this._textureYAlign);
 
         this.refreshSize();
@@ -518,13 +503,13 @@ MainWindow.prototype = {
 
         this._toolbarActor.set_reactive(true);
         this._toolbarActor.set_opacity(0);
-        this._toolbarActor.add_constraint(
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: 0.5 }));
 
         this._toolbarActor.margin_bottom = Constants.TOOLBAR_SPACING;
+        this._toolbarActor.margin_left = Constants.TOOLBAR_SPACING;
+        this._toolbarActor.margin_right = Constants.TOOLBAR_SPACING;
+
         this._mainLayout.add(this._toolbarActor,
-                             Clutter.BinAlignment.FIXED, Clutter.BinAlignment.END);
+                             Clutter.BinAlignment.CENTER, Clutter.BinAlignment.END);
     },
 
     _removeToolbarTimeout: function() {
