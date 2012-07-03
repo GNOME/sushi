@@ -57,6 +57,7 @@ enum {
   PROP_TIME,
   PROP_FILE,
   PROP_CONTENT_TYPE,
+  PROP_FILE_TYPE
 };
 
 typedef struct {
@@ -358,6 +359,7 @@ query_info_async_ready_cb (GObject *source,
   g_object_notify (G_OBJECT (self), "name");
   g_object_notify (G_OBJECT (self), "time");
   g_object_notify (G_OBJECT (self), "content-type");
+  g_object_notify (G_OBJECT (self), "file-type");
 
   if (g_file_info_get_file_type (info) != G_FILE_TYPE_DIRECTORY) {
     self->priv->loading = FALSE;
@@ -440,6 +442,9 @@ sushi_file_loader_get_property (GObject *object,
   case PROP_CONTENT_TYPE:
     g_value_take_string (value, sushi_file_loader_get_content_type_string (self));
     break;
+  case PROP_FILE_TYPE:
+    g_value_set_enum (value, sushi_file_loader_get_file_type (self));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     break;
@@ -518,6 +523,16 @@ sushi_file_loader_class_init (SushiFileLoaderClass *klass)
                           "The content type",
                           NULL,
                           G_PARAM_READABLE));
+
+  g_object_class_install_property
+    (oclass,
+     PROP_CONTENT_TYPE,
+     g_param_spec_enum ("file-type",
+                        "File Type",
+                        "The file type",
+                        G_TYPE_FILE_TYPE,
+                        G_FILE_TYPE_UNKNOWN,
+                        G_PARAM_READABLE));
   
   g_object_class_install_property
     (oclass,
@@ -701,6 +716,21 @@ sushi_file_loader_get_content_type_string (SushiFileLoader *self)
     return NULL;
 
   return g_content_type_get_description (g_file_info_get_content_type (self->priv->info));
+}
+
+/**
+ * sushi_file_loader_get_file_type:
+ * @self:
+ *
+ * Returns:
+ */
+GFileType
+sushi_file_loader_get_file_type (SushiFileLoader *self)
+{
+  if (self->priv->info == NULL)
+    return G_FILE_TYPE_UNKNOWN;
+
+  return g_file_info_get_file_type (self->priv->info);
 }
 
 void

@@ -15,7 +15,6 @@ dist_jsviewers_DATA = \
     js/viewers/gst.js \
     js/viewers/audio.js \
     js/viewers/evince.js \
-    js/viewers/folder.js \
     js/viewers/font.js \
     js/viewers/html.js \
     js/viewers/text.js

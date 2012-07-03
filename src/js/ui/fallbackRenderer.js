@@ -99,6 +99,7 @@ FallbackRenderer.prototype = {
 
         this._box.show_all();
         this._actor = new GtkClutter.Actor({ contents: this._box });
+        Utils.alphaGtkWidget(this._actor.get_widget());
 
         callback();
     },
@@ -112,25 +113,28 @@ FallbackRenderer.prototype = {
             '<b><big>' +
             ((this._fileLoader.name) ? (this._fileLoader.name) : (this._fileLoader.file.get_basename()))
             + '</big></b>';
+        this._titleLabel.set_markup(titleStr);
 
-        let typeStr =
-            '<small><b>' + _("Type") + '  </b>' +
-            ((this._fileLoader.contentType) ? (this._fileLoader.contentType) : (_("Loading...")))
-             + '</small>';
+        if (this._fileLoader.get_file_type() != Gio.FileType.DIRECTORY) {
+            let typeStr =
+                '<small><b>' + _("Type") + '  </b>' +
+                ((this._fileLoader.contentType) ? (this._fileLoader.contentType) : (_("Loading...")))
+                + '</small>';
+            this._typeLabel.set_markup(typeStr);
+        } else {
+            this._typeLabel.hide();
+        }
 
         let sizeStr =
             '<small><b>' + _("Size") + '  </b>' +
             ((this._fileLoader.size) ? (this._fileLoader.size) : (_("Loading...")))
              + '</small>';
+        this._sizeLabel.set_markup(sizeStr);
 
         let dateStr =
             '<small><b>' + _("Modified") + '  </b>' +
              ((this._fileLoader.time) ? (this._fileLoader.time) : (_("Loading...")))
              + '</small>';
-
-        this._titleLabel.set_markup(titleStr);
-        this._typeLabel.set_markup(typeStr);
-        this._sizeLabel.set_markup(sizeStr);
         this._dateLabel.set_markup(dateStr);
     },
 
@@ -142,13 +146,11 @@ FallbackRenderer.prototype = {
 
         if (this._fileLoader.icon)
             this._image.set_from_pixbuf(this._fileLoader.icon);
+        else
+            this._setImageFromType();
 
         this._applyLabels();
         this._mainWindow.refreshSize();
-    },
-
-    createToolbar : function() {
-        return null;
     },
 
     clear : function() {
