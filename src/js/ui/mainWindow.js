@@ -71,7 +71,6 @@ MainWindow.prototype = {
         this._createGtkWindow();
         this._createClutterEmbed();
 
-        this._connectStageSignals();
 	this.file = null;
     },
 
@@ -121,9 +120,7 @@ MainWindow.prototype = {
         this._mainGroup = new Clutter.Actor({ layout_manager: this._mainLayout });
         this._stage.add_actor(this._mainGroup);
         this._mainGroup.set_opacity(0);
-    },
 
-    _connectStageSignals : function() {
         this._stage.connect('key-press-event',
                             Lang.bind(this, this._onStageKeyPressEvent));
         this._stage.connect('button-press-event',
