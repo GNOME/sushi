@@ -115,7 +115,7 @@ check_font_contain_text (FT_Face face,
   gunichar *string;
   glong len, idx, map;
   FT_CharMap charmap;
-  gboolean retval;
+  gboolean retval = FALSE;
 
   string = g_utf8_to_ucs4_fast (text, -1, &len);
 
