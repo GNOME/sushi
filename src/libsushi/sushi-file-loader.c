@@ -57,8 +57,11 @@ enum {
   PROP_TIME,
   PROP_FILE,
   PROP_CONTENT_TYPE,
-  PROP_FILE_TYPE
+  PROP_FILE_TYPE,
+  NUM_PROPERTIES
 };
+
+static GParamSpec *properties[NUM_PROPERTIES] = { NULL, };
 
 typedef struct {
   SushiFileLoader *self;
@@ -479,71 +482,52 @@ sushi_file_loader_class_init (SushiFileLoaderClass *klass)
   oclass->get_property = sushi_file_loader_get_property;
   oclass->set_property = sushi_file_loader_set_property;
 
-  g_object_class_install_property
-    (oclass,
-     PROP_FILE,
-     g_param_spec_object ("file",
-                          "File",
-                          "The loaded file",
-                          G_TYPE_FILE,
-                          G_PARAM_READWRITE));
-
-  g_object_class_install_property
-    (oclass,
-     PROP_NAME,
-     g_param_spec_string ("name",
-                          "Name",
-                          "The display name",
-                          NULL,
-                          G_PARAM_READABLE));
-
-  g_object_class_install_property
-    (oclass,
-     PROP_SIZE,
-     g_param_spec_string ("size",
-                          "Size",
-                          "The size string",
-                          NULL,
-                          G_PARAM_READABLE));
-
-  g_object_class_install_property
-    (oclass,
-     PROP_TIME,
-     g_param_spec_string ("time",
-                          "Time",
-                          "The time string",
-                          NULL,
-                          G_PARAM_READABLE));
-
-  g_object_class_install_property
-    (oclass,
-     PROP_CONTENT_TYPE,
-     g_param_spec_string ("content-type",
-                          "Content Type",
-                          "The content type",
-                          NULL,
-                          G_PARAM_READABLE));
-
-  g_object_class_install_property
-    (oclass,
-     PROP_FILE_TYPE,
-     g_param_spec_enum ("file-type",
-                        "File Type",
-                        "The file type",
-                        G_TYPE_FILE_TYPE,
-                        G_FILE_TYPE_UNKNOWN,
-                        G_PARAM_READABLE));
-  
-  g_object_class_install_property
-    (oclass,
-     PROP_ICON,
-     g_param_spec_object ("icon",
-                          "Icon",
-                          "The icon of the file",
-                          GDK_TYPE_PIXBUF,
-                          G_PARAM_READABLE));
+  properties[PROP_FILE] =
+    g_param_spec_object ("file",
+                         "File",
+                         "The loaded file",
+                         G_TYPE_FILE,
+                         G_PARAM_READWRITE);
+  properties[PROP_NAME] =
+    g_param_spec_string ("name",
+                         "Name",
+                         "The display name",
+                         NULL,
+                         G_PARAM_READABLE);
+  properties[PROP_SIZE] =
+    g_param_spec_string ("size",
+                         "Size",
+                         "The size string",
+                         NULL,
+                         G_PARAM_READABLE);
+  properties[PROP_TIME] =
+    g_param_spec_string ("time",
+                         "Time",
+                         "The time string",
+                         NULL,
+                         G_PARAM_READABLE);
+  properties[PROP_CONTENT_TYPE] =
+    g_param_spec_string ("content-type",
+                         "Content Type",
+                         "The content type",
+                         NULL,
+                         G_PARAM_READABLE);
+  properties[PROP_FILE_TYPE] =
+    g_param_spec_enum ("file-type",
+                       "File Type",
+                       "The file type",
+                       G_TYPE_FILE_TYPE,
+                       G_FILE_TYPE_UNKNOWN,
+                       G_PARAM_READABLE);
+  properties[PROP_ICON] =
+    g_param_spec_object ("icon",
+                         "Icon",
+                         "The icon of the file",
+                         GDK_TYPE_PIXBUF,
+                         G_PARAM_READABLE);
 
   g_type_class_add_private (klass, sizeof (SushiFileLoaderPrivate));
+  g_object_class_install_properties (oclass, NUM_PROPERTIES, properties);
 }
 
 static void
