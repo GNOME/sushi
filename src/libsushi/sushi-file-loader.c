@@ -526,7 +526,7 @@ sushi_file_loader_class_init (SushiFileLoaderClass *klass)
 
   g_object_class_install_property
     (oclass,
-     PROP_CONTENT_TYPE,
+     PROP_FILE_TYPE,
      g_param_spec_enum ("file-type",
                         "File Type",
                         "The file type",
