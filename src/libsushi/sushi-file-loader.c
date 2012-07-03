@@ -704,7 +704,7 @@ sushi_file_loader_get_date_string (SushiFileLoader *self)
 }
 
 /**
- * sushi_file_loader_get_date_string:
+ * sushi_file_loader_get_content_type_string:
  * @self:
  *
  * Returns: (transfer full):
