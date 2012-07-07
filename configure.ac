@@ -58,6 +58,7 @@ GOBJECT_INTROSPECTION_MIN_VERSION=0.9.6
 GDK_PIXBUF_MIN_VERSION=2.22.1
 
 PKG_CHECK_MODULES(SUSHI,
+                  freetype2
                   glib-2.0 >= $GLIB_MIN_VERSION
                   gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
                   gjs-1.0 >= $GJS_MIN_VERSION
