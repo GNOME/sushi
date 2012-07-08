@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if test x"$GJS_PATH" = x ; then
     export GJS_PATH=@pkgdatadir@/js
