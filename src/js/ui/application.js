@@ -44,10 +44,7 @@ const _SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
 const SushiIface = {
     name: 'org.gnome.NautilusPreviewer',
 
-    methods: [ { name: 'Activate',
-                 inSignature: '',
-                 outSignature: '' },
-               { name: 'ShowFile',
+    methods: [ { name: 'ShowFile',
                  inSignature: 'sib',
                  outSignature: '' },
                { name: 'Close',
@@ -57,21 +54,6 @@ const SushiIface = {
     signals: [],
     properties: []
 };
-
-function RemoteApplication(args) {
-    this._init(args);
-}
-
-RemoteApplication.prototype = {
-    _init : function(args) {
-        DBus.session.proxifyObject(this,
-                                   SushiIface.name,
-                                   _SUSHI_DBUS_PATH);
-    }
-}
-
-DBus.proxifyPrototype(RemoteApplication.prototype,
-                      SushiIface);
 
 function Application(args) {
     this._init(args);
@@ -93,9 +75,6 @@ Application.prototype = {
     },
 
     _onNameNotAcquired : function() {
-        let remoteApp = new RemoteApplication();
-        remoteApp.ActivateRemote();
-
         this.quit();
     },
 
@@ -113,9 +92,6 @@ Application.prototype = {
 
         let settings = Gtk.Settings.get_default();
         settings.gtk_application_prefer_dark_theme = true;
-    },
-
-    Activate : function() {
     },
 
     Close: function() {
