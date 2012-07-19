@@ -36,13 +36,11 @@ const Format = imports.util.format;
 const Utils = imports.ui.utils;
 const Tweener = imports.ui.tweener;
 
-function run() {
+function run(argv) {
     Gettext.bindtextdomain('sushi', Path.LOCALE_DIR);
     String.prototype.format = Format.format;
 
     GLib.set_application_name('Sushi');
-
-    let application = new Application.Application();
 
     let slowdownEnv = GLib.getenv('SUSHI_SLOWDOWN_FACTOR');
     if (slowdownEnv) {
@@ -53,5 +51,6 @@ function run() {
 
     Tweener.init();
 
-    Gtk.main();
+    let application = new Application.Application();
+    return application.run(null);
 }

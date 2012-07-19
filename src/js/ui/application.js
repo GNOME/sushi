@@ -53,16 +53,14 @@ const SushiIface = <interface name={SUSHI_DBUS_NAME}>
 
 const Application = new Lang.Class({
     Name: 'Application',
+    Extends: Gtk.Application,
 
     _init : function(args) {
-        Gio.bus_own_name(SushiIface.name,
-                         Gio.BusNameOwnerFlags.NONE,
-                         null,
-                         Lang.bind(this, this._onNameAcquired),
-                         Lang.bind(this, this._onNameLost));
+        this.parent({ application_id: SUSHI_DBUS_NAME });
     },
 
-    _onNameAcquired : function() {
+    vfunc_startup : function() {
+        this.parent();
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(SushiIface, this);
         this._dbusImpl.export(Gio.DBus.session, SUSHI_DBUS_PATH);
 
@@ -70,8 +68,7 @@ const Application = new Lang.Class({
         this._createMainWindow();
     },
 
-    _onNameLost : function() {
-        this.quit();
+    vfunc_activate : function() {
     },
 
     _createMainWindow : function() {
