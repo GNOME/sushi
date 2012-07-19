@@ -25,7 +25,6 @@
  *
  */
 
-const DBus = imports.dbus;
 const Lang = imports.lang;
 
 // util imports
@@ -39,42 +38,39 @@ const Gio = imports.gi.Gio;
 
 const MainWindow = imports.ui.mainWindow;
 
-const _SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
+const SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
+const SUSHI_DBUS_NAME = 'org.gnome.NautilusPreviewer';
 
-const SushiIface = {
-    name: 'org.gnome.NautilusPreviewer',
+const SushiIface = <interface name={SUSHI_DBUS_NAME}>
+<method name="ShowFile">
+    <arg type="s" direction="in" name="uri" />
+    <arg type="i" direction="in" name="xid" />
+    <arg type="b" direction="in" name="closeIfAlreadyShown" />
+</method>
+<method name="Close">
+</method>
+</interface>;
 
-    methods: [ { name: 'ShowFile',
-                 inSignature: 'sib',
-                 outSignature: '' },
-               { name: 'Close',
-                 inSignature: '',
-                 outSignature: '' }],
+const Application = new Lang.Class({
+    Name: 'Application',
 
-    signals: [],
-    properties: []
-};
-
-function Application(args) {
-    this._init(args);
-}
-
-Application.prototype = {
     _init : function(args) {
-        DBus.session.acquire_name(SushiIface.name,
-                                  DBus.SINGLE_INSTANCE,
-                                  Lang.bind(this, this._onNameAcquired),
-                                  Lang.bind(this, this._onNameNotAcquired));
+        Gio.bus_own_name(SushiIface.name,
+                         Gio.BusNameOwnerFlags.NONE,
+                         null,
+                         Lang.bind(this, this._onNameAcquired),
+                         Lang.bind(this, this._onNameLost));
     },
 
     _onNameAcquired : function() {
-        DBus.session.exportObject(_SUSHI_DBUS_PATH, this);
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(SushiIface, this);
+        this._dbusImpl.export(Gio.DBus.session, SUSHI_DBUS_PATH);
 
         this._defineStyleAndThemes();
         this._createMainWindow();
     },
 
-    _onNameNotAcquired : function() {
+    _onNameLost : function() {
         this.quit();
     },
 
@@ -113,4 +109,4 @@ Application.prototype = {
     quit : function() {
         Gtk.main_quit();
     }
-}
+});
