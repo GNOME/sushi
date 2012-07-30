@@ -285,16 +285,12 @@ static void
 sushi_sound_player_query_duration (SushiSoundPlayer *player)
 {
   SushiSoundPlayerPrivate *priv;
-  GstFormat format = GST_FORMAT_TIME;
   gdouble new_duration, difference;
-  gboolean success;
   gint64 duration;
 
   priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
 
-  success = gst_element_query_duration (priv->pipeline, &format, &duration);
-
-  if (G_UNLIKELY (success != TRUE))
+  if (!gst_element_query_duration (priv->pipeline, GST_FORMAT_TIME, &duration))
     return;
 
   new_duration = (gdouble) duration / GST_SECOND;

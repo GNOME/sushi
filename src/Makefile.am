@@ -49,6 +49,7 @@ sushi_start_LDADD = \
     libsushi-1.0.la \
     $(SUSHI_LIBS)
 sushi_start_CPPFLAGS = \
+    -DGST_USE_UNSTABLE_API \
     $(SUSHI_CFLAGS) \
     $(AM_CPPFLAGS) \
     -DLOCALEDIR=\"$(datadir)/locale\"

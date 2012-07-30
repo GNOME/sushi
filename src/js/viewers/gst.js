@@ -25,7 +25,7 @@
  *
  */
 
-imports.gi.versions.ClutterGst = '1.0';
+imports.gi.versions.ClutterGst = '2.0';
 let ClutterGst = imports.gi.ClutterGst;
 
 let MimeHandler = imports.ui.mimeHandler;

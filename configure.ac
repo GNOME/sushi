@@ -68,10 +68,10 @@ PKG_CHECK_MODULES(SUSHI,
                   clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
                   gtk+-3.0 >= $GTK_MIN_VERSION
                   clutter-gtk-1.0 >= $CLUTTER_GTK_MIN_VERSION
-                  clutter-gst-1.0
-                  gstreamer-0.10
-                  gstreamer-pbutils-0.10
-                  gstreamer-tag-0.10
+                  clutter-gst-2.0
+                  gstreamer-1.0
+                  gstreamer-pbutils-1.0
+                  gstreamer-tag-1.0
                   libmusicbrainz4
                   evince-document-3.0
                   evince-view-3.0
