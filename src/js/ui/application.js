@@ -88,7 +88,7 @@ const Application = new Lang.Class({
     },
 
     Close: function() {
-        this.quit();
+        this._mainWindow.close();
     },
 
     ShowFile : function(uri, xid, closeIfAlreadyShown) {
@@ -101,9 +101,5 @@ const Application = new Lang.Class({
 	}
         this._mainWindow.setParent(xid);
         this._mainWindow.setFile(file);
-    },
-
-    quit : function() {
-        Gtk.main_quit();
     }
 });
