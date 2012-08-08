@@ -1,3 +1,9 @@
+0.5.5 - "Red Wine Liberation Front"
+===================================
+
+- Port to GDBus (Jasper St. Pierre)
+- Port to GtkApplication (Jasper St. Pierre)
+
 0.5.4 - "Nowhere Land"
 ======================
 
