@@ -25,8 +25,10 @@
  *
  */
 
-let MimeHandler = imports.ui.mimeHandler;
+imports.gi.versions.ClutterGst = '1.0';
 let ClutterGst = imports.gi.ClutterGst;
+
+let MimeHandler = imports.ui.mimeHandler;
 let Clutter = imports.gi.Clutter;
 let Gdk = imports.gi.Gdk;
 let GObject = imports.gi.GObject;
