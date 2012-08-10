@@ -124,13 +124,20 @@ discoverer_discovered_cb (GstDiscoverer *disco,
 {
   SushiSoundPlayer *player = user_data;
   SushiSoundPlayerPrivate *priv;
+  const GstTagList *taglist;
+
   priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
 
   if (error != NULL)
     return;
 
-  priv->taglist = gst_tag_list_copy (gst_discoverer_info_get_tags (info));
-  g_object_notify (G_OBJECT (player), "taglist");
+  taglist = gst_discoverer_info_get_tags (info);
+
+  if (taglist)
+    {
+      priv->taglist = gst_tag_list_copy (taglist);
+      g_object_notify (G_OBJECT (player), "taglist");
+    }
 }
 
 static gboolean
