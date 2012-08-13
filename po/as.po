@@ -38,7 +38,7 @@ msgstr "ধৰণ"
 #: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
 #: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
 msgid "Loading..."
-msgstr "লোড কৰা হৈ আছে..."
+msgstr "ল'ড কৰা হৈছে..."
 
 #: ../src/js/ui/fallbackRenderer.js:125 ../src/js/viewers/folder.js:126
 msgid "Size"
@@ -46,7 +46,7 @@ msgstr "আকাৰ"
 
 #: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
 msgid "Modified"
-msgstr "সলনি কৰা হল"
+msgstr "পৰিবৰ্তিত"
 
 #: ../src/js/viewers/audio.js:163
 msgid "from"
@@ -59,5 +59,5 @@ msgstr "দ্বাৰা"
 #: ../src/js/viewers/evince.js:75
 #, c-format
 msgid "%d of %d"
-msgstr "%d  -ৰ  %d"
+msgstr "%d  ৰ  %d"
 
