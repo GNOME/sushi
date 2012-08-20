@@ -1,3 +1,9 @@
+3.5.90 - "Spritz"
+=================
+
+- Port to GStreamer 1.0 (Tim-Philipp Müller)
+- Fix OSD toolbar positioning for the audio viewer
+
 0.5.5 - "Red Wine Liberation Front"
 ===================================
 
