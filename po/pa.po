@@ -2,14 +2,14 @@
 # Copyright (C) 2011 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
 #
-# A S Alam <aalam@users.sf.net>, 2011.
+# A S Alam <aalam@users.sf.net>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-10 07:14+0000\n"
-"PO-Revision-Date: 2011-09-10 15:22+0530\n"
+"POT-Creation-Date: 2012-04-12 19:27+0000\n"
+"PO-Revision-Date: 2012-08-22 07:40+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,47 +17,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: pa\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 1.4\n"
 
-#: ../src/libsushi/sushi-file-loader.c:641
+#: ../data/org.gnome.sushi.gschema.xml.in.h:1
+msgid "Client decoration"
+msgstr "ਕਲਾਇਟ ਸਜਾਵਟ"
+
+#: ../data/org.gnome.sushi.gschema.xml.in.h:2
+msgid "Whether the window draws WM decorations itself"
+msgstr "ਕੀ ਵਿੰਡੋ ਖੁਦ WM ਸਜਾਵਟ ਕਰੇ"
+
+#: ../src/js/ui/fallbackRenderer.js:117
+msgid "Type"
+msgstr "ਕਿਸਮ"
+
+#: ../src/js/ui/fallbackRenderer.js:118 ../src/js/ui/fallbackRenderer.js:123
+#: ../src/js/ui/fallbackRenderer.js:128 ../src/js/ui/spinnerBox.js:57
+#: ../src/js/viewers/folder.js:124 ../src/js/viewers/folder.js:129
+msgid "Loading..."
+msgstr "ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
+
+#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/viewers/folder.js:123
+msgid "Size"
+msgstr "ਅਕਾਰ"
+
+#: ../src/js/ui/fallbackRenderer.js:127 ../src/js/viewers/folder.js:128
+msgid "Modified"
+msgstr "ਸੋਧ ਕੀਤੀ"
+
+#: ../src/js/viewers/audio.js:171
+msgid "from"
+msgstr "ਵਿੱਚੋਂ"
+
+#: ../src/js/viewers/audio.js:173
+msgid "by"
+msgstr "ਵਲੋਂ"
+
+#: ../src/js/viewers/evince.js:79
+#, c-format
+msgid "%d of %d"
+msgstr "%2$d ਵਿੱਚੋਂ %1$d"
+
+#: ../src/libsushi/sushi-file-loader.c:640
 #, c-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d ਆਈਟਮ"
 msgstr[1] "%d ਆਈਟਮਾਂ"
 
-#: ../src/libsushi/sushi-file-loader.c:653
+#: ../src/libsushi/sushi-file-loader.c:652
 msgid "Empty Folder"
 msgstr "ਖਾਲੀ ਫੋਲਡਰ"
-
-#: ../src/js/ui/fallbackRenderer.js:120
-msgid "Type"
-msgstr "ਕਿਸਮ"
-
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
-#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
-#: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
-msgid "Loading..."
-msgstr "ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
-
-#: ../src/js/ui/fallbackRenderer.js:125 ../src/js/viewers/folder.js:126
-msgid "Size"
-msgstr "ਅਕਾਰ"
-
-#: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
-msgid "Modified"
-msgstr "ਸੋਧ ਕੀਤੀ"
-
-#: ../src/js/viewers/audio.js:163
-msgid "from"
-msgstr "ਵਿੱਚੋਂ"
-
-#: ../src/js/viewers/audio.js:165
-msgid "by"
-msgstr "ਵਲੋਂ"
-
-#: ../src/js/viewers/evince.js:75
-#, c-format
-msgid "%d of %d"
-msgstr "%2$d ਵਿੱਚੋਂ %1$d"
 
