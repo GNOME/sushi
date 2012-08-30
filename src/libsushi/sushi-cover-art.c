@@ -582,30 +582,36 @@ try_fetch_from_amazon (SushiCoverArtFetcher *self)
  * License: GPLv2+ with exception clause, see COPYING
  *
  */
+
 static GdkPixbuf *
 totem_gst_buffer_to_pixbuf (GstBuffer *buffer)
 {
   GdkPixbufLoader *loader;
-  GstMapInfo map_info;
   GdkPixbuf *pixbuf = NULL;
   GError *err = NULL;
+  GstMapInfo info;
+
+  if (!gst_buffer_map (buffer, &info, GST_MAP_READ)) {
+    GST_WARNING("could not map memory buffer");
+    return NULL;
+  }
 
   loader = gdk_pixbuf_loader_new ();
 
-  if (!gst_buffer_map (buffer, &map_info, GST_MAP_READ))
-    return NULL;
-
-  if (gdk_pixbuf_loader_write (loader, map_info.data, map_info.size, &err) &&
+  if (gdk_pixbuf_loader_write (loader, info.data, info.size, &err) &&
       gdk_pixbuf_loader_close (loader, &err)) {
     pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
     if (pixbuf)
       g_object_ref (pixbuf);
   } else {
-    g_warning ("could not convert tag image to pixbuf: %s", err->message);
+    GST_WARNING("could not convert tag image to pixbuf: %s", err->message);
     g_error_free (err);
   }
-  gst_buffer_unmap (buffer, &map_info);
+
   g_object_unref (loader);
+
+  gst_buffer_unmap (buffer, &info);
+
   return pixbuf;
 }
 
@@ -616,16 +622,14 @@ totem_gst_tag_list_get_cover_real (GstTagList *tag_list)
   guint i;
 
   for (i = 0; ; i++) {
-    GstBuffer *buffer;
     GstSample *sample;
     GstCaps *caps;
-    GstStructure *caps_struct;
+    const GstStructure *caps_struct;
     int type;
 
     if (!gst_tag_list_get_sample_index (tag_list, GST_TAG_IMAGE, i, &sample))
       break;
 
-    buffer = gst_sample_get_buffer (sample);
     caps = gst_sample_get_caps (sample);
     caps_struct = gst_caps_get_structure (caps, 0);
     gst_structure_get_enum (caps_struct,
@@ -634,8 +638,8 @@ totem_gst_tag_list_get_cover_real (GstTagList *tag_list)
 			    &type);
     if (type == GST_TAG_IMAGE_TYPE_UNDEFINED) {
       if (cover_sample == NULL) {
-        /* take a ref here since we will continue and unref below */
-        cover_sample = gst_sample_ref (sample);
+	/* take a ref here since we will continue and unref below */
+	cover_sample = gst_sample_ref (sample);
       }
     } else if (type == GST_TAG_IMAGE_TYPE_FRONT_COVER) {
       cover_sample = sample;
@@ -656,10 +660,10 @@ totem_gst_tag_list_get_cover (GstTagList *tag_list)
 
   cover_sample = totem_gst_tag_list_get_cover_real (tag_list);
   /* Fallback to preview */
-  if (!cover_sample) {
-    gst_tag_list_get_sample_index (tag_list, GST_TAG_PREVIEW_IMAGE, 0,
-                                   &cover_sample);
-  }
+    if (!cover_sample) {
+      gst_tag_list_get_sample_index (tag_list, GST_TAG_PREVIEW_IMAGE, 0,
+				     &cover_sample);
+    }
 
   if (cover_sample) {
     GstBuffer *buffer;
