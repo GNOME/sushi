@@ -27,7 +27,7 @@
 
 #include "sushi-cover-art.h"
 
-#include <musicbrainz4/mb4_c.h>
+#include <musicbrainz5/mb5_c.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_DEFINE_TYPE (SushiCoverArtFetcher, sushi_cover_art_fetcher, G_TYPE_OBJECT);
@@ -212,15 +212,15 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
                gpointer user_data)
 {
   FetchUriJob *job = user_data;
-  Mb4Metadata metadata;
-  Mb4Query query;
-  Mb4Release release;
-  Mb4ReleaseList release_list;
+  Mb5Metadata metadata;
+  Mb5Query query;
+  Mb5Release release;
+  Mb5ReleaseList release_list;
   gchar *retval = NULL;
   gchar **param_names = NULL;
   gchar **param_values = NULL;
 
-  query = mb4_query_new ("sushi", NULL, 0);
+  query = mb5_query_new ("sushi", NULL, 0);
 
   param_names = g_new (gchar*, 3);
   param_values = g_new (gchar*, 3);
@@ -234,20 +234,20 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
   param_names[2] = NULL;
   param_values[2] = NULL;
 
-  metadata = mb4_query_query (query, "release", "", "",
+  metadata = mb5_query_query (query, "release", "", "",
                               2, param_names, param_values);
 
-  mb4_query_delete (query);
+  mb5_query_delete (query);
 
   if (metadata) {
-    release_list = mb4_metadata_get_releaselist (metadata);
+    release_list = mb5_metadata_get_releaselist (metadata);
     int i;
-    int release_list_length = mb4_release_list_size (release_list);
+    int release_list_length = mb5_release_list_size (release_list);
     for (i = 0; i < release_list_length; i++) {
       gchar asin[255];
 
-      release = mb4_release_list_item (release_list, i);
-      mb4_release_get_asin (release, asin, 255);
+      release = mb5_release_list_item (release_list, i);
+      mb5_release_get_asin (release, asin, 255);
 
       if (asin != NULL &&
         asin[0] != '\0') {
@@ -256,7 +256,7 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
       }
     }
   }
-  mb4_metadata_delete (metadata);
+  mb5_metadata_delete (metadata);
 
   if (retval == NULL) {
     /* FIXME: do we need a better error? */
