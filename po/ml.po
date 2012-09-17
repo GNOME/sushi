@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-19 10:58+0000\n"
+"POT-Creation-Date: 2012-04-12 19:27+0000\n"
 "PO-Revision-Date: 2012-02-19 10:58+0000\n"
 "Last-Translator: jishnu7 <jishnu7@gmail.com>\n"
 "Language-Team: Malayalam <discuss@lists.smc.org.in>\n"
@@ -17,44 +17,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/libsushi/sushi-file-loader.c:641
+#: ../data/org.gnome.sushi.gschema.xml.in.h:1
+msgid "Client decoration"
+msgstr ""
+
+#: ../data/org.gnome.sushi.gschema.xml.in.h:2
+msgid "Whether the window draws WM decorations itself"
+msgstr ""
+
+#: ../src/js/ui/fallbackRenderer.js:117
+msgid "Type"
+msgstr "തരം"
+
+#: ../src/js/ui/fallbackRenderer.js:118 ../src/js/ui/fallbackRenderer.js:123
+#: ../src/js/ui/fallbackRenderer.js:128 ../src/js/ui/spinnerBox.js:57
+#: ../src/js/viewers/folder.js:124 ../src/js/viewers/folder.js:129
+msgid "Loading..."
+msgstr "എടുത്തുകൊണ്ടിരിക്കുന്നു..."
+
+#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/viewers/folder.js:123
+msgid "Size"
+msgstr "വലിപ്പം"
+
+#: ../src/js/ui/fallbackRenderer.js:127 ../src/js/viewers/folder.js:128
+msgid "Modified"
+msgstr "പരിഷ്കരിച്ചത്"
+
+#: ../src/js/viewers/audio.js:171
+msgid "from"
+msgstr "ചിത്രം/ആല്‍ബം"
+
+#: ../src/js/viewers/audio.js:173
+msgid "by"
+msgstr "പാടിയത്"
+
+#: ../src/js/viewers/evince.js:79
+#, c-format
+msgid "%d of %d"
+msgstr "താള്‍ %d/%d"
+
+#: ../src/libsushi/sushi-file-loader.c:640
 #, c-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d വസ്തു"
 msgstr[1] "%d വസ്തുക്കള്‍"
 
-#: ../src/libsushi/sushi-file-loader.c:653
+#: ../src/libsushi/sushi-file-loader.c:652
 msgid "Empty Folder"
 msgstr "ഒഴിഞ്ഞ അറ"
-
-#: ../src/js/ui/fallbackRenderer.js:120
-msgid "Type"
-msgstr "തരം"
-
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
-#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
-#: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
-msgid "Loading..."
-msgstr "എടുത്തുകൊണ്ടിരിക്കുന്നു..."
-
-#: ../src/js/ui/fallbackRenderer.js:125 ../src/js/viewers/folder.js:126
-msgid "Size"
-msgstr "വലിപ്പം"
-
-#: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
-msgid "Modified"
-msgstr "പരിഷ്കരിച്ചത്"
-
-#: ../src/js/viewers/audio.js:163
-msgid "from"
-msgstr "ചിത്രം/ആല്‍ബം"
-
-#: ../src/js/viewers/audio.js:165
-msgid "by"
-msgstr "പാടിയത്"
-
-#: ../src/js/viewers/evince.js:75
-#, c-format
-msgid "%d of %d"
-msgstr "താള്‍ %d/%d"
