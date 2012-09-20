@@ -57,12 +57,13 @@ const Application = new Lang.Class({
 
     _init : function(args) {
         this.parent({ application_id: SUSHI_DBUS_NAME });
+
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(SushiIface, this);
+        this._dbusImpl.export(Gio.DBus.session, SUSHI_DBUS_PATH);
     },
 
     vfunc_startup : function() {
         this.parent();
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(SushiIface, this);
-        this._dbusImpl.export(Gio.DBus.session, SUSHI_DBUS_PATH);
 
         this._defineStyleAndThemes();
         this._createMainWindow();
