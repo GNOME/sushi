@@ -1,23 +1,24 @@
 # Malayalam translation for sushi.
 # Copyright (C) 2012 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
-#
 # jishnu7 <jishnu7@gmail.com>, 2012.
 # Ani Peter <apeter@redhat.com>, 2012.
+# Anish A <aneesh.nl@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-12 19:27+0000\n"
-"PO-Revision-Date: 2012-09-17 20:12+0000\n"
-"Last-Translator: Ani Peter <apeter@redhat.com>\n"
-"Language-Team: Malayalam <discuss@lists.smc.org.in>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-21 06:27+0000\n"
+"PO-Revision-Date: 2012-09-22 10:55+0530\n"
+"Last-Translator: Anish A <aneesh.nl@gmail.com>\n"
+"Language-Team: Swatantra Malayalam Computing\n"
+"Language: ml\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../data/org.gnome.sushi.gschema.xml.in.h:1
 msgid "Client decoration"
@@ -25,31 +26,30 @@ msgstr "ക്ലയന്റ് ഒരുക്കം"
 
 #: ../data/org.gnome.sushi.gschema.xml.in.h:2
 msgid "Whether the window draws WM decorations itself"
-msgstr "ഡബ്ല്യൂഎം ഒരുക്കങ്ങള്‍ക്കു് ജാലകം ലഭ്യമാക്കണമോ എന്നു്"
+msgstr "ജാലകപരിപാലകന്‍ ഒരുക്കങ്ങള്‍ ജാലകം തനിയ ചെയ്യുമോ എന്ന്"
 
-#: ../src/js/ui/fallbackRenderer.js:117
+#: ../src/js/ui/fallbackRenderer.js:120
 msgid "Type"
 msgstr "തരം"
 
-#: ../src/js/ui/fallbackRenderer.js:118 ../src/js/ui/fallbackRenderer.js:123
-#: ../src/js/ui/fallbackRenderer.js:128 ../src/js/ui/spinnerBox.js:57
-#: ../src/js/viewers/folder.js:124 ../src/js/viewers/folder.js:129
+#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
+#: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
 msgid "Loading..."
 msgstr "എടുത്തുകൊണ്ടിരിക്കുന്നു..."
 
-#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/viewers/folder.js:123
+#: ../src/js/ui/fallbackRenderer.js:129
 msgid "Size"
 msgstr "വലിപ്പം"
 
-#: ../src/js/ui/fallbackRenderer.js:127 ../src/js/viewers/folder.js:128
+#: ../src/js/ui/fallbackRenderer.js:135
 msgid "Modified"
 msgstr "പരിഷ്കരിച്ചത്"
 
-#: ../src/js/viewers/audio.js:171
+#: ../src/js/viewers/audio.js:172
 msgid "from"
 msgstr "ചിത്രം/ആല്‍ബം"
 
-#: ../src/js/viewers/audio.js:173
+#: ../src/js/viewers/audio.js:174
 msgid "by"
 msgstr "പാടിയത്"
 
@@ -58,14 +58,13 @@ msgstr "പാടിയത്"
 msgid "%d of %d"
 msgstr "താള്‍ %d/%d"
 
-#: ../src/libsushi/sushi-file-loader.c:640
+#: ../src/libsushi/sushi-file-loader.c:639
 #, c-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d വസ്തു"
 msgstr[1] "%d വസ്തുക്കള്‍"
 
-#: ../src/libsushi/sushi-file-loader.c:652
+#: ../src/libsushi/sushi-file-loader.c:651
 msgid "Empty Folder"
 msgstr "ഒഴിഞ്ഞ അറ"
-
