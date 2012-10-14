@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=sushi&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-10-12 20:23+0000\n"
-"PO-Revision-Date: 2012-10-14 13:58-0500\n"
+"PO-Revision-Date: 2012-10-14 19:15-0500\n"
 "Last-Translator: Bahodir Mansurov <6ahodir@gmail.com>\n"
 "Language-Team: Uzbek\n"
 "Language: uz\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Bookmarks: -1,1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: ../data/org.gnome.sushi.gschema.xml.in.h:1
 msgid "Client decoration"
@@ -24,7 +25,7 @@ msgstr "Мижоз безаги"
 
 #: ../data/org.gnome.sushi.gschema.xml.in.h:2
 msgid "Whether the window draws WM decorations itself"
-msgstr "Дераза Бошқарувчи (ДБ) безагларинини деразанинг ўзи чизиши"
+msgstr "Дераза Бошқарувчи (ДБ) безакларини деразанинг ўзи чизиши"
 
 #: ../src/js/ui/fallbackRenderer.js:120
 msgid "Type"
