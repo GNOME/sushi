@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the sushi package.
 #
 # Bahodir Mansurov <6ahodir@gmail.com>, 2012.
-
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-19 10:58+0000\n"
-"PO-Revision-Date: 2012-02-24 01:59-0500\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-10-12 20:23+0000\n"
+"PO-Revision-Date: 2012-10-14 19:15-0500\n"
 "Last-Translator: Bahodir Mansurov <6ahodir@gmail.com>\n"
 "Language-Team: Uzbek\n"
 "Language: uz\n"
@@ -17,50 +17,52 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Bookmarks: -1,1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
-#: ../src/libsushi/sushi-file-loader.c:641
-#| msgid "%d item"
-msgid "%d item"
-msgid_plural "%d items"
-msgstr[0] "%dта элемент"
+#: ../data/org.gnome.sushi.gschema.xml.in.h:1
+msgid "Client decoration"
+msgstr "Мижоз безаги"
 
-#: ../src/libsushi/sushi-file-loader.c:653
-msgid "Empty Folder"
-msgstr "Бўш жилд"
+#: ../data/org.gnome.sushi.gschema.xml.in.h:2
+msgid "Whether the window draws WM decorations itself"
+msgstr "Дераза Бошқарувчи (ДБ) безакларини деразанинг ўзи чизиши"
 
 #: ../src/js/ui/fallbackRenderer.js:120
 msgid "Type"
 msgstr "Тури"
 
-#: ../src/js/ui/fallbackRenderer.js:121
-#: ../src/js/ui/fallbackRenderer.js:126
-#: ../src/js/ui/fallbackRenderer.js:131
-#: ../src/js/ui/spinnerBox.js:54
-#: ../src/js/viewers/folder.js:127
-#: ../src/js/viewers/folder.js:132
+#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
+#: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
 msgid "Loading..."
 msgstr "Юкланяпти..."
 
-#: ../src/js/ui/fallbackRenderer.js:125
-#: ../src/js/viewers/folder.js:126
+#: ../src/js/ui/fallbackRenderer.js:129
 msgid "Size"
 msgstr "Ҳажми"
 
-#: ../src/js/ui/fallbackRenderer.js:130
-#: ../src/js/viewers/folder.js:131
+#: ../src/js/ui/fallbackRenderer.js:135
 msgid "Modified"
 msgstr "Ўзгартирилган"
 
-#: ../src/js/viewers/audio.js:163
+#: ../src/js/viewers/audio.js:172
 msgid "from"
 msgstr "дан"
 
-#: ../src/js/viewers/audio.js:165
+#: ../src/js/viewers/audio.js:174
 msgid "by"
 msgstr "билан"
 
-#: ../src/js/viewers/evince.js:75
+#: ../src/js/viewers/evince.js:79
 #, c-format
 msgid "%d of %d"
 msgstr "%dдан %dтаси"
 
+#: ../src/libsushi/sushi-file-loader.c:639
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%dта элемент"
+
+#: ../src/libsushi/sushi-file-loader.c:651
+msgid "Empty Folder"
+msgstr "Бўш жилд"
