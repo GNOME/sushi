@@ -27,8 +27,7 @@
 
 #include "sushi-text-loader.h"
 
-#include <gtksourceview/gtksourceview.h>
-#include <gtksourceview/gtksourcelanguagemanager.h>
+#include <gtksourceview/gtksource.h>
 
 #include <string.h>
 
