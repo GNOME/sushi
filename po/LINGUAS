@@ -1,4 +1,5 @@
 # Keep this list sorted alphabetically
+an
 ar
 as
 ast
@@ -9,14 +10,18 @@ ca@valencia
 cs
 da
 de
+el
 en_GB
 eo
 es
+et
 eu
 fa
+fi
 fr
 gl
 he
+hi
 hu
 id
 it
@@ -24,6 +29,7 @@ ja
 ko
 lt
 lv
+ml
 nb
 nl
 or
@@ -32,6 +38,7 @@ pl
 pt
 pt_BR
 ru
+sk
 sl
 sr
 sr@latin
@@ -41,7 +48,9 @@ te
 th
 tr
 uk
+uz@cyrillic
 vi
 zh_CN
 zh_HK
 zh_TW
+ug
