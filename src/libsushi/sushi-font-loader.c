@@ -87,10 +87,13 @@ create_face_from_contents (FontLoadJob *job,
                                  &retval);
 
   if (ft_error != 0) {
-    g_set_error_literal (error, G_IO_ERROR, 0,
-                         "Unable to read the font face file");
+    gchar *uri;
+    uri = g_file_get_uri (job->file);
+    g_set_error (error, G_IO_ERROR, 0,
+                 "Unable to read the font face file '%s'", uri);
     retval = NULL;
     g_free (job->face_contents);
+    g_free (uri);
   } else {
     *contents = job->face_contents;
   }
