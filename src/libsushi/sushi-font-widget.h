@@ -63,6 +63,8 @@ SushiFontWidget *sushi_font_widget_new (const gchar *uri);
 
 FT_Face sushi_font_widget_get_ft_face (SushiFontWidget *self);
 
+const gchar *sushi_font_widget_get_uri (SushiFontWidget *self);
+
 G_END_DECLS
 
 #endif /* __SUSHI_FONT_WIDGET_H__ */

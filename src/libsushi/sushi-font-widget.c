@@ -712,3 +712,9 @@ sushi_font_widget_get_ft_face (SushiFontWidget *self)
 {
   return self->priv->face;
 }
+
+const gchar *
+sushi_font_widget_get_uri (SushiFontWidget *self)
+{
+  return self->priv->uri;
+}
