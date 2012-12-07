@@ -37,6 +37,7 @@ enum {
 
 enum {
   LOADED,
+  ERROR,
   NUM_SIGNALS
 };
 
@@ -549,7 +550,7 @@ font_face_async_ready_cb (GObject *object,
                                        &error);
 
   if (error != NULL) {
-    /* FIXME: need to signal the error */
+    g_signal_emit (self, signals[ERROR], 0, error->message);
     g_print ("Can't load the font face: %s\n", error->message);
     g_error_free (error);
 
@@ -682,6 +683,13 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
                   0, NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+  signals[ERROR] =
+    g_signal_new ("error",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1, G_TYPE_STRING);
 
   g_object_class_install_properties (oclass, NUM_PROPERTIES, properties);
   g_type_class_add_private (klass, sizeof (SushiFontWidgetPrivate));
