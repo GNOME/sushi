@@ -51,18 +51,17 @@ AC_SUBST(GJS_JS_DIR)
 
 CLUTTER_MIN_VERSION=1.11.4
 GLIB_MIN_VERSION=2.29.14
-GTK_MIN_VERSION=3.0.0
-GJS_MIN_VERSION=0.7.7
+GTK_MIN_VERSION=3.4.0
+GJS_MIN_VERSION=1.34.0
 CLUTTER_GTK_MIN_VERSION=1.0.1
 GOBJECT_INTROSPECTION_MIN_VERSION=0.9.6
-GDK_PIXBUF_MIN_VERSION=2.22.1
+GDK_PIXBUF_MIN_VERSION=2.23.0
 
 PKG_CHECK_MODULES(SUSHI,
                   freetype2
                   glib-2.0 >= $GLIB_MIN_VERSION
                   gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
                   gjs-1.0 >= $GJS_MIN_VERSION
-                  gjs-dbus-1.0 >= $GJS_MIN_VERSION
                   gobject-2.0 >= $GLIB_MIN_VERSION
                   clutter-1.0 >= $CLUTTER_MIN_VERSION
                   clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
