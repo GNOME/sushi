@@ -35,7 +35,6 @@ let Gettext = imports.gettext.domain('sushi');
 let _ = Gettext.gettext;
 
 let Utils = imports.ui.utils;
-let Features = imports.util.features;
 
 function EvinceRenderer(args) {
     this._init(args);
@@ -181,16 +180,14 @@ let renderer = new EvinceRenderer();
 let mimeTypes = Sushi.query_supported_document_types();
 handler.registerMimeTypes(mimeTypes, renderer);
 
-if (Features.HAVE_UNOCONV) {
-    let officeTypes = [
-        'application/vnd.oasis.opendocument.text',
-        'application/vnd.oasis.opendocument.presentation',
-        'application/vnd.oasis.opendocument.spreadsheet',
-        'application/msword',
-        'application/vnd.ms-excel',
-        'application/vnd.ms-powerpoint',
-        'application/rtf'
-    ];
+let officeTypes = [
+    'application/vnd.oasis.opendocument.text',
+    'application/vnd.oasis.opendocument.presentation',
+    'application/vnd.oasis.opendocument.spreadsheet',
+    'application/msword',
+    'application/vnd.ms-excel',
+    'application/vnd.ms-powerpoint',
+    'application/rtf'
+];
 
-    handler.registerMimeTypes(officeTypes, renderer);
-}
+handler.registerMimeTypes(officeTypes, renderer);

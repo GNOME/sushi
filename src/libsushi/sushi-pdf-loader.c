@@ -31,6 +31,7 @@
 #include <evince-document.h>
 #include <evince-view.h>
 #include <glib/gstdio.h>
+#include <gdk/gdkx.h>
 
 G_DEFINE_TYPE (SushiPdfLoader, sushi_pdf_loader, G_TYPE_OBJECT);
 
@@ -38,6 +39,8 @@ enum {
   PROP_DOCUMENT = 1,
   PROP_URI
 };
+
+static void load_openoffice (SushiPdfLoader *self);
 
 struct _SushiPdfLoaderPrivate {
   EvDocument *document;
@@ -80,6 +83,61 @@ load_pdf (SushiPdfLoader *self,
 }
 
 static void
+openoffice_missing_unoconv_ready_cb (GObject *source,
+                                     GAsyncResult *res,
+                                     gpointer user_data)
+{
+  SushiPdfLoader *self = user_data;
+  GError *error = NULL;
+
+  g_dbus_connection_call_finish (G_DBUS_CONNECTION (source), res, &error);
+  if (error != NULL) {
+    GError *local_error;
+
+    /* can't install unoconv with packagekit - nothing else we can do */
+    /* FIXME: error reporting! */
+    g_warning ("unoconv not found, and PackageKit failed to install it with error %s",
+               error->message);
+    return;
+  }
+
+  /* now that we have unoconv installed, try again loading the document */
+  load_openoffice (self);
+}
+
+static void
+openoffice_missing_unoconv (SushiPdfLoader *self)
+{
+  GApplication *app = g_application_get_default ();
+  GtkWidget *widget = GTK_WIDGET (gtk_application_get_active_window (GTK_APPLICATION (app)));
+  GDBusConnection *connection = g_application_get_dbus_connection (app);
+  guint xid = 0;
+  GdkWindow *gdk_window;
+  const gchar *unoconv_path[2];
+
+  gdk_window = gtk_widget_get_window (widget);
+  if (gdk_window != NULL)
+    xid = GDK_WINDOW_XID (gdk_window);
+
+  unoconv_path[0] = "/usr/bin/unoconv";
+  unoconv_path[1] = NULL;
+
+  g_dbus_connection_call (connection,
+                          "org.freedesktop.PackageKit",
+                          "/org/freedesktop/PackageKit",
+                          "org.freedesktop.PackageKit.Modify",
+                          "InstallProvideFiles",
+                          g_variant_new ("(u^ass)",
+                                         xid,
+                                         unoconv_path,
+                                         "hide-confirm-deps"),
+                          NULL, G_DBUS_CALL_FLAGS_NONE,
+                          G_MAXINT, NULL,
+                          openoffice_missing_unoconv_ready_cb,
+                          self);
+}
+
+static void
 unoconv_child_watch_cb (GPid pid,
                         gint status,
                         gpointer user_data)
@@ -111,6 +169,13 @@ load_openoffice (SushiPdfLoader *self)
   GPid pid;
   gchar **argv = NULL;
   GError *error = NULL;
+  const gchar *unoconv_path;
+
+  unoconv_path = g_find_program_in_path ("unoconv");
+  if (unoconv_path == NULL) {
+      openoffice_missing_unoconv (self);
+      return;
+  }
 
   file = g_file_new_for_uri (self->priv->uri);
   doc_path = g_file_get_path (file);
