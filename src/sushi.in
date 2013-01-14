@@ -1,22 +1,8 @@
 #!/bin/sh
 
-if test x"$GJS_PATH" = x ; then
-    export GJS_PATH=@pkgdatadir@/js
-else
-    export GJS_PATH=@pkgdatadir@/js:$GJS_PATH
-fi
-
-if test x"$GI_TYPELIB_PATH" = x ; then
-    export GI_TYPELIB_PATH=@pkglibdir@/girepository-1.0
-else
-    export GI_TYPELIB_PATH=@pkglibdir@/girepository-1.0:$GI_TYPELIB_PATH
-fi
-
-if test x"$LD_LIBRARY_PATH" = x ; then
-    export LD_LIBRARY_PATH=@pkglibdir@
-else
-    export LD_LIBRARY_PATH=@pkglibdir@:$LD_LIBRARY_PATH
-fi
+export GJS_PATH="@pkgdatadir@/js${GJS_PATH:+:$GJS_PATH}"
+export GI_TYPELIB_PATH="@pkglibdir@/girepository-1.0${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
+export LD_LIBRARY_PATH="@pkglibdir@${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
 if test x"$GJS_DEBUG_OUTPUT" = x ; then
     export GJS_DEBUG_OUTPUT=stderr
