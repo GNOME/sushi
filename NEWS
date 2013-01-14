@@ -1,3 +1,10 @@
+3.7.4 - "Wilderness"
+====================
+
+- Use PackageKit to install unoconv if not detected at runtime
+- Drop gjs-dbus dependency (Rico Tzschichholz)
+- Translation updates
+
 3.7.3 - "Invisible"
 ===================
 
