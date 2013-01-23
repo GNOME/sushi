@@ -64,6 +64,7 @@ G_DEFINE_TYPE (SushiFontWidget, sushi_font_widget, GTK_TYPE_DRAWING_AREA);
 
 #define SURFACE_SIZE 4
 #define SECTION_SPACING 16
+#define LINE_SPACING 2
 
 static const gchar lowercase_text_stock[] = "abcdefghijklmnopqrstuvwxyz";
 static const gchar uppercase_text_stock[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -95,7 +96,7 @@ draw_string (SushiFontWidget *self,
 
   if (pos_y != NULL)
     *pos_y += font_extents.ascent + font_extents.descent +
-      extents.y_advance + padding.top;
+      extents.y_advance + LINE_SPACING / 2;
   if (text_dir == GTK_TEXT_DIR_LTR)
     pos_x = padding.left;
   else {
@@ -106,7 +107,7 @@ draw_string (SushiFontWidget *self,
   cairo_move_to (cr, pos_x, *pos_y);
   cairo_show_text (cr, text);
 
-  *pos_y += padding.bottom;
+  *pos_y += LINE_SPACING / 2;
 }
 
 static gboolean
@@ -363,7 +364,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
 
   /* calculate size of pixmap to use */
   pixmap_width = padding.left + padding.right;
-  pixmap_height = 0;
+  pixmap_height = padding.top + padding.bottom;
 
   font = cairo_ft_font_face_create_for_ft_face (face, 0);
   cairo_set_font_face (cr, font);
@@ -374,7 +375,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
       cairo_font_extents (cr, &font_extents);
       cairo_text_extents (cr, self->priv->font_name, &extents);
       pixmap_height += font_extents.ascent + font_extents.descent +
-        extents.y_advance + padding.top + padding.bottom;
+        extents.y_advance + LINE_SPACING;
       pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
@@ -385,21 +386,21 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   if (self->priv->lowercase_text != NULL) {
     cairo_text_extents (cr, self->priv->lowercase_text, &extents);
     pixmap_height += font_extents.ascent + font_extents.descent + 
-      extents.y_advance + padding.top + padding.bottom;
+      extents.y_advance + LINE_SPACING;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
   if (self->priv->uppercase_text != NULL) {
     cairo_text_extents (cr, self->priv->uppercase_text, &extents);
     pixmap_height += font_extents.ascent + font_extents.descent +
-      extents.y_advance + padding.top + padding.bottom;
+      extents.y_advance + LINE_SPACING;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
   if (self->priv->punctuation_text != NULL) {
     cairo_text_extents (cr, self->priv->punctuation_text, &extents);
     pixmap_height += font_extents.ascent + font_extents.descent +
-      extents.y_advance + padding.top + padding.bottom;
+      extents.y_advance + LINE_SPACING;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
@@ -411,7 +412,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
       cairo_font_extents (cr, &font_extents);
       cairo_text_extents (cr, self->priv->sample_string, &extents);
       pixmap_height += font_extents.ascent + font_extents.descent +
-        extents.y_advance + padding.top + padding.bottom;
+        extents.y_advance + LINE_SPACING;
       pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
 
       if ((i == 7) && (min_height != NULL))
