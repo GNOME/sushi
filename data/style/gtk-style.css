@@ -6,10 +6,6 @@ GtkWindow {
     color: @np_fg_color;
 }
 
-SushiFontWidget {
-    padding: 2px;
-}
-
 GtkSourceView {
     color: @np_text_color;
     background-color: shade (@np_fg_color, 1.10);
