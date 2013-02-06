@@ -1,3 +1,10 @@
+3.7.5 - "It's a New Day"
+========================
+
+- Use a better padding for the font preview
+- Remove custom CSS styling for SushiFontWidget
+- Fix the build with automake 1.13 (Nuno Araujo)
+
 3.7.4 - "Wilderness"
 ====================
 
