@@ -1,3 +1,9 @@
+3.7.91 - "Asleep"
+=================
+
+- Call gtk_render_background when drawing SushiFontWidget
+- Translation updates
+
 3.7.5 - "It's a New Day"
 ========================
 
