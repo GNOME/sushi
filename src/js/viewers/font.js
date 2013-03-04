@@ -53,6 +53,7 @@ FontRenderer.prototype = {
                                  Lang.bind(this, this._onFontLoaded));
 
         this._fontActor = new GtkClutter.Actor({ contents: this._fontWidget });
+        Utils.alphaGtkWidget(this._fontActor.get_widget());
     },
 
     _onFontLoaded : function() {
