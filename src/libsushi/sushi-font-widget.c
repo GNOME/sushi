@@ -474,13 +474,20 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   GdkRGBA color;
   GtkBorder padding;
   GtkStateFlags state;
-  gint allocated_height;
+  gint allocated_width, allocated_height;
 
   if (face == NULL)
     goto end;
 
   context = gtk_widget_get_style_context (drawing_area);
   state = gtk_style_context_get_state (context);
+
+  allocated_width = gtk_widget_get_allocated_width (drawing_area);
+  allocated_height = gtk_widget_get_allocated_height (drawing_area);
+
+  gtk_render_background (context, cr,
+                         0, 0, allocated_width, allocated_height);
+
   gtk_style_context_get_color (context, state, &color);
   gtk_style_context_get_padding (context, state, &padding);
 
@@ -491,8 +498,6 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   font = cairo_ft_font_face_create_for_ft_face (face, 0);
   cairo_set_font_face (cr, font);
   cairo_font_face_destroy (font);
-
-  allocated_height = gtk_widget_get_allocated_height (drawing_area);
 
   /* draw text */
 
@@ -596,6 +601,9 @@ sushi_font_widget_init (SushiFontWidget *self)
 
   if (err != FT_Err_Ok)
     g_error ("Unable to initialize FreeType");
+
+  gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)),
+                               GTK_STYLE_CLASS_VIEW);
 }
 
 static void
