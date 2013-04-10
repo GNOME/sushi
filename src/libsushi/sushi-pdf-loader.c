@@ -269,12 +269,13 @@ query_info_ready_cb (GObject *obj,
   }
 
   content_type = g_file_info_get_content_type (info);
-  g_object_unref (info);
 
   if (content_type_is_native (content_type))
     load_pdf (self, self->priv->uri);
   else
     load_openoffice (self);
+
+  g_object_unref (info);
 }
 
 static void
