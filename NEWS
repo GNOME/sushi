@@ -1,3 +1,8 @@
+3.8.1 - "Merchandise"
+=====================
+
+- Fix a crash while loading PDF documents (Philippe Coval)
+
 3.8.0 - "Bla"
 =============
 
