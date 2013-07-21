@@ -25,11 +25,13 @@
  *
  */
 
+#include <config.h>
+
 #include "sushi-file-loader.h"
 
 #include <gtk/gtk.h>
 
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #define LOADER_ATTRS                          \
   G_FILE_ATTRIBUTE_STANDARD_ICON ","          \
@@ -635,7 +637,7 @@ sushi_file_loader_get_size_string (SushiFileLoader *self)
     /* FIXME: we prolly could also use directory_items and unreadable_items
      * somehow.
      */
-    items_str = g_dngettext (NULL,
+    items_str = g_dngettext (GETTEXT_PACKAGE,
                              "%d item",
                              "%d items",
                              self->priv->file_items + self->priv->directory_items);
