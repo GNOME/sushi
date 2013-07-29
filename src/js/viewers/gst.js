@@ -129,7 +129,12 @@ GstRenderer.prototype = {
         if (this._video.playing)
             this._toolbarPlay.set_icon_name('media-playback-pause-symbolic');
         else
-            this._toolbarPlay.set_icon_name('media-playback-start-symbolic');
+        {
+            let iconName =
+            (this._toolbarPlay.get_direction() == Gtk.TextDirection.RTL) ?
+                'media-playback-start-rtl-symbolic' : 'media-playback-start-symbolic';
+            this._toolbarPlay.set_icon_name(iconName);
+        }
     },
 
     getSizeForAllocation : function(allocation) {
