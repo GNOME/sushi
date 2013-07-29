@@ -132,8 +132,12 @@ EvinceRenderer.prototype = {
 
         this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
 
+        let isRtl = (this._mainToolbar.get_direction() == Gtk.TextDirection.RTL);
+        let prevIconName = isRtl ? 'go-previous-rtl-symbolic' : 'go-previous-symbolic';
+        let nextIconName = isRtl ? 'go-next-rtl-symbolic' : 'go-next-symbolic';
+
         this._toolbarBack = new Gtk.ToolButton({ expand: false,
-                                                 icon_name: 'go-previous-symbolic' });
+                                                 icon_name: prevIconName });
         this._toolbarBack.show();
         this._mainToolbar.insert(this._toolbarBack, -1);
 
@@ -146,7 +150,7 @@ EvinceRenderer.prototype = {
         this._mainToolbar.insert(labelItem, -1);
 
         this._toolbarForward = new Gtk.ToolButton({ expand: false,
-                                                    icon_name: 'go-next-symbolic' });
+                                                    icon_name: nextIconName });
         this._toolbarForward.show();
         this._mainToolbar.insert(this._toolbarForward, -1);
 
