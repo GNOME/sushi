@@ -41,15 +41,17 @@ const MainWindow = imports.ui.mainWindow;
 const SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
 const SUSHI_DBUS_NAME = 'org.gnome.NautilusPreviewer';
 
-const SushiIface = <interface name={SUSHI_DBUS_NAME}>
-<method name="ShowFile">
-    <arg type="s" direction="in" name="uri" />
-    <arg type="i" direction="in" name="xid" />
-    <arg type="b" direction="in" name="closeIfAlreadyShown" />
-</method>
-<method name="Close">
-</method>
-</interface>;
+const SushiIface = '<node> \
+<interface name={SUSHI_DBUS_NAME}> \
+<method name="ShowFile"> \
+    <arg type="s" direction="in" name="uri" /> \
+    <arg type="i" direction="in" name="xid" /> \
+    <arg type="b" direction="in" name="closeIfAlreadyShown" /> \
+</method> \
+<method name="Close"> \
+</method> \
+</interface> \
+</node>';
 
 const Application = new Lang.Class({
     Name: 'Application',
