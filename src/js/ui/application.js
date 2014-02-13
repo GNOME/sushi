@@ -40,7 +40,7 @@ const SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
 const SUSHI_DBUS_NAME = 'org.gnome.NautilusPreviewer';
 
 const SushiIface = '<node> \
-<interface name={SUSHI_DBUS_NAME}> \
+<interface name="org.gnome.NautilusPreviewer"> \
 <method name="ShowFile"> \
     <arg type="s" direction="in" name="uri" /> \
     <arg type="i" direction="in" name="xid" /> \
