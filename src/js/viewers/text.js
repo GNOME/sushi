@@ -59,7 +59,7 @@ TextRenderer.prototype = {
         let schemaName = 'org.gnome.gedit.preferences.editor';
         let installedSchemas = Gio.Settings.list_schemas();
         if (installedSchemas.indexOf(schemaName) > -1) {
-            let geditSettings = new Gio.Settings({ schema: schema_name });
+            let geditSettings = new Gio.Settings({ schema: schemaName });
             let geditSchemeName = geditSettings.get_string('scheme');
             if (geditSchemeName != '')
                 this._geditScheme = geditSchemeName;
