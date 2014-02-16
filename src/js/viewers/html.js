@@ -23,15 +23,14 @@
  *
  */
 
-let MimeHandler = imports.ui.mimeHandler;
-let GtkClutter = imports.gi.GtkClutter;
-let Gtk = imports.gi.Gtk;
-let GLib = imports.gi.GLib;
-let WebKit = imports.gi.WebKit;
+const GtkClutter = imports.gi.GtkClutter;
+const Gtk = imports.gi.Gtk;
+const GLib = imports.gi.GLib;
+const WebKit = imports.gi.WebKit;
+const Sushi = imports.gi.Sushi;
 
-let Sushi = imports.gi.Sushi;
-
-let Utils = imports.ui.utils;
+const MimeHandler = imports.ui.mimeHandler;
+const Utils = imports.ui.utils;
 
 function HTMLRenderer(args) {
     this._init(args);

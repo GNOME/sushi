@@ -23,16 +23,19 @@
  *
  */
 
-let MimeHandler = imports.ui.mimeHandler;
-let EvDoc = imports.gi.EvinceDocument;
-let EvView = imports.gi.EvinceView;
+const EvDoc = imports.gi.EvinceDocument;
+const EvView = imports.gi.EvinceView;
+const Gtk = imports.gi.Gtk;
+const GtkClutter = imports.gi.GtkClutter;
+const Sushi = imports.gi.Sushi;
 
-let Sushi = imports.gi.Sushi;
+const Gettext = imports.gettext.domain('sushi');
+const _ = Gettext.gettext;
+const Lang = imports.lang;
 
-let Gettext = imports.gettext.domain('sushi');
-let _ = Gettext.gettext;
-
-let Utils = imports.ui.utils;
+const Constants = imports.util.constants;
+const MimeHandler = imports.ui.mimeHandler;
+const Utils = imports.ui.utils;
 
 function EvinceRenderer(args) {
     this._init(args);

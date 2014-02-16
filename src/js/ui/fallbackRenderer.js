@@ -23,14 +23,17 @@
  *
  */
 
-let Gtk = imports.gi.Gtk;
-let Sushi = imports.gi.Sushi;
+const Gio = imports.gi.Gio;
+const Gtk = imports.gi.Gtk;
+const GtkClutter = imports.gi.GtkClutter;
+const Sushi = imports.gi.Sushi;
 
-let Gettext = imports.gettext.domain('sushi');
-let _ = Gettext.gettext;
+const Gettext = imports.gettext.domain('sushi');
+const _ = Gettext.gettext;
+const Lang = imports.lang;
 
-let Constants = imports.util.constants;
-let Utils = imports.ui.utils;
+const Constants = imports.util.constants;
+const Utils = imports.ui.utils;
 
 function FallbackRenderer(args) {
     this._init(args);
