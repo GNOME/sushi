@@ -316,6 +316,7 @@ MainWindow.prototype = {
                             this._pendingRenderer.prepare(file, this, Lang.bind(this, this._onRendererPrepared));
                         } catch(e) {
                             /* FIXME: report the error */
+                            logError(e, 'Error calling prepare() on viewer');
                         }}));
     },
 
