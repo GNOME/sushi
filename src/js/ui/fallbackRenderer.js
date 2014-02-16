@@ -147,8 +147,6 @@ FallbackRenderer.prototype = {
 
         if (this._fileLoader.icon)
             this._image.set_from_pixbuf(this._fileLoader.icon);
-        else
-            this._setImageFromType();
 
         this._applyLabels();
         this._mainWindow.refreshSize();
