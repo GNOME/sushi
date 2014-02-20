@@ -1,3 +1,10 @@
+3.11.90 - "Bandoliers"
+======================
+
+- Fix compatibility with js24-based GJS
+- Update for E4X removal (Dominique Leuenberger, Tim Lunn)
+- Update FSF address (Daniel Mustieles)
+
 3.10.0
 ======
 
