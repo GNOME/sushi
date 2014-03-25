@@ -2,13 +2,14 @@
 # Copyright (C) 2011 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
 # Julen Ruiz Aizpuru <julenx@gmail.com>, 2011, 2013.
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2013.
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-01 09:29+0100\n"
-"PO-Revision-Date: 2013-02-28 22:49+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-03-25 12:02+0000\n"
+"PO-Revision-Date: 2014-03-25 21:25+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "Language: eu\n"
@@ -16,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.4\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/org.gnome.sushi.gschema.xml.in.h:1
@@ -27,35 +28,36 @@ msgstr "Bezeroaren dekorazioa"
 msgid "Whether the window draws WM decorations itself"
 msgstr "Leihoak leiho-kudeatzailearen dekorazioak marraztuko dituen edo ez"
 
-#: ../src/js/ui/fallbackRenderer.js:120
+#: ../src/js/ui/fallbackRenderer.js:121
 msgid "Type"
 msgstr "Mota"
 
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
-#: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
+#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/ui/fallbackRenderer.js:131
+#: ../src/js/ui/fallbackRenderer.js:137 ../src/js/ui/spinnerBox.js:58
 msgid "Loading..."
 msgstr "Kargatzen..."
 
-#: ../src/js/ui/fallbackRenderer.js:129
+#: ../src/js/ui/fallbackRenderer.js:130
 msgid "Size"
 msgstr "Tamaina"
 
-#: ../src/js/ui/fallbackRenderer.js:135
+#: ../src/js/ui/fallbackRenderer.js:136
 msgid "Modified"
 msgstr "Aldatuta"
 
-#: ../src/js/viewers/audio.js:172
+#: ../src/js/viewers/audio.js:173
 msgid "from"
 msgstr "albuma"
 
-#: ../src/js/viewers/audio.js:174
+#: ../src/js/viewers/audio.js:175
 msgid "by"
 msgstr "artista"
 
-#: ../src/js/viewers/evince.js:78
-#, c-format
+#: ../src/js/viewers/evince.js:79
+#, javascript-format
+#| msgid "%d of %d"
 msgid "%d of %d"
-msgstr "%2$d / %1$d"
+msgstr "%d / %d"
 
 #: ../src/libsushi/sushi-file-loader.c:639
 #, c-format
@@ -67,3 +69,4 @@ msgstr[1] "%d elementu"
 #: ../src/libsushi/sushi-file-loader.c:651
 msgid "Empty Folder"
 msgstr "Karpeta hutsa"
+
