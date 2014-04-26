@@ -660,7 +660,8 @@ MainWindow.prototype = {
     setParent : function(xid) {
         this._parent = Sushi.create_foreign_window(xid);
         this._gtkWindow.realize();
-        this._gtkWindow.get_window().set_transient_for(this._parent);
+        if (this._parent)
+            this._gtkWindow.get_window().set_transient_for(this._parent);
         this._gtkWindow.show_all();
 
         this._gtkWindow.get_window().move_to_current_desktop();
