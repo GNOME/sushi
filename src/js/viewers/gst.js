@@ -159,8 +159,8 @@ GstRenderer.prototype = {
         this._toolbarPlay.show();
         this._mainToolbar.insert(this._toolbarPlay, 0);
 
-        this._currentLabel = new Gtk.Label({ margin_left: 6,
-                                             margin_right: 3 });
+        this._currentLabel = new Gtk.Label({ margin_start: 6,
+                                             margin_end: 3 });
         let item = new Gtk.ToolItem();
         item.add(this._currentLabel);
         item.show_all();
@@ -189,8 +189,8 @@ GstRenderer.prototype = {
         item.show_all();
         this._mainToolbar.insert(item, 2);
 
-        this._durationLabel = new Gtk.Label({ margin_left: 3,
-                                              margin_right: 6 });
+        this._durationLabel = new Gtk.Label({ margin_start: 3,
+                                              margin_end: 6 });
         item = new Gtk.ToolItem();
         item.add(this._durationLabel);
         item.show_all();

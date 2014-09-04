@@ -114,8 +114,8 @@ EvinceRenderer.prototype = {
     },
 
     _createLabelItem : function() {
-        this._pageLabel = new Gtk.Label({ margin_left: 10,
-                                          margin_right: 10 });
+        this._pageLabel = new Gtk.Label({ margin_start: 10,
+                                          margin_end: 10 });
 
         let item = new Gtk.ToolItem();
         item.set_expand(true);

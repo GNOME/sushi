@@ -68,8 +68,8 @@ FallbackRenderer.prototype = {
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
                                  margin_top: 48,
-                                 margin_left: 12,
-                                 margin_right: 12 });
+                                 margin_start: 12,
+                                 margin_end: 12 });
         this._box.pack_start(vbox, false, false, 0);
 
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,

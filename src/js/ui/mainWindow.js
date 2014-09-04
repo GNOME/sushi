@@ -506,8 +506,8 @@ MainWindow.prototype = {
         this._toolbarActor.set_opacity(0);
 
         this._toolbarActor.margin_bottom = Constants.TOOLBAR_SPACING;
-        this._toolbarActor.margin_left = Constants.TOOLBAR_SPACING;
-        this._toolbarActor.margin_right = Constants.TOOLBAR_SPACING;
+        this._toolbarActor.margin_start = Constants.TOOLBAR_SPACING;
+        this._toolbarActor.margin_end = Constants.TOOLBAR_SPACING;
 
         this._mainLayout.add(this._toolbarActor,
                              Clutter.BinAlignment.CENTER, Clutter.BinAlignment.END);
