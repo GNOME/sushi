@@ -237,9 +237,7 @@ AudioRenderer.prototype = {
             this._toolbarPlay.set_icon_name('media-playback-pause-symbolic');
             break;
         default:
-            let iconName =
-            (this._toolbarPlay.get_direction() == Gtk.TextDirection.RTL) ?
-                'media-playback-start-rtl-symbolic' : 'media-playback-start-symbolic';
+            let iconName = 'media-playback-start-symbolic';
             this._toolbarPlay.set_icon_name(iconName);
         }
     },
