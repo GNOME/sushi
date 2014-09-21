@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=sushi&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-09-21 10:28+0000\n"
-"PO-Revision-Date: 2014-09-21 08:33-0500\n"
+"PO-Revision-Date: 2014-09-21 08:45-0500\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "Language: pa\n"
@@ -56,7 +56,7 @@ msgstr "ਵਲੋਂ"
 #, javascript-format
 #| msgid "%d of %d"
 msgid "%d of %d"
-msgstr "%2$d ਵਿੱਚੋਂ %1$d"
+msgstr "%d, %d ਵਿੱਚੋ"
 
 #: ../src/libsushi/sushi-file-loader.c:639
 #, c-format
@@ -68,4 +68,5 @@ msgstr[1] "%d ਆਈਟਮਾਂ"
 #: ../src/libsushi/sushi-file-loader.c:651
 msgid "Empty Folder"
 msgstr "ਖਾਲੀ ਫੋਲਡਰ"
+
 
