@@ -1,0 +1,68 @@
+# Kazakh translation for sushi.
+# Copyright (C) 2014 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-10-06 22:51+0000\n"
+"PO-Revision-Date: 2014-10-24 09:23+0600\n"
+"Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
+"Language-Team: Kazakh <kk@li.org>\n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.6.9\n"
+
+#: ../data/org.gnome.sushi.gschema.xml.in.h:1
+msgid "Client decoration"
+msgstr "Клиент безендіруі"
+
+#: ../data/org.gnome.sushi.gschema.xml.in.h:2
+msgid "Whether the window draws WM decorations itself"
+msgstr "Терезе ТБ безендіруін өздігінен салу керек пе"
+
+#: ../src/js/ui/fallbackRenderer.js:121
+msgid "Type"
+msgstr "Түрі"
+
+#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/ui/fallbackRenderer.js:131
+#: ../src/js/ui/fallbackRenderer.js:137 ../src/js/ui/spinnerBox.js:58
+msgid "Loading..."
+msgstr "Жүктеу..."
+
+#: ../src/js/ui/fallbackRenderer.js:130
+msgid "Size"
+msgstr "Өлшемі"
+
+#: ../src/js/ui/fallbackRenderer.js:136
+msgid "Modified"
+msgstr "Өзгертілген"
+
+#: ../src/js/viewers/audio.js:173
+msgid "from"
+msgstr "альбомнан"
+
+#: ../src/js/viewers/audio.js:175
+msgid "by"
+msgstr "орындайтын"
+
+#: ../src/js/viewers/evince.js:79
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d, барлығы %d"
+
+#: ../src/libsushi/sushi-file-loader.c:639
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d нәрсе"
+
+#: ../src/libsushi/sushi-file-loader.c:651
+msgid "Empty Folder"
+msgstr "Бос бума"
