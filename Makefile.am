@@ -13,6 +13,10 @@ stale-files-clean-local:
 MAINTAINERCLEANFILES = \
     INSTALL \
     aclocal.m4 \
+    config \
     config.log \
     config.status \
-    configure
+    configure \
+    m4
+
+-include $(top_srcdir)/git.mk

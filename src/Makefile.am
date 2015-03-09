@@ -62,3 +62,5 @@ sushi: sushi.in
 
 CLEANFILES += sushi
 EXTRA_DIST += sushi.in
+
+-include $(top_srcdir)/git.mk

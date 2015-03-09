@@ -21,3 +21,5 @@ EXTRA_DIST = \
 CLEANFILES = \
 	$(service_DATA) \
 	$(gsettings_SCHEMAS)
+
+-include $(top_srcdir)/git.mk
