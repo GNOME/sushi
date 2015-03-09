@@ -124,8 +124,9 @@ MainWindow.prototype = {
         this._stage.add_actor(this._mainGroup);
         this._mainGroup.set_opacity(0);
 
-        this._stage.connect('key-press-event',
-                            Lang.bind(this, this._onStageKeyPressEvent));
+        this._gtkWindow.connect('key-press-event',
+				Lang.bind(this, this._onKeyPressEvent));
+
         this._stage.connect('button-press-event',
                             Lang.bind(this, this._onButtonPressEvent));
         this._stage.connect('motion-event',
@@ -174,17 +175,19 @@ MainWindow.prototype = {
         this._clearAndQuit();
     },
 
-    _onStageKeyPressEvent : function(actor, event) {
-        let key = event.get_key_symbol();
+    _onKeyPressEvent : function(actor, event) {
+        let key = event.get_keyval()[1];
 
-        if (key == Clutter.KEY_Escape ||
-            key == Clutter.KEY_space ||
-            key == Clutter.KEY_q)
+        if (key == Gdk.KEY_Escape ||
+            key == Gdk.KEY_space ||
+            key == Gdk.KEY_q)
             this._fadeOutWindow();
 
-        if (key == Clutter.KEY_f ||
-            key == Clutter.KEY_F11)
+        if (key == Gdk.KEY_f ||
+            key == Gdk.KEY_F11)
             this.toggleFullScreen();
+
+        return false;
     },
 
     _onButtonPressEvent : function(actor, event) {
