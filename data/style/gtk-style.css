@@ -46,6 +46,7 @@ SushiFontWidget {
     background-color: alpha (#000, 0.0);
 
     -GtkWidget-focus-line-width: 0;
+    box-shadow: none;
 }
 
 .np-decoration.button:hover {
