@@ -576,7 +576,7 @@ MainWindow.prototype = {
 
         this._titleLabel = new Gtk.Label({ label: '',
 					   ellipsize: Pango.EllipsizeMode.END,
-                                           margin: 6 });
+                                           margin: 2 });
         this._titleLabel.get_style_context().add_class('np-decoration');
 
         this._titleLabel.show();
