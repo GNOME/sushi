@@ -1,0 +1,70 @@
+# Occitan translation for sushi.
+# Copyright (C) 2011 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+# Alexandre Franke <alexandre.franke@gmail.com>, 2011.
+# Cédric Valmary (Tot en Òc) <cvalmary@yahoo.fr>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=sushi&"
+"keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-05-25 23:38+0000\n"
+"PO-Revision-Date: 2015-05-26 09:06+0200\n"
+"Last-Translator: Cédric Valmary (Tot en Òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: www.totenoc.eu\n"
+"Language: oc\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Virtaal 0.7.0\n"
+"X-Project-Style: gnome\n"
+
+#: ../data/org.gnome.sushi.gschema.xml.in.h:1
+msgid "Client decoration"
+msgstr "Decoracion del client"
+
+#: ../data/org.gnome.sushi.gschema.xml.in.h:2
+msgid "Whether the window draws WM decorations itself"
+msgstr "Indica se la fenèstra dessenha las decoracions del WM ela-meteissa"
+
+#: ../src/js/ui/fallbackRenderer.js:121
+msgid "Type"
+msgstr "Tipe"
+
+#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/ui/fallbackRenderer.js:131
+#: ../src/js/ui/fallbackRenderer.js:137 ../src/js/ui/spinnerBox.js:58
+msgid "Loading..."
+msgstr "Cargament..."
+
+#: ../src/js/ui/fallbackRenderer.js:130
+msgid "Size"
+msgstr "Talha"
+
+#: ../src/js/ui/fallbackRenderer.js:136
+msgid "Modified"
+msgstr "Modificat"
+
+#: ../src/js/viewers/audio.js:173
+msgid "from"
+msgstr "de"
+
+#: ../src/js/viewers/audio.js:175
+msgid "by"
+msgstr "per"
+
+#: ../src/js/viewers/evince.js:79
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d sus %d"
+
+#: ../src/libsushi/sushi-file-loader.c:639
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d element"
+msgstr[1] "%d elements"
+
+#: ../src/libsushi/sushi-file-loader.c:651
+msgid "Empty Folder"
+msgstr "Dorsièr void"
