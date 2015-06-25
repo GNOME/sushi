@@ -48,7 +48,7 @@ static guint signals[NUM_SIGNALS] = { 0, };
 
 struct _SushiTextLoaderPrivate {
   gchar *uri;
-
+  GtkSourceFile *source_file;
   GtkSourceBuffer *buffer;
 };
 
@@ -159,12 +159,10 @@ load_contents_async_ready_cb (GObject *source,
 {
   SushiTextLoader *self = user_data;
   GError *error = NULL;
-  gchar *contents;
   GtkSourceLanguage *language = NULL;
+  GtkSourceFileLoader *loader = GTK_SOURCE_FILE_LOADER (source);
 
-  g_file_load_contents_finish (G_FILE (source), res,
-                               &contents, NULL, NULL,
-                               &error);
+  gtk_source_file_loader_load_finish (loader, res, &error);
 
   if (error != NULL) {
     /* FIXME: we need to report the error */
@@ -174,45 +172,41 @@ load_contents_async_ready_cb (GObject *source,
     return;
   }
 
-  if (!g_utf8_validate (contents, -1, NULL)) {
-    /* FIXME: we need to report the error */
-    g_print ("Can't load the text file as it has invalid characters");
-    g_free (contents);
-
-    return;
-  }
-
-  gtk_source_buffer_begin_not_undoable_action (self->priv->buffer);
-  gtk_text_buffer_set_text (GTK_TEXT_BUFFER (self->priv->buffer), contents, -1);
-  gtk_source_buffer_end_not_undoable_action (self->priv->buffer);
-
-  language = text_loader_get_buffer_language (self, G_FILE (source));
+  language = text_loader_get_buffer_language (self, gtk_source_file_loader_get_location (loader));
   gtk_source_buffer_set_language (self->priv->buffer, language);
 
   g_signal_emit (self, signals[LOADED], 0, self->priv->buffer);
-
-  g_free (contents);
 }
 
 static void
 start_loading_buffer (SushiTextLoader *self)
 {
   GFile *file;
+  GtkSourceFileLoader *loader;
 
-  self->priv->buffer = gtk_source_buffer_new (NULL);
+  if (self->priv->source_file == NULL)
+    self->priv->source_file = gtk_source_file_new ();
 
   file = g_file_new_for_uri (self->priv->uri);
-  g_file_load_contents_async (file, NULL,
-                              load_contents_async_ready_cb,
-                              self);
-
+  gtk_source_file_set_location (self->priv->source_file, file);
   g_object_unref (file);
+
+  self->priv->buffer = gtk_source_buffer_new (NULL);
+  loader = gtk_source_file_loader_new (self->priv->buffer,
+				       self->priv->source_file);
+
+  gtk_source_file_loader_load_async (loader, G_PRIORITY_DEFAULT,
+				     NULL, NULL, NULL, NULL,
+				     load_contents_async_ready_cb, self);
+  g_object_unref (loader);
 }
 
 static void
 sushi_text_loader_set_uri (SushiTextLoader *self,
                           const gchar *uri)
 {
+  GFile *location;
+
   if (g_strcmp0 (uri, self->priv->uri) != 0) {
     g_free (self->priv->uri);
 
@@ -231,6 +225,7 @@ sushi_text_loader_dispose (GObject *object)
   SushiTextLoader *self = SUSHI_TEXT_LOADER (object);
 
   g_free (self->priv->uri);
+  g_clear_object (&self->priv->source_file);
 
   G_OBJECT_CLASS (sushi_text_loader_parent_class)->dispose (object);
 }
