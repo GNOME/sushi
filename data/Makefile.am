@@ -1,5 +1,3 @@
-SUBDIRS = style
-
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.gnome.Sushi.service.in
 service_DATA = $(service_in_files:.service.in=.service)

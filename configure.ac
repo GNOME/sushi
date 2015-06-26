@@ -74,6 +74,9 @@ PKG_CHECK_MODULES(SUSHI,
                   gtksourceview-3.0
                   webkit2gtk-4.0)
 
+GLIB_COMPILE_RESOURCES=`$PKG_CONFIG --variable glib_compile_resources gio-2.0`
+AC_SUBST(GLIB_COMPILE_RESOURCES)
+
 GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
 AC_SUBST(GLIB_MKENUMS)
 
@@ -81,7 +84,6 @@ AC_CONFIG_FILES([
 Makefile
 src/Makefile
 data/Makefile
-data/style/Makefile
 po/Makefile.in
 ])
 

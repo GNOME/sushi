@@ -36,6 +36,17 @@ include $(INTROSPECTION_MAKEFILE)
 include Makefile-js.am
 include Makefile-sushi.am
 
+resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/org.gnome.Sushi.gresource.xml)
+sushi-resources.c: org.gnome.Sushi.gresource.xml $(resource_files)
+	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name sushi $(srcdir)/org.gnome.Sushi.gresource.xml
+sushi-resources.h: org.gnome.Sushi.gresource.xml $(resource_files)
+	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-header --c-name sushi $(srcdir)/org.gnome.Sushi.gresource.xml
+EXTRA_DIST += org.gnome.Sushi.gresource.xml $(resource_files)
+BUILT_SOURCES += \
+	sushi-resources.h \
+	sushi-resources.c \
+	$(NULL)
+
 gir_DATA += $(INTROSPECTION_GIRS)
 typelib_DATA += $(gir_DATA:.gir=.typelib)
 
@@ -43,7 +54,11 @@ CLEANFILES += $(gir_DATA) $(typelib_DATA)
 
 libexec_PROGRAMS = sushi-start
 
-sushi_start_SOURCES = main.c
+sushi_start_SOURCES = \
+	main.c \
+	sushi-resources.h \
+	sushi-resources.c \
+	$(NULL)
 
 sushi_start_LDADD = \
     libsushi-1.0.la \
