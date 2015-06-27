@@ -1,5 +1,4 @@
 [encoding: UTF-8]
-data/org.gnome.sushi.gschema.xml.in
 src/js/ui/fallbackRenderer.js
 src/js/ui/spinnerBox.js
 src/js/viewers/audio.js
