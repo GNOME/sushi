@@ -24,6 +24,7 @@
  */
 
 const Clutter = imports.gi.Clutter;
+const ClutterGdk = imports.gi.ClutterGdk;
 const Gdk = imports.gi.Gdk;
 const GdkX11 = imports.gi.GdkX11;
 const Gio = imports.gi.Gio;
@@ -66,18 +67,14 @@ const MainWindow = new Lang.Class({
     },
 
     _createGtkWindow : function() {
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.sushi' });
-        this._clientDecorated = this._settings.get_boolean('client-decoration');
-
         this._gtkWindow = new Gtk.Window({ type: Gtk.WindowType.TOPLEVEL,
-                                           focusOnMap: true,
-                                           decorated: !this._clientDecorated,
-                                           hasResizeGrip: false,
                                            skipPagerHint: true,
                                            skipTaskbarHint: true,
                                            windowPosition: Gtk.WindowPosition.CENTER,
                                            gravity: Gdk.Gravity.CENTER,
                                            application: this._application });
+        this._titlebar = new Gtk.HeaderBar({ show_close_button: true });
+        this._gtkWindow.set_titlebar(this._titlebar);
 
         let screen = Gdk.Screen.get_default();
         this._gtkWindow.set_visual(screen.get_rgba_visual());
@@ -143,16 +140,11 @@ const MainWindow = new Lang.Class({
         if (this._background)
             return;
 
-        if (this._clientDecorated) {
-            this._background = Sushi.create_rounded_background();
-        } else {
-            this._background = new Clutter.Rectangle();
-            this._background.set_color(new Clutter.Color({ red: 0,
-                                                           green: 0,
-                                                           blue: 0,
-                                                           alpha: 255 }));
-        }
-
+        this._background = new Clutter.Actor();
+        this._background.set_background_color(new Clutter.Color({ red: 0,
+                                                                  green: 0,
+                                                                  blue: 0,
+                                                                  alpha: 255 }));
         this._background.set_opacity(Constants.VIEW_BACKGROUND_OPACITY);
         this._mainLayout.add(this._background, Clutter.BinAlignment.FILL, Clutter.BinAlignment.FILL);
 
@@ -182,6 +174,7 @@ const MainWindow = new Lang.Class({
     },
 
     _onButtonPressEvent : function(actor, event) {
+        let stageWin = ClutterGdk.get_stage_window(this._stage);
         let win_coords = event.get_coords();
 
         if ((event.get_source() == this._toolbarActor) ||
@@ -195,9 +188,8 @@ const MainWindow = new Lang.Class({
             return false;
         }
 
-        let root_coords =
-            this._gtkWindow.get_window().get_root_coords(win_coords[0],
-                                                         win_coords[1]);
+        let root_coords = stageWin.get_root_coords(win_coords[0],
+                                                   win_coords[1]);
 
         this._gtkWindow.begin_move_drag(event.get_button(),
                                         root_coords[0],
@@ -220,10 +212,9 @@ const MainWindow = new Lang.Class({
     _getTextureSize : function() {
         let screenSize = [ this._gtkWindow.get_window().get_width(),
                            this._gtkWindow.get_window().get_height() ];
-        let yPadding = this._clientDecorated ? Constants.VIEW_PADDING_Y : 0;
 
         let availableWidth = this._isFullScreen ? screenSize[0] : Constants.VIEW_MAX_W - 2 * Constants.VIEW_PADDING_X;
-        let availableHeight = this._isFullScreen ? screenSize[1] : Constants.VIEW_MAX_H - yPadding;
+        let availableHeight = this._isFullScreen ? screenSize[1] : Constants.VIEW_MAX_H - Constants.VIEW_PADDING_Y;
 
         let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight], this._isFullScreen);
 
@@ -233,14 +224,13 @@ const MainWindow = new Lang.Class({
     _getWindowSize : function() {
         let textureSize = this._getTextureSize();
         let windowSize = textureSize;
-        let yPadding = this._clientDecorated ? Constants.VIEW_PADDING_Y : 0;
 
         if (textureSize[0] < (Constants.VIEW_MIN - 2 * Constants.VIEW_PADDING_X) &&
-            textureSize[1] < (Constants.VIEW_MIN - yPadding)) {
+            textureSize[1] < (Constants.VIEW_MIN - Constants.VIEW_PADDING_Y)) {
             windowSize = [ Constants.VIEW_MIN, Constants.VIEW_MIN ];
         } else if (!this._isFullScreen) {
             windowSize = [ windowSize[0] + 2 * Constants.VIEW_PADDING_X,
-                           windowSize[1] + yPadding ];
+                           windowSize[1] + Constants.VIEW_PADDING_Y ];
         }
 
         return windowSize;
@@ -366,11 +356,6 @@ const MainWindow = new Lang.Class({
                            time: 0.15,
                            transition: 'easeOutQuad'
                          });
-        Tweener.addTween(this._titleGroup,
-                         { opacity: 255,
-                           time: 0.15,
-                           transition: 'easeOutQuad'
-                         });
     },
 
     _exitFullScreen : function() {
@@ -411,7 +396,7 @@ const MainWindow = new Lang.Class({
         this._background = null;
 	this._createSolidBackground();
 
-	/* Fade in everything but the title */
+	/* Fade in everything */
         Tweener.addTween(this._mainGroup,
                          { opacity: 255,
                            time: 0.15,
@@ -462,11 +447,6 @@ const MainWindow = new Lang.Class({
         /* quickly fade out everything,
          * and then fullscreen the (empty) window.
          */
-        Tweener.addTween(this._titleGroup,
-                         { opacity: 0,
-                           time: 0.10,
-                           transition: 'easeOutQuad'
-                         });
         Tweener.addTween(this._mainGroup,
                          { opacity: 0,
                            time: 0.10,
@@ -544,63 +524,6 @@ const MainWindow = new Lang.Class({
         return false;
     },
 
-
-    /**************************************************************************
-     ************************ titlebar helpers ********************************
-     **************************************************************************/
-    _createTitle : function() {
-        if (this._titleGroup) {
-            this._titleGroup.raise_top();
-            return;
-        }
-
-        this._titleGroupLayout = new Clutter.BoxLayout();
-        this._titleGroup =  new Clutter.Box({ layout_manager: this._titleGroupLayout });
-        this._stage.add_actor(this._titleGroup);
-
-        this._titleGroup.add_constraint(
-            new Clutter.BindConstraint({ source: this._stage,
-                                         coordinate: Clutter.BindCoordinate.WIDTH }));
-
-        // if we don't draw client decorations, just create an empty actor
-        if (!this._clientDecorated)
-            return;
-
-        this._titleLabel = new Gtk.Label({ label: '',
-					   ellipsize: Pango.EllipsizeMode.END,
-                                           margin: 2 });
-        this._titleLabel.get_style_context().add_class('np-decoration');
-
-        this._titleLabel.show();
-        this._titleActor = new GtkClutter.Actor({ contents: this._titleLabel });
-        Utils.alphaGtkWidget(this._titleActor.get_widget());
-
-        this._quitButton =
-            new Gtk.Button({ image: new Gtk.Image ({ icon_size: Gtk.IconSize.MENU,
-                                                     icon_name: 'window-close-symbolic' })});
-        this._quitButton.get_style_context().add_class('np-decoration');
-        this._quitButton.show();
-
-        this._quitButton.connect('clicked',
-                                 Lang.bind(this,
-                                           this._clearAndQuit));
-
-        this._quitActor = new GtkClutter.Actor({ contents: this._quitButton });
-        Utils.alphaGtkWidget(this._quitActor.get_widget());
-        this._quitActor.set_reactive(true);
-
-        let hidden = new Clutter.Actor();
-        let size = this._quitButton.get_preferred_size()[1];
-        hidden.set_size(size.width, size.height);
-
-        this._titleGroupLayout.pack(hidden, false, false, false,
-                                    Clutter.BoxAlignment.START, Clutter.BoxAlignment.START);
-        this._titleGroupLayout.pack(this._titleActor, true, true, false,
-                                    Clutter.BoxAlignment.CENTER, Clutter.BoxAlignment.START);
-        this._titleGroupLayout.pack(this._quitActor, false, false, false,
-                                    Clutter.BoxAlignment.END, Clutter.BoxAlignment.START);
-    },
-
     /**************************************************************************
      *********************** Window move/fade helpers *************************
      **************************************************************************/
@@ -630,15 +553,11 @@ const MainWindow = new Lang.Class({
         this._createRenderer(file);
         this._createTexture();
         this._createToolbar();
-        this._createTitle();
 
         this._gtkWindow.show_all();
     },
 
     setTitle : function(label) {
-        if (this._clientDecorated)
-            this._titleLabel.set_label(label);
-
         this._gtkWindow.set_title(label);
     },
 

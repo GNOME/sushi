@@ -27,66 +27,6 @@
 
 #include <gdk/gdkx.h>
 
-static void
-_cairo_round_rectangle (cairo_t *cr,
-			gdouble	  x,
-			gdouble	  y,
-			gdouble	  w,
-			gdouble	  h,
-			gdouble	  radius)
-{
-	g_return_if_fail (cr != NULL);
-
-	if (radius < 0.0001)
-	{
-		cairo_rectangle (cr, x, y, w, h);
-		return;
-	}
-
-	cairo_move_to (cr, x+radius, y);
-	cairo_arc (cr, x+w-radius, y+radius, radius, G_PI * 1.5, G_PI * 2);
-	cairo_arc (cr, x+w-radius, y+h-radius, radius, 0, G_PI * 0.5);
-	cairo_arc (cr, x+radius,   y+h-radius, radius, G_PI * 0.5, G_PI);
-	cairo_arc (cr, x+radius,   y+radius,   radius, G_PI, G_PI * 1.5);
-}
-
-static void
-rounded_background_draw_cb (ClutterCairoTexture *texture,
-                            cairo_t *cr)
-{
-  ClutterActorBox allocation;
-
-  clutter_actor_get_allocation_box (CLUTTER_ACTOR (texture), &allocation);
-  clutter_cairo_texture_clear (CLUTTER_CAIRO_TEXTURE (texture));
-
-  _cairo_round_rectangle (cr, allocation.x1, allocation.y1,
-                          allocation.x2 - allocation.x1,
-                          allocation.y2 - allocation.y1,
-                          6.0);
-  cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
-
-  cairo_fill (cr);
-}
-
-/**
- * sushi_create_rounded_background:
- *
- * Returns: (transfer none): a #ClutterActor
- */
-ClutterActor *
-sushi_create_rounded_background (void)
-{
-  ClutterActor *retval;
-
-  retval = clutter_cairo_texture_new (1, 1);
-  clutter_cairo_texture_set_auto_resize (CLUTTER_CAIRO_TEXTURE (retval), TRUE);
-
-  g_signal_connect (retval, "draw",
-                    G_CALLBACK (rounded_background_draw_cb), NULL);
-
-  return retval;
-}
-
 /**
  * sushi_create_foreign_window:
  * @xid:
