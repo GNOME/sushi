@@ -35,11 +35,9 @@ const Mainloop = imports.mainloop;
 let SPINNER_SIZE = 48;
 let TIMEOUT = 500;
 
-function SpinnerBox(args) {
-    this._init(args);
-}
+const SpinnerBox = new Lang.Class({
+    Name: 'SpinnerBox',
 
-SpinnerBox.prototype = {
     _init : function(args) {
         this._timeoutId = 0;
 
@@ -109,4 +107,4 @@ SpinnerBox.prototype = {
                            transition: 'easeOutQuad'
                          });
     },
-}
+});

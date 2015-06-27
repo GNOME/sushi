@@ -23,35 +23,27 @@
  *
  */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
+const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
 const GdkX11 = imports.gi.GdkX11;
-const GdkPixbuf = imports.gi.GdkPixbuf;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const GtkClutter = imports.gi.GtkClutter;
-const Clutter = imports.gi.Clutter;
-const Pango = imports.gi.Pango;
-
-const Cairo = imports.cairo;
-const Tweener = imports.ui.tweener;
 const Lang = imports.lang;
-
 const Mainloop = imports.mainloop;
-
-const MimeHandler = imports.ui.mimeHandler;
-const Constants = imports.util.constants;
-const SpinnerBox = imports.ui.spinnerBox;
-const Utils = imports.ui.utils;
-
+const Pango = imports.gi.Pango;
 const Sushi = imports.gi.Sushi;
 
-function MainWindow(args) {
-    this._init(args);
-}
+const Constants = imports.util.constants;
+const MimeHandler = imports.ui.mimeHandler;
+const SpinnerBox = imports.ui.spinnerBox;
+const Tweener = imports.ui.tweener;
+const Utils = imports.ui.utils;
 
-MainWindow.prototype = {
+const MainWindow = new Lang.Class({
+    Name: 'MainWindow',
+
     _init : function(args) {
         args = args || {};
 
@@ -668,4 +660,4 @@ MainWindow.prototype = {
     close : function() {
         this._clearAndQuit();
     }
-}
+});

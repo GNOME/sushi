@@ -28,18 +28,15 @@ const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const GtkSource = imports.gi.GtkSource;
 const Gio = imports.gi.Gio;
+const Lang = imports.lang;
 const Sushi = imports.gi.Sushi;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Utils = imports.ui.utils;
 
-const Lang = imports.lang;
+const TextRenderer = new Lang.Class({
+    Name: 'TextRenderer',
 
-function TextRenderer(args) {
-    this._init(args);
-}
-
-TextRenderer.prototype = {
     _init : function(args) {
         this.moveOnClick = false;
         this.canFullScreen = true;
@@ -122,7 +119,7 @@ TextRenderer.prototype = {
 
         return this._toolbarActor;
     }
-}
+});
 
 let handler = new MimeHandler.MimeHandler();
 let renderer = new TextRenderer();

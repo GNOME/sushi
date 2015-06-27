@@ -35,11 +35,9 @@ const Lang = imports.lang;
 const MimeHandler = imports.ui.mimeHandler;
 const Utils = imports.ui.utils;
 
-function ImageRenderer(args) {
-    this._init(args);
-}
+const ImageRenderer = new Lang.Class({
+    Name: 'ImageRenderer',
 
-ImageRenderer.prototype = {
     _init : function(args) {
         this.moveOnClick = true;
         this.canFullScreen = true;
@@ -112,7 +110,7 @@ ImageRenderer.prototype = {
 
         return this._toolbarActor;
     },
-}
+});
 
 let handler = new MimeHandler.MimeHandler();
 let renderer = new ImageRenderer();

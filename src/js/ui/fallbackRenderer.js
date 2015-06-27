@@ -35,11 +35,9 @@ const Lang = imports.lang;
 const Constants = imports.util.constants;
 const Utils = imports.ui.utils;
 
-function FallbackRenderer(args) {
-    this._init(args);
-}
+const FallbackRenderer = new Lang.Class({
+    Name: 'FallbackRenderer',
 
-FallbackRenderer.prototype = {
     _init : function() {
         this._fileLoader = null;
         this._fileLoaderId = 0;
@@ -165,4 +163,4 @@ FallbackRenderer.prototype = {
     getSizeForAllocation : function(allocation) {
         return Utils.getStaticSize(this, this._box);
     }
-}
+});

@@ -37,11 +37,9 @@ const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
 const Utils = imports.ui.utils;
 
-function EvinceRenderer(args) {
-    this._init(args);
-}
+const EvinceRenderer = new Lang.Class({
+    Name: 'EvinceRenderer',
 
-EvinceRenderer.prototype = {
     _init : function(args) {
         EvDoc.init();
 
@@ -173,7 +171,7 @@ EvinceRenderer.prototype = {
         this._document = null;
         this._pdfLoader = null;
     }
-}
+});
 
 let handler = new MimeHandler.MimeHandler();
 let renderer = new EvinceRenderer();

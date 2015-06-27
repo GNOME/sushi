@@ -38,11 +38,9 @@ const MimeHandler = imports.ui.mimeHandler;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const Utils = imports.ui.utils;
 
-function AudioRenderer(args) {
-    this._init(args);
-}
+const AudioRenderer = new Lang.Class({
+    Name: 'AudioRenderer',
 
-AudioRenderer.prototype = {
     _init : function() {
         this.moveOnClick = true;
         this.canFullScreen = false;
@@ -307,7 +305,7 @@ AudioRenderer.prototype = {
 
         return this._toolbarActor;
     },
-}
+});
 
 let handler = new MimeHandler.MimeHandler();
 let renderer = new AudioRenderer();

@@ -38,11 +38,9 @@ const MimeHandler = imports.ui.mimeHandler;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const Utils = imports.ui.utils;
 
-function GstRenderer(args) {
-    this._init(args);
-}
+const GstRenderer = new Lang.Class({
+    Name: 'GstRenderer',
 
-GstRenderer.prototype = {
     _init : function(args) {
         this.moveOnClick = true;
         this.canFullScreen = true;
@@ -208,7 +206,7 @@ GstRenderer.prototype = {
 
         this._mainWindow.refreshSize();
     },
-}
+});
 
 let handler = new MimeHandler.MimeHandler();
 let renderer = new GstRenderer();

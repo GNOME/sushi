@@ -33,11 +33,9 @@ const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const Sushi = imports.gi.Sushi;
 
-function FontRenderer(args) {
-    this._init(args);
-}
+const FontRenderer = new Lang.Class({
+    Name: 'FontRenderer',
 
-FontRenderer.prototype = {
     _init : function(args) {
         this.moveOnClick = true;
         this.canFullScreen = true;
@@ -77,7 +75,7 @@ FontRenderer.prototype = {
 
         return size;
     }
-}
+});
 
 let handler = new MimeHandler.MimeHandler();
 let renderer = new FontRenderer();

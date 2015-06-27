@@ -24,9 +24,7 @@
  */
 
 const Gettext = imports.gettext;
-
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 
 const Application = imports.ui.application;
 const Path = imports.util.path;

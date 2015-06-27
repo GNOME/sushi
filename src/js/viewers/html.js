@@ -26,17 +26,16 @@
 const GtkClutter = imports.gi.GtkClutter;
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
-const WebKit = imports.gi.WebKit2;
+const Lang = imports.lang;
 const Sushi = imports.gi.Sushi;
+const WebKit = imports.gi.WebKit2;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Utils = imports.ui.utils;
 
-function HTMLRenderer(args) {
-    this._init(args);
-}
+const HTMLRenderer = new Lang.Class({
+    Name: 'HTMLRenderer',
 
-HTMLRenderer.prototype = {
     _init : function(args) {
         this.moveOnClick = false;
         this.canFullScreen = true;
@@ -90,7 +89,7 @@ HTMLRenderer.prototype = {
 
         return this._toolbarActor;
     }
-};
+});
 
 let handler = new MimeHandler.MimeHandler();
 let renderer = new HTMLRenderer();
