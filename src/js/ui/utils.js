@@ -105,13 +105,13 @@ function createToolButton(iconName, callback) {
 }
 
 function createFullScreenButton(mainWindow) {
-    return createToolButton('view-fullscreen-symbolic', Lang.bind(this, function() {
+    return createToolButton('view-fullscreen-symbolic', function() {
         mainWindow.toggleFullScreen();
-    }));
+    });
 }
 
 function createOpenButton(file, mainWindow) {
-    return createToolButton('document-open-symbolic', Lang.bind(this, function(widget) {
+    return createToolButton('document-open-symbolic', function(widget) {
         let timestamp = Gtk.get_current_event_time();
         try {
             Gtk.show_uri(widget.get_screen(),
@@ -123,7 +123,7 @@ function createOpenButton(file, mainWindow) {
             log('Unable to execute the default application for ' +
                 file.get_uri() + ' : ' + e.toString());
         }
-    }));
+    });
 }
 
 function formatTimeString(timeVal) {
