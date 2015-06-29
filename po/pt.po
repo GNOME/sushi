@@ -1,14 +1,16 @@
 # sushi's Portuguese translation.
 # Copyright © 2011, 2012, 2013 sushi
 # This file is distributed under the same license as the sushi package.
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2011, 2012, 2013.
 # 
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2011, 2012, 2013., 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.8\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-17 00:32+0000\n"
-"PO-Revision-Date: 2013-03-17 00:35+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-06-07 23:40+0000\n"
+"PO-Revision-Date: 2015-06-20 09:03+0100\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -16,6 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../data/org.gnome.sushi.gschema.xml.in.h:1
 msgid "Client decoration"
@@ -23,35 +26,35 @@ msgstr "Decoração do cliente"
 
 #: ../data/org.gnome.sushi.gschema.xml.in.h:2
 msgid "Whether the window draws WM decorations itself"
-msgstr "Se a própria janela desenha ou não as decorações de Gestor de Janelas"
+msgstr "Se a própria janela desenha ou não as decorações de Gestor de janelas"
 
-#: ../src/js/ui/fallbackRenderer.js:120
+#: ../src/js/ui/fallbackRenderer.js:121
 msgid "Type"
 msgstr "Tipo"
 
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
-#: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
+#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/ui/fallbackRenderer.js:131
+#: ../src/js/ui/fallbackRenderer.js:137 ../src/js/ui/spinnerBox.js:58
 msgid "Loading..."
-msgstr "A Ler..."
+msgstr "A carregar..."
 
-#: ../src/js/ui/fallbackRenderer.js:129
+#: ../src/js/ui/fallbackRenderer.js:130
 msgid "Size"
 msgstr "Tamanho"
 
-#: ../src/js/ui/fallbackRenderer.js:135
+#: ../src/js/ui/fallbackRenderer.js:136
 msgid "Modified"
-msgstr "Alterado"
+msgstr "Modificado"
 
-#: ../src/js/viewers/audio.js:172
+#: ../src/js/viewers/audio.js:173
 msgid "from"
 msgstr "de"
 
-#: ../src/js/viewers/audio.js:174
+#: ../src/js/viewers/audio.js:175
 msgid "by"
 msgstr "por"
 
-#: ../src/js/viewers/evince.js:78
-#, c-format
+#: ../src/js/viewers/evince.js:79
+#, javascript-format
 msgid "%d of %d"
 msgstr "%d de %d"
 
@@ -64,4 +67,4 @@ msgstr[1] "%d itens"
 
 #: ../src/libsushi/sushi-file-loader.c:651
 msgid "Empty Folder"
-msgstr "Pasta Vazia"
+msgstr "Pasta vazia"
