@@ -148,14 +148,11 @@ const GstRenderer = new Lang.Class({
     },
 
     createToolbar : function () {
-        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
+        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU,
+                                              hexpand: true });
         this._mainToolbar.get_style_context().add_class('osd');
         this._mainToolbar.set_show_arrow(false);
         this._mainToolbar.show();
-
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
-                                                    opacity: 0,
-                                                    x_expand: true });
 
         this._toolbarPlay = new Gtk.ToolButton({ icon_name: 'media-playback-pause-symbolic' });
         this._toolbarPlay.show();
@@ -201,7 +198,7 @@ const GstRenderer = new Lang.Class({
         this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         this._mainToolbar.insert(this._toolbarZoom, 4);
 
-        return this._toolbarActor;
+        return this._mainToolbar;
     },
 
     _onVideoSizeChange : function(player, width, height) {

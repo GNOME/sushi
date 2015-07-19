@@ -42,7 +42,6 @@ const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
 const SpinnerBox = imports.ui.spinnerBox;
 const Tweener = imports.ui.tweener;
-const Utils = imports.ui.utils;
 
 var MainWindow = new Lang.Class({
     Name: 'MainWindow',
@@ -55,9 +54,9 @@ var MainWindow = new Lang.Class({
         this._pendingRenderer = null;
         this._renderer = null;
         this._texture = null;
-        this._toolbarActor = null;
-        this._fullScreenId = 0;
+        this._toolbar = null;
         this._toolbarId = 0;
+        this._fullScreenId = 0;
         this._unFullScreenId = 0;
 
         this._mimeHandler = new MimeHandler.MimeHandler();
@@ -93,11 +92,14 @@ var MainWindow = new Lang.Class({
                                                            Gdk.WMFunction.RESIZE |
                                                            Gdk.WMFunction.CLOSE);
             }));
+
+        this._embed = new Gtk.Overlay();
+        this._gtkWindow.add(this._embed);
     },
 
     _createClutterEmbed : function() {
         this._clutterEmbed = new GtkClutter.Embed();
-        this._gtkWindow.add(this._clutterEmbed);
+        this._embed.add(this._clutterEmbed);
 
         this._clutterEmbed.set_receives_default(true);
         this._clutterEmbed.set_can_default(true);
@@ -182,15 +184,9 @@ var MainWindow = new Lang.Class({
         let stageWin = ClutterGdk.get_stage_window(this._stage);
         let win_coords = event.get_coords();
 
-        if ((event.get_source() == this._toolbarActor) ||
-            (event.get_source() == this._texture &&
-             !this._renderer.moveOnClick)) {
-
-            if (event.get_source() == this._toolbarActor)
-                this._resetToolbar();
-
+        if (event.get_source() == this._texture &&
+            !this._renderer.moveOnClick)
             return false;
-        }
 
         let root_coords = stageWin.get_root_coords(win_coords[0],
                                                    win_coords[1]);
@@ -204,7 +200,7 @@ var MainWindow = new Lang.Class({
     },
 
     _onMotionNotifyEvent : function() {
-        if (this._toolbarActor)
+        if (this._toolbar)
             this._resetToolbar();
 
         return false;
@@ -364,11 +360,7 @@ var MainWindow = new Lang.Class({
 
     _exitFullScreen : function() {
         this._isFullScreen = false;
-
-        if (this._toolbarActor) {
-            this._toolbarActor.set_opacity(0);
-            this._removeToolbarTimeout();
-        }
+        this._removeToolbarTimeout();
 
         /* wait for the next stage allocation to fade in the texture
          * and background again.
@@ -434,12 +426,7 @@ var MainWindow = new Lang.Class({
 
     _enterFullScreen : function() {
         this._isFullScreen = true;
-
-        if (this._toolbarActor) {
-            /* prepare the toolbar */
-            this._toolbarActor.set_opacity(0);
-            this._removeToolbarTimeout();
-        }
+        this._removeToolbarTimeout();
 
         /* wait for the next stage allocation to fade in the texture
          * and background again.
@@ -466,29 +453,37 @@ var MainWindow = new Lang.Class({
      ************************* toolbar helpers ********************************
      **************************************************************************/
     _createToolbar : function() {
-        if (this._toolbarActor) {
-            this._removeToolbarTimeout();
-            this._toolbarActor.destroy();
-            this._toolbarActor = null;
+        this._removeToolbarTimeout();
+
+        if (this._toolbar) {
+            this._toolbar.destroy();
+            this._toolbar = null;
         }
 
-        if (this._renderer.createToolbar)
-            this._toolbarActor = this._renderer.createToolbar();
+        if (this._renderer.populateToolbar) {
+            let rendererToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU,
+                                                    halign: Gtk.Align.CENTER,
+                                                    show_arrow: false,
+                                                    visible: true });
+            rendererToolbar.get_style_context().add_class('osd');
 
-        if (!this._toolbarActor)
+            this._toolbar = new Gtk.Revealer({ valign: Gtk.Align.END,
+                                               hexpand: true,
+                                               margin_bottom: Constants.TOOLBAR_SPACING,
+                                               margin_start: Constants.TOOLBAR_SPACING,
+                                               margin_end: Constants.TOOLBAR_SPACING,
+                                               transition_duration: 250,
+                                               transition_type: Gtk.RevealerTransitionType.CROSSFADE,
+                                               visible: true });
+            this._toolbar.add(rendererToolbar);
+
+            this._renderer.populateToolbar(rendererToolbar);
+        }
+
+        if (!this._toolbar)
             return;
 
-        Utils.alphaGtkWidget(this._toolbarActor.get_widget());
-
-        this._toolbarActor.set_reactive(true);
-        this._toolbarActor.set_opacity(0);
-
-        this._toolbarActor.margin_bottom = Constants.TOOLBAR_SPACING;
-        this._toolbarActor.margin_start = Constants.TOOLBAR_SPACING;
-        this._toolbarActor.margin_end = Constants.TOOLBAR_SPACING;
-
-        this._mainLayout.add(this._toolbarActor,
-                             Clutter.BinAlignment.CENTER, Clutter.BinAlignment.END);
+        this._embed.add_overlay(this._toolbar);
     },
 
     _removeToolbarTimeout: function() {
@@ -499,18 +494,8 @@ var MainWindow = new Lang.Class({
     },
 
     _resetToolbar : function() {
-        if (this._toolbarId == 0) {
-            Tweener.removeTweens(this._toolbarActor);
-
-            this._toolbarActor.raise_top();
-            this._toolbarActor.set_opacity(0);
-
-            Tweener.addTween(this._toolbarActor,
-                             { opacity: 200,
-                               time: 0.1,
-                               transition: 'easeOutQuad'
-                             });
-        }
+        if (this._toolbarId == 0)
+            this._toolbar.reveal_child = true;
 
         this._removeToolbarTimeout();
         this._toolbarId = Mainloop.timeout_add(1500,
@@ -520,11 +505,7 @@ var MainWindow = new Lang.Class({
 
     _onToolbarTimeout : function() {
         this._toolbarId = 0;
-        Tweener.addTween(this._toolbarActor,
-                         { opacity: 0,
-                           time: 0.25,
-                           transition: 'easeOutQuad'
-                         });
+        this._toolbar.reveal_child = false;
         return false;
     },
 

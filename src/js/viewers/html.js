@@ -69,25 +69,16 @@ const HTMLRenderer = new Lang.Class({
         return allocation;
     },
 
-    createToolbar : function() {
-        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class('osd');
-        this._mainToolbar.set_show_arrow(false);
-        this._mainToolbar.show();
-
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
-
-        this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
-        this._mainToolbar.insert(this._toolbarZoom, 0);
+    populateToolbar : function(toolbar) {
+        let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
+        toolbar.insert(toolbarZoom, 0);
 
         let separator = new Gtk.SeparatorToolItem();
         separator.show();
-        this._mainToolbar.insert(separator, 1);
+        toolbar.insert(separator, 1);
 
-        this._toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
-        this._mainToolbar.insert(this._toolbarRun, 2);
-
-        return this._toolbarActor;
+        let toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
+        toolbar.insert(toolbarRun, 2);
     }
 });
 

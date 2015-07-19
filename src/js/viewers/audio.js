@@ -194,7 +194,7 @@ const AudioRenderer = new Lang.Class({
     },
 
     _updateProgressBar : function() {
-        if (!this._mainToolbar)
+        if (!this._progressBar)
             return;
 
         this._isSettingValue = true;
@@ -203,7 +203,7 @@ const AudioRenderer = new Lang.Class({
     },
 
     _updateCurrentLabel : function() {
-        if (!this._mainToolbar)
+        if (!this._currentLabel)
             return;
 
         let currentTime =
@@ -213,7 +213,7 @@ const AudioRenderer = new Lang.Class({
     },
 
     _updateDurationLabel : function() {
-        if (!this._mainToolbar)
+        if (!this._durationLabel)
             return;
 
         let totalTime = this._player.duration;
@@ -254,27 +254,17 @@ const AudioRenderer = new Lang.Class({
         return [ width[1], height[1] ];
     },
 
-    createToolbar : function () {
-        this._mainToolbar = new Gtk.Toolbar({ margin_start: Constants.TOOLBAR_SPACING,
-                                              margin_end: Constants.TOOLBAR_SPACING });
-        this._mainToolbar.get_style_context().add_class('osd');
-        this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
-        this._mainToolbar.show();
-
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar,
-                                                    opacity: 0,
-                                                    x_expand: true });
-
+    populateToolbar : function (toolbar) {
         this._toolbarPlay = new Gtk.ToolButton({ icon_name: 'media-playback-pause-symbolic' });
         this._toolbarPlay.show();
-        this._mainToolbar.insert(this._toolbarPlay, 0);
+        toolbar.insert(this._toolbarPlay, 0);
 
         this._currentLabel = new Gtk.Label({ margin_start: 6,
                                              margin_end: 3 });
         let item = new Gtk.ToolItem();
         item.add(this._currentLabel);
         item.show_all();
-        this._mainToolbar.insert(item, 1);
+        toolbar.insert(item, 1);
 
         this._toolbarPlay.connect('clicked',
                                   Lang.bind(this, function () {
@@ -297,15 +287,13 @@ const AudioRenderer = new Lang.Class({
         item.set_expand(true);
         item.add(this._progressBar);
         item.show_all();
-        this._mainToolbar.insert(item, 2);
+        toolbar.insert(item, 2);
 
         this._durationLabel = new Gtk.Label({ margin_start: 3 });
         item = new Gtk.ToolItem();
         item.add(this._durationLabel);
         item.show_all();
-        this._mainToolbar.insert(item, 3);
-
-        return this._toolbarActor;
+        toolbar.insert(item, 3);
     },
 });
 

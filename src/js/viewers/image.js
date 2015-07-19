@@ -111,18 +111,9 @@ const ImageRenderer = new Lang.Class({
                                                          this._advanceImage));
     },
 
-    createToolbar : function() {
-        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class('osd');
-        this._mainToolbar.set_show_arrow(false);
-        this._mainToolbar.show();
-
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
-
-        this._toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
-        this._mainToolbar.insert(this._toolbarZoom, 0);
-
-        return this._toolbarActor;
+    populateToolbar : function(toolbar) {
+        let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
+        toolbar.insert(toolbarZoom, 0);
     },
 
     destroy : function () {

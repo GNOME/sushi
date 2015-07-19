@@ -112,19 +112,9 @@ const TextRenderer = new Lang.Class({
         return allocation;
     },
 
-    createToolbar : function() {
-        this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
-        this._mainToolbar.get_style_context().add_class('osd');
-        this._mainToolbar.set_show_arrow(false);
-
-        this._toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
-        this._mainToolbar.insert(this._toolbarRun, 0);
-
-        this._mainToolbar.show();
-
-        this._toolbarActor = new GtkClutter.Actor({ contents: this._mainToolbar });
-
-        return this._toolbarActor;
+    populateToolbar : function(toolbar) {
+        let toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
+        toolbar.insert(toolbarRun, 0);
     }
 });
 
