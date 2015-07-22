@@ -1,3 +1,14 @@
+3.17.4 - "Dark Wave"
+====================
+
+- Apply embedded orientation to images
+- Fix encoding problems when loading non utf-8 text files
+- Do not crash when right clicking text previews
+- Add a way to easily run under gdb
+- Use regular GTK client side decorations
+- Use GResource for auxiliary data
+- Fix theming glitches after GTK update (Trinh Anh Ngoc)
+
 3.16.0
 ======
 
