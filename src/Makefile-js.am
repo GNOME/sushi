@@ -26,12 +26,13 @@ dist_jsutil_DATA = \
     js/util/totemMimeTypes.js
 
 jsutil_built_sources = \
-    $(srcdir)/js/util/path.js
+    js/util/path.js
 
 BUILT_SOURCES += $(jsutil_built_sources)
 
 js/util/path.js: Makefile js/util/path.js.in
-	$(AM_V_GEN) $(do_subst) $(srcdir)/js/util/path.js.in > $@
+	$(AM_V_GEN) mkdir -p js/util && \
+	$(do_subst) $(srcdir)/js/util/path.js.in > $@
 
 nodist_jsutil_DATA = \
     $(jsutil_built_sources)

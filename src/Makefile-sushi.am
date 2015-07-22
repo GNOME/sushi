@@ -40,7 +40,7 @@ sushi-enum-types.h: stamp-sushi-enum-types.h Makefile
 stamp-sushi-enum-types.h: $(sushi_source_h) libsushi/sushi-enum-types.h.in
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	$(GLIB_MKENUMS) \
-	  --template $(srcdir)/libsushi/sushi-enum-types.h.in \
+	  --template libsushi/sushi-enum-types.h.in \
 	  $(sushi_source_h) ) >> xgen-beth && \
 	(cmp -s xgen-beth sushi-enum-types.h || cp xgen-beth sushi-enum-types.h) && \
 	rm -f xgen-beth && \
@@ -49,7 +49,7 @@ stamp-sushi-enum-types.h: $(sushi_source_h) libsushi/sushi-enum-types.h.in
 sushi-enum-types.c: stamp-sushi-enum-types.h libsushi/sushi-enum-types.c.in
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	$(GLIB_MKENUMS) \
-	  --template $(srcdir)/libsushi/sushi-enum-types.c.in \
+	  --template libsushi/sushi-enum-types.c.in \
 	  $(sushi_source_h) ) >> xgen-betc && \
 	cp xgen-betc sushi-enum-types.c && \
 	rm -f xgen-betc
