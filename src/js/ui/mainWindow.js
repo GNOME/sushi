@@ -114,11 +114,11 @@ const MainWindow = new Lang.Class({
 
         this._gtkWindow.connect('key-press-event',
 				Lang.bind(this, this._onKeyPressEvent));
+        this._gtkWindow.connect('motion-notify-event',
+                                Lang.bind(this, this._onMotionNotifyEvent));
 
         this._stage.connect('button-press-event',
                             Lang.bind(this, this._onButtonPressEvent));
-        this._stage.connect('motion-event',
-                            Lang.bind(this, this._onMotionEvent));
     },
 
     _createSolidBackground: function() {
@@ -199,7 +199,7 @@ const MainWindow = new Lang.Class({
         return false;
     },
 
-    _onMotionEvent : function() {
+    _onMotionNotifyEvent : function() {
         if (this._toolbarActor)
             this._resetToolbar();
 
