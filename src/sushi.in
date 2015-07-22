@@ -12,4 +12,9 @@ if test x"$GJS_DEBUG_TOPICS" = x ; then
     export GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
 fi
 
-@libexecdir@/sushi-start
+DEBUG_COMMAND=""
+if [ "$RUN_DEBUG" != "" ]; then
+    DEBUG_COMMAND="gdb --args"
+fi
+
+exec $DEBUG_COMMAND @libexecdir@/sushi-start
