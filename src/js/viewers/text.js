@@ -79,7 +79,8 @@ const TextRenderer = new Lang.Class({
 
         this._view = new GtkSource.View({ buffer: this._buffer,
                                           editable: false,
-                                          cursor_visible: false });
+                                          cursor_visible: false,
+                                          monospace: true });
         this._view.set_can_focus(false);
 
         if (this._buffer.get_language())
