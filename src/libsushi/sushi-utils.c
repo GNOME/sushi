@@ -25,7 +25,11 @@
 
 #include "sushi-utils.h"
 
+#include <gtk/gtk.h>
+
+#ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
+#endif
 
 /**
  * sushi_create_foreign_window:
@@ -36,10 +40,12 @@
 GdkWindow *
 sushi_create_foreign_window (guint xid)
 {
-  GdkWindow *retval;
+  GdkWindow *retval = NULL;
 
-  retval = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
-                                                   xid);
+#ifdef GDK_WINDOWING_X11
+  if (GDK_IS_X11_DISPLAY (gdk_display_get_default ()))
+    retval = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (), xid);
+#endif
 
   return retval;
 }
