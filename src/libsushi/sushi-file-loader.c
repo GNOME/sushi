@@ -590,7 +590,7 @@ sushi_file_loader_get_icon (SushiFileLoader *self)
     return NULL;
 
   retval = gtk_icon_info_load_icon (info, &error);
-  gtk_icon_info_free (info);
+  g_object_unref (info);
 
   if (error != NULL) {
     gchar *uri;
