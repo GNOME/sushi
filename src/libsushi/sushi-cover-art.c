@@ -155,61 +155,41 @@ sushi_cover_art_fetcher_class_init (SushiCoverArtFetcherClass *klass)
 }
 
 typedef struct {
-  SushiCoverArtFetcher *self;
-  GSimpleAsyncResult *result;
   gchar *artist;
   gchar *album;
-} FetchUriJob;
+} FetchUriTaskData;
 
 static void
-fetch_uri_job_free (gpointer user_data)
+fetch_uri_task_data_free (gpointer user_data)
 {
-  FetchUriJob *data = user_data;
+  FetchUriTaskData *data = user_data;
 
-  g_clear_object (&data->self);
-  g_clear_object (&data->result);
   g_free (data->artist);
   g_free (data->album);
 
-  g_slice_free (FetchUriJob, data);
+  g_slice_free (FetchUriTaskData, data);
 }
 
-static FetchUriJob *
-fetch_uri_job_new (SushiCoverArtFetcher *self,
-                   const gchar *artist,
-                   const gchar *album,
-                   GAsyncReadyCallback callback,
-                   gpointer user_data)
+static FetchUriTaskData *
+fetch_uri_task_data_new (const gchar *artist,
+                         const gchar *album)
 {
-  FetchUriJob *retval;
+  FetchUriTaskData *retval;
 
-  retval = g_slice_new0 (FetchUriJob);
+  retval = g_slice_new0 (FetchUriTaskData);
   retval->artist = g_strdup (artist);
   retval->album = g_strdup (album);
-  retval->self = g_object_ref (self);
-  retval->result = g_simple_async_result_new (G_OBJECT (self), callback, user_data,
-                                              sushi_cover_art_fetcher_get_uri_for_track_async);
 
   return retval;
 }
 
-static gboolean
-fetch_uri_job_callback (gpointer user_data)
+static void
+fetch_uri_job (GTask *task,
+               gpointer source_object,
+               gpointer task_data,
+               GCancellable *cancellable)
 {
-  FetchUriJob *job = user_data;
-
-  g_simple_async_result_complete (job->result);
-  fetch_uri_job_free (job);
-
-  return FALSE;
-}
-
-static gboolean
-fetch_uri_job (GIOSchedulerJob *sched_job,
-               GCancellable *cancellable,
-               gpointer user_data)
-{
-  FetchUriJob *job = user_data;
+  FetchUriTaskData *data = task_data;
   Mb5Metadata metadata;
   Mb5Query query;
   Mb5Release release;
@@ -224,7 +204,7 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
   param_values = g_new (gchar*, 3);
 
   param_names[0] = g_strdup ("query");
-  param_values[0] = g_strdup_printf ("artist:\"%s\" AND release:\"%s\"", job->artist, job->album);
+  param_values[0] = g_strdup_printf ("artist:\"%s\" AND release:\"%s\"", data->artist, data->album);
 
   param_names[1] = g_strdup ("limit");
   param_values[1] = g_strdup ("10");
@@ -258,21 +238,16 @@ fetch_uri_job (GIOSchedulerJob *sched_job,
 
   if (retval == NULL) {
     /* FIXME: do we need a better error? */
-    g_simple_async_result_set_error (job->result,
-                                     G_IO_ERROR,
-                                     0, "%s",
-                                     "Error getting the ASIN from MusicBrainz");
+    g_task_return_new_error (task,
+                             G_IO_ERROR,
+                             0, "%s",
+                             "Error getting the ASIN from MusicBrainz");
   } else {
-    g_simple_async_result_set_op_res_gpointer (job->result,
-                                               retval, NULL);
+    g_task_return_pointer (task, retval, g_free);
   }
 
-  g_io_scheduler_job_send_to_mainloop_async (sched_job,
-                                             fetch_uri_job_callback,
-                                             job, NULL);
   g_strfreev (param_names);
   g_strfreev (param_values);
-  return FALSE;
 }
 
 static gchar *
@@ -280,15 +255,7 @@ sushi_cover_art_fetcher_get_uri_for_track_finish (SushiCoverArtFetcher *self,
                                                   GAsyncResult *result,
                                                   GError **error)
 {
-  gchar *retval;
-
-  if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result),
-                                             error))
-    return NULL;
-
-  retval = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (result));
-
-  return retval;
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static void
@@ -298,12 +265,12 @@ sushi_cover_art_fetcher_get_uri_for_track_async (SushiCoverArtFetcher *self,
                                                  GAsyncReadyCallback callback,
                                                  gpointer user_data)
 {
-  FetchUriJob *job;
+  FetchUriTaskData *data = fetch_uri_task_data_new (artist, album);
+  GTask *task = g_task_new (G_OBJECT (self), NULL, callback, user_data);
+  g_task_set_task_data (task, data, fetch_uri_task_data_free);
 
-  job = fetch_uri_job_new (self, artist, album, callback, user_data);
-  g_io_scheduler_push_job (fetch_uri_job,
-                           job, NULL,
-                           G_PRIORITY_DEFAULT, NULL);
+  g_task_run_in_thread (task, fetch_uri_job);
+  g_object_unref (task);
 }
 
 static GFile *
