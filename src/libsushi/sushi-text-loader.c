@@ -205,8 +205,6 @@ static void
 sushi_text_loader_set_uri (SushiTextLoader *self,
                           const gchar *uri)
 {
-  GFile *location;
-
   if (g_strcmp0 (uri, self->priv->uri) != 0) {
     g_free (self->priv->uri);
 
