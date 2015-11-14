@@ -255,7 +255,8 @@ const AudioRenderer = new Lang.Class({
     },
 
     createToolbar : function () {
-        this._mainToolbar = new Gtk.Toolbar();
+        this._mainToolbar = new Gtk.Toolbar({ margin_start: Constants.TOOLBAR_SPACING,
+                                              margin_end: Constants.TOOLBAR_SPACING });
         this._mainToolbar.get_style_context().add_class('osd');
         this._mainToolbar.set_icon_size(Gtk.IconSize.MENU);
         this._mainToolbar.show();
