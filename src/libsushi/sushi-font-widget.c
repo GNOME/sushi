@@ -86,6 +86,7 @@ text_to_glyphs (cairo_t *cr,
   hb_font_t *hb_font;
   gdouble x = 0, y = 0;
   gint i;
+  gdouble x_scale, y_scale;
 
   *num_glyphs = 0;
   *glyphs = NULL;
@@ -95,6 +96,9 @@ text_to_glyphs (cairo_t *cr,
   cairo_scaled_font_t *cr_font = cairo_get_scaled_font (cr);
   ft_face = cairo_ft_scaled_font_lock_face (cr_font);
   hb_font = hb_ft_font_create (ft_face, NULL);
+
+  cairo_surface_t *target = cairo_get_target (cr);
+  cairo_surface_get_device_scale (target, &x_scale, &y_scale);
 
   /* We abuse pango itemazation to split text into script and direction
    * runs, since we use our fonts directly no through pango, we don't
@@ -140,10 +144,10 @@ text_to_glyphs (cairo_t *cr,
 
     for (i = 0; i < n; i++) {
       (*glyphs)[*num_glyphs + i].index = hb_glyphs[i].codepoint;
-      (*glyphs)[*num_glyphs + i].x = x + (hb_positions[i].x_offset / 64.);
-      (*glyphs)[*num_glyphs + i].y = y - (hb_positions[i].y_offset / 64.);
-      x += (hb_positions[i].x_advance / 64.);
-      y -= (hb_positions[i].y_advance / 64.);
+      (*glyphs)[*num_glyphs + i].x = x + (hb_positions[i].x_offset / (64. * x_scale));
+      (*glyphs)[*num_glyphs + i].y = y - (hb_positions[i].y_offset / (64. * y_scale));
+      x += (hb_positions[i].x_advance / (64. * x_scale));
+      y -= (hb_positions[i].y_advance / (64. * y_scale));
     }
 
     *num_glyphs += n;
