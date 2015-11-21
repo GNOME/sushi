@@ -29,6 +29,7 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 #include <cairo/cairo-ft.h>
+#include <hb-ft.h>
 
 G_BEGIN_DECLS
 

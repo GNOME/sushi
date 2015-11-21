@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011 Red Hat, Inc.
+ * Copyright (C) 2014 Khaled Hosny <khaledhosny@eglug.org>.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,6 +27,7 @@
 #include "sushi-font-widget.h"
 #include "sushi-font-loader.h"
 
+#include <hb-glib.h>
 #include <math.h>
 
 enum {
@@ -68,6 +70,108 @@ static const gchar lowercase_text_stock[] = "abcdefghijklmnopqrstuvwxyz";
 static const gchar uppercase_text_stock[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static const gchar punctuation_text_stock[] = "0123456789.:,;(*!?')";
 
+static void
+text_to_glyphs (cairo_t *cr,
+                const gchar *text,
+                cairo_glyph_t **glyphs,
+                int *num_glyphs)
+{
+  PangoAttribute *fallback_attr;
+  PangoAttrList *attr_list;
+  PangoContext *context;
+  PangoDirection base_dir;
+  GList *items;
+  GList *visual_items;
+  FT_Face ft_face;
+  hb_font_t *hb_font;
+  gdouble x = 0, y = 0;
+  gint i;
+
+  *num_glyphs = 0;
+  *glyphs = NULL;
+
+  base_dir = pango_find_base_dir (text, -1);
+
+  cairo_scaled_font_t *cr_font = cairo_get_scaled_font (cr);
+  ft_face = cairo_ft_scaled_font_lock_face (cr_font);
+  hb_font = hb_ft_font_create (ft_face, NULL);
+
+  /* We abuse pango itemazation to split text into script and direction
+   * runs, since we use our fonts directly no through pango, we don't
+   * bother changing the default font, but we disable font fallback as
+   * pango will split runs at font change */
+  context = pango_cairo_create_context (cr);
+  attr_list = pango_attr_list_new ();
+  fallback_attr = pango_attr_fallback_new (FALSE);
+  pango_attr_list_insert (attr_list, fallback_attr);
+  items = pango_itemize_with_base_dir (context, base_dir,
+                                       text, 0, strlen (text),
+                                       attr_list, NULL);
+  g_object_unref (context);
+  pango_attr_list_unref (attr_list);
+
+  /* reorder the items in the visual order */
+  visual_items = pango_reorder_items (items);
+
+  while (visual_items) {
+    PangoItem *item;
+    PangoAnalysis analysis;
+    hb_buffer_t *hb_buffer;
+    hb_glyph_info_t *hb_glyphs;
+    hb_glyph_position_t *hb_positions;
+    gint n;
+
+    item = visual_items->data;
+    analysis = item->analysis;
+
+    hb_buffer = hb_buffer_create ();
+    hb_buffer_add_utf8 (hb_buffer, text, -1, item->offset, item->length);
+    hb_buffer_set_script (hb_buffer, hb_glib_script_to_script (analysis.script));
+    hb_buffer_set_language (hb_buffer, hb_language_from_string (pango_language_to_string (analysis.language), -1));
+    hb_buffer_set_direction (hb_buffer, analysis.level % 2 ? HB_DIRECTION_RTL : HB_DIRECTION_LTR);
+
+    hb_shape (hb_font, hb_buffer, NULL, 0);
+
+    n = hb_buffer_get_length (hb_buffer);
+    hb_glyphs = hb_buffer_get_glyph_infos (hb_buffer, NULL);
+    hb_positions = hb_buffer_get_glyph_positions (hb_buffer, NULL);
+
+    *glyphs = g_renew (cairo_glyph_t, *glyphs, *num_glyphs + n);
+
+    for (i = 0; i < n; i++) {
+      (*glyphs)[*num_glyphs + i].index = hb_glyphs[i].codepoint;
+      (*glyphs)[*num_glyphs + i].x = x + (hb_positions[i].x_offset / 64.);
+      (*glyphs)[*num_glyphs + i].y = y - (hb_positions[i].y_offset / 64.);
+      x += (hb_positions[i].x_advance / 64.);
+      y -= (hb_positions[i].y_advance / 64.);
+    }
+
+    *num_glyphs += n;
+
+    hb_buffer_destroy (hb_buffer);
+
+    visual_items = visual_items->next;
+  }
+
+  g_list_free_full (visual_items, (GDestroyNotify) pango_item_free);
+  g_list_free_full (items, (GDestroyNotify) pango_item_free);
+
+  hb_font_destroy (hb_font);
+  cairo_ft_scaled_font_unlock_face (cr_font);
+}
+
+static void
+text_extents (cairo_t *cr,
+              const char *text,
+              cairo_text_extents_t *extents)
+{
+  cairo_glyph_t *glyphs;
+  gint num_glyphs;
+  text_to_glyphs (cr, text, &glyphs, &num_glyphs);
+  cairo_glyph_extents (cr, glyphs, num_glyphs, extents);
+  g_free (glyphs);
+}
+
 /* adapted from gnome-utils:font-viewer/font-view.c
  *
  * Copyright (C) 2002-2003  James Henstridge <james@daa.com.au>
@@ -84,13 +188,18 @@ draw_string (SushiFontWidget *self,
 {
   cairo_font_extents_t font_extents;
   cairo_text_extents_t extents;
+  cairo_glyph_t *glyphs;
   GtkTextDirection text_dir;
   gint pos_x;
+  gint num_glyphs;
+  gint i;
 
   text_dir = gtk_widget_get_direction (GTK_WIDGET (self));
 
+  text_to_glyphs (cr, text, &glyphs, &num_glyphs);
+
   cairo_font_extents (cr, &font_extents);
-  cairo_text_extents (cr, text, &extents);
+  cairo_glyph_extents (cr, glyphs, num_glyphs, &extents);
 
   if (pos_y != NULL)
     *pos_y += font_extents.ascent + font_extents.descent +
@@ -102,8 +211,15 @@ draw_string (SushiFontWidget *self,
       extents.x_advance - padding.right;
   }
 
+  for (i = 0; i < num_glyphs; i++) {
+    glyphs[i].x += pos_x;
+    glyphs[i].y += *pos_y;
+  }
+
   cairo_move_to (cr, pos_x, *pos_y);
-  cairo_show_text (cr, text);
+  cairo_show_glyphs (cr, glyphs, num_glyphs);
+
+  g_free (glyphs);
 
   *pos_y += LINE_SPACING / 2;
 }
@@ -113,29 +229,20 @@ check_font_contain_text (FT_Face face,
                          const gchar *text)
 {
   gunichar *string;
-  glong len, idx, map;
-  FT_CharMap charmap;
-  gboolean retval = FALSE;
+  glong len, idx;
+  gboolean retval = TRUE;
 
   string = g_utf8_to_ucs4_fast (text, -1, &len);
 
-  for (map = 0; map < face->num_charmaps; map++) {
-    charmap = face->charmaps[map];
-    FT_Set_Charmap (face, charmap);
+  FT_Select_Charmap (face, FT_ENCODING_UNICODE);
 
-    retval = TRUE;
+  for (idx = 0; idx < len; idx++) {
+    gunichar c = string[idx];
 
-    for (idx = 0; idx < len; idx++) {
-      gunichar c = string[idx];
-
-      if (!FT_Get_Char_Index (face, c)) {
-        retval = FALSE;
-        break;
-      }
-    }
-
-    if (retval)
+    if (!FT_Get_Char_Index (face, c)) {
+      retval = FALSE;
       break;
+    }
   }
 
   g_free (string);
@@ -371,7 +478,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   if (self->priv->font_name != NULL) {
       cairo_set_font_size (cr, title_size);
       cairo_font_extents (cr, &font_extents);
-      cairo_text_extents (cr, self->priv->font_name, &extents);
+      text_extents (cr, self->priv->font_name, &extents);
       pixmap_height += font_extents.ascent + font_extents.descent +
         extents.y_advance + LINE_SPACING;
       pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
@@ -382,21 +489,21 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   cairo_font_extents (cr, &font_extents);
 
   if (self->priv->lowercase_text != NULL) {
-    cairo_text_extents (cr, self->priv->lowercase_text, &extents);
+    text_extents (cr, self->priv->lowercase_text, &extents);
     pixmap_height += font_extents.ascent + font_extents.descent + 
       extents.y_advance + LINE_SPACING;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
   if (self->priv->uppercase_text != NULL) {
-    cairo_text_extents (cr, self->priv->uppercase_text, &extents);
+    text_extents (cr, self->priv->uppercase_text, &extents);
     pixmap_height += font_extents.ascent + font_extents.descent +
       extents.y_advance + LINE_SPACING;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
   if (self->priv->punctuation_text != NULL) {
-    cairo_text_extents (cr, self->priv->punctuation_text, &extents);
+    text_extents (cr, self->priv->punctuation_text, &extents);
     pixmap_height += font_extents.ascent + font_extents.descent +
       extents.y_advance + LINE_SPACING;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
@@ -408,7 +515,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
     for (i = 0; i < n_sizes; i++) {
       cairo_set_font_size (cr, sizes[i]);
       cairo_font_extents (cr, &font_extents);
-      cairo_text_extents (cr, self->priv->sample_string, &extents);
+      text_extents (cr, self->priv->sample_string, &extents);
       pixmap_height += font_extents.ascent + font_extents.descent +
         extents.y_advance + LINE_SPACING;
       pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
