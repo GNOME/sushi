@@ -636,7 +636,8 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
 
   for (i = 0; i < n_sizes; i++) {
     cairo_set_font_size (cr, sizes[i]);
-    draw_string (self, cr, padding, self->priv->sample_string, &pos_y);
+    if (self->priv->sample_string !=  NULL)
+      draw_string (self, cr, padding, self->priv->sample_string, &pos_y);
     if (pos_y > allocated_height)
       break;
   }
