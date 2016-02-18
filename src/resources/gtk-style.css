@@ -15,13 +15,13 @@ SushiFontWidget {
     background-color: shade (@np_bg_color, 1.30);
 }
 
-.scrollbar.button:prelight,
-.scrollbar.slider:prelight {
+.scrollbar.button:hover,
+.scrollbar.slider:hover {
     background-color: shade (@np_bg_color, 1.45);
 }
 
-.scrollbar.button:prelight:active,
-.scrollbar.slider:prelight:active {
+.scrollbar.button:hover:active,
+.scrollbar.slider:hover:active {
     background-color: shade (@np_bg_color, 1.70);
 }
 
