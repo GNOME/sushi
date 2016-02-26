@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=sushi&k"
-"eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-06-27 15:25+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-02-18 14:43+0000\n"
 "PO-Revision-Date: 2015-10-31 08:38+0200\n"
 "Last-Translator: Cédric Valmary (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Tot en òc (totenoc.eu)\n"
@@ -37,11 +37,11 @@ msgstr "Talha"
 msgid "Modified"
 msgstr "Modificat"
 
-#: ../src/js/viewers/audio.js:171
+#: ../src/js/viewers/audio.js:172
 msgid "from"
 msgstr "de"
 
-#: ../src/js/viewers/audio.js:173
+#: ../src/js/viewers/audio.js:174
 msgid "by"
 msgstr "per"
 
