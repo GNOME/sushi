@@ -1,3 +1,13 @@
+3.19.90 - "Hardcore Chilling"
+=============================
+
+- Port to ClutterGst 3.0 (Lionel Landwerlin)
+- Don't assume X (Matthias Clasen)
+- Don't use deprecated style classes (Matthias Clasen)
+- Port to GTask
+- Fix toolbar spacing
+- Resync font renderer from gnome-font-viewer
+
 3.18.0 - "Symbiosis"
 ====================
 
