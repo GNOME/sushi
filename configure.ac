@@ -51,9 +51,11 @@ GJS_MIN_VERSION=1.38.0
 CLUTTER_GTK_MIN_VERSION=1.0.1
 GOBJECT_INTROSPECTION_MIN_VERSION=0.9.6
 GDK_PIXBUF_MIN_VERSION=2.23.0
+HARFBUZZ_MIN_VERSION=0.9.9
 
 PKG_CHECK_MODULES(SUSHI,
                   freetype2
+                  harfbuzz >= $HARFBUZZ_MIN_VERSION
                   glib-2.0 >= $GLIB_MIN_VERSION
                   gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
                   gjs-1.0 >= $GJS_MIN_VERSION
