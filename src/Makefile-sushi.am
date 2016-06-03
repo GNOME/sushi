@@ -109,4 +109,4 @@ Sushi_1_0_gir_INCLUDES = \
 Sushi_1_0_gir_FILES = \
     $(addprefix $(srcdir)/,$(sushi_source_h)) \
     $(addprefix $(srcdir)/,$(sushi_source_c)) \
-    $(srcdir)/sushi-enum-types.h
+    sushi-enum-types.h
