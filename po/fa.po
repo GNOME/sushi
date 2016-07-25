@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Language: fa_IR\n"
+"Language: fa\n"
 
 #: ../data/org.gnome.sushi.gschema.xml.in.h:1
 msgid "Client decoration"
