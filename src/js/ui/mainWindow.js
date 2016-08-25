@@ -544,7 +544,8 @@ const MainWindow = new Lang.Class({
             this._gtkWindow.get_window().set_transient_for(this._parent);
         this._gtkWindow.show_all();
 
-        this._gtkWindow.get_window().move_to_current_desktop();
+        if (this._gtkWindow.get_window().move_to_current_desktop)
+          this._gtkWindow.get_window().move_to_current_desktop();
     },
 
     setFile : function(file) {
