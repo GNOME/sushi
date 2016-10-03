@@ -117,7 +117,7 @@ const FallbackRenderer = new Lang.Class({
         if (this._fileLoader.get_file_type() != Gio.FileType.DIRECTORY) {
             let typeStr =
                 '<small><b>' + _("Type") + '  </b>' +
-                ((this._fileLoader.contentType) ? (this._fileLoader.contentType) : (_("Loading...")))
+                ((this._fileLoader.contentType) ? (this._fileLoader.contentType) : (_("Loading…")))
                 + '</small>';
             this._typeLabel.set_markup(typeStr);
         } else {
@@ -126,13 +126,13 @@ const FallbackRenderer = new Lang.Class({
 
         let sizeStr =
             '<small><b>' + _("Size") + '  </b>' +
-            ((this._fileLoader.size) ? (this._fileLoader.size) : (_("Loading...")))
+            ((this._fileLoader.size) ? (this._fileLoader.size) : (_("Loading…")))
              + '</small>';
         this._sizeLabel.set_markup(sizeStr);
 
         let dateStr =
             '<small><b>' + _("Modified") + '  </b>' +
-             ((this._fileLoader.time) ? (this._fileLoader.time) : (_("Loading...")))
+             ((this._fileLoader.time) ? (this._fileLoader.time) : (_("Loading…")))
              + '</small>';
         this._dateLabel.set_markup(dateStr);
     },

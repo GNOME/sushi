@@ -34,8 +34,8 @@ msgstr "రకం"
 #: ../src/js/ui/fallbackRenderer.js:118 ../src/js/ui/fallbackRenderer.js:123
 #: ../src/js/ui/fallbackRenderer.js:128 ../src/js/ui/spinnerBox.js:57
 #: ../src/js/viewers/folder.js:124 ../src/js/viewers/folder.js:129
-msgid "Loading..."
-msgstr "నింపుతున్నది..."
+msgid "Loading…"
+msgstr "నింపుతున్నది…"
 
 #: ../src/js/ui/fallbackRenderer.js:122 ../src/js/viewers/folder.js:123
 msgid "Size"

@@ -29,8 +29,8 @@ msgstr "Kas aken joonistab aknahalduri dekoratsioonid ise"
 msgid "Type"
 msgstr "Liik"
 
-msgid "Loading..."
-msgstr "Laadimine..."
+msgid "Loading…"
+msgstr "Laadimine…"
 
 msgid "Size"
 msgstr "Suurus"

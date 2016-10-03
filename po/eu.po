@@ -34,8 +34,8 @@ msgstr "Mota"
 
 #: ../src/js/ui/fallbackRenderer.js:122 ../src/js/ui/fallbackRenderer.js:131
 #: ../src/js/ui/fallbackRenderer.js:137 ../src/js/ui/spinnerBox.js:58
-msgid "Loading..."
-msgstr "Kargatzen..."
+msgid "Loading…"
+msgstr "Kargatzen…"
 
 #: ../src/js/ui/fallbackRenderer.js:130
 msgid "Size"

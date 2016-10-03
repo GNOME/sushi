@@ -34,8 +34,8 @@ msgstr "유형"
 #: ../src/js/ui/fallbackRenderer.js:118 ../src/js/ui/fallbackRenderer.js:123
 #: ../src/js/ui/fallbackRenderer.js:128 ../src/js/ui/spinnerBox.js:57
 #: ../src/js/viewers/folder.js:124 ../src/js/viewers/folder.js:129
-msgid "Loading..."
-msgstr "불러오는 중..."
+msgid "Loading…"
+msgstr "불러오는 중…"
 
 #: ../src/js/ui/fallbackRenderer.js:122 ../src/js/viewers/folder.js:123
 msgid "Size"

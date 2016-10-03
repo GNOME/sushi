@@ -26,8 +26,8 @@ msgstr "Seòrsa"
 
 #: ../src/js/ui/fallbackRenderer.js:120 ../src/js/ui/fallbackRenderer.js:129
 #: ../src/js/ui/fallbackRenderer.js:135 ../src/js/ui/spinnerBox.js:56
-msgid "Loading..."
-msgstr "'Ga luchdadh..."
+msgid "Loading…"
+msgstr "'Ga luchdadh…"
 
 #: ../src/js/ui/fallbackRenderer.js:128
 msgid "Size"

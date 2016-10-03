@@ -53,7 +53,7 @@ const SpinnerBox = new Lang.Class({
         this._spinnerBox.pack_start(this._spinner, true, true, 0);
 
         this._label = new Gtk.Label();
-        this._label.set_text(_("Loading..."));
+        this._label.set_text(_("Loading…"));
         this._label.show();
         this._spinnerBox.pack_start(this._label, true, true, 0);
 

@@ -34,8 +34,8 @@ msgstr "Tür"
 
 #: ../src/js/ui/fallbackRenderer.js:122 ../src/js/ui/fallbackRenderer.js:131
 #: ../src/js/ui/fallbackRenderer.js:137 ../src/js/ui/spinnerBox.js:58
-msgid "Loading..."
-msgstr "Yükleniyor..."
+msgid "Loading…"
+msgstr "Yükleniyor…"
 
 #: ../src/js/ui/fallbackRenderer.js:130
 msgid "Size"

@@ -42,8 +42,8 @@ msgstr "النّوع"
 #: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
 #: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
 #: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
-msgid "Loading..."
-msgstr "يُحمّل..."
+msgid "Loading…"
+msgstr "يُحمّل…"
 
 #: ../src/js/ui/fallbackRenderer.js:125 ../src/js/viewers/folder.js:126
 msgid "Size"

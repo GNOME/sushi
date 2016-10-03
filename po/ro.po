@@ -27,8 +27,8 @@ msgstr "Tip"
 
 #: ../src/js/ui/fallbackRenderer.js:120 ../src/js/ui/fallbackRenderer.js:129
 #: ../src/js/ui/fallbackRenderer.js:135 ../src/js/ui/spinnerBox.js:56
-msgid "Loading..."
-msgstr "Se încarcă..."
+msgid "Loading…"
+msgstr "Se încarcă…"
 
 #: ../src/js/ui/fallbackRenderer.js:128
 msgid "Size"

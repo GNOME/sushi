@@ -31,8 +31,8 @@ msgstr "Tipus"
 
 #: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
 #: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
-msgid "Loading..."
-msgstr "S'està carregant..."
+msgid "Loading…"
+msgstr "S'està carregant…"
 
 #: ../src/js/ui/fallbackRenderer.js:129
 msgid "Size"

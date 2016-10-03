@@ -35,8 +35,8 @@ msgstr "Vrsta"
 
 #: ../src/js/ui/fallbackRenderer.js:122 ../src/js/ui/fallbackRenderer.js:131
 #: ../src/js/ui/fallbackRenderer.js:137 ../src/js/ui/spinnerBox.js:58
-msgid "Loading..."
-msgstr "Učitavanje..."
+msgid "Loading…"
+msgstr "Učitavanje…"
 
 #: ../src/js/ui/fallbackRenderer.js:130
 msgid "Size"
