@@ -568,13 +568,15 @@ const MainWindow = new Lang.Class({
 
     toggleFullScreen : function() {
         if (!this._renderer.canFullScreen)
-            return;
+            return false;
 
         if (this._isFullScreen) {
             this._exitFullScreen();
         } else {
             this._enterFullScreen();
         }
+
+        return this._isFullScreen;
     },
 
     close : function() {
