@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-22 20:02+0200\n"
-"PO-Revision-Date: 2016-08-22 20:03+0200\n"
+"POT-Creation-Date: 2016-11-16 13:32+0100\n"
+"PO-Revision-Date: 2016-11-16 13:33+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -34,7 +34,7 @@ msgstr "Rozmiar"
 
 #: ../src/js/ui/fallbackRenderer.js:134
 msgid "Modified"
-msgstr "Zmodyfikowano"
+msgstr "Modyfikacja"
 
 #: ../src/js/viewers/audio.js:172
 msgid "from"
