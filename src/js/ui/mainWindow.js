@@ -23,6 +23,8 @@
  *
  */
 
+imports.gi.versions.GdkX11 = '3.0';
+
 const Clutter = imports.gi.Clutter;
 const ClutterGdk = imports.gi.ClutterGdk;
 const Gdk = imports.gi.Gdk;
