@@ -1,3 +1,11 @@
+3.23.91
+=======
+
+- Use correct icon when fullscreen
+- Use upstream format.js code
+- Specify GdkX11 import version
+- Translation updates
+
 3.21.91
 =======
 
