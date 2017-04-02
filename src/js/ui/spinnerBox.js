@@ -44,10 +44,11 @@ var SpinnerBox = new Lang.Class({
         this.canFullScreen = false;
         this.moveOnClick = true;
 
-        this._spinnerBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12);
+        this._spinnerBox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
+                                         spacing: 12 });
         this._spinnerBox.show();
 
-        this._spinner = Gtk.Spinner.new();
+        this._spinner = new Gtk.Spinner();
         this._spinner.show();
         this._spinner.set_size_request(SPINNER_SIZE, SPINNER_SIZE);
         this._spinnerBox.pack_start(this._spinner, true, true, 0);

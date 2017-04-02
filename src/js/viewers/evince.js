@@ -92,7 +92,7 @@ const EvinceRenderer = new Lang.Class({
         this._view = EvView.View.new();
         this._view.show();
 
-        this._scrolledWin = Gtk.ScrolledWindow.new(null, null);
+        this._scrolledWin = new Gtk.ScrolledWindow();
         this._scrolledWin.set_min_content_width(Constants.VIEW_MIN);
         this._scrolledWin.set_min_content_height(Constants.VIEW_MIN);
         this._scrolledWin.show();

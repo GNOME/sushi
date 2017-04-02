@@ -96,7 +96,7 @@ const TextRenderer = new Lang.Class({
             return false;
         }));
 
-        this._scrolledWin = Gtk.ScrolledWindow.new(null, null);
+        this._scrolledWin = new Gtk.ScrolledWindow();
         this._scrolledWin.add(this._view);
         this._scrolledWin.show_all();
 
