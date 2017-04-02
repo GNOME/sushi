@@ -166,6 +166,7 @@ enum
 enum
 {
   ERROR,
+  SIZE_CHANGE,
   LAST_SIGNAL
 };
 
@@ -1200,6 +1201,16 @@ sushi_media_bin_class_init (SushiMediaBinClass *klass)
                                   g_signal_accumulator_true_handled, NULL,
                                   NULL,
                                   G_TYPE_BOOLEAN, 1, G_TYPE_ERROR);
+  /**
+   * SushiMediaBin::size-change:
+   * @self: the #SushiMediaBin which received the signal.
+   */
+  sushi_media_bin_signals[SIZE_CHANGE] =
+      g_signal_new ("size-change",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    0, NULL, NULL, NULL,
+                    G_TYPE_NONE, 0);
 
   /* Action signals for key bindings */
   SMB_DEFINE_ACTION_SIGNAL (object_class, "toggle", sushi_media_bin_action_toggle, 1, G_TYPE_STRING);
@@ -1835,6 +1846,8 @@ sushi_media_bin_handle_streams_selected (SushiMediaBin *self, GstMessage *msg)
     }
   else
     priv->video_width = priv->video_height = 0;
+
+  g_signal_emit (self, sushi_media_bin_signals[SIZE_CHANGE], 0);
 
   gst_caps_unref (caps);
   gst_object_unref (collection);
