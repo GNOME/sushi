@@ -1,0 +1,220 @@
+/*
+ * sushi-media-bin.css
+ * Based on ekn-media-bin.css from:
+ * https://github.com/endlessm/eos-knowledge-lib/tree/master/lib/eosknowledgeprivate
+ *
+ * Copyright (C) 2016 Endless Mobile, Inc.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author: Juan Pablo Ugarte <ugarte@endlessm.com>
+ *
+ */
+
+@define-color transparent-light rgba (1,1,1,.1);
+@define-color transparent-dark  rgba (.11,.11,.11,.8);
+@define-color highlight-color   #ff6835;
+@define-color audio-bg-color    #4c4c4c;
+
+/* hiden/shown  */
+sushi-media-bin *.hide {
+  transition: opacity .32s;
+  opacity: 0;
+}
+
+sushi-media-bin *.show {
+  transition: opacity .32s;
+  opacity: 1;
+}
+
+sushi-media-bin {
+  background: black;
+}
+
+sushi-media-bin label,
+sushi-media-bin scale value {
+  color: white;
+}
+
+sushi-media-bin label:backdrop,
+sushi-media-bin scale value:backdrop {
+  color: darker(white);
+}
+
+sushi-media-bin box.overlay-bar {
+  background: @transparent-dark;
+}
+
+sushi-media-bin box.overlay-bar.top {
+  padding: 12px;
+}
+
+sushi-media-bin label.title {
+  font: 18px Sans;
+}
+
+sushi-media-bin box.bottom button {
+  border: 0px;
+  border-radius: 0px;
+  box-shadow: none;
+  outline: 0px;
+  background: none;
+  padding: 8px;
+}
+
+sushi-media-bin box.bottom button:hover {
+  box-shadow: none;
+  background: rgba (0,0,0,.6);
+}
+
+/* Main play button */
+sushi-media-bin overlay > box {
+  font-size: 18px;
+  border: 0px;
+  border-radius: 2em;
+  padding: .7em 1em;
+  box-shadow: none;
+  background: @transparent-dark;
+}
+
+sushi-media-bin overlay > box > label {
+  padding-left: .64em;
+}
+
+/* Style media playback scale */
+sushi-media-bin scale {
+  margin-top: .5em;
+  padding: 3px 0px;
+  background-image: linear-gradient(to top, @transparent-dark 3px, transparent 3px);
+}
+
+sushi-media-bin scale trough {
+  border: 0;
+  border-radius: 0px;
+  padding: 1px;
+  background: @transparent-light;
+}
+
+sushi-media-bin scale slider {
+  min-height: 12px;
+  min-width: 12px;
+  margin: -4px;
+  border: 0px;
+  border-radius: 6px;
+  box-shadow: none;
+  background: none;
+}
+
+sushi-media-bin scale highlight {
+  border: 0px;
+  padding: 0px;
+  border-radius: 0px 4px 4px 0px;
+  background: @highlight-color;
+}
+
+sushi-media-bin scale value {
+  padding: 2px 0px;
+  border-radius: 1em;
+  background: @transparent-dark;
+}
+
+sushi-media-bin scale:hover slider {
+  background: white;
+}
+
+/* Volume popover */
+popover.sushi-media-bin {
+  border: 0px;
+  border-radius: 0px;
+  box-shadow: none;
+  background: none;
+}
+
+popover.sushi-media-bin scale {
+  border-radius: 18px;
+  padding: 6px;
+  background: @transparent-dark;
+}
+
+popover.sushi-media-bin scale trough {
+  outline: 0px;
+  border: 0px;
+  border-radius: 3px;
+  padding: 1px;
+  background: @transparent-light;
+}
+
+popover.sushi-media-bin scale highlight {
+  border: 0px;
+  padding: 0px;
+  border-radius: 4px;
+  background: @highlight-color;
+}
+
+popover.sushi-media-bin scale slider {
+  min-height: 12px;
+  min-width: 12px;
+  margin: -3px;
+  border: 0px;
+  border-radius: 6px;
+  box-shadow: none;
+  background: none;
+}
+
+popover.sushi-media-bin scale:hover slider {
+  background: white;
+}
+
+/* Audio nodes */
+sushi-media-bin box.audio > box {
+  background: @audio-bg-color;
+}
+
+sushi-media-bin box.audio > scale {
+  margin: 0;
+  padding: 1px 0px;
+  background-image: linear-gradient(to top, @audio-bg-color 3px, transparent 3px);
+}
+
+sushi-media-bin box.audio > scale trough {
+  padding: 1px 0px;
+  background: #707070;
+}
+
+/* Setup key bindings */
+@binding-set smb-binding-set {
+  bind "space"     { "toggle" ("playback") };
+  bind "f"         { "toggle" ("fullscreen") };
+  bind "i"         { "toggle" ("show-stream-info") };
+  bind "Right"     { "seek" (5) };
+  bind "Left"      { "seek" (-5) };
+  bind "Up"        { "seek" (60) };
+  bind "Down"      { "seek" (-60) };
+  bind "Page_Up"   { "seek" (300) };
+  bind "Page_Down" { "seek" (-300) };
+  bind "Home"      { "seek" (0) };
+}
+
+@binding-set smb-fullscreen-binding-set {
+  bind "Escape" { "toggle" ("fullscreen") };
+}
+
+sushi-media-bin {
+  -gtk-key-bindings: smb-binding-set;
+}
+
+sushi-media-bin.fullscreen {
+  -gtk-key-bindings: smb-binding-set, smb-fullscreen-binding-set;
+}

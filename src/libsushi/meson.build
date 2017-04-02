@@ -3,6 +3,7 @@ libsushi_c = [
   'sushi-file-loader.c',
   'sushi-font-loader.c',
   'sushi-font-widget.c',
+  'sushi-media-bin.c',
   'sushi-pdf-loader.c',
   'sushi-sound-player.c',
   'sushi-text-loader.c',
@@ -14,6 +15,7 @@ libsushi_headers = [
   'sushi-file-loader.h',
   'sushi-font-loader.h',
   'sushi-font-widget.h',
+  'sushi-media-bin.h',
   'sushi-pdf-loader.h',
   'sushi-sound-player.h',
   'sushi-text-loader.h',
@@ -27,6 +29,12 @@ libsushi_enum = gnome.mkenums(
   sources: libsushi_headers,
 )
 
+libsushi_resource = gnome.compile_resources(
+  'sushi-lib-resources',
+  'org.gnome.Libsushi.gresource.xml',
+  c_name: 'sushi'
+)
+
 libsushi = shared_library(
   'sushi-1.0',
   dependencies: deps,
@@ -34,6 +42,7 @@ libsushi = shared_library(
     libsushi_c,
     libsushi_enum,
     libsushi_headers,
+    libsushi_resource
   ],
   install: true,
   install_dir: join_paths(libdir, 'sushi')
