@@ -55,8 +55,6 @@ var MainWindow = new Lang.Class({
         this._texture = null;
         this._toolbar = null;
         this._toolbarId = 0;
-        this._fullScreenId = 0;
-        this._unFullScreenId = 0;
 
         this._mimeHandler = new MimeHandler.MimeHandler();
 
@@ -302,112 +300,6 @@ var MainWindow = new Lang.Class({
     },
 
     /**************************************************************************
-     ************************** fullscreen ************************************
-     **************************************************************************/
-    _onStageUnFullScreen : function() {
-        this._stage.disconnect(this._unFullScreenId);
-        this._unFullScreenId = 0;
-
-        this._textureYAlign.factor = this._savedYFactor;
-
-        let textureSize = this._getTextureSize();
-        this._texture.set_size(textureSize[0],
-                               textureSize[1]);
-
-        Tweener.addTween(this._texture,
-                         { opacity: 255,
-                           time: 0.15,
-                           transition: 'easeOutQuad'
-                         });
-    },
-
-    _exitFullScreen : function() {
-        this._isFullScreen = false;
-        this._removeToolbarTimeout();
-
-        /* wait for the next stage allocation to fade in the texture
-         * and background again.
-         */
-        this._unFullScreenId =
-            this._stage.connect('notify::allocation',
-                                Lang.bind(this, this._onStageUnFullScreen));
-
-        /* quickly fade out everything,
-         * and then unfullscreen the (empty) window.
-         */
-        Tweener.addTween(this._texture,
-                         { opacity: 0,
-                           time: 0.10,
-                           transition: 'easeOutQuad',
-                           onComplete: function() {
-                               this._gtkWindow.unfullscreen();
-                           },
-                           onCompleteScope: this
-                         });
-    },
-
-    _onStageFullScreen : function() {
-        this._stage.disconnect(this._fullScreenId);
-        this._fullScreenId = 0;
-
-        /* Fade in everything */
-        Tweener.addTween(this._texture,
-                         { opacity: 255,
-                           time: 0.15,
-                           transition: 'easeOutQuad'
-                         });
-
-        /* zoom in the texture now */
-        this._savedYFactor = this._textureYAlign.factor;
-        let yFactor = this._savedFactor;
-
-        if (this._texture.width > this._texture.height)
-            yFactor = 0.52;
-        else
-            yFactor = 0.92;
-
-        let textureSize = this._getTextureSize();
-
-        Tweener.addTween(this._texture,
-                         { width: textureSize[0],
-                           height: textureSize[1],
-                           time: 0.15,
-                           transition: 'easeOutQuad'
-                         });
-
-        Tweener.addTween(this._textureYAlign,
-                         { factor: yFactor,
-                           time: 0.15,
-                           transition: 'easeOutQuad'
-                         });
-    },
-
-    _enterFullScreen : function() {
-        this._isFullScreen = true;
-        this._removeToolbarTimeout();
-
-        /* wait for the next stage allocation to fade in the texture
-         * and background again.
-         */
-        this._fullScreenId =
-            this._stage.connect('notify::allocation',
-                                Lang.bind(this, this._onStageFullScreen));
-
-        /* quickly fade out everything,
-         * and then fullscreen the (empty) window.
-         */
-        Tweener.addTween(this._texture,
-                         { opacity: 0,
-                           time: 0.10,
-                           transition: 'easeOutQuad',
-                           onComplete: function () {
-                               this._gtkWindow.fullscreen();
-                           },
-                           onCompleteScope: this
-                         });
-    },
-
-    /**************************************************************************
      ************************* toolbar helpers ********************************
      **************************************************************************/
     _createToolbar : function() {
@@ -512,10 +404,14 @@ var MainWindow = new Lang.Class({
         if (!this._renderer.canFullScreen)
             return false;
 
+        this._removeToolbarTimeout();
+
         if (this._isFullScreen) {
-            this._exitFullScreen();
+            this._isFullScreen = false;
+            this._gtkWindow.unfullscreen();
         } else {
-            this._enterFullScreen();
+            this._isFullScreen = true;
+            this._gtkWindow.fullscreen();
         }
 
         return this._isFullScreen;
