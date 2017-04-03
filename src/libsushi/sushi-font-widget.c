@@ -563,7 +563,8 @@ sushi_font_widget_get_preferred_width (GtkWidget *drawing_area,
 
   sushi_font_widget_size_request (drawing_area, &width, NULL, NULL);
 
-  *minimum_width = *natural_width = width;
+  *minimum_width = 0;
+  *natural_width = width;
 }
 
 static void
