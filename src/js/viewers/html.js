@@ -23,7 +23,6 @@
  *
  */
 
-const GtkClutter = imports.gi.GtkClutter;
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
@@ -55,14 +54,11 @@ const HTMLRenderer = new Lang.Class({
 
         this._webView.load_uri(file.get_uri());
 
-        this._actor = new GtkClutter.Actor({ contents: this._webView });
-        this._actor.set_reactive(true);
-
         this._callback();
     },
 
     render : function() {
-        return this._actor;
+        return this._webView;
     },
 
     getSizeForAllocation : function(allocation) {

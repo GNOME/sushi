@@ -24,11 +24,9 @@
  */
 
 const MimeHandler = imports.ui.mimeHandler;
-const Utils = imports.ui.utils;
 
 const Lang = imports.lang;
 
-const GtkClutter = imports.gi.GtkClutter;
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const Sushi = imports.gi.Sushi;
@@ -50,9 +48,6 @@ const FontRenderer = new Lang.Class({
         this._fontWidget.show();
         this._fontWidget.connect('loaded',
                                  Lang.bind(this, this._onFontLoaded));
-
-        this._fontActor = new GtkClutter.Actor({ contents: this._fontWidget });
-        Utils.alphaGtkWidget(this._fontActor.get_widget());
     },
 
     _onFontLoaded : function() {
@@ -60,7 +55,7 @@ const FontRenderer = new Lang.Class({
     },
 
     render : function() {
-        return this._fontActor;
+        return this._fontWidget;
     },
 
     getSizeForAllocation : function(allocation) {

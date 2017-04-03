@@ -26,7 +26,6 @@
 const EvDoc = imports.gi.EvinceDocument;
 const EvView = imports.gi.EvinceView;
 const Gtk = imports.gi.Gtk;
-const GtkClutter = imports.gi.GtkClutter;
 const Sushi = imports.gi.Sushi;
 
 const Gettext = imports.gettext.domain('sushi');
@@ -59,7 +58,7 @@ const EvinceRenderer = new Lang.Class({
     },
 
     render : function() {
-        return this._actor;
+        return this._scrolledWin;
     },
 
     _updatePageLabel : function() {
@@ -90,9 +89,6 @@ const EvinceRenderer = new Lang.Class({
 
         this._view.set_model(this._model);
         this._scrolledWin.add(this._view);
-
-        this._actor = new GtkClutter.Actor({ contents: this._scrolledWin });
-        this._actor.set_reactive(true);
 
         this._callback();
     },

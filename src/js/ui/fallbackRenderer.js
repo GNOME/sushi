@@ -97,14 +97,12 @@ var FallbackRenderer = new Lang.Class({
         this._applyLabels();
 
         this._box.show_all();
-        this._actor = new GtkClutter.Actor({ contents: this._box });
-        Utils.alphaGtkWidget(this._actor.get_widget());
 
         callback();
     },
 
     render : function() {
-        return this._actor;
+        return this._box;
     },
 
     _applyLabels : function() {

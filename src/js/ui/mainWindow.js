@@ -52,7 +52,7 @@ var MainWindow = new Lang.Class({
         this._isFullScreen = false;
         this._pendingRenderer = null;
         this._renderer = null;
-        this._texture = null;
+        this._view = null;
         this._toolbar = null;
         this._toolbarId = 0;
 
@@ -60,7 +60,6 @@ var MainWindow = new Lang.Class({
 
         this._application = args.application;
         this._createGtkWindow();
-        this._createClutterEmbed();
 
         this.file = null;
     },
@@ -89,29 +88,13 @@ var MainWindow = new Lang.Class({
         this._gtkWindow.connect('realize',
                                 Lang.bind(this, this._onRealize));
 
+        let eventBox = new Gtk.EventBox({ visible_window: false });
+        eventBox.connect('button-press-event',
+                         Lang.bind(this, this._onButtonPressEvent));
+        this._gtkWindow.add(eventBox);
+
         this._embed = new Gtk.Overlay();
-        this._gtkWindow.add(this._embed);
-    },
-
-    _createClutterEmbed : function() {
-        this._clutterEmbed = new GtkClutter.Embed();
-        this._embed.add(this._clutterEmbed);
-
-        this._clutterEmbed.set_receives_default(true);
-        this._clutterEmbed.set_can_default(true);
-
-        this._stage = this._clutterEmbed.get_stage();
-        this._stage.set_use_alpha(true);
-        this._stage.set_opacity(0);
-        this._stage.set_color(new Clutter.Color({ red: 0,
-                                                  green: 0,
-                                                  blue: 0,
-                                                  alpha: 255 }));
-
-        this._stage.set_layout_manager(new Clutter.BinLayout());
-
-        this._stage.connect('button-press-event',
-                            Lang.bind(this, this._onButtonPressEvent));
+        eventBox.add(this._embed);
     },
 
     /**************************************************************************
@@ -143,20 +126,14 @@ var MainWindow = new Lang.Class({
         return false;
     },
 
-    _onButtonPressEvent : function(actor, event) {
-        let stageWin = ClutterGdk.get_stage_window(this._stage);
-        let win_coords = event.get_coords();
-
-        if (event.get_source() == this._texture &&
-            !this._renderer.moveOnClick)
+    _onButtonPressEvent : function(window, event) {
+        if (!this._renderer.moveOnClick)
             return false;
 
-        let root_coords = stageWin.get_root_coords(win_coords[0],
-                                                   win_coords[1]);
-
-        this._gtkWindow.begin_move_drag(event.get_button(),
-                                        root_coords[0],
-                                        root_coords[1],
+        let [, rootX, rootY] = event.get_root_coords();
+        let [, button] = event.get_button();
+        this._gtkWindow.begin_move_drag(button,
+                                        rootX, rootY,
                                         event.get_time());
 
         return false;
@@ -200,26 +177,7 @@ var MainWindow = new Lang.Class({
     },
 
     _positionTexture : function() {
-        let yFactor = 0;
-
-        let textureSize = this._getTextureSize();
         let windowSize = this._getWindowSize();
-
-        if (textureSize[0] < Constants.VIEW_MIN &&
-            textureSize[1] < Constants.VIEW_MIN) {
-            yFactor = 0.52;
-        }
-
-        if (yFactor == 0) {
-            if (this._isFullScreen &&
-               (textureSize[0] > textureSize[1]))
-                yFactor = 0.52;
-            else
-                yFactor = 0.92;
-        }
-
-        this._texture.set_size(textureSize[0], textureSize[1]);
-        this._textureYAlign.factor = yFactor;
 
         if (this._lastWindowSize &&
             windowSize[0] == this._lastWindowSize[0] &&
@@ -275,28 +233,22 @@ var MainWindow = new Lang.Class({
         this._pendingRenderer = null;
 
         /* generate the texture and toolbar for the new renderer */
-        this._createTexture();
+        this._createView();
         this._createToolbar();
     },
 
-    _createTexture : function() {
-        if (this._texture) {
-            this._texture.destroy();
-            this._texture = null;
+    _createView : function() {
+        if (this._view) {
+            this._view.destroy();
+            this._view = null;
         }
 
-        this._texture = this._renderer.render();
-        this._textureYAlign =
-            new Clutter.AlignConstraint({ source: this._stage,
-                                          factor: 0.5,
-                                          align_axis: Clutter.AlignAxis.Y_AXIS });
-        this._texture.add_constraint(this._textureYAlign);
-        this._texture.add_constraint(
-            new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.SIZE,
-                                         source: this._stage }));
+        this._view = this._renderer.render();
+        this._view.expand = true;
+        this._view.show();
 
+        this._embed.add(this._view);
         this.refreshSize();
-        this._stage.add_child(this._texture);
     },
 
     /**************************************************************************
@@ -386,7 +338,7 @@ var MainWindow = new Lang.Class({
     setFile : function(file) {
         this.file = file;
         this._createRenderer(file);
-        this._createTexture();
+        this._createView();
         this._createToolbar();
 
         this._gtkWindow.show_all();

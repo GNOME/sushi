@@ -26,9 +26,7 @@
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
 const Gtk = imports.gi.Gtk;
-const GtkClutter = imports.gi.GtkClutter;
 
-const Tweener = imports.ui.tweener;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
@@ -44,26 +42,20 @@ var SpinnerBox = new Lang.Class({
         this.canFullScreen = false;
         this.moveOnClick = true;
 
-        this._spinnerBox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                                         spacing: 12 });
-        this._spinnerBox.show();
-
         this._spinner = new Gtk.Spinner();
-        this._spinner.show();
         this._spinner.set_size_request(SPINNER_SIZE, SPINNER_SIZE);
-        this._spinnerBox.pack_start(this._spinner, true, true, 0);
 
         this._label = new Gtk.Label();
         this._label.set_text(_("Loading…"));
-        this._label.show();
-        this._spinnerBox.pack_start(this._label, true, true, 0);
 
-        this.actor = new GtkClutter.Actor({ contents: this._spinnerBox });
-        this.actor.set_opacity(0);
+        this._spinnerBox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
+                                         spacing: 12 });
+        this._spinnerBox.pack_start(this._spinner, true, true, 0);
+        this._spinnerBox.pack_start(this._label, true, true, 0);
     },
 
     render : function() {
-        return this.actor;
+        return this._spinnerBox;
     },
 
     getSizeForAllocation : function() {
@@ -88,24 +80,11 @@ var SpinnerBox = new Lang.Class({
             this._timeoutId = 0;
         }
 
-        Tweener.addTween(this.actor,
-                         { opacity: 0,
-                           time: 0.15,
-                           transition: 'easeOutQuad',
-                           onComplete: function() {
-                               this.actor.destroy();
-                           },
-                           onCompleteScope: this
-                         });
+        this._spinnerBox.destroy();
     },
 
     _onTimeoutCompleted : function() {
         this._timeoutId = 0;
-
-        Tweener.addTween(this.actor,
-                         { opacity: 255,
-                           time: 0.3,
-                           transition: 'easeOutQuad'
-                         });
+        this._spinnerBox.show_all();
     },
 });

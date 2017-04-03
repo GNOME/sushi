@@ -27,7 +27,6 @@ const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const Gst = imports.gi.Gst;
 const Gtk = imports.gi.Gtk;
-const GtkClutter = imports.gi.GtkClutter;
 const Sushi = imports.gi.Sushi;
 
 const Gettext = imports.gettext.domain('sushi');
@@ -80,13 +79,12 @@ const AudioRenderer = new Lang.Class({
         vbox.pack_start(this._albumLabel, false, false, 0);
 
         this._box.show_all();
-        this._actor = new GtkClutter.Actor({ contents: this._box });
 
         this._callback();
     },
 
     render : function() {
-        return this._actor;
+        return this._box;
     },
 
     _createPlayer : function(file) {
