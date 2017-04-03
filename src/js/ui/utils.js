@@ -28,8 +28,6 @@ const Gtk = imports.gi.Gtk;
 
 const Lang = imports.lang;
 
-const Constants = imports.util.constants;
-
 var slowDownFactor = 0;
 
 function setSlowDownFactor(factor) {
@@ -67,32 +65,6 @@ function getScaledSize(baseSize, allocSize, upscale) {
     height *= scale;
 
     return [ Math.floor(width), Math.floor(height) ];
-}
-
-function getStaticSize(renderer, widget) {
-    let width = widget.get_preferred_width()[1];
-    let height = widget.get_preferred_height()[1];
-
-    if (width < Constants.VIEW_MIN &&
-        height < Constants.VIEW_MIN) {
-        width = Constants.VIEW_MIN;
-    }
-
-    /* never make it shrink; this could happen when the
-     * spinner hides.
-     */
-    if (width < renderer.lastWidth)
-        width = renderer.lastWidth;
-    else
-        renderer.lastWidth = width;
-
-    if (height < renderer.lastHeight)
-        height = renderer.lastHeight;
-    else
-        renderer.lastHeight = height;
-
-    /* return the natural */
-    return [ width, height ];
 }
 
 function createToolButton(iconName, callback) {

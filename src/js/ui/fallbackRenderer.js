@@ -33,7 +33,6 @@ const _ = Gettext.gettext;
 const Lang = imports.lang;
 
 const Constants = imports.util.constants;
-const Utils = imports.ui.utils;
 
 var FallbackRenderer = new Lang.Class({
     Name: 'FallbackRenderer',
@@ -48,8 +47,8 @@ var FallbackRenderer = new Lang.Class({
 
     prepare : function(file, mainWindow, callback) {
         this._mainWindow = mainWindow;
-        this.lastWidth = 0;
-        this.lastHeight = 0;
+        this._lastWidth = 0;
+        this._lastHeight = 0;
 
         this._fileLoader = new Sushi.FileLoader();
         this._fileLoader.file = file;
@@ -159,6 +158,28 @@ var FallbackRenderer = new Lang.Class({
     },
 
     getSizeForAllocation : function(allocation) {
-        return Utils.getStaticSize(this, this._box);
+        let width = this._box.get_preferred_width()[1];
+        let height = this._box.get_preferred_height()[1];
+
+        if (width < Constants.VIEW_MIN &&
+            height < Constants.VIEW_MIN) {
+            width = Constants.VIEW_MIN;
+        }
+
+        /* never make it shrink; this could happen when the
+         * spinner hides.
+         */
+        if (width < this._lastWidth)
+            width = this._lastWidth;
+        else
+            this._lastWidth = width;
+
+        if (height < this._lastHeight)
+            height = this._lastHeight;
+        else
+            this._lastHeight = height;
+
+        /* return the natural */
+        return [width, height];
     }
 });
