@@ -30,7 +30,6 @@ const GLib = imports.gi.GLib;
 const Application = imports.ui.application;
 const Path = imports.util.path;
 const Utils = imports.ui.utils;
-const Tweener = imports.ui.tweener;
 
 function run(argv) {
     Gettext.bindtextdomain('sushi', Path.LOCALE_DIR);
@@ -44,8 +43,6 @@ function run(argv) {
         if (!isNaN(factor) && factor > 0.0)
             Utils.setSlowDownFactor(factor);
     }
-
-    Tweener.init();
 
     let application = new Application.Application();
     return application.run(null);
