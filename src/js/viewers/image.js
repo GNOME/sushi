@@ -37,6 +37,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const MimeHandler = imports.ui.mimeHandler;
+const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
 const Image = new Lang.Class({
@@ -182,13 +183,8 @@ const ImageRenderer = new Lang.Class({
          }));
     },
 
-    getSizeForAllocation : function(allocation) {
-        if (!this.pix)
-            return allocation;
-
-        let width = this.pix.get_width();
-        let height = this.pix.get_height();
-        return Utils.getScaledSize([width, height], allocation, false);
+    get resizePolicy() {
+        return Renderer.ResizePolicy.SCALED;
     },
 
     _startTimeout : function() {

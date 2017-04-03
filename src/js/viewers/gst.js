@@ -28,6 +28,7 @@ const {GLib, Sushi} = imports.gi;
 const Lang = imports.lang;
 
 const MimeHandler = imports.ui.mimeHandler;
+const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const Utils = imports.ui.utils;
 
@@ -41,10 +42,6 @@ const GstRenderer = new Lang.Class({
         this.moveOnClick = true;
         // fullscreen is handled internally by the widget
         this.canFullScreen = false;
-
-        this.connect('size-change', function() {
-            mainWindow.refreshSize();
-        });
 
         this._autoplayId = GLib.idle_add(0, () => {
             this._autoplayId = 0;
@@ -62,10 +59,8 @@ const GstRenderer = new Lang.Class({
         }
     },
 
-    getSizeForAllocation : function(allocation) {
-        let baseSize = [this.get_preferred_width()[1],
-                        this.get_preferred_height()[1]];
-        return Utils.getScaledSize(baseSize, allocation, true);
+    get resizePolicy() {
+        return Renderer.ResizePolicy.STRETCHED;
     }
 });
 

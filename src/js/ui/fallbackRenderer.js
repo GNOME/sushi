@@ -31,8 +31,7 @@ const Sushi = imports.gi.Sushi;
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
 const Lang = imports.lang;
-
-const Constants = imports.util.constants;
+const Renderer = imports.ui.renderer;
 
 var FallbackRenderer = new Lang.Class({
     Name: 'FallbackRenderer',
@@ -44,10 +43,6 @@ var FallbackRenderer = new Lang.Class({
 
         this.moveOnClick = true;
         this.canFullScreen = false;
-
-        this._mainWindow = mainWindow;
-        this._lastWidth = 0;
-        this._lastHeight = 0;
 
         this._fileLoader = new Sushi.FileLoader();
         this._fileLoader.file = file;
@@ -151,7 +146,6 @@ var FallbackRenderer = new Lang.Class({
             this._updateIcon(this._fileLoader.icon);
 
         this._applyLabels();
-        this._mainWindow.refreshSize();
     },
 
     _onDestroy : function() {
@@ -164,29 +158,7 @@ var FallbackRenderer = new Lang.Class({
         }
     },
 
-    getSizeForAllocation : function(allocation) {
-        let width = this.get_preferred_width()[1];
-        let height = this.get_preferred_height()[1];
-
-        if (width < Constants.VIEW_MIN &&
-            height < Constants.VIEW_MIN) {
-            width = Constants.VIEW_MIN;
-        }
-
-        /* never make it shrink; this could happen when the
-         * spinner hides.
-         */
-        if (width < this._lastWidth)
-            width = this._lastWidth;
-        else
-            this._lastWidth = width;
-
-        if (height < this._lastHeight)
-            height = this._lastHeight;
-        else
-            this._lastHeight = height;
-
-        /* return the natural */
-        return [width, height];
+    get resizePolicy() {
+        return Renderer.ResizePolicy.NAT_SIZE;
     }
 });

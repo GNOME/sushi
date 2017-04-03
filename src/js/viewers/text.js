@@ -34,6 +34,7 @@ const Lang = imports.lang;
 const Sushi = imports.gi.Sushi;
 
 const MimeHandler = imports.ui.mimeHandler;
+const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
 function _getGeditScheme() {
@@ -95,8 +96,8 @@ const TextRenderer = new Lang.Class({
             this._view.set_show_line_numbers(true);
     },
 
-    getSizeForAllocation : function(allocation) {
-        return allocation;
+    get resizePolicy() {
+        return Renderer.ResizePolicy.MAX_SIZE;
     },
 
     populateToolbar : function(toolbar) {

@@ -35,6 +35,7 @@ const Lang = imports.lang;
 
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
+const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const Utils = imports.ui.utils;
 
@@ -198,7 +199,7 @@ const AudioRenderer = new Lang.Class({
 
         this._artFetcher.taglist = tags;
 
-        this._mainWindow.refreshSize();
+        this._mainWindow.queue_allocate();
     },
 
     _updateProgressBar : function() {
@@ -249,17 +250,8 @@ const AudioRenderer = new Lang.Class({
         }
     },
 
-    getSizeForAllocation : function(allocation) {
-        let width = this.get_preferred_width()[1];
-        let height = this.get_preferred_height()[1];
-
-        if (width[1] < Constants.VIEW_MIN &&
-            height[1] < Constants.VIEW_MIN) {
-            width[1] = Constants.VIEW_MIN;
-        }
-
-        /* return the natural */
-        return [ width, height ];
+    get resizePolicy() {
+        return Renderer.ResizePolicy.NAT_SIZE;
     },
 
     populateToolbar : function (toolbar) {

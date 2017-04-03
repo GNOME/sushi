@@ -29,6 +29,7 @@ const Lang = imports.lang;
 
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
+const Renderer = imports.ui.renderer;
 const Sushi = imports.gi.Sushi;
 
 const FontRenderer = new Lang.Class({
@@ -44,17 +45,8 @@ const FontRenderer = new Lang.Class({
         this._file = file;
     },
 
-    getSizeForAllocation : function(allocation) {
-        let size = [ this.get_preferred_size()[1].width,
-                     this.get_preferred_size()[1].height ];
-
-        if (size[0] > allocation[0])
-            size[0] = allocation[0];
-
-        if (size[1] > allocation[1])
-            size[1] = allocation[1];
-
-        return size;
+    get resizePolicy() {
+        return Renderer.ResizePolicy.MAX_SIZE;
     }
 });
 

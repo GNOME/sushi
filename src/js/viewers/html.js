@@ -30,6 +30,7 @@ const Sushi = imports.gi.Sushi;
 const WebKit = imports.gi.WebKit2;
 
 const MimeHandler = imports.ui.mimeHandler;
+const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
 const HTMLRenderer = new Lang.Class({
@@ -52,8 +53,8 @@ const HTMLRenderer = new Lang.Class({
         this.load_uri(file.get_uri());
     },
 
-    getSizeForAllocation : function(allocation) {
-        return allocation;
+    get resizePolicy() {
+        return Renderer.ResizePolicy.MAX_SIZE;
     },
 
     populateToolbar : function(toolbar) {

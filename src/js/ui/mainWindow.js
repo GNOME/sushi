@@ -35,16 +35,40 @@ const Sushi = imports.gi.Sushi;
 
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
+const Renderer = imports.ui.renderer;
+const Utils = imports.ui.utils;
 
-var RendererToolbar = new Lang.Class({
-    Name: 'RendererToolbar',
-    Extends: Gtk.Box,
-    CssName: 'toolbar',
+const Embed = new Lang.Class({
+    Name: 'Embed',
+    Extends: Gtk.Overlay,
+    Signals: { 'size-request': {} },
 
-    _init : function() {
-        this.parent({ halign: Gtk.Align.CENTER,
-                      hexpand: true });
-        this.get_style_context().add_class('osd');
+    vfunc_get_request_mode: function() {
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+    },
+
+    vfunc_get_preferred_width: function() {
+        let [min, nat] = this.parent();
+
+        min = Math.max(min, Constants.VIEW_MIN);
+        nat = Math.max(nat, Constants.VIEW_MIN);
+
+        // FIXME: this is wrong, we should only be doing this
+        // when the renderer signals us to do so
+        this.emit('size-request');
+
+        return [min, nat];
+    }
+
+    vfunc_get_preferred_height_for_width(forWidth) {
+        let [min, nat] = super.vfunc_get_preferred_height_for_width(forWidth);
+
+        if (forWidth <= Constants.VIEW_MIN) {
+            min = Math.max(min, Constants.VIEW_MIN);
+            nat = Math.max(nat, Constants.VIEW_MIN);
+        }
+
+        return [min, nat];
     }
 });
 
@@ -55,6 +79,7 @@ var MainWindow = new Lang.Class({
     _init : function(application) {
         this._isFullScreen = false;
         this._renderer = null;
+        this._lastWindowSize = [0, 0];
         this._toolbar = null;
         this._toolbarId = 0;
         this.file = null;
@@ -87,7 +112,8 @@ var MainWindow = new Lang.Class({
                          Lang.bind(this, this._onButtonPressEvent));
         this.add(eventBox);
 
-        this._embed = new Gtk.Overlay();
+        this._embed = new Embed();
+        this._embed.connect('size-request', this._onEmbedSizeRequest.bind(this));
         eventBox.add(this._embed);
     },
 
@@ -143,45 +169,37 @@ var MainWindow = new Lang.Class({
     /**************************************************************************
      *********************** texture allocation *******************************
      **************************************************************************/
-    _getTextureSize : function() {
-        let screenSize = [ this.get_window().get_width(),
-                           this.get_window().get_height() ];
-
-        let availableWidth = this._isFullScreen ? screenSize[0] : Constants.VIEW_MAX_W - 2 * Constants.VIEW_PADDING_X;
-        let availableHeight = this._isFullScreen ? screenSize[1] : Constants.VIEW_MAX_H - Constants.VIEW_PADDING_Y;
-
-        let textureSize = this._renderer.getSizeForAllocation([availableWidth, availableHeight], this._isFullScreen);
-
-        return textureSize;
+    _onEmbedSizeRequest : function() {
+        this._resizeWindow();
     },
 
-    _getWindowSize : function() {
-        let textureSize = this._getTextureSize();
-        let windowSize = textureSize;
-
-        if (textureSize[0] < (Constants.VIEW_MIN - 2 * Constants.VIEW_PADDING_X) &&
-            textureSize[1] < (Constants.VIEW_MIN - Constants.VIEW_PADDING_Y)) {
-            windowSize = [ Constants.VIEW_MIN, Constants.VIEW_MIN ];
-        } else if (!this._isFullScreen) {
-            windowSize = [ windowSize[0] + 2 * Constants.VIEW_PADDING_X,
-                           windowSize[1] + Constants.VIEW_PADDING_Y ];
-        }
-
-        return windowSize;
-    },
-
-    _positionTexture : function() {
-        let windowSize = this._getWindowSize();
-
-        if (this._lastWindowSize &&
-            windowSize[0] == this._lastWindowSize[0] &&
-            windowSize[1] == this._lastWindowSize[1])
+    _resizeWindow : function() {
+        if (this._isFullScreen)
             return;
 
-        this._lastWindowSize = windowSize;
+        if (!this._renderer)
+            return;
 
-        if (!this._isFullScreen)
+        let maxSize = [Constants.VIEW_MAX_W, Constants.VIEW_MAX_H];
+        let rendererSize = [this._renderer.get_preferred_width(), this._renderer.get_preferred_height()];
+        let natSize = [rendererSize[0][1], rendererSize[1][1]];
+        let windowSize;
+        let resizePolicy = this._renderer.resizePolicy;
+
+        if (resizePolicy == Renderer.ResizePolicy.MAX_SIZE)
+            windowSize = maxSize;
+        else if (resizePolicy == Renderer.ResizePolicy.NAT_SIZE)
+            windowSize = natSize;
+        else if (resizePolicy == Renderer.ResizePolicy.SCALED)
+            windowSize = Utils.getScaledSize(natSize, maxSize, false);
+        else if (resizePolicy == Renderer.ResizePolicy.STRETCHED)
+            windowSize = Utils.getScaledSize(natSize, maxSize, true);
+
+        if ((windowSize[0] > 0 && windowSize[0] != this._lastWindowSize[0]) ||
+            (windowSize[1] > 0 && windowSize[1] != this._lastWindowSize[1])) {
+            this._lastWindowSize = windowSize;
             this.resize(windowSize[0], windowSize[1]);
+        }
     },
 
     _createRenderer : function(file) {
@@ -216,8 +234,6 @@ var MainWindow = new Lang.Class({
         this._renderer.show_all();
         this._renderer.expand = true;
         this._embed.add(this._renderer);
-
-        this.refreshSize();
     },
 
     /**************************************************************************
@@ -241,7 +257,7 @@ var MainWindow = new Lang.Class({
                                                transition_type: Gtk.RevealerTransitionType.CROSSFADE,
                                                visible: true });
 
-            let rendererToolbar = new RendererToolbar();
+            let rendererToolbar = new Renderer.RendererToolbar();
             this._toolbar.add(rendererToolbar);
 
             this._renderer.populateToolbar(rendererToolbar);
@@ -298,10 +314,6 @@ var MainWindow = new Lang.Class({
 
     setTitle : function(label) {
         this.set_title(label);
-    },
-
-    refreshSize : function() {
-        this._positionTexture();
     },
 
     toggleFullScreen : function() {

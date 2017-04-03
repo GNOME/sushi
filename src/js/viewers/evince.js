@@ -34,6 +34,7 @@ const Lang = imports.lang;
 
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
+const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
 const EvinceRenderer = new Lang.Class({
@@ -84,9 +85,8 @@ const EvinceRenderer = new Lang.Class({
         this._view.set_model(this._model);
     },
 
-    getSizeForAllocation : function(allocation) {
-        /* always give the view the maximum possible allocation */
-        return allocation;
+    get resizePolicy() {
+        return Renderer.ResizePolicy.MAX_SIZE;
     },
 
     populateToolbar : function(toolbar) {
