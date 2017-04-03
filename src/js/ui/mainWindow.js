@@ -183,7 +183,6 @@ var MainWindow = new Lang.Class({
         let win_coords = event.get_coords();
 
         if ((event.get_source() == this._toolbarActor) ||
-            (event.get_source() == this._quitActor) ||
             (event.get_source() == this._texture &&
              !this._renderer.moveOnClick)) {
 
