@@ -28,12 +28,6 @@ const Gtk = imports.gi.Gtk;
 
 const Lang = imports.lang;
 
-var slowDownFactor = 0;
-
-function setSlowDownFactor(factor) {
-    slowDownFactor = factor;
-}
-
 function getScaledSize(baseSize, allocSize, upscale) {
     let allocW = allocSize[0];
     let allocH = allocSize[1];
@@ -119,11 +113,4 @@ function formatTimeString(timeVal) {
     }
 
     return str;
-}
-
-function alphaGtkWidget(widget) {
-    widget.override_background_color(0, new Gdk.RGBA({ red: 0,
-                                                       green: 0,
-                                                       blue: 0,
-                                                       alpha: 0 }));
 }
