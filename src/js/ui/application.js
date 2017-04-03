@@ -73,7 +73,7 @@ var Application = new Lang.Class({
 
     _createMainWindow : function() {
         this._mainWindow =
-            new MainWindow.MainWindow({ application: this });
+            new MainWindow.MainWindow(this);
     },
 
     _defineStyleAndThemes : function() {

@@ -41,50 +41,44 @@ const SpinnerBox = imports.ui.spinnerBox;
 
 var MainWindow = new Lang.Class({
     Name: 'MainWindow',
+    Extends: Gtk.Window,
 
-    _init : function(args) {
-        args = args || {};
-
+    _init : function(application) {
         this._isFullScreen = false;
         this._pendingRenderer = null;
         this._renderer = null;
         this._view = null;
         this._toolbar = null;
         this._toolbarId = 0;
+        this.file = null;
 
         this._mimeHandler = new MimeHandler.MimeHandler();
 
-        this._application = args.application;
-        this._createGtkWindow();
+        this.parent({ type: Gtk.WindowType.TOPLEVEL,
+                      skipPagerHint: true,
+                      skipTaskbarHint: true,
+                      windowPosition: Gtk.WindowPosition.CENTER,
+                      gravity: Gdk.Gravity.CENTER,
+                      application: application });
 
-        this.file = null;
-    },
-
-    _createGtkWindow : function() {
-        this._gtkWindow = new Gtk.Window({ type: Gtk.WindowType.TOPLEVEL,
-                                           skipPagerHint: true,
-                                           skipTaskbarHint: true,
-                                           windowPosition: Gtk.WindowPosition.CENTER,
-                                           gravity: Gdk.Gravity.CENTER,
-                                           application: this._application });
         this._titlebar = new Gtk.HeaderBar({ show_close_button: true,
                                              // don't support maximize and minimize
                                              decoration_layout: 'menu:close' });
-        this._gtkWindow.set_titlebar(this._titlebar);
+        this.set_titlebar(this._titlebar);
 
-        this._gtkWindow.connect('delete-event',
-                                Lang.bind(this, this._onDeleteEvent));
-        this._gtkWindow.connect('key-press-event',
-                                Lang.bind(this, this._onKeyPressEvent));
-        this._gtkWindow.connect('motion-notify-event',
-                                Lang.bind(this, this._onMotionNotifyEvent));
-        this._gtkWindow.connect('realize',
-                                Lang.bind(this, this._onRealize));
+        this.connect('delete-event',
+                     Lang.bind(this, this._onDeleteEvent));
+        this.connect('key-press-event',
+                     Lang.bind(this, this._onKeyPressEvent));
+        this.connect('motion-notify-event',
+                     Lang.bind(this, this._onMotionNotifyEvent));
+        this.connect('realize',
+                     Lang.bind(this, this._onRealize));
 
         let eventBox = new Gtk.EventBox({ visible_window: false });
         eventBox.connect('button-press-event',
                          Lang.bind(this, this._onButtonPressEvent));
-        this._gtkWindow.add(eventBox);
+        this.add(eventBox);
 
         this._embed = new Gtk.Overlay();
         eventBox.add(this._embed);
@@ -99,9 +93,9 @@ var MainWindow = new Lang.Class({
 
     _onRealize: function() {
         // don't support maximize and minimize
-        this._gtkWindow.get_window().set_functions(Gdk.WMFunction.MOVE |
-                                                   Gdk.WMFunction.RESIZE |
-                                                   Gdk.WMFunction.CLOSE);
+        this.get_window().set_functions(Gdk.WMFunction.MOVE |
+                                        Gdk.WMFunction.RESIZE |
+                                        Gdk.WMFunction.CLOSE);
     },
 
     _onKeyPressEvent : function(widget, event) {
@@ -125,9 +119,9 @@ var MainWindow = new Lang.Class({
 
         let [, rootX, rootY] = event.get_root_coords();
         let [, button] = event.get_button();
-        this._gtkWindow.begin_move_drag(button,
-                                        rootX, rootY,
-                                        event.get_time());
+        this.begin_move_drag(button,
+                             rootX, rootY,
+                             event.get_time());
 
         return false;
     },
@@ -143,8 +137,8 @@ var MainWindow = new Lang.Class({
      *********************** texture allocation *******************************
      **************************************************************************/
     _getTextureSize : function() {
-        let screenSize = [ this._gtkWindow.get_window().get_width(),
-                           this._gtkWindow.get_window().get_height() ];
+        let screenSize = [ this.get_window().get_width(),
+                           this.get_window().get_height() ];
 
         let availableWidth = this._isFullScreen ? screenSize[0] : Constants.VIEW_MAX_W - 2 * Constants.VIEW_PADDING_X;
         let availableHeight = this._isFullScreen ? screenSize[1] : Constants.VIEW_MAX_H - Constants.VIEW_PADDING_Y;
@@ -179,9 +173,8 @@ var MainWindow = new Lang.Class({
 
         this._lastWindowSize = windowSize;
 
-        if (!this._isFullScreen) {
-            this._gtkWindow.resize(windowSize[0], windowSize[1]);
-        }
+        if (!this._isFullScreen)
+            this.resize(windowSize[0], windowSize[1]);
     },
 
     _createRenderer : function(file) {
@@ -311,7 +304,7 @@ var MainWindow = new Lang.Class({
         if (this._renderer.clear)
             this._renderer.clear();
 
-        this._gtkWindow.destroy();
+        this.destroy();
     },
 
     /**************************************************************************
@@ -319,13 +312,13 @@ var MainWindow = new Lang.Class({
      **************************************************************************/
     setParent : function(xid) {
         this._parent = Sushi.create_foreign_window(xid);
-        this._gtkWindow.realize();
+        this.realize();
         if (this._parent)
-            this._gtkWindow.get_window().set_transient_for(this._parent);
-        this._gtkWindow.show_all();
+            this.get_window().set_transient_for(this._parent);
+        this.show_all();
 
-        if (this._gtkWindow.get_window().move_to_current_desktop)
-          this._gtkWindow.get_window().move_to_current_desktop();
+        if (this.get_window().move_to_current_desktop)
+          this.get_window().move_to_current_desktop();
     },
 
     setFile : function(file) {
@@ -334,11 +327,11 @@ var MainWindow = new Lang.Class({
         this._createView();
         this._createToolbar();
 
-        this._gtkWindow.show_all();
+        this.show_all();
     },
 
     setTitle : function(label) {
-        this._gtkWindow.set_title(label);
+        this.set_title(label);
     },
 
     refreshSize : function() {
@@ -353,10 +346,10 @@ var MainWindow = new Lang.Class({
 
         if (this._isFullScreen) {
             this._isFullScreen = false;
-            this._gtkWindow.unfullscreen();
+            this.unfullscreen();
         } else {
             this._isFullScreen = true;
-            this._gtkWindow.fullscreen();
+            this.fullscreen();
         }
 
         return this._isFullScreen;
