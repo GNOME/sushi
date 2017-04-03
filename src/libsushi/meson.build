@@ -66,7 +66,6 @@ gnome.generate_gir(
   symbol_prefix: 'sushi',
   identifier_prefix: 'Sushi',
   includes: [
-    'Clutter-1.0',
     'GstPbutils-1.0',
     'GstTag-1.0',
     'GdkPixbuf-2.0',

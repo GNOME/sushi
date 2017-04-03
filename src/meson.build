@@ -5,9 +5,6 @@ sushi_sources = [
 ]
 
 deps = [
-  clutter_dep,
-  clutter_gst_dep,
-  clutter_gtk_dep,
   epoxy_dep,
   evince_document_dep,
   evince_view_dep,

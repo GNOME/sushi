@@ -5,9 +5,6 @@ project(
   meson_version: '>=0.42.0'
 )
 
-clutter_dep = dependency('clutter-1.0', version: '>=1.11.4')
-clutter_gst_dep = dependency('clutter-gst-3.0')
-clutter_gtk_dep = dependency('clutter-gtk-1.0', version: '>=1.0.1')
 epoxy_dep = dependency('epoxy')
 evince_document_dep = dependency('evince-document-3.0')
 evince_view_dep = dependency('evince-view-3.0')

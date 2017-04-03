@@ -32,16 +32,8 @@
 
 #include <gjs/gjs.h>
 
+#include <gst/gst.h>
 #include <gtk/gtk.h>
-
-#ifdef GDK_WINDOWING_X11
-#include <X11/Xlib.h>
-#endif
-
-#include <clutter/clutter.h>
-#include <clutter/x11/clutter-x11.h>
-#include <clutter-gst/clutter-gst.h>
-#include <clutter-gtk/clutter-gtk.h>
 
 static void
 parse_options (int *argc, char ***argv)
@@ -104,17 +96,8 @@ main (int argc, char **argv)
   GjsContext *js_context;
   GError *error;
 
-#ifdef GDK_WINDOWING_X11
-  XInitThreads ();
-#endif
-
-  clutter_x11_set_use_argb_visual (TRUE);
-
-  if (gtk_clutter_init (&argc, &argv) < 0)
-    return EXIT_FAILURE;
-
-  clutter_gst_init (0, NULL);
-
+  gst_init (&argc, &argv);
+  gtk_init (&argc, &argv);
   parse_options (&argc, &argv);
 
   js_context = gjs_context_new_with_search_path (NULL);

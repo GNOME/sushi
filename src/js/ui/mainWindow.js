@@ -25,14 +25,11 @@
 
 imports.gi.versions.GdkX11 = '3.0';
 
-const Clutter = imports.gi.Clutter;
-const ClutterGdk = imports.gi.ClutterGdk;
 const Gdk = imports.gi.Gdk;
 const GdkX11 = imports.gi.GdkX11;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const GtkClutter = imports.gi.GtkClutter;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
@@ -74,9 +71,6 @@ var MainWindow = new Lang.Class({
                                              // don't support maximize and minimize
                                              decoration_layout: 'menu:close' });
         this._gtkWindow.set_titlebar(this._titlebar);
-
-        let screen = Gdk.Screen.get_default();
-        this._gtkWindow.set_visual(screen.get_rgba_visual());
 
         this._gtkWindow.connect('delete-event',
                                 Lang.bind(this, this._onDeleteEvent));
