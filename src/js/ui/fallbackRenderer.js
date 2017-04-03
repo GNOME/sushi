@@ -25,7 +25,7 @@
 
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
-const GtkClutter = imports.gi.GtkClutter;
+const Pango = imports.gi.Pango;
 const Sushi = imports.gi.Sushi;
 
 const Gettext = imports.gettext.domain('sushi');
@@ -73,7 +73,8 @@ var FallbackRenderer = new Lang.Class({
                                  spacing: 6 });
         vbox.pack_start(hbox, false, false, 0);
 
-        this._titleLabel = new Gtk.Label();
+        this._titleLabel = new Gtk.Label({ max_width_chars: 48,
+                                           ellipsize: Pango.EllipsizeMode.MIDDLE });
         this._titleLabel.set_halign(Gtk.Align.START);
         hbox.pack_start(this._titleLabel, false, false, 0);
 
