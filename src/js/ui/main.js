@@ -22,6 +22,8 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  *
  */
+imports.gi.versions.GdkX11 = '3.0';
+imports.gi.versions.Gtk = '3.0';
 
 const Format = imports.format;
 const Gettext = imports.gettext;

@@ -23,8 +23,6 @@
  *
  */
 
-imports.gi.versions.GdkX11 = '3.0';
-
 const Gdk = imports.gi.Gdk;
 const GdkX11 = imports.gi.GdkX11;
 const Gio = imports.gi.Gio;
