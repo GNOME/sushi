@@ -97,20 +97,3 @@ function createOpenButton(file, mainWindow) {
         }
     });
 }
-
-function formatTimeString(timeVal) {
-    let hours = Math.floor(timeVal / 3600);
-    timeVal -= hours * 3600;
-
-    let minutes = Math.floor(timeVal / 60);
-    timeVal -= minutes * 60;
-
-    let seconds = Math.floor(timeVal);
-
-    let str = ('%02d:%02d').format(minutes, seconds);
-    if (hours > 0) {
-        str = ('%d').format(hours) + ':' + str;
-    }
-
-    return str;
-}

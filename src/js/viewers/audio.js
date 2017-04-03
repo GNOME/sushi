@@ -36,7 +36,23 @@ const Lang = imports.lang;
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
 const TotemMimeTypes = imports.util.totemMimeTypes;
-const Utils = imports.ui.utils;
+
+function _formatTimeString(timeVal) {
+    let hours = Math.floor(timeVal / 3600);
+    timeVal -= hours * 3600;
+
+    let minutes = Math.floor(timeVal / 60);
+    timeVal -= minutes * 60;
+
+    let seconds = Math.floor(timeVal);
+
+    let str = ('%02d:%02d').format(minutes, seconds);
+    if (hours > 0) {
+        str = ('%d').format(hours) + ':' + str;
+    }
+
+    return str;
+}
 
 const AudioRenderer = new Lang.Class({
     Name: 'AudioRenderer',
@@ -207,7 +223,7 @@ const AudioRenderer = new Lang.Class({
         let currentTime =
             Math.floor(this._player.duration * this._player.progress);
 
-        this._currentLabel.set_text(Utils.formatTimeString(currentTime));
+        this._currentLabel.set_text(_formatTimeString(currentTime));
     },
 
     _updateDurationLabel : function() {
@@ -216,7 +232,7 @@ const AudioRenderer = new Lang.Class({
 
         let totalTime = this._player.duration;
 
-        this._durationLabel.set_text(Utils.formatTimeString(totalTime));
+        this._durationLabel.set_text(_formatTimeString(totalTime));
     },
 
     _onPlayerProgressChanged : function() {
