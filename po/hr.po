@@ -1,0 +1,63 @@
+# Croatian translation for sushi.
+# Copyright (C) 2017 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-03-02 03:25+0000\n"
+"PO-Revision-Date: 2017-04-08 18:23+0200\n"
+"Language-Team: Croatian <hr@li.org>\n"
+"Language: hr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Last-Translator: gogo <trebelnik2@gmail.com>\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: ../src/js/ui/fallbackRenderer.js:119
+msgid "Type"
+msgstr "Vrsta"
+
+#: ../src/js/ui/fallbackRenderer.js:120 ../src/js/ui/fallbackRenderer.js:129
+#: ../src/js/ui/fallbackRenderer.js:135 ../src/js/ui/spinnerBox.js:56
+msgid "Loading…"
+msgstr "Učitavanje..."
+
+#: ../src/js/ui/fallbackRenderer.js:128
+msgid "Size"
+msgstr "Veličina"
+
+#: ../src/js/ui/fallbackRenderer.js:134
+msgid "Modified"
+msgstr "Promijenjeno"
+
+#: ../src/js/viewers/audio.js:172
+msgid "from"
+msgstr "iz"
+
+#: ../src/js/viewers/audio.js:174
+msgid "by"
+msgstr "od"
+
+#: ../src/js/viewers/evince.js:77
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d od %d"
+
+#: ../src/libsushi/sushi-file-loader.c:639
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d stavka"
+msgstr[1] "%d stavke"
+msgstr[2] "%d stavaka"
+
+#: ../src/libsushi/sushi-file-loader.c:651
+msgid "Empty Folder"
+msgstr "Prazna mapa"
