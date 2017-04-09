@@ -37,6 +37,20 @@ const Sushi = imports.gi.Sushi;
 const MimeHandler = imports.ui.mimeHandler;
 const Utils = imports.ui.utils;
 
+function _getGeditScheme() {
+    let geditScheme = 'tango';
+    let schemaName = 'org.gnome.gedit.preferences.editor';
+    let installedSchemas = Gio.Settings.list_schemas();
+    if (installedSchemas.indexOf(schemaName) > -1) {
+        let geditSettings = new Gio.Settings({ schema: schemaName });
+        let geditSchemeName = geditSettings.get_string('scheme');
+        if (geditSchemeName != '')
+            geditScheme = geditSchemeName;
+    }
+
+    return geditScheme;
+}
+
 const TextRenderer = new Lang.Class({
     Name: 'TextRenderer',
 
@@ -50,21 +64,10 @@ const TextRenderer = new Lang.Class({
         this._file = file;
         this._callback = callback;
 
-        this._textLoader = new Sushi.TextLoader();
-        this._textLoader.connect('loaded',
-                                 Lang.bind(this, this._onBufferLoaded));
-        this._textLoader.uri = file.get_uri();
-
-        this._geditScheme = 'tango';
-        let schemaName = 'org.gnome.gedit.preferences.editor';
-        let installedSchemas = Gio.Settings.list_schemas();
-        if (installedSchemas.indexOf(schemaName) > -1) {
-            let geditSettings = new Gio.Settings({ schema: schemaName });
-            let geditSchemeName = geditSettings.get_string('scheme');
-            if (geditSchemeName != '')
-                this._geditScheme = geditSchemeName;
-        }
-
+        let textLoader = new Sushi.TextLoader();
+        textLoader.connect('loaded',
+                           Lang.bind(this, this._onBufferLoaded));
+        textLoader.uri = file.get_uri();
     },
 
     render : function() {
@@ -72,20 +75,20 @@ const TextRenderer = new Lang.Class({
     },
 
     _onBufferLoaded : function(loader, buffer) {
-        this._buffer = buffer;
-        this._buffer.highlight_syntax = true;
+        buffer.highlight_syntax = true;
 
         let styleManager = GtkSource.StyleSchemeManager.get_default();
-        let scheme = styleManager.get_scheme(this._geditScheme);
+        let geditScheme = _getGeditScheme();
+        let scheme = styleManager.get_scheme(geditScheme);
         this._buffer.set_style_scheme(scheme);
 
-        this._view = new GtkSource.View({ buffer: this._buffer,
+        this._view = new GtkSource.View({ buffer: buffer,
                                           editable: false,
                                           cursor_visible: false,
                                           monospace: true });
         this._view.set_can_focus(false);
 
-        if (this._buffer.get_language())
+        if (buffer.get_language())
             this._view.set_show_line_numbers(true);
 
         this._view.connect('button-press-event', Lang.bind(this, function(view, event) {
