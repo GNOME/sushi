@@ -35,7 +35,6 @@ const Sushi = imports.gi.Sushi;
 
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
-const SpinnerBox = imports.ui.spinnerBox;
 
 var MainWindow = new Lang.Class({
     Name: 'MainWindow',
@@ -187,7 +186,6 @@ var MainWindow = new Lang.Class({
          * if the loading takes too long.
          */
         this._renderer = new SpinnerBox.SpinnerBox();
-        this._renderer.startTimeout();
 
         file.query_info_async
         (Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME + ',' +
@@ -210,9 +208,6 @@ var MainWindow = new Lang.Class({
     },
 
     _onRendererPrepared : function() {
-        /* destroy the spinner renderer */
-        this._renderer.destroy();
-
         this._renderer = this._pendingRenderer;
         this._pendingRenderer = null;
 
