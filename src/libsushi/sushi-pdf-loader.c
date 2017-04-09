@@ -390,9 +390,11 @@ sushi_pdf_loader_set_uri (SushiPdfLoader *self,
   start_loading_document (self);
 }
 
-void
-sushi_pdf_loader_cleanup_document (SushiPdfLoader *self)
+static void
+sushi_pdf_loader_dispose (GObject *object)
 {
+  SushiPdfLoader *self = SUSHI_PDF_LOADER (object);
+
   if (self->priv->pdf_path) {
     g_unlink (self->priv->pdf_path);
     g_free (self->priv->pdf_path);
@@ -402,14 +404,6 @@ sushi_pdf_loader_cleanup_document (SushiPdfLoader *self)
     kill (self->priv->libreoffice_pid, SIGKILL);
     self->priv->libreoffice_pid = -1;
   }
-}
-
-static void
-sushi_pdf_loader_dispose (GObject *object)
-{
-  SushiPdfLoader *self = SUSHI_PDF_LOADER (object);
-
-  sushi_pdf_loader_cleanup_document (self);
 
   g_clear_object (&self->priv->document);
   g_free (self->priv->uri);
@@ -503,22 +497,4 @@ sushi_pdf_loader_new (const gchar *uri)
   return g_object_new (SUSHI_TYPE_PDF_LOADER,
                        "uri", uri,
                        NULL);
-}
-
-/**
- * sushi_pdf_loader_get_max_page_size:
- * @self:
- * @width: (out):
- * @height: (out):
- *
- */
-void
-sushi_pdf_loader_get_max_page_size (SushiPdfLoader *self,
-                                    gdouble *width,
-                                    gdouble *height)
-{
-  if (self->priv->document == NULL)
-    return;
-
-  ev_document_get_max_page_size (self->priv->document, width, height);
 }
