@@ -31,6 +31,7 @@ const GLib = imports.gi.GLib;
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Utils = imports.ui.utils;
@@ -39,6 +40,7 @@ const ImageRenderer = new Lang.Class({
     Name: 'ImageRenderer',
 
     _init : function(args) {
+        this._timeoutId = 0;
         this.moveOnClick = true;
         this.canFullScreen = true;
     },
@@ -69,14 +71,19 @@ const ImageRenderer = new Lang.Class({
     },
 
     _textureFromStream : function(stream) {
-        GdkPixbuf.Pixbuf.new_from_stream_async
+        GdkPixbuf.PixbufAnimation.new_from_stream_async
         (stream, null,
          Lang.bind(this, function(obj, res) {
-             let pix = GdkPixbuf.Pixbuf.new_from_stream_finish(res);
-             pix = pix.apply_embedded_orientation();
+             let anim = GdkPixbuf.PixbufAnimation.new_from_stream_finish(res);
+
+             this._iter = anim.get_iter(null);
+             let pix = this._iter.get_pixbuf().apply_embedded_orientation();
 
              this._texture = new GtkClutter.Texture({ keep_aspect_ratio: true });
              this._texture.set_from_pixbuf(pix);
+
+             if (!anim.is_static_image())
+                 this._startTimeout();
 
              /* we're ready now */
              this._callback();
@@ -97,6 +104,12 @@ const ImageRenderer = new Lang.Class({
         return Utils.getScaledSize(baseSize, allocation, fullScreen);
     },
 
+    _startTimeout : function() {
+        this._timeoutId = Mainloop.timeout_add(this._iter.get_delay_time(),
+                                               Lang.bind(this,
+                                                         this._advanceImage));
+    },
+
     createToolbar : function() {
         this._mainToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU });
         this._mainToolbar.get_style_context().add_class('osd');
@@ -109,6 +122,23 @@ const ImageRenderer = new Lang.Class({
         this._mainToolbar.insert(this._toolbarZoom, 0);
 
         return this._toolbarActor;
+    },
+
+    destroy : function () {
+        /* We should do the check here because it is possible
+         * that we never created a source if our image is
+         * not animated. */
+        if (this._timeoutId) {
+            Mainloop.source_remove(this._timeoutId);
+            this._timeoutId = 0;
+        }
+    },
+
+    _advanceImage : function () {
+        this._iter.advance(null);
+        let pix = this._iter.get_pixbuf().apply_embedded_orientation();
+        this._texture.set_from_pixbuf(pix);
+        return true;
     },
 });
 
