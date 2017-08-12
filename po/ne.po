@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Gnome Nepali Translation Project\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-04-28 23:46+0000\n"
+"PO-Revision-Date: 2017-08-12 17:39+0545\n"
+"Language-Team: Nepali Translation Team <chautari@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.3\n"
+"Last-Translator: Pawan Chitrakar <chautari@gmail.com>\n"
+"Language: ne\n"
+
+#: ../src/js/ui/fallbackRenderer.js:119
+msgid "Type"
+msgstr "प्रकार"
+
+#: ../src/js/ui/fallbackRenderer.js:120 ../src/js/ui/fallbackRenderer.js:129
+#: ../src/js/ui/fallbackRenderer.js:135 ../src/js/ui/spinnerBox.js:56
+msgid "Loading…"
+msgstr "लोड गर्दै…"
+
+#: ../src/js/ui/fallbackRenderer.js:128
+msgid "Size"
+msgstr "साइज"
+
+#: ../src/js/ui/fallbackRenderer.js:134
+msgid "Modified"
+msgstr "परिमार्जित"
+
+#: ../src/js/viewers/audio.js:172
+msgid "from"
+msgstr "बाट"
+
+#: ../src/js/viewers/audio.js:174
+msgid "by"
+msgstr "देखि"
+
+#: ../src/js/viewers/evince.js:77
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d मा %d"
+
+#: ../src/libsushi/sushi-file-loader.c:639
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d सामाग्री"
+msgstr[1] "%d सामाग्रीहरू"
+
+#: ../src/libsushi/sushi-file-loader.c:651
+msgid "Empty Folder"
+msgstr "खालीफोल्डर"
