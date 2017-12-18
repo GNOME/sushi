@@ -1,0 +1,62 @@
+# Afrikaans translation for sushi.
+# Copyright (C) 2017 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+# pieter <pieter@sonbesie.co.za>, 2017.
+# Pieter Schoeman <pieter@sonbesie.co.za>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=sushi&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-10-05 12:34+0000\n"
+"PO-Revision-Date: 2017-11-24 15:10+0200\n"
+"Last-Translator: Pieter Schoeman <pieter@sonbesie.co.za>\n"
+"Language-Team: Afrikaans <pieter@sonbesie.co.za>\n"
+"Language: af\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.7\n"
+
+#: ../src/js/ui/fallbackRenderer.js:119
+msgid "Type"
+msgstr "Tipe"
+
+#: ../src/js/ui/fallbackRenderer.js:120 ../src/js/ui/fallbackRenderer.js:129
+#: ../src/js/ui/fallbackRenderer.js:135 ../src/js/ui/spinnerBox.js:56
+msgid "Loading…"
+msgstr "Laai tans…"
+
+#: ../src/js/ui/fallbackRenderer.js:128
+msgid "Size"
+msgstr "Grootte"
+
+#: ../src/js/ui/fallbackRenderer.js:134
+msgid "Modified"
+msgstr "Verander"
+
+#: ../src/js/viewers/audio.js:172
+msgid "from"
+msgstr "van"
+
+#: ../src/js/viewers/audio.js:174
+msgid "by"
+msgstr "deur"
+
+#: ../src/js/viewers/evince.js:77
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d of %d"
+
+#: ../src/libsushi/sushi-file-loader.c:639
+#, c-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d item"
+msgstr[1] "%d items"
+
+#: ../src/libsushi/sushi-file-loader.c:651
+msgid "Empty Folder"
+msgstr "Leë gids"
