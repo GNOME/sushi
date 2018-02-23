@@ -1,14 +1,14 @@
 # Scottish Gaelic translation for sushi.
 # Copyright (C) 2015 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
-# GunChleoc <fios@foramnagaidhlig.net>, 2015.
+# GunChleoc <fios@foramnagaidhlig.net>, 2015, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=sushi&"
-"keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-17 14:29+0000\n"
-"PO-Revision-Date: 2015-11-17 17:49+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=sushi"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-04-08 16:24+0000\n"
+"PO-Revision-Date: 2018-02-23 17:35+0100\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Fòram na Gàidhlig\n"
 "Language: gd\n"
@@ -27,7 +27,7 @@ msgstr "Seòrsa"
 #: ../src/js/ui/fallbackRenderer.js:120 ../src/js/ui/fallbackRenderer.js:129
 #: ../src/js/ui/fallbackRenderer.js:135 ../src/js/ui/spinnerBox.js:56
 msgid "Loading…"
-msgstr "'Ga luchdadh…"
+msgstr "’Ga luchdadh…"
 
 #: ../src/js/ui/fallbackRenderer.js:128
 msgid "Size"
