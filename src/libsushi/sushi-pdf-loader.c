@@ -45,6 +45,8 @@ struct _SushiPdfLoaderPrivate {
   gchar *uri;
   gchar *pdf_path;
 
+  gboolean checked_libreoffice_flatpak;
+  gboolean have_libreoffice_flatpak;
   GPid libreoffice_pid;
 };
 
@@ -153,27 +155,70 @@ libreoffice_child_watch_cb (GPid pid,
   g_free (uri);
 }
 
+#define LIBREOFFICE_FLATPAK "org.libreoffice.LibreOffice"
+
+static gboolean
+check_libreoffice_flatpak (SushiPdfLoader *self,
+                           const gchar    *flatpak_path)
+{
+  const gchar *check_argv[] = { flatpak_path, "info", LIBREOFFICE_FLATPAK, NULL };
+  gboolean ret;
+  gint exit_status = -1;
+  GError *error = NULL;
+
+  if (self->priv->checked_libreoffice_flatpak)
+    return self->priv->have_libreoffice_flatpak;
+
+  self->priv->checked_libreoffice_flatpak = TRUE;
+
+  ret = g_spawn_sync (NULL, (gchar **) check_argv, NULL,
+                      G_SPAWN_DEFAULT, NULL, NULL,
+                      NULL, NULL,
+                      &exit_status, &error);
+
+  if (ret) {
+    GError *child_error = NULL;
+    if (g_spawn_check_exit_status (exit_status, &child_error)) {
+        g_debug ("Found LibreOffice flatpak!");
+        self->priv->have_libreoffice_flatpak = TRUE;
+    } else {
+        g_debug ("LibreOffice flatpak not found, flatpak info returned %i (%s)",
+                 exit_status, child_error->message);
+        g_clear_error (&child_error);
+    }
+  } else {
+    g_warning ("Error while checking for LibreOffice flatpak: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  return self->priv->have_libreoffice_flatpak;
+}
+
 static void
 load_libreoffice (SushiPdfLoader *self)
 {
-  gchar *libreoffice_path;
+  gchar *flatpak_path, *libreoffice_path = NULL;
+  gboolean use_flatpak = FALSE;
   GFile *file;
   gchar *doc_path, *doc_name, *tmp_name, *pdf_dir;
+  gchar *flatpak_doc = NULL, *flatpak_dir = NULL;
   gboolean res;
   GPid pid;
   GError *error = NULL;
-  const gchar *libreoffice_argv[] = {
-    NULL /* to be replaced with binary */,
-    "--convert-to", "pdf",
-    "--outdir", NULL /* to be replaced with output dir */,
-    NULL /* to be replaced with input file */,
-    NULL
-  };
+  const gchar *argv = NULL;
 
-  libreoffice_path = g_find_program_in_path ("libreoffice");
-  if (libreoffice_path == NULL) {
-    libreoffice_missing (self);
-    return;
+  flatpak_path = g_find_program_in_path ("flatpak");
+  if (flatpak_path != NULL)
+    use_flatpak = check_libreoffice_flatpak (self, flatpak_path);
+
+  if (!use_flatpak) {
+    libreoffice_path = g_find_program_in_path ("libreoffice");
+    if (libreoffice_path == NULL) {
+      libreoffice_missing (self);
+      g_free (flatpak_path);
+      return;
+    }
   }
 
   file = g_file_new_for_uri (self->priv->uri);
@@ -194,15 +239,51 @@ load_libreoffice (SushiPdfLoader *self)
 
   g_free (tmp_name);
 
-  libreoffice_argv[0] = libreoffice_path;
-  libreoffice_argv[4] = pdf_dir;
-  libreoffice_argv[5] = doc_path;
+  if (use_flatpak) {
+    flatpak_doc = g_strdup_printf ("--filesystem=%s:ro", doc_path);
+    flatpak_dir = g_strdup_printf ("--filesystem=%s", pdf_dir);
 
-  tmp_name = g_strjoinv (" ", (gchar **) libreoffice_argv);
+    const gchar *flatpak_argv[] = {
+      NULL, /* to be replaced with flatpak binary */
+      "run", "--command=/app/libreoffice/program/soffice",
+      "--nofilesystem=host",
+      NULL, /* to be replaced with filesystem permissions to read document */
+      NULL, /* to be replaced with filesystem permissions to write output */
+      LIBREOFFICE_FLATPAK,
+      "--convert-to", "pdf",
+      "--outdir", NULL, /* to be replaced with output dir */
+      NULL, /* to be replaced with input file */
+      NULL
+    };
+
+    flatpak_argv[0] = flatpak_path;
+    flatpak_argv[4] = flatpak_doc;
+    flatpak_argv[5] = flatpak_dir;
+    flatpak_argv[10] = pdf_dir;
+    flatpak_argv[11] = doc_path;
+
+    argv = (const gchar *) &flatpak_argv[0];
+  } else {
+    const gchar *libreoffice_argv[] = {
+      NULL, /* to be replaced with binary */
+      "--convert-to", "pdf",
+      "--outdir", NULL, /* to be replaced with output dir */
+      NULL, /* to be replaced with input file */
+      NULL
+    };
+
+    libreoffice_argv[0] = libreoffice_path;
+    libreoffice_argv[4] = pdf_dir;
+    libreoffice_argv[5] = doc_path;
+
+    argv = (const gchar *) &libreoffice_argv[0];
+  }
+
+  tmp_name = g_strjoinv (" ", (gchar **) argv);
   g_debug ("Executing LibreOffice command: %s", tmp_name);
   g_free (tmp_name);
 
-  res = g_spawn_async (NULL, (gchar **) libreoffice_argv, NULL,
+  res = g_spawn_async (NULL, (gchar **) argv, NULL,
                        G_SPAWN_DO_NOT_REAP_CHILD,
                        NULL, NULL,
                        &pid, &error);
@@ -210,6 +291,9 @@ load_libreoffice (SushiPdfLoader *self)
   g_free (pdf_dir);
   g_free (doc_path);
   g_free (libreoffice_path);
+  g_free (flatpak_path);
+  g_free (flatpak_doc);
+  g_free (flatpak_dir);
 
   if (!res) {
     g_warning ("Error while spawning libreoffice: %s",
