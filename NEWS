@@ -1,3 +1,10 @@
+3.28.0
+======
+
+- Add support for GIF animations (Princeton Ferro)
+- Use LibreOffice directly instead of unoconv (Robert McQueen)
+- Prefer LibreOffice from flatpak when installed (Robert McQueen)
+
 3.24.0
 ======
 
