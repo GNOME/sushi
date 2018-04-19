@@ -179,12 +179,12 @@ check_libreoffice_flatpak (SushiPdfLoader *self,
   if (ret) {
     GError *child_error = NULL;
     if (g_spawn_check_exit_status (exit_status, &child_error)) {
-        g_debug ("Found LibreOffice flatpak!");
-        self->priv->have_libreoffice_flatpak = TRUE;
+      g_debug ("Found LibreOffice flatpak!");
+      self->priv->have_libreoffice_flatpak = TRUE;
     } else {
-        g_debug ("LibreOffice flatpak not found, flatpak info returned %i (%s)",
-                 exit_status, child_error->message);
-        g_clear_error (&child_error);
+      g_debug ("LibreOffice flatpak not found, flatpak info returned %i (%s)",
+               exit_status, child_error->message);
+      g_clear_error (&child_error);
     }
   } else {
     g_warning ("Error while checking for LibreOffice flatpak: %s",
