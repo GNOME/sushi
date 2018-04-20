@@ -209,7 +209,7 @@ load_libreoffice (SushiPdfLoader *self)
   gboolean res;
   GPid pid;
   GError *error = NULL;
-  const gchar *argv = NULL;
+  const gchar **argv = NULL;
 
   flatpak_path = g_find_program_in_path ("flatpak");
   if (flatpak_path != NULL)
@@ -265,7 +265,7 @@ load_libreoffice (SushiPdfLoader *self)
     flatpak_argv[10] = pdf_dir;
     flatpak_argv[11] = doc_path;
 
-    argv = (const gchar *) &flatpak_argv[0];
+    argv = flatpak_argv;
   } else {
     const gchar *libreoffice_argv[] = {
       NULL, /* to be replaced with binary */
@@ -279,7 +279,7 @@ load_libreoffice (SushiPdfLoader *self)
     libreoffice_argv[4] = pdf_dir;
     libreoffice_argv[5] = doc_path;
 
-    argv = (const gchar *) &libreoffice_argv[0];
+    argv = libreoffice_argv;
   }
 
   tmp_name = g_strjoinv (" ", (gchar **) argv);
