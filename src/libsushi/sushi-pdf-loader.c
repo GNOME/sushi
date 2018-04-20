@@ -172,7 +172,10 @@ check_libreoffice_flatpak (SushiPdfLoader *self,
   self->priv->checked_libreoffice_flatpak = TRUE;
 
   ret = g_spawn_sync (NULL, (gchar **) check_argv, NULL,
-                      G_SPAWN_DEFAULT, NULL, NULL,
+                      G_SPAWN_DEFAULT |
+                      G_SPAWN_STDERR_TO_DEV_NULL |
+                      G_SPAWN_STDOUT_TO_DEV_NULL,
+                      NULL, NULL,
                       NULL, NULL,
                       &exit_status, &error);
 
