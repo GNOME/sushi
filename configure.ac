@@ -1,6 +1,6 @@
 dnl -*- mode: m4 -*-
 AC_PREREQ(2.63)
-AC_INIT([sushi],[3.28.2],[],[sushi])
+AC_INIT([sushi],[3.28.3],[],[sushi])
 
 AC_CONFIG_HEADERS([config/config.h])
 AC_CONFIG_SRCDIR([src/main.c])

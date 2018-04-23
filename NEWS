@@ -1,3 +1,9 @@
+3.28.3
+======
+
+- Fix another LibreOffice to PDF conversion regression (hopefully
+  for good this time)
+
 3.28.2
 ======
 
