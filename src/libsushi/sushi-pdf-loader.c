@@ -209,7 +209,7 @@ load_libreoffice (SushiPdfLoader *self)
   gboolean res;
   GPid pid;
   GError *error = NULL;
-  const gchar **argv = NULL;
+  gchar **argv = NULL;
 
   flatpak_path = g_find_program_in_path ("flatpak");
   if (flatpak_path != NULL)
@@ -265,7 +265,7 @@ load_libreoffice (SushiPdfLoader *self)
     flatpak_argv[10] = pdf_dir;
     flatpak_argv[11] = doc_path;
 
-    argv = flatpak_argv;
+    argv = g_strdupv ((gchar **) flatpak_argv);
   } else {
     const gchar *libreoffice_argv[] = {
       NULL, /* to be replaced with binary */
@@ -279,7 +279,7 @@ load_libreoffice (SushiPdfLoader *self)
     libreoffice_argv[4] = pdf_dir;
     libreoffice_argv[5] = doc_path;
 
-    argv = libreoffice_argv;
+    argv = g_strdupv ((gchar **) libreoffice_argv);
   }
 
   tmp_name = g_strjoinv (" ", (gchar **) argv);
@@ -297,6 +297,7 @@ load_libreoffice (SushiPdfLoader *self)
   g_free (flatpak_path);
   g_free (flatpak_doc);
   g_free (flatpak_dir);
+  g_strfreev (argv);
 
   if (!res) {
     g_warning ("Error while spawning libreoffice: %s",
