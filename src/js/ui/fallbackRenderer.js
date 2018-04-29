@@ -58,9 +58,9 @@ var FallbackRenderer = new Lang.Class({
 
         this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                   spacing: 6 });
-        this._image = new Gtk.Image({ icon_name: 'document',
-                                      pixel_size: 256 });
+        this._image = new Gtk.Image();
         this._box.pack_start(this._image, false, false, 0);
+        this._updateIcon(new Gio.ThemedIcon({ name: 'text-x-generic' }));
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
@@ -135,6 +135,21 @@ var FallbackRenderer = new Lang.Class({
         this._dateLabel.set_markup(dateStr);
     },
 
+    _updateIcon: function(icon) {
+        let iconTheme = Gtk.IconTheme.get_default();
+        let iconInfo = iconTheme.lookup_by_gicon_for_scale(icon, 256,
+            this._image.scale_factor, 0);
+        if (!iconInfo)
+            return;
+
+        try {
+            let surface = iconInfo.load_surface(this._image.get_window());
+            this._image.surface = surface;
+        } catch (e) {
+            logError(e, `Error loading surface for icon ${icon.to_string()}`);
+        }
+    },
+
     _onFileInfoChanged : function() {
         if (!this._fileLoader.get_loading()) {
             this._spinner.stop();
@@ -142,7 +157,7 @@ var FallbackRenderer = new Lang.Class({
         }
 
         if (this._fileLoader.icon)
-            this._image.set_from_pixbuf(this._fileLoader.icon);
+            this._updateIcon(this._fileLoader.icon);
 
         this._applyLabels();
         this._mainWindow.refreshSize();

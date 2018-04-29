@@ -435,7 +435,7 @@ sushi_file_loader_get_property (GObject *object,
     g_value_take_string (value, sushi_file_loader_get_date_string (self));
     break;
   case PROP_ICON:
-    g_value_take_object (value, sushi_file_loader_get_icon (self));
+    g_value_set_object (value, sushi_file_loader_get_icon (self));
     break;
   case PROP_FILE:
     g_value_set_object (value, self->priv->file);
@@ -521,7 +521,7 @@ sushi_file_loader_class_init (SushiFileLoaderClass *klass)
     g_param_spec_object ("icon",
                          "Icon",
                          "The icon of the file",
-                         GDK_TYPE_PIXBUF,
+                         G_TYPE_ICON,
                          G_PARAM_READABLE);
 
   g_type_class_add_private (klass, sizeof (SushiFileLoaderPrivate));
@@ -567,41 +567,15 @@ sushi_file_loader_get_display_name (SushiFileLoader *self)
  * sushi_file_loader_get_icon:
  * @self:
  *
- * Returns: (transfer full):
+ * Returns: (transfer none):
  */
-GdkPixbuf *
+GIcon *
 sushi_file_loader_get_icon (SushiFileLoader *self)
 {
-  GdkPixbuf *retval;
-  GtkIconInfo *info;
-  GError *error = NULL;
-
   if (self->priv->info == NULL)
     return NULL;
 
-  info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
-                                         g_file_info_get_icon (self->priv->info),
-                                         256, 0);
-
-  if (info == NULL)
-    return NULL;
-
-  retval = gtk_icon_info_load_icon (info, &error);
-  g_object_unref (info);
-
-  if (error != NULL) {
-    gchar *uri;
-
-    uri = g_file_get_uri (self->priv->file);
-    g_warning ("Unable to load icon for %s: %s", uri, error->message);
-
-    g_free (uri);
-    g_error_free (error);
-
-    return NULL;
-  }
-
-  return retval;
+  return g_file_info_get_icon (self->priv->info);
 }
 
 /**

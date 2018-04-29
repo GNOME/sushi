@@ -28,7 +28,6 @@
 
 #include <glib-object.h>
 #include <gio/gio.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
@@ -63,7 +62,7 @@ gchar *sushi_file_loader_get_display_name (SushiFileLoader *self);
 gchar *sushi_file_loader_get_size_string  (SushiFileLoader *self);
 gchar *sushi_file_loader_get_date_string  (SushiFileLoader *self);
 gchar *sushi_file_loader_get_content_type_string (SushiFileLoader *self);
-GdkPixbuf *sushi_file_loader_get_icon     (SushiFileLoader *self);
+GIcon *sushi_file_loader_get_icon     (SushiFileLoader *self);
 GFileType sushi_file_loader_get_file_type (SushiFileLoader *self);
 
 gboolean sushi_file_loader_get_loading (SushiFileLoader *self);
