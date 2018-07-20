@@ -1,8 +1,8 @@
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.gnome.Sushi.service.in
+service_in_files = org.gnome.NautilusPreviewer.service.in
 service_DATA = $(service_in_files:.service.in=.service)
 
-org.gnome.Sushi.service: org.gnome.Sushi.service.in Makefile
+org.gnome.NautilusPreviewer.service: org.gnome.NautilusPreviewer.service.in Makefile
 	$(AM_V_GEN) sed -e "s|\@bindir\@|$(bindir)|" $< > $@
 
 EXTRA_DIST = \
