@@ -1,0 +1,120 @@
+{
+    "app-id": "org.gnome.NautilusPreviewer",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.28",
+    "sdk": "org.gnome.Sdk",
+    "build-options": {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g",
+        "env": {
+            "V": "1"
+        }
+    },
+    "command": "sushi",
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "*.a"
+    ],
+    "finish-args": [
+        "--socket=x11",
+        "--share=ipc",
+        "--device=dri",
+        "--talk-name=org.freedesktop.FileManager1",
+        "--filesystem=xdg-run/dconf",
+        "--filesystem=~/.config/dconf:ro",
+        "--filesystem=host:ro",
+        "--filesystem=home",
+        "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+    ],
+    "modules": [
+        {
+            "name": "popplerdata",
+            "no-autogen": true,
+            "make-install-args": ["prefix=/app"],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://poppler.freedesktop.org/poppler-data-0.4.9.tar.gz",
+                    "sha256": "1f9c7e7de9ecd0db6ab287349e31bf815ca108a5a175cf906a90163bdbe32012"
+                }
+            ]
+        },
+        {
+            "name": "poppler",
+            "buildsystem": "cmake-ninja",
+            "config-opts": ["-DCMAKE_INSTALL_LIBDIR=/app/lib", "-DCMAKE_INSTALL_INCLUDEDIR=/app/include",
+                            "-DENABLE_LIBOPENJPEG=none"],
+            "cleanup": [ "/bin" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://poppler.freedesktop.org/poppler-0.64.0.tar.xz",
+                    "sha256": "b21df92ca99f78067785cf2dc8e06deb04726b62389c0ee1f5d8b103c77f64b1"
+                }
+            ]
+        },
+        {
+            "name": "evince",
+            "cleanup": [ "/share/GConf", "/share/help" ],
+            "config-opts": [ "--disable-nautilus", "--disable-viewer",
+                             "--disable-previewer", "--disable-dbus",
+                             "--disable-browser-plugin", "--enable-introspection",
+                             "--disable-comics" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/evince/3.28/evince-3.28.2.tar.xz",
+                    "sha256": "0955d22d85c9f6d322b6cbb464f1cc4c352db619017ec95dad4cc5c3440f73e1"
+                }
+            ]
+        },
+        {
+            "name": "neon",
+            "config-opts": [
+                "--with-libproxy=no",
+                "--with-gssapi=no"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://http.debian.net/debian/pool/main/n/neon27/neon27_0.30.2.orig.tar.gz",
+                    "sha256": "db0bd8cdec329b48f53a6f00199c92d5ba40b0f015b153718d1b15d3d967fbca"
+                }
+            ]
+        },
+        {
+            "name": "libmusicbrainz",
+            "buildsystem": "cmake",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/metabrainz/libmusicbrainz/releases/download/release-5.1.0/libmusicbrainz-5.1.0.tar.gz",
+                    "sha256": "6749259e89bbb273f3f5ad7acdffb7c47a2cf8fcaeab4c4695484cef5f4c6b46"
+                }
+            ]
+        },
+        {
+            "name": "gtksourceview",
+            "config-opts": [
+                "--disable-static"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://download.gnome.org/sources/gtksourceview/3.24/gtksourceview-3.24.8.tar.xz",
+                    "sha256": "1e9bb8ff190db705deb916dd23ff681f0e8803aec407bf0fd64c7e615ac436fe"
+                }
+            ]
+        },
+        {
+            "name": "sushi",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/sushi.git"
+                }
+            ]
+        }
+    ]
+}
