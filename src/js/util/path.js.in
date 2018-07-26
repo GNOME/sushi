@@ -23,4 +23,4 @@
  *
  */
 
-let LOCALE_DIR = '@localedir@';
+var LOCALE_DIR = '@localedir@';

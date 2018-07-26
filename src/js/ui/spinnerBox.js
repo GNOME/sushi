@@ -35,7 +35,7 @@ const Mainloop = imports.mainloop;
 let SPINNER_SIZE = 48;
 let TIMEOUT = 500;
 
-const SpinnerBox = new Lang.Class({
+var SpinnerBox = new Lang.Class({
     Name: 'SpinnerBox',
 
     _init : function(args) {

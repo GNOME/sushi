@@ -46,7 +46,7 @@ const SushiIface = '<node> \
 </interface> \
 </node>';
 
-const Application = new Lang.Class({
+var Application = new Lang.Class({
     Name: 'Application',
     Extends: Gtk.Application,
 

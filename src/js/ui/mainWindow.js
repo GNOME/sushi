@@ -44,7 +44,7 @@ const SpinnerBox = imports.ui.spinnerBox;
 const Tweener = imports.ui.tweener;
 const Utils = imports.ui.utils;
 
-const MainWindow = new Lang.Class({
+var MainWindow = new Lang.Class({
     Name: 'MainWindow',
 
     _init : function(args) {

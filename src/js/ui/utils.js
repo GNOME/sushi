@@ -30,7 +30,7 @@ const Lang = imports.lang;
 
 const Constants = imports.util.constants;
 
-let slowDownFactor = 0;
+var slowDownFactor = 0;
 
 function setSlowDownFactor(factor) {
     slowDownFactor = factor;

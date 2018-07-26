@@ -35,7 +35,7 @@ const Lang = imports.lang;
 const Constants = imports.util.constants;
 const Utils = imports.ui.utils;
 
-const FallbackRenderer = new Lang.Class({
+var FallbackRenderer = new Lang.Class({
     Name: 'FallbackRenderer',
 
     _init : function() {
