@@ -2,7 +2,7 @@ dbus_conf = configuration_data()
 
 dbus_conf.set(
   'bindir',
-  join_paths(get_option('prefix'), get_option('bindir')),
+  bindir,
 )
 
 configure_file(

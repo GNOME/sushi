@@ -1,6 +1,4 @@
-gnome = import(
-  'gnome'
-)
+gnome = import('gnome')
 
 sushi_sources = [
   'main.c',
@@ -56,7 +54,7 @@ sushi_resources = gnome.compile_resources(
 
 sushi_sources += sushi_resources
 
-sushi_start = executable(
+executable(
   'sushi-start',
   sushi_sources,
   # link against the just built libsushi
@@ -66,6 +64,7 @@ sushi_start = executable(
 )
 
 conf = configuration_data()
+
 conf.set(
   'pkgdatadir',
   join_paths(datadir, 'sushi'),
@@ -88,7 +87,7 @@ sushi_bin = configure_file(
 install_data(
   sushi_bin,
   install_mode: 'rwxr-xr-x',
-  install_dir: join_paths(get_option('prefix'), get_option('bindir')),
+  install_dir: bindir,
 )
 
 # Install the Javascript components without installing path.js.in as well
