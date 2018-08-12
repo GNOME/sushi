@@ -6,8 +6,8 @@ dbus_conf.set(
 )
 
 configure_file(
-  input: 'org.gnome.Sushi.service.in',
-  output: 'org.gnome.Sushi.service',
+  input: 'org.gnome.NautilusPreviewer.service.in',
+  output: 'org.gnome.NautilusPreviewer.service',
   configuration: dbus_conf,
   install_dir: join_paths(datadir, 'dbus-1', 'services'),
 )
