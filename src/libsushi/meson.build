@@ -20,7 +20,7 @@ libsushi_headers = [
   'sushi-utils.h',
 ]
 
-enum = gnome.mkenums(
+libsushi_enum = gnome.mkenums(
   'libsushi_enum',
   c_template: 'sushi-enum-types.c.in',
   h_template: 'sushi-enum-types.h.in',
@@ -32,8 +32,8 @@ libsushi = shared_library(
   dependencies: deps,
   sources: [
     libsushi_c,
+    libsushi_enum,
     libsushi_headers,
-    enum,
   ],
   install: true,
   install_dir: join_paths(libdir, 'sushi'),
@@ -50,8 +50,8 @@ gnome.generate_gir(
   libsushi,
   sources: [
     libsushi_c,
+    libsushi_enum,
     libsushi_headers,
-    enum,
   ],
   nsversion: '1.0',
   namespace: 'Sushi',
@@ -63,8 +63,8 @@ gnome.generate_gir(
     'GstTag-1.0',
     'GdkPixbuf-2.0',
     'Gtk-3.0',
-    'EvinceDocument-3.0',
     'GtkSource-3.0',
+    'EvinceDocument-3.0',
   ],
   install: true,
   install_dir_gir: join_paths(datadir, 'sushi', 'gir-1.0'),

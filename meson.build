@@ -25,6 +25,7 @@ introspection_dep = dependency('gobject-introspection-1.0', version: '>=1.0.1')
 musicbrainz_dep = dependency('libmusicbrainz5')
 webkit_dep = dependency('webkit2gtk-4.0')
 
+bindir = join_paths(get_option('prefix'), get_option('bindir'))
 datadir = join_paths(get_option('prefix'), get_option('datadir'))
 libdir = join_paths(get_option('prefix'), get_option('libdir'))
 libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
