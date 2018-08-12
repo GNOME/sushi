@@ -1,6 +1,6 @@
 i18n = import('i18n')
 
 i18n.gettext(
-  'sushi',
-  install: true,
+  meson.project_name(),
+  preset: 'glib',
 )
