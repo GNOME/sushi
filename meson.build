@@ -31,26 +31,11 @@ libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
 
 add_project_arguments(
   '-DSUSHI_LIBDIR="' + libdir + '"',
-  language: 'c',
-)
-add_project_arguments(
   '-DSUSHI_DATADIR="' + datadir + '"',
-  language: 'c',
-)
-add_project_arguments(
   '-DSUSHI_PKGDATADIR="' + join_paths(datadir, 'sushi') + '"',
-  language: 'c',
-)
-add_project_arguments(
   '-DSUSHI_TOP_SRCDIR="' + meson.current_source_dir() + '"',
-  language: 'c',
-)
-add_project_arguments(
   '-DSUSHI_BUILDDIR="' + meson.current_build_dir() + '"',
-  language: 'c',
-)
-add_project_arguments(
-  '-DGETTEXT_PACKAGE="sushi"',
+  '-DGETTEXT_PACKAGE="' + meson.project_name() + '"',
   language: 'c',
 )
 
