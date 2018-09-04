@@ -1,3 +1,9 @@
+3.30.0
+======
+
+- Fix miscellaneous warnings
+- Rename service file to match owned bus name
+
 3.28.3
 ======
 
