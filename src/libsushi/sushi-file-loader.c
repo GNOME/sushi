@@ -23,8 +23,6 @@
  *
  */
 
-#include <config.h>
-
 #include "sushi-file-loader.h"
 
 #include <gtk/gtk.h>

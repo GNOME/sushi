@@ -25,24 +25,6 @@ deps = [
   webkit_dep,
 ]
 
-# This actually doesn't do anything,
-# but main.c includes config.h, so we need to have some value in it
-conf_h = configuration_data()
-conf_h.set_quoted(
-  'PACKAGE_NAME',
-  'sushi',
-)
-
-configure_file(
-  output: 'config.h',
-  configuration: conf_h,
-)
-
-# Include the just generated config.h
-include_dirs = [
-  include_directories('.'),
-]
-
 # Compile libsushi and its introspection data
 subdir('libsushi')
 

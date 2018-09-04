@@ -36,8 +36,7 @@ libsushi = shared_library(
     libsushi_headers,
   ],
   install: true,
-  install_dir: join_paths(libdir, 'sushi'),
-  include_directories: include_dirs,
+  install_dir: join_paths(libdir, 'sushi')
 )
 
 # We use that later on to link the sushi-start executable against libsushi
