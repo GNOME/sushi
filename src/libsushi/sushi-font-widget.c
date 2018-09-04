@@ -42,7 +42,7 @@ enum {
   NUM_SIGNALS
 };
 
-struct _SushiFontWidgetPrivate {
+typedef struct {
   gchar *uri;
   gint face_index;
 
@@ -57,12 +57,19 @@ struct _SushiFontWidgetPrivate {
   gchar *sample_string;
 
   gchar *font_name;
+} SushiFontWidgetPrivate;
+
+struct _SushiFontWidget {
+  GtkDrawingArea parent_instance;
+
+  SushiFontWidgetPrivate *priv;
 };
 
 static GParamSpec *properties[NUM_PROPERTIES] = { NULL, };
 static guint signals[NUM_SIGNALS] = { 0, };
 
-G_DEFINE_TYPE (SushiFontWidget, sushi_font_widget, GTK_TYPE_DRAWING_AREA);
+G_DEFINE_TYPE_WITH_PRIVATE (SushiFontWidget, sushi_font_widget,
+                            GTK_TYPE_DRAWING_AREA)
 
 #define SURFACE_SIZE 4
 #define SECTION_SPACING 16
@@ -826,7 +833,6 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
                   G_TYPE_NONE, 1, G_TYPE_STRING);
 
   g_object_class_install_properties (oclass, NUM_PROPERTIES, properties);
-  g_type_class_add_private (klass, sizeof (SushiFontWidgetPrivate));
 }
 
 SushiFontWidget *
