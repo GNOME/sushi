@@ -58,11 +58,13 @@ struct _SushiFontWidgetClass
 
 GType    sushi_font_widget_get_type     (void) G_GNUC_CONST;
 
-SushiFontWidget *sushi_font_widget_new (const gchar *uri);
+SushiFontWidget *sushi_font_widget_new (const gchar *uri, gint face_index);
 
 FT_Face sushi_font_widget_get_ft_face (SushiFontWidget *self);
 
 const gchar *sushi_font_widget_get_uri (SushiFontWidget *self);
+
+void sushi_font_widget_load (SushiFontWidget *self);
 
 G_END_DECLS
 

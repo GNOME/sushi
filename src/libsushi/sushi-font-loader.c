@@ -43,13 +43,14 @@ typedef struct {
 static FontLoadJob *
 font_load_job_new (FT_Library library,
                    const gchar *uri,
+                   gint face_index,
                    GAsyncReadyCallback callback,
                    gpointer user_data)
 {
   FontLoadJob *job = g_slice_new0 (FontLoadJob);
 
   job->library = library;
-  job->face_index = 0;
+  job->face_index = (FT_Long) face_index;
   job->file = g_file_new_for_uri (uri);
 
   return job;
@@ -132,13 +133,14 @@ font_load_job (GTask *task,
 FT_Face
 sushi_new_ft_face_from_uri (FT_Library library,
                             const gchar *uri,
+                            gint face_index,
                             gchar **contents,
                             GError **error)
 {
   FontLoadJob *job = NULL;
   FT_Face face;
 
-  job = font_load_job_new (library, uri, NULL, NULL);
+  job = font_load_job_new (library, uri, face_index, NULL, NULL);
   font_load_job_do_load (job, error);
 
   if ((error != NULL) && (*error != NULL)) {
@@ -159,10 +161,11 @@ sushi_new_ft_face_from_uri (FT_Library library,
 void
 sushi_new_ft_face_from_uri_async (FT_Library library,
                                   const gchar *uri,
+                                  gint face_index,
                                   GAsyncReadyCallback callback,
                                   gpointer user_data)
 {
-  FontLoadJob *job = font_load_job_new (library, uri, callback, user_data);
+  FontLoadJob *job = font_load_job_new (library, uri, face_index, callback, user_data);
   GTask *task;
 
   task = g_task_new (NULL, NULL, callback, user_data);

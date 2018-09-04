@@ -32,11 +32,13 @@
 
 FT_Face sushi_new_ft_face_from_uri (FT_Library library,
                                     const gchar *uri,
+                                    gint face_index,
                                     gchar **contents,
                                     GError **error);
 
 void sushi_new_ft_face_from_uri_async (FT_Library library,
                                        const gchar *uri,
+                                       gint face_index,
                                        GAsyncReadyCallback callback,
                                        gpointer user_data);
 

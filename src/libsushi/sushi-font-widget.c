@@ -32,6 +32,7 @@
 
 enum {
   PROP_URI = 1,
+  PROP_FACE_INDEX,
   NUM_PROPERTIES
 };
 
@@ -43,6 +44,7 @@ enum {
 
 struct _SushiFontWidgetPrivate {
   gchar *uri;
+  gint face_index;
 
   FT_Library library;
   FT_Face face;
@@ -679,23 +681,14 @@ font_face_async_ready_cb (GObject *object,
   g_signal_emit (self, signals[LOADED], 0);
 }
 
-static void
-load_font_face (SushiFontWidget *self)
+void
+sushi_font_widget_load (SushiFontWidget *self)
 {
   sushi_new_ft_face_from_uri_async (self->priv->library,
                                     self->priv->uri,
+                                    self->priv->face_index,
                                     font_face_async_ready_cb,
                                     self);
-}
-
-static void
-sushi_font_widget_set_uri (SushiFontWidget *self,
-                           const gchar *uri)
-{
-  g_free (self->priv->uri);
-  self->priv->uri = g_strdup (uri);
-
-  load_font_face (self);
 }
 
 static void
@@ -728,6 +721,9 @@ sushi_font_widget_get_property (GObject *object,
   case PROP_URI:
     g_value_set_string (value, self->priv->uri);
     break;
+  case PROP_FACE_INDEX:
+    g_value_set_int (value, self->priv->face_index);
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     break;
@@ -744,7 +740,10 @@ sushi_font_widget_set_property (GObject *object,
 
   switch (prop_id) {
   case PROP_URI:
-    sushi_font_widget_set_uri (self, g_value_get_string (value));
+    self->priv->uri = g_value_dup_string (value);
+    break;
+  case PROP_FACE_INDEX:
+    self->priv->face_index = g_value_get_int (value);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -777,6 +776,16 @@ sushi_font_widget_finalize (GObject *object)
 }
 
 static void
+sushi_font_widget_constructed (GObject *object)
+{
+  SushiFontWidget *self = SUSHI_FONT_WIDGET (object);
+
+  sushi_font_widget_load (self);
+
+  G_OBJECT_CLASS (sushi_font_widget_parent_class)->constructed (object);
+}
+
+static void
 sushi_font_widget_class_init (SushiFontWidgetClass *klass)
 {
   GObjectClass *oclass = G_OBJECT_CLASS (klass);
@@ -785,6 +794,7 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
   oclass->finalize = sushi_font_widget_finalize;
   oclass->set_property = sushi_font_widget_set_property;
   oclass->get_property = sushi_font_widget_get_property;
+  oclass->constructed = sushi_font_widget_constructed;
 
   wclass->draw = sushi_font_widget_draw;
   wclass->get_preferred_width = sushi_font_widget_get_preferred_width;
@@ -793,7 +803,12 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
   properties[PROP_URI] =
     g_param_spec_string ("uri",
                          "Uri", "Uri",
-                         NULL, G_PARAM_READWRITE);
+                         NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  properties[PROP_FACE_INDEX] =
+    g_param_spec_int ("face-index",
+                      "Face index", "Face index",
+                      0, G_MAXINT,
+                      0, G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
   signals[LOADED] =
     g_signal_new ("loaded",
@@ -815,10 +830,11 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
 }
 
 SushiFontWidget *
-sushi_font_widget_new (const gchar *uri)
+sushi_font_widget_new (const gchar *uri, gint face_index)
 {
   return g_object_new (SUSHI_TYPE_FONT_WIDGET,
                        "uri", uri,
+                       "face-index", face_index,
                        NULL);
 }
 

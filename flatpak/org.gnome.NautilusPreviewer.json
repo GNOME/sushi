@@ -112,7 +112,7 @@
             "sources": [
                 {
                     "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/sushi.git"
+                    "url": ".."
                 }
             ]
         }
