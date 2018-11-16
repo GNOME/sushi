@@ -1,7 +1,7 @@
 project(
   'sushi',
   'c',
-  version: '3.31.0',
+  version: '3.31.2',
   meson_version: '>=0.42.0'
 )
 

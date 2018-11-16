@@ -1,3 +1,9 @@
+3.31.2
+======
+
+- Port to meson build system (Rasmus Thomsen, Will Thompson)
+- Replace some deprecated API (Martin Blanchard)
+
 3.30.0
 ======
 
