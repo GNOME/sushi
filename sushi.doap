@@ -7,7 +7,7 @@
   <name xml:lang="en">Sushi</name>
   <shortdesc xml:lang="en">A quick previewer for Nautilus</shortdesc>
   <download-page rdf:resource="http://download.gnome.org/sources/sushi/" />
-  <bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=sushi" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/sushi/issues/" />
 
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
   <programming-language>JavaScript</programming-language>
