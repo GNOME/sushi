@@ -76,7 +76,9 @@ var MainWindow = new Lang.Class({
                                            windowPosition: Gtk.WindowPosition.CENTER,
                                            gravity: Gdk.Gravity.CENTER,
                                            application: this._application });
-        this._titlebar = new Gtk.HeaderBar({ show_close_button: true });
+        this._titlebar = new Gtk.HeaderBar({ show_close_button: true,
+                                           // don't support maximize and minimize
+                                             decoration_layout: "menu:close" });
         this._gtkWindow.set_titlebar(this._titlebar);
 
         let screen = Gdk.Screen.get_default();
