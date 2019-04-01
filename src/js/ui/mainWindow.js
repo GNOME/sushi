@@ -66,7 +66,7 @@ var MainWindow = new Lang.Class({
         this._createGtkWindow();
         this._createClutterEmbed();
 
-	this.file = null;
+    this.file = null;
     },
 
     _createGtkWindow : function() {
@@ -118,7 +118,7 @@ var MainWindow = new Lang.Class({
         this._stage.add_actor(this._mainGroup);
 
         this._gtkWindow.connect('key-press-event',
-				Lang.bind(this, this._onKeyPressEvent));
+                Lang.bind(this, this._onKeyPressEvent));
         this._gtkWindow.connect('motion-notify-event',
                                 Lang.bind(this, this._onMotionNotifyEvent));
 
@@ -229,6 +229,8 @@ var MainWindow = new Lang.Class({
     _getWindowSize : function() {
         let textureSize = this._getTextureSize();
         let windowSize = textureSize;
+        let ratios = [1., 1.];
+        let q = 1.;
 
         if (textureSize[0] < (Constants.VIEW_MIN - 2 * Constants.VIEW_PADDING_X) &&
             textureSize[1] < (Constants.VIEW_MIN - Constants.VIEW_PADDING_Y)) {
@@ -236,6 +238,12 @@ var MainWindow = new Lang.Class({
         } else if (!this._isFullScreen) {
             windowSize = [ windowSize[0] + 2 * Constants.VIEW_PADDING_X,
                            windowSize[1] + Constants.VIEW_PADDING_Y ];
+            ratios = [windowSize[0] / Constants.VIEW_START_W,
+                  windowSize[1] / Constants.VIEW_START_H];
+            q = Math.max(ratios[0], ratios[1]);
+            if (q > 1){
+                windowSize = [Math.floor(windowSize[0]/q), Math.floor(windowSize[1]/q)];
+            }
         }
 
         return windowSize;
@@ -345,7 +353,7 @@ var MainWindow = new Lang.Class({
         this._stage.disconnect(this._unFullScreenId);
         this._unFullScreenId = 0;
 
-	/* We want the alpha background back now */
+    /* We want the alpha background back now */
         this._background.destroy();
         this._background = null;
         this._createAlphaBackground();
@@ -399,9 +407,9 @@ var MainWindow = new Lang.Class({
         /* We want a solid black background */
         this._background.destroy();
         this._background = null;
-	this._createSolidBackground();
+    this._createSolidBackground();
 
-	/* Fade in everything */
+    /* Fade in everything */
         Tweener.addTween(this._mainGroup,
                          { opacity: 255,
                            time: 0.15,
@@ -554,7 +562,7 @@ var MainWindow = new Lang.Class({
     },
 
     setFile : function(file) {
-	this.file = file;
+    this.file = file;
         this._createAlphaBackground();
         this._createRenderer(file);
         this._createTexture();
