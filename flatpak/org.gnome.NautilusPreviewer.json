@@ -1,7 +1,7 @@
 {
     "app-id": "org.gnome.NautilusPreviewer",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.28",
+    "runtime-version": "3.32",
     "sdk": "org.gnome.Sdk",
     "build-options": {
         "cflags": "-O2 -g",
@@ -60,12 +60,12 @@
             "config-opts": [ "--disable-nautilus", "--disable-viewer",
                              "--disable-previewer", "--disable-dbus",
                              "--disable-browser-plugin", "--enable-introspection",
-                             "--disable-comics" ],
+                             "--disable-comics", "--without-gspell" ],
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://download.gnome.org/sources/evince/3.28/evince-3.28.2.tar.xz",
-                    "sha256": "0955d22d85c9f6d322b6cbb464f1cc4c352db619017ec95dad4cc5c3440f73e1"
+                    "url": "http://download.gnome.org/sources/evince/3.32/evince-3.32.0.tar.xz",
+                    "sha256": "f0d977216466ed2f5a6de64476ef7113dc7c7c9832336f1ff07f3c03c5324c40"
                 }
             ]
         },
