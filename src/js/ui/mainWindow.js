@@ -23,9 +23,8 @@
  *
  */
 
-const {Gdk, Gio, GLib, Gtk, Sushi} = imports.gi;
+const {Gdk, Gio, GLib, GObject, Gtk, Sushi} = imports.gi;
 
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const Constants = imports.util.constants;
@@ -33,17 +32,15 @@ const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-const Embed = new Lang.Class({
-    Name: 'Embed',
-    Extends: Gtk.Overlay,
-    Signals: { 'size-request': {} },
-
-    vfunc_get_request_mode: function() {
+const Embed = GObject.registerClass({
+    Signals: { 'size-request': {} }
+}, class Embed extends Gtk.Overlay {
+    vfunc_get_request_mode() {
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
-    },
+    }
 
-    vfunc_get_preferred_width: function() {
-        let [min, nat] = this.parent();
+    vfunc_get_preferred_width() {
+        let [min, nat] = super.vfunc_get_preferred_width();
 
         min = Math.max(min, Constants.VIEW_MIN);
         nat = Math.max(nat, Constants.VIEW_MIN);
@@ -67,11 +64,8 @@ const Embed = new Lang.Class({
     }
 });
 
-var MainWindow = new Lang.Class({
-    Name: 'MainWindow',
-    Extends: Gtk.Window,
-
-    _init : function(application) {
+var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
+    _init(application) {
         this._isFullScreen = false;
         this._renderer = null;
         this._lastWindowSize = [0, 0];
@@ -81,7 +75,7 @@ var MainWindow = new Lang.Class({
 
         this._mimeHandler = new MimeHandler.MimeHandler();
 
-        this.parent({ type: Gtk.WindowType.TOPLEVEL,
+        super._init({ type: Gtk.WindowType.TOPLEVEL,
                       skipPagerHint: true,
                       skipTaskbarHint: true,
                       windowPosition: Gtk.WindowPosition.CENTER,
@@ -105,23 +99,23 @@ var MainWindow = new Lang.Class({
         this._embed = new Embed();
         this._embed.connect('size-request', this._onEmbedSizeRequest.bind(this));
         eventBox.add(this._embed);
-    },
+    }
 
     /**************************************************************************
      ****************** main object event callbacks ***************************
      **************************************************************************/
-    _onDeleteEvent : function() {
+    _onDeleteEvent() {
         this.destroy();
-    },
+    }
 
-    _onRealize: function() {
+    _onRealize() {
         // don't support maximize and minimize
         this.get_window().set_functions(Gdk.WMFunction.MOVE |
                                         Gdk.WMFunction.RESIZE |
                                         Gdk.WMFunction.CLOSE);
-    },
+    }
 
-    _onKeyPressEvent : function(widget, event) {
+    _onKeyPressEvent(widget, event) {
         let key = event.get_keyval()[1];
 
         if (key == Gdk.KEY_Escape ||
@@ -134,9 +128,9 @@ var MainWindow = new Lang.Class({
             this.toggleFullScreen();
 
         return false;
-    },
+    }
 
-    _onButtonPressEvent : function(window, event) {
+    _onButtonPressEvent(window, event) {
         if (!this._renderer.moveOnClick)
             return false;
 
@@ -147,23 +141,23 @@ var MainWindow = new Lang.Class({
                              event.get_time());
 
         return false;
-    },
+    }
 
-    _onMotionNotifyEvent : function() {
+    _onMotionNotifyEvent() {
         if (this._toolbar)
             this._resetToolbar();
 
         return false;
-    },
+    }
 
     /**************************************************************************
      *********************** texture allocation *******************************
      **************************************************************************/
-    _onEmbedSizeRequest : function() {
+    _onEmbedSizeRequest() {
         this._resizeWindow();
-    },
+    }
 
-    _resizeWindow : function() {
+    _resizeWindow() {
         if (this._isFullScreen)
             return;
 
@@ -190,9 +184,9 @@ var MainWindow = new Lang.Class({
             this._lastWindowSize = windowSize;
             this.resize(windowSize[0], windowSize[1]);
         }
-    },
+    }
 
-    _createRenderer : function(file) {
+    _createRenderer(file) {
         file.query_info_async(
             [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
              Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE].join(','),
@@ -211,9 +205,9 @@ var MainWindow = new Lang.Class({
                     logError(e, 'Error creating viewer');
                 }
             });
-    },
+    }
 
-    _createView : function (file, klass) {
+    _createView(file, klass) {
         if (this._renderer) {
             this._renderer.destroy()
             this._renderer = null;
@@ -223,12 +217,12 @@ var MainWindow = new Lang.Class({
         this._renderer.show_all();
         this._renderer.expand = true;
         this._embed.add(this._renderer);
-    },
+    }
 
     /**************************************************************************
      ************************* toolbar helpers ********************************
      **************************************************************************/
-    _createToolbar : function() {
+    _createToolbar() {
         this._removeToolbarTimeout();
 
         if (this._toolbar) {
@@ -257,33 +251,33 @@ var MainWindow = new Lang.Class({
             return;
 
         this._embed.add_overlay(this._toolbar);
-    },
+    }
 
-    _removeToolbarTimeout: function() {
+    _removeToolbarTimeout() {
         if (this._toolbarId != 0) {
             Mainloop.source_remove(this._toolbarId);
             this._toolbarId = 0;
         }
-    },
+    }
 
-    _resetToolbar : function() {
+    _resetToolbar() {
         if (this._toolbarId == 0)
             this._toolbar.reveal_child = true;
 
         this._removeToolbarTimeout();
         this._toolbarId = Mainloop.timeout_add(1500, this._onToolbarTimeout.bind(this));
-    },
+    }
 
-    _onToolbarTimeout : function() {
+    _onToolbarTimeout() {
         this._toolbarId = 0;
         this._toolbar.reveal_child = false;
         return false;
-    },
+    }
 
     /**************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
-    setParent : function(xid) {
+    setParent(xid) {
         this._parent = Sushi.create_foreign_window(xid);
         this.realize();
         if (this._parent)
@@ -291,19 +285,19 @@ var MainWindow = new Lang.Class({
         this.show_all();
 
         if (this.get_window().move_to_current_desktop)
-          this.get_window().move_to_current_desktop();
-    },
+            this.get_window().move_to_current_desktop();
+    }
 
-    setFile : function(file) {
+    setFile(file) {
         this.file = file;
         this._createRenderer(file);
-    },
+    }
 
-    setTitle : function(label) {
+    setTitle(label) {
         this.set_title(label);
-    },
+    }
 
-    toggleFullScreen : function() {
+    toggleFullScreen() {
         if (!this._renderer.canFullScreen)
             return false;
 

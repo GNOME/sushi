@@ -23,13 +23,11 @@
  *
  */
 
-const {Gdk, Gio, GLib, Gtk} = imports.gi;
-const Lang = imports.lang;
+const {Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
 
 const MainWindow = imports.ui.mainWindow;
 
 const SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
-const SUSHI_DBUS_NAME = 'org.gnome.NautilusPreviewer';
 
 const SushiIface = '<node> \
 <interface name="org.gnome.NautilusPreviewer"> \
@@ -43,37 +41,30 @@ const SushiIface = '<node> \
 </interface> \
 </node>';
 
-var Application = new Lang.Class({
-    Name: 'Application',
-    Extends: Gtk.Application,
-
-    _init : function(args) {
-        this.parent({ application_id: SUSHI_DBUS_NAME });
-    },
-
-    vfunc_startup : function() {
-        this.parent();
+var Application = GObject.registerClass(class Application extends Gtk.Application {
+    vfunc_startup() {
+        super.vfunc_startup();
 
         this._defineStyleAndThemes();
         this._createMainWindow();
-    },
+    }
 
-    vfunc_dbus_register : function(connection, path) {
+    vfunc_dbus_register(connection, path) {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(SushiIface, this);
         this._dbusImpl.export(connection, SUSHI_DBUS_PATH);
 
-        return this.parent(connection, path);
-    },
+        return super.vfunc_dbus_register(connection, path);
+    }
 
-    vfunc_activate : function() {
-    },
+    vfunc_activate() {
+    }
 
-    _createMainWindow : function() {
+    _createMainWindow() {
         this._mainWindow =
             new MainWindow.MainWindow(this);
-    },
+    }
 
-    _defineStyleAndThemes : function() {
+    _defineStyleAndThemes() {
         let provider = new Gtk.CssProvider();
         provider.load_from_resource('/org/gnome/Sushi/gtk-style.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
@@ -82,13 +73,13 @@ var Application = new Lang.Class({
 
         let settings = Gtk.Settings.get_default();
         settings.gtk_application_prefer_dark_theme = true;
-    },
+    }
 
-    Close: function() {
+    Close() {
         this._mainWindow.destroy();
-    },
+    }
 
-    ShowFile : function(uri, xid, closeIfAlreadyShown) {
+    ShowFile(uri, xid, closeIfAlreadyShown) {
         let file = Gio.file_new_for_uri(uri);
         if (closeIfAlreadyShown &&
             this._mainWindow.file &&

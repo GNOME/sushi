@@ -23,19 +23,15 @@
  *
  */
 
-const {Gtk, GLib, Sushi, WebKit2} = imports.gi;
-const Lang = imports.lang;
+const {Gtk, GLib, GObject, Sushi, WebKit2} = imports.gi;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-const HTMLRenderer = new Lang.Class({
-    Name: 'HTMLRenderer',
-    Extends: WebKit2.WebView,
-
-    _init : function(file, mainWindow) {
-        this.parent();
+const HTMLRenderer = GObject.registerClass(class HTMLRenderer extends WebKit2.WebView {
+    _init(file, mainWindow) {
+        super._init();
 
         this.moveOnClick = false;
         this.canFullScreen = true;
@@ -48,13 +44,13 @@ const HTMLRenderer = new Lang.Class({
                      function() {return true;});
 
         this.load_uri(file.get_uri());
-    },
+    }
 
     get resizePolicy() {
         return Renderer.ResizePolicy.MAX_SIZE;
-    },
+    }
 
-    populateToolbar : function(toolbar) {
+    populateToolbar(toolbar) {
         let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         toolbar.add(toolbarZoom);
 

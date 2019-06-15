@@ -29,30 +29,27 @@ const {Gdk, GdkPixbuf, GLib, GObject, Gtk} = imports.gi;
 
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-const Image = new Lang.Class({
-    Name: 'Image',
-    Extends: Gtk.DrawingArea,
+const Image = GObject.registerClass({
     Properties: {
-        'pix': GObject.ParamSpec.object('pix', '', '',
-                                        GObject.ParamFlags.READWRITE,
-                                        GdkPixbuf.Pixbuf)
-    },
+        pix: GObject.ParamSpec.object('pix', '', '',
+                                      GObject.ParamFlags.READWRITE,
+                                      GdkPixbuf.Pixbuf)
+    }
+}, class Image extends Gtk.DrawingArea {
+    _init() {
+        super._init();
 
-    _init: function() {
         this._pix = null;
         this._scaledSurface = null;
+    }
 
-        this.parent();
-    },
-
-    _ensureScaledPix: function() {
+    _ensureScaledPix() {
         if (!this._pix)
             return;
 
@@ -81,22 +78,22 @@ const Image = new Lang.Class({
                                                                        scaleFactor,
                                                                        this.get_window());
         }
-    },
+    }
 
-    vfunc_get_preferred_width: function() {
+    vfunc_get_preferred_width() {
         return [1, this._pix ? this._pix.get_width() : 1];
-    },
+    }
 
-    vfunc_get_preferred_height: function() {
+    vfunc_get_preferred_height() {
         return [1, this._pix ? this._pix.get_height() : 1];
-    },
+    }
 
-    vfunc_size_allocate: function(allocation) {
-        this.parent(allocation);
+    vfunc_size_allocate(allocation) {
+        super.vfunc_size_allocate(allocation);
         this._ensureScaledPix();
-    },
+    }
 
-    vfunc_draw: function(context) {
+    vfunc_draw(context) {
         if (!this._scaledSurface)
             return false;
 
@@ -110,25 +107,22 @@ const Image = new Lang.Class({
         context.setSourceSurface(this._scaledSurface, offsetX, offsetY);
         context.paint();
         return false;
-    },
+    }
 
     set pix(p) {
         this._pix = p;
         this._scaledSurface = null;
         this.queue_resize();
-    },
+    }
 
     get pix() {
         return this._pix;
     }
 });
 
-const ImageRenderer = new Lang.Class({
-    Name: 'ImageRenderer',
-    Extends: Image,
-
-    _init : function(file, mainWindow) {
-        this.parent();
+const ImageRenderer = GObject.registerClass(class ImageRenderer extends Image {
+    _init(file, mainWindow) {
+        super._init();
 
         this._timeoutId = 0;
         this.moveOnClick = true;
@@ -140,9 +134,9 @@ const ImageRenderer = new Lang.Class({
         this._createImageTexture(file);
 
         this.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
 
-    _createImageTexture : function(file) {
+    _createImageTexture(file) {
         file.read_async(GLib.PRIORITY_DEFAULT, null, (obj, res) => {
             try {
                 let stream = obj.read_finish(res);
@@ -151,9 +145,9 @@ const ImageRenderer = new Lang.Class({
                 logError(e, `Unable to read image file ${file.get_uri()}`);
             }
         });
-    },
+    }
 
-    _textureFromStream : function(stream) {
+    _textureFromStream(stream) {
         GdkPixbuf.PixbufAnimation.new_from_stream_async(stream, null, (obj, res) => {
             let anim = GdkPixbuf.PixbufAnimation.new_from_stream_finish(res);
 
@@ -171,23 +165,23 @@ const ImageRenderer = new Lang.Class({
                 }
             });
          });
-    },
+    }
 
     get resizePolicy() {
         return Renderer.ResizePolicy.SCALED;
-    },
+    }
 
-    _startTimeout : function() {
+    _startTimeout() {
         this._timeoutId = Mainloop.timeout_add(
             this._iter.get_delay_time(), this._advanceImage.bind(this));
-    },
+    }
 
-    populateToolbar : function(toolbar) {
+    populateToolbar(toolbar) {
         let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         toolbar.add(toolbarZoom);
-    },
+    }
 
-    _onDestroy : function () {
+    _onDestroy() {
         /* We should do the check here because it is possible
          * that we never created a source if our image is
          * not animated. */
@@ -195,14 +189,14 @@ const ImageRenderer = new Lang.Class({
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
         }
-    },
+    }
 
-    _advanceImage : function () {
+    _advanceImage() {
         this._iter.advance(null);
         let pix = this._iter.get_pixbuf().apply_embedded_orientation();
         this.set_from_pixbuf(pix);
         return true;
-    },
+    }
 });
 
 let handler = new MimeHandler.MimeHandler();

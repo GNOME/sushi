@@ -23,25 +23,20 @@
  *
  */
 
-const {Gtk, GLib, Sushi} = imports.gi;
-
-const Lang = imports.lang;
+const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 
-const FontRenderer = new Lang.Class({
-    Name: 'FontRenderer',
-    Extends: Sushi.FontWidget,
-
-    _init : function(file, mainWindow) {
-        this.parent({ uri: file.get_uri(),
+const FontRenderer = GObject.registerClass(class FontRenderer extends Sushi.FontWidget {
+    _init(file, mainWindow) {
+        super._init({ uri: file.get_uri(),
                       visible: true })
 
         this.moveOnClick = true;
         this.canFullScreen = true;
         this._file = file;
-    },
+    }
 
     get resizePolicy() {
         return Renderer.ResizePolicy.MAX_SIZE;

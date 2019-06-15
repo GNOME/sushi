@@ -1,6 +1,4 @@
-const {Gtk} = imports.gi;
-
-const Lang = imports.lang;
+const {GObject, Gtk} = imports.gi;
 
 var ResizePolicy = {
     MAX_SIZE: 0,
@@ -9,13 +7,11 @@ var ResizePolicy = {
     STRETCHED: 3
 };
 
-var RendererToolbar = new Lang.Class({
-    Name: 'RendererToolbar',
-    Extends: Gtk.Box,
+var RendererToolbar = GObject.registerClass({
     CssName: 'toolbar',
-
-    _init : function() {
-        this.parent({ halign: Gtk.Align.CENTER,
+}, class RendererToolbar extends Gtk.Box {
+    _init() {
+        super._init({ halign: Gtk.Align.CENTER,
                       hexpand: true });
         this.get_style_context().add_class('osd');
     }

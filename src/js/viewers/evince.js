@@ -23,23 +23,19 @@
  *
  */
 
-const {EvinceDocument, EvinceView, Gtk, Sushi} = imports.gi;
+const {EvinceDocument, EvinceView, GObject, Gtk, Sushi} = imports.gi;
 
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
-const Lang = imports.lang;
 
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-const EvinceRenderer = new Lang.Class({
-    Name: 'EvinceRenderer',
-    Extends: Gtk.ScrolledWindow,
-
-    _init : function(file, mainWindow) {
-        this.parent({ visible: true,
+const EvinceRenderer = GObject.registerClass(class EvinceRenderer extends Gtk.ScrolledWindow {
+    _init(file, mainWindow) {
+        super._init({ visible: true,
                       min_content_height: Constants.VIEW_MIN,
                       min_content_width: Constants.VIEW_MIN });
 
@@ -58,9 +54,9 @@ const EvinceRenderer = new Lang.Class({
         this.add(this._view);
 
         this.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
 
-    _updatePageLabel : function() {
+    _updatePageLabel() {
         let curPage = this._model.get_page();
         let totPages = this._model.document.get_n_pages();
 
@@ -68,9 +64,9 @@ const EvinceRenderer = new Lang.Class({
         this._toolbarForward.set_sensitive(curPage < totPages - 1);
 
         this._pageLabel.set_text(_("%d of %d").format(curPage + 1, totPages));
-    },
+    }
 
-    _onDocumentLoaded : function(pdfLoader) {
+    _onDocumentLoaded(pdfLoader) {
         this._model = EvinceView.DocumentModel.new_with_document(pdfLoader.document);
         this._model.set_sizing_mode(EvinceView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);
@@ -79,13 +75,13 @@ const EvinceRenderer = new Lang.Class({
         this._updatePageLabel();
 
         this._view.set_model(this._model);
-    },
+    }
 
     get resizePolicy() {
         return Renderer.ResizePolicy.MAX_SIZE;
-    },
+    }
 
-    populateToolbar : function(toolbar) {
+    populateToolbar(toolbar) {
         this._toolbarBack = Utils.createToolButton('go-previous-symbolic', () => {
             this._view.previous_page();
         });
@@ -106,9 +102,9 @@ const EvinceRenderer = new Lang.Class({
 
         let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         toolbar.add(toolbarZoom);
-    },
+    }
 
-    _onDestroy : function() {
+    _onDestroy() {
         this._pdfLoader = null;
     }
 });

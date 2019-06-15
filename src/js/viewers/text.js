@@ -25,9 +25,7 @@
 
 imports.gi.versions.GtkSource = '4';
 
-const {Gdk, Gio, GLib, Gtk, GtkSource, Sushi} = imports.gi;
-
-const Lang = imports.lang;
+const {Gdk, Gio, GLib, GObject, Gtk, GtkSource, Sushi} = imports.gi;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
@@ -47,12 +45,9 @@ function _getGeditScheme() {
     return geditScheme;
 }
 
-const TextRenderer = new Lang.Class({
-    Name: 'TextRenderer',
-    Extends: Gtk.ScrolledWindow,
-
-    _init : function(file, mainWindow) {
-        this.parent();
+const TextRenderer = GObject.registerClass(class TextRenderer extends Gtk.ScrolledWindow {
+    _init(file, mainWindow) {
+        super._init();
 
         this.moveOnClick = false;
         this.canFullScreen = true;
@@ -76,9 +71,9 @@ const TextRenderer = new Lang.Class({
         });
 
         this.add(this._view);
-    },
+    }
 
-    _onBufferLoaded : function(loader, buffer) {
+    _onBufferLoaded(loader, buffer) {
         buffer.highlight_syntax = true;
 
         let styleManager = GtkSource.StyleSchemeManager.get_default();
@@ -89,13 +84,13 @@ const TextRenderer = new Lang.Class({
         this._view.set_buffer(buffer);
         if (buffer.get_language())
             this._view.set_show_line_numbers(true);
-    },
+    }
 
     get resizePolicy() {
         return Renderer.ResizePolicy.MAX_SIZE;
-    },
+    }
 
-    populateToolbar : function(toolbar) {
+    populateToolbar(toolbar) {
         let toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
         toolbar.add(toolbarRun);
     }

@@ -23,21 +23,16 @@
  *
  */
 
-const {GLib, Sushi} = imports.gi;
-
-const Lang = imports.lang;
+const {GLib, GObject, Sushi} = imports.gi;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const Utils = imports.ui.utils;
 
-const GstRenderer = new Lang.Class({
-    Name: 'GstRenderer',
-    Extends: Sushi.MediaBin,
-
-    _init : function(file, mainWindow) {
-        this.parent({ uri: file.get_uri() });
+const GstRenderer = GObject.registerClass(class GstRenderer extends Sushi.MediaBin {
+    _init(file, mainWindow) {
+        super._init({ uri: file.get_uri() });
 
         this.moveOnClick = true;
         // fullscreen is handled internally by the widget
@@ -50,14 +45,14 @@ const GstRenderer = new Lang.Class({
         });
 
         this.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
 
-    _onDestroy : function() {
+    _onDestroy() {
         if (this._autoplayId > 0) {
             GLib.source_remove(this._autoplayId);
             this._autoplayId = 0;
         }
-    },
+    }
 
     get resizePolicy() {
         return Renderer.ResizePolicy.STRETCHED;

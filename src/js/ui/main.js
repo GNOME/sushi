@@ -33,12 +33,14 @@ const Gettext = imports.gettext;
 const Application = imports.ui.application;
 const Path = imports.util.path;
 
+const SUSHI_DBUS_NAME = 'org.gnome.NautilusPreviewer';
+
 function run(argv) {
     Gettext.bindtextdomain('sushi', Path.LOCALE_DIR);
     String.prototype.format = Format.format;
 
     GLib.set_application_name('Sushi');
 
-    let application = new Application.Application();
+    let application = new Application.Application({ application_id: SUSHI_DBUS_NAME });
     return application.run(null);
 }

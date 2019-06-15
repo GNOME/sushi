@@ -23,19 +23,15 @@
  *
  */
 
-const {Gio, Gtk, Pango, Sushi} = imports.gi;
+const {Gio, GObject, Gtk, Pango, Sushi} = imports.gi;
 
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
-const Lang = imports.lang;
 const Renderer = imports.ui.renderer;
 
-var FallbackRenderer = new Lang.Class({
-    Name: 'FallbackRenderer',
-    Extends: Gtk.Box,
-
-    _init : function(file, mainWindow) {
-        this.parent({ orientation: Gtk.Orientation.HORIZONTAL,
+var FallbackRenderer = GObject.registerClass(class FallbackRenderer extends Gtk.Box {
+    _init(file, mainWindow) {
+        super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
 
         this.moveOnClick = true;
@@ -84,9 +80,9 @@ var FallbackRenderer = new Lang.Class({
         this._applyLabels();
 
         this.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
 
-    _applyLabels : function() {
+    _applyLabels() {
         let titleStr =
             '<b><big>' +
             ((this._fileLoader.name) ? (this._fileLoader.name) : (this._fileLoader.file.get_basename()))
@@ -114,9 +110,9 @@ var FallbackRenderer = new Lang.Class({
              ((this._fileLoader.time) ? (this._fileLoader.time) : (_("Loading…")))
              + '</small>';
         this._dateLabel.set_markup(dateStr);
-    },
+    }
 
-    _updateIcon: function(icon) {
+    _updateIcon(icon) {
         let iconTheme = Gtk.IconTheme.get_default();
         let iconInfo = iconTheme.lookup_by_gicon_for_scale(icon, 256,
             this._image.scale_factor, 0);
@@ -129,9 +125,9 @@ var FallbackRenderer = new Lang.Class({
         } catch (e) {
             logError(e, `Error loading surface for icon ${icon.to_string()}`);
         }
-    },
+    }
 
-    _onFileInfoChanged : function() {
+    _onFileInfoChanged() {
         if (!this._fileLoader.get_loading()) {
             this._spinner.stop();
             this._spinner.hide();
@@ -141,9 +137,9 @@ var FallbackRenderer = new Lang.Class({
             this._updateIcon(this._fileLoader.icon);
 
         this._applyLabels();
-    },
+    }
 
-    _onDestroy : function() {
+    _onDestroy() {
         if (this._fileLoader) {
             this._fileLoader.disconnect(this._fileLoaderId);
             this._fileLoaderId = 0;
@@ -151,7 +147,7 @@ var FallbackRenderer = new Lang.Class({
             this._fileLoader.stop();
             this._fileLoader = null;
         }
-    },
+    }
 
     get resizePolicy() {
         return Renderer.ResizePolicy.NAT_SIZE;

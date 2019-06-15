@@ -23,11 +23,10 @@
  *
  */
 
-const {GdkPixbuf, Gio, Gst, Gtk, Sushi} = imports.gi;
+const {GdkPixbuf, Gio, GObject, Gst, Gtk, Sushi} = imports.gi;
 
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
-const Lang = imports.lang;
 
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
@@ -52,12 +51,9 @@ function _formatTimeString(timeVal) {
     return str;
 }
 
-const AudioRenderer = new Lang.Class({
-    Name: 'AudioRenderer',
-    Extends: Gtk.Box,
-
-    _init : function(file, mainWindow) {
-        this.parent({ orientation: Gtk.Orientation.HORIZONTAL,
+const AudioRenderer = GObject.registerClass(class AudioRenderer extends Gtk.Box {
+    _init(file, mainWindow) {
+        super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
 
         this.moveOnClick = true;
@@ -92,9 +88,9 @@ const AudioRenderer = new Lang.Class({
         vbox.pack_start(this._albumLabel, false, false, 0);
 
         this.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
 
-    _createPlayer : function(file) {
+    _createPlayer(file) {
         this._playerNotifies = [];
 
         this._player = new Sushi.SoundPlayer({ uri: file.get_uri() });
@@ -110,16 +106,16 @@ const AudioRenderer = new Lang.Class({
             this._player.connect('notify::taglist', this._onTagListChanged.bind(this)));
         this._playerNotifies.push(
             this._player.connect('notify::cover', this._onCoverArtChanged.bind(this)));
-    },
+    }
 
-    _onDestroy : function() {
+    _onDestroy() {
         this._playerNotifies.forEach((id) => this._player.disconnect(id));
         this._playerNotifies = [];
         this._player.playing = false;
         this._player = null;
-    },
+    }
 
-    _ensurePixbufSize : function(cover) {
+    _ensurePixbufSize(cover) {
         let width, height;
 
         width = cover.get_width();
@@ -139,9 +135,9 @@ const AudioRenderer = new Lang.Class({
         } else {
             this._coverArt = cover;
         }
-    },
+    }
 
-    _onCoverArtChanged : function() {
+    _onCoverArtChanged() {
         if (!this._artFetcher.cover) {
             this._image.set_from_icon_name('media-optical-symbolic');
             return;
@@ -149,9 +145,9 @@ const AudioRenderer = new Lang.Class({
 
         this._ensurePixbufSize(this._artFetcher.cover);
         this._image.set_from_pixbuf(this._coverArt);
-    },
+    }
 
-    _onTagListChanged : function() {
+    _onTagListChanged() {
         let tags = this._player.taglist;
         let albumName = tags.get_string('album')[1];
         let artistName = tags.get_string('artist')[1];
@@ -183,20 +179,18 @@ const AudioRenderer = new Lang.Class({
         this._artFetcher = new Sushi.CoverArtFetcher();
         this._artFetcher.connect('notify::cover', this._onCoverArtChanged.bind(this));
         this._artFetcher.taglist = tags;
+    }
 
-        this._mainWindow.queue_allocate();
-    },
-
-    _updateProgressBar : function() {
+    _updateProgressBar() {
         if (!this._progressBar)
             return;
 
         this._isSettingValue = true;
         this._progressBar.set_value(this._player.progress * 1000);
         this._isSettingValue = false;
-    },
+    }
 
-    _updateCurrentLabel : function() {
+    _updateCurrentLabel() {
         if (!this._currentLabel)
             return;
 
@@ -204,27 +198,27 @@ const AudioRenderer = new Lang.Class({
             Math.floor(this._player.duration * this._player.progress);
 
         this._currentLabel.set_text(_formatTimeString(currentTime));
-    },
+    }
 
-    _updateDurationLabel : function() {
+    _updateDurationLabel() {
         if (!this._durationLabel)
             return;
 
         let totalTime = this._player.duration;
 
         this._durationLabel.set_text(_formatTimeString(totalTime));
-    },
+    }
 
-    _onPlayerProgressChanged : function() {
+    _onPlayerProgressChanged() {
         this._updateProgressBar();
         this._updateCurrentLabel();
-    },
+    }
 
-    _onPlayerDurationChanged : function() {
+    _onPlayerDurationChanged() {
         this._updateDurationLabel();
-    },
+    }
 
-    _onPlayerStateChanged : function() {
+    _onPlayerStateChanged() {
         switch(this._player.state) {
         case Sushi.SoundPlayerState.PLAYING:
             this._toolbarPlay.image.set_from_icon_name('media-playback-pause-symbolic', Gtk.IconSize.MENU);
@@ -233,13 +227,13 @@ const AudioRenderer = new Lang.Class({
             let iconName = 'media-playback-start-symbolic';
             this._toolbarPlay.image.set_from_icon_name(iconName, Gtk.IconSize.MENU);
         }
-    },
+    }
 
     get resizePolicy() {
         return Renderer.ResizePolicy.NAT_SIZE;
-    },
+    }
 
-    populateToolbar : function (toolbar) {
+    populateToolbar(toolbar) {
         this._toolbarPlay = Utils.createToolButton('media-playback-pause-symbolic', () => {
             let playing = !this._player.playing;
             this._player.playing = playing;
@@ -264,7 +258,7 @@ const AudioRenderer = new Lang.Class({
 
         this._durationLabel = new Gtk.Label({ margin_start: 3 });
         toolbar.add(this._durationLabel);
-    },
+    }
 });
 
 let handler = new MimeHandler.MimeHandler();
