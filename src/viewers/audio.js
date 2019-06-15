@@ -47,7 +47,14 @@ function _formatTimeString(timeVal) {
     return str;
 }
 
-var Klass = GObject.registerClass(class AudioRenderer extends Gtk.Box {
+var Klass = GObject.registerClass({
+    Implements: [Renderer.Renderer],
+    Properties: {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class AudioRenderer extends Gtk.Box {
     _init(file, mainWindow) {
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
@@ -84,6 +91,7 @@ var Klass = GObject.registerClass(class AudioRenderer extends Gtk.Box {
         vbox.pack_start(this._albumLabel, false, false, 0);
 
         this.connect('destroy', this._onDestroy.bind(this));
+        this.isReady();
     }
 
     _createPlayer(file) {

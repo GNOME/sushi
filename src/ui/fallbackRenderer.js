@@ -27,8 +27,15 @@ const {Gio, GObject, Gtk, Pango, Sushi} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 
-var FallbackRenderer = GObject.registerClass(class FallbackRenderer extends Gtk.Box {
-    _init(file, mainWindow) {
+var FallbackRenderer = GObject.registerClass({
+    Implements: [Renderer.Renderer],
+    Properties: {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class FallbackRenderer extends Gtk.Box {
+    _init(file) {
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
 
@@ -78,6 +85,7 @@ var FallbackRenderer = GObject.registerClass(class FallbackRenderer extends Gtk.
         this._applyLabels();
 
         this.connect('destroy', this._onDestroy.bind(this));
+        this.isReady();
     }
 
     _applyLabels() {

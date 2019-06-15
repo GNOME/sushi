@@ -27,18 +27,22 @@ const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 
-var Klass = GObject.registerClass(class FontRenderer extends Sushi.FontWidget {
-    _init(file, mainWindow) {
+var Klass = GObject.registerClass({
+    Implements: [Renderer.Renderer],
+    Properties: {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class FontRenderer extends Sushi.FontWidget {
+    _init(file) {
         super._init({ uri: file.get_uri(),
                       visible: true })
 
         this.moveOnClick = true;
         this.canFullScreen = true;
-        this._file = file;
-    }
 
-    get resizePolicy() {
-        return Renderer.ResizePolicy.MAX_SIZE;
+        this.isReady();
     }
 });
 

@@ -29,8 +29,15 @@ const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const Utils = imports.ui.utils;
 
-var Klass = GObject.registerClass(class GstRenderer extends Sushi.MediaBin {
-    _init(file, mainWindow) {
+var Klass = GObject.registerClass({
+    Implements: [Renderer.Renderer],
+    Properties: {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class GstRenderer extends Sushi.MediaBin {
+    _init(file) {
         super._init({ uri: file.get_uri() });
 
         this.moveOnClick = true;
@@ -44,6 +51,7 @@ var Klass = GObject.registerClass(class GstRenderer extends Sushi.MediaBin {
         });
 
         this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('size-change', this.isReady.bind(this));
     }
 
     _onDestroy() {

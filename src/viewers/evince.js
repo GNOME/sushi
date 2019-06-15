@@ -29,7 +29,14 @@ const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-var Klass = GObject.registerClass(class EvinceRenderer extends Gtk.ScrolledWindow {
+var Klass = GObject.registerClass({
+    Implements: [Renderer.Renderer],
+    Properties: {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class EvinceRenderer extends Gtk.ScrolledWindow {
     _init(file, mainWindow) {
         super._init({ visible: true,
                       min_content_height: Constants.VIEW_MIN,
@@ -50,6 +57,7 @@ var Klass = GObject.registerClass(class EvinceRenderer extends Gtk.ScrolledWindo
         this.add(this._view);
 
         this.connect('destroy', this._onDestroy.bind(this));
+        this.isReady();
     }
 
     _updatePageLabel() {
@@ -71,10 +79,6 @@ var Klass = GObject.registerClass(class EvinceRenderer extends Gtk.ScrolledWindo
         this._updatePageLabel();
 
         this._view.set_model(this._model);
-    }
-
-    get resizePolicy() {
-        return Renderer.ResizePolicy.MAX_SIZE;
     }
 
     populateToolbar(toolbar) {

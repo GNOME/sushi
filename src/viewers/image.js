@@ -115,7 +115,14 @@ const Image = GObject.registerClass({
     }
 });
 
-var Klass = GObject.registerClass(class ImageRenderer extends Image {
+var Klass = GObject.registerClass({
+    Implements: [Renderer.Renderer],
+    Properties: {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class ImageRenderer extends Image {
     _init(file, mainWindow) {
         super._init();
 
@@ -148,6 +155,7 @@ var Klass = GObject.registerClass(class ImageRenderer extends Image {
 
             this._iter = anim.get_iter(null);
             this.pix = this._iter.get_pixbuf().apply_embedded_orientation();
+            this.isReady();
 
             if (!anim.is_static_image())
                 this._startTimeout();

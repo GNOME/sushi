@@ -28,7 +28,14 @@ const {Gtk, GLib, GObject, Sushi, WebKit2} = imports.gi;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-var Klass = GObject.registerClass(class HTMLRenderer extends WebKit2.WebView {
+var Klass = GObject.registerClass({
+    Implements: [Renderer.Renderer],
+    Properties: {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class HTMLRenderer extends WebKit2.WebView {
     _init(file, mainWindow) {
         super._init();
 
@@ -43,10 +50,7 @@ var Klass = GObject.registerClass(class HTMLRenderer extends WebKit2.WebView {
                      function() {return true;});
 
         this.load_uri(file.get_uri());
-    }
-
-    get resizePolicy() {
-        return Renderer.ResizePolicy.MAX_SIZE;
+        this.isReady();
     }
 
     populateToolbar(toolbar) {

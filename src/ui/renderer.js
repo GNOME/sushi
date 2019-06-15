@@ -7,6 +7,28 @@ var ResizePolicy = {
     STRETCHED: 3
 };
 
+var Renderer = GObject.registerClass({
+    Requires: [Gtk.Widget],
+    Properties: {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class Renderer extends GObject.Interface {
+    isReady() {
+        this._ready = true;
+        this.notify('ready');
+    }
+
+    get ready() {
+        return !!this._ready;
+    }
+
+    get resizePolicy() {
+        return ResizePolicy.MAX_SIZE;
+    }
+});
+
 var RendererToolbar = GObject.registerClass({
     CssName: 'toolbar',
 }, class RendererToolbar extends Gtk.Box {

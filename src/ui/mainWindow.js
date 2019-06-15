@@ -32,9 +32,7 @@ const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-const Embed = GObject.registerClass({
-    Signals: { 'size-request': {} }
-}, class Embed extends Gtk.Overlay {
+const Embed = GObject.registerClass(class Embed extends Gtk.Overlay {
     vfunc_get_request_mode() {
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
     }
@@ -44,10 +42,6 @@ const Embed = GObject.registerClass({
 
         min = Math.max(min, Constants.VIEW_MIN);
         nat = Math.max(nat, Constants.VIEW_MIN);
-
-        // FIXME: this is wrong, we should only be doing this
-        // when the renderer signals us to do so
-        this.emit('size-request');
 
         return [min, nat];
     }
@@ -95,7 +89,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this.add(eventBox);
 
         this._embed = new Embed();
-        this._embed.connect('size-request', this._onEmbedSizeRequest.bind(this));
         eventBox.add(this._embed);
     }
 
@@ -151,8 +144,14 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     /**************************************************************************
      *********************** texture allocation *******************************
      **************************************************************************/
-    _onEmbedSizeRequest() {
-        this._resizeWindow();
+    _onRendererReady() {
+        if (this._renderer.ready) {
+            this._resizeWindow();
+            this.queue_resize();
+        }
+
+        if (!this.visible)
+            this.show_all();
     }
 
     _resizeWindow() {
@@ -215,6 +214,9 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this._renderer.show_all();
         this._renderer.expand = true;
         this._embed.add(this._renderer);
+
+        this._renderer.connect('notify::ready', this._onRendererReady.bind(this));
+        this._onRendererReady();
     }
 
     /**************************************************************************
@@ -280,7 +282,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this.realize();
         if (this._parent)
             this.get_window().set_transient_for(this._parent);
-        this.show_all();
 
         if (this.get_window().move_to_current_desktop)
             this.get_window().move_to_current_desktop();

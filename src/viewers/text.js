@@ -42,7 +42,14 @@ function _getGeditScheme() {
     return geditScheme;
 }
 
-var Klass = GObject.registerClass(class TextRenderer extends Gtk.ScrolledWindow {
+var Klass = GObject.registerClass({
+    Implements: [Renderer.Renderer],
+    Properties: {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class TextRenderer extends Gtk.ScrolledWindow {
     _init(file, mainWindow) {
         super._init();
 
@@ -68,6 +75,7 @@ var Klass = GObject.registerClass(class TextRenderer extends Gtk.ScrolledWindow 
         });
 
         this.add(this._view);
+        this.isReady();
     }
 
     _onBufferLoaded(loader, buffer) {
@@ -81,10 +89,6 @@ var Klass = GObject.registerClass(class TextRenderer extends Gtk.ScrolledWindow 
         this._view.set_buffer(buffer);
         if (buffer.get_language())
             this._view.set_show_line_numbers(true);
-    }
-
-    get resizePolicy() {
-        return Renderer.ResizePolicy.MAX_SIZE;
     }
 
     populateToolbar(toolbar) {
