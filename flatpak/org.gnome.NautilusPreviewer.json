@@ -17,6 +17,7 @@
         "*.a"
     ],
     "finish-args": [
+        "--socket=pulseaudio",
         "--socket=x11",
         "--socket=wayland",
         "--share=ipc",
