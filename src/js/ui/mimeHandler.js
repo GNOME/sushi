@@ -49,8 +49,6 @@ MimeHandler.prototype = {
 
     registerMime: function(mime, klass) {
         this._mimeTypes[mime] = klass;
-
-        log ('Register mimetype ' + mime);
     },
 
     registerMimeTypes: function(mimeTypes, klass) {
