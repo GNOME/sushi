@@ -66,7 +66,7 @@ var MainWindow = new Lang.Class({
         this._createGtkWindow();
         this._createClutterEmbed();
 
-	this.file = null;
+        this.file = null;
     },
 
     _createGtkWindow : function() {
@@ -77,8 +77,8 @@ var MainWindow = new Lang.Class({
                                            gravity: Gdk.Gravity.CENTER,
                                            application: this._application });
         this._titlebar = new Gtk.HeaderBar({ show_close_button: true,
-                                           // don't support maximize and minimize
-                                             decoration_layout: "menu:close" });
+                                             // don't support maximize and minimize
+                                             decoration_layout: 'menu:close' });
         this._gtkWindow.set_titlebar(this._titlebar);
 
         let screen = Gdk.Screen.get_default();
@@ -118,7 +118,7 @@ var MainWindow = new Lang.Class({
         this._stage.add_actor(this._mainGroup);
 
         this._gtkWindow.connect('key-press-event',
-				Lang.bind(this, this._onKeyPressEvent));
+                                Lang.bind(this, this._onKeyPressEvent));
         this._gtkWindow.connect('motion-notify-event',
                                 Lang.bind(this, this._onMotionNotifyEvent));
 
@@ -344,7 +344,7 @@ var MainWindow = new Lang.Class({
         this._stage.disconnect(this._unFullScreenId);
         this._unFullScreenId = 0;
 
-	/* We want the alpha background back now */
+        /* We want the alpha background back now */
         this._background.destroy();
         this._background = null;
         this._createAlphaBackground();
@@ -398,9 +398,9 @@ var MainWindow = new Lang.Class({
         /* We want a solid black background */
         this._background.destroy();
         this._background = null;
-	this._createSolidBackground();
+        this._createSolidBackground();
 
-	/* Fade in everything */
+        /* Fade in everything */
         Tweener.addTween(this._mainGroup,
                          { opacity: 255,
                            time: 0.15,
@@ -553,7 +553,7 @@ var MainWindow = new Lang.Class({
     },
 
     setFile : function(file) {
-	this.file = file;
+        this.file = file;
         this._createAlphaBackground();
         this._createRenderer(file);
         this._createTexture();
