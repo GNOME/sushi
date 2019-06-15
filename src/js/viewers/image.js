@@ -199,7 +199,7 @@ const ImageRenderer = new Lang.Class({
 
     populateToolbar : function(toolbar) {
         let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
-        toolbar.insert(toolbarZoom, 0);
+        toolbar.add(toolbarZoom);
     },
 
     _onDestroy : function () {

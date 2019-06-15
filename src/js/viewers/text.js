@@ -101,7 +101,7 @@ const TextRenderer = new Lang.Class({
 
     populateToolbar : function(toolbar) {
         let toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
-        toolbar.insert(toolbarRun, 0);
+        toolbar.add(toolbarRun);
     }
 });
 

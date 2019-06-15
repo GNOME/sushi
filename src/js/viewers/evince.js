@@ -89,46 +89,29 @@ const EvinceRenderer = new Lang.Class({
         return allocation;
     },
 
-    _createLabelItem : function() {
-        this._pageLabel = new Gtk.Label({ margin_start: 10,
-                                          margin_end: 10 });
-
-        let item = new Gtk.ToolItem();
-        item.set_expand(true);
-        item.add(this._pageLabel);
-        item.show_all();
-
-        return item;
-    },
-
     populateToolbar : function(toolbar) {
-        this._toolbarBack = new Gtk.ToolButton({ expand: false,
-                                                 icon_name: 'go-previous-symbolic',
-                                                 visible: true });
-        toolbar.insert(this._toolbarBack, -1);
+        this._toolbarBack =
+            Utils.createToolButton('go-previous-symbolic', Lang.bind(this, function () {
+                this._view.previous_page();
+            }));
+        toolbar.add(this._toolbarBack);
 
-        this._toolbarBack.connect('clicked', Lang.bind(this, function () {
-            this._view.previous_page();
-        }));
+        this._pageLabel = new Gtk.Label({ hexpand: true,
+                                          margin_start: 10,
+                                          margin_end: 10 });
+        toolbar.add(this._pageLabel);
 
-        let labelItem = this._createLabelItem();
-        toolbar.insert(labelItem, -1);
+        this._toolbarForward =
+            Utils.createToolButton('go-next-symbolic', Lang.bind(this, function () {
+                this._view.next_page();
+            }));
+        toolbar.add(this._toolbarForward);
 
-        this._toolbarForward = new Gtk.ToolButton({ expand: false,
-                                                    icon_name: 'go-next-symbolic',
-                                                    visible: true });
-        toolbar.insert(this._toolbarForward, -1);
-
-        this._toolbarForward.connect('clicked', Lang.bind(this, function () {
-            this._view.next_page();
-        }));
-
-        let separator = new Gtk.SeparatorToolItem();
-        separator.show();
-        toolbar.insert(separator, -1);
+        let separator = new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL });
+        toolbar.add(separator);
 
         let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
-        toolbar.insert(toolbarZoom, -1);
+        toolbar.add(toolbarZoom);
     },
 
     _onDestroy : function() {

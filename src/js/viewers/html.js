@@ -58,14 +58,13 @@ const HTMLRenderer = new Lang.Class({
 
     populateToolbar : function(toolbar) {
         let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
-        toolbar.insert(toolbarZoom, 0);
+        toolbar.add(toolbarZoom);
 
-        let separator = new Gtk.SeparatorToolItem();
-        separator.show();
-        toolbar.insert(separator, 1);
+        let separator = new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL });
+        toolbar.add(separator);
 
         let toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
-        toolbar.insert(toolbarRun, 2);
+        toolbar.add(toolbarRun);
     }
 });
 

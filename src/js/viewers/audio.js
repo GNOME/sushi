@@ -36,6 +36,7 @@ const Lang = imports.lang;
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
 const TotemMimeTypes = imports.util.totemMimeTypes;
+const Utils = imports.ui.utils;
 
 function _formatTimeString(timeVal) {
     let hours = Math.floor(timeVal / 3600);
@@ -240,11 +241,11 @@ const AudioRenderer = new Lang.Class({
     _onPlayerStateChanged : function() {
         switch(this._player.state) {
         case Sushi.SoundPlayerState.PLAYING:
-            this._toolbarPlay.set_icon_name('media-playback-pause-symbolic');
+            this._toolbarPlay.image.set_from_icon_name('media-playback-pause-symbolic', Gtk.IconSize.MENU);
             break;
         default:
             let iconName = 'media-playback-start-symbolic';
-            this._toolbarPlay.set_icon_name(iconName);
+            this._toolbarPlay.image.set_from_icon_name(iconName, Gtk.IconSize.MENU);
         }
     },
 
@@ -262,22 +263,16 @@ const AudioRenderer = new Lang.Class({
     },
 
     populateToolbar : function (toolbar) {
-        this._toolbarPlay = new Gtk.ToolButton({ icon_name: 'media-playback-pause-symbolic' });
-        this._toolbarPlay.show();
-        toolbar.insert(this._toolbarPlay, 0);
+        this._toolbarPlay =
+            Utils.createToolButton('media-playback-pause-symbolic', Lang.bind(this, function () {
+                let playing = !this._player.playing;
+                this._player.playing = playing;
+            }));
+        toolbar.add(this._toolbarPlay);
 
         this._currentLabel = new Gtk.Label({ margin_start: 6,
                                              margin_end: 3 });
-        let item = new Gtk.ToolItem();
-        item.add(this._currentLabel);
-        item.show_all();
-        toolbar.insert(item, 1);
-
-        this._toolbarPlay.connect('clicked',
-                                  Lang.bind(this, function () {
-                                      let playing = !this._player.playing;
-                                      this._player.playing = playing;
-                                  }));
+        toolbar.add(this._currentLabel);
 
         this._progressBar =
             Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,
@@ -289,18 +284,11 @@ const AudioRenderer = new Lang.Class({
                                       if(!this._isSettingValue)
                                           this._player.progress = this._progressBar.get_value() / 1000;
                                   }));
-
-        item = new Gtk.ToolItem();
-        item.set_expand(true);
-        item.add(this._progressBar);
-        item.show_all();
-        toolbar.insert(item, 2);
+        this._progressBar.set_size_request(200, -1);
+        toolbar.add(this._progressBar);
 
         this._durationLabel = new Gtk.Label({ margin_start: 3 });
-        item = new Gtk.ToolItem();
-        item.add(this._durationLabel);
-        item.show_all();
-        toolbar.insert(item, 3);
+        toolbar.add(this._durationLabel);
     },
 });
 

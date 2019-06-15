@@ -62,9 +62,8 @@ function getScaledSize(baseSize, allocSize, upscale) {
 }
 
 function createToolButton(iconName, callback) {
-    let button = new Gtk.ToolButton({ expand: false,
-                                      icon_name: iconName });
-    button.show();
+    let button = Gtk.Button.new_from_icon_name(iconName, Gtk.IconSize.MENU);
+    button.set_relief(Gtk.ReliefStyle.NONE);
     button.connect('clicked', callback);
 
     return button;

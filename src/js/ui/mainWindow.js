@@ -36,6 +36,18 @@ const Sushi = imports.gi.Sushi;
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
 
+var RendererToolbar = new Lang.Class({
+    Name: 'RendererToolbar',
+    Extends: Gtk.Box,
+    CssName: 'toolbar',
+
+    _init : function() {
+        this.parent({ halign: Gtk.Align.CENTER,
+                      hexpand: true });
+        this.get_style_context().add_class('osd');
+    }
+});
+
 var MainWindow = new Lang.Class({
     Name: 'MainWindow',
     Extends: Gtk.Window,
@@ -220,12 +232,6 @@ var MainWindow = new Lang.Class({
         }
 
         if (this._renderer.populateToolbar) {
-            let rendererToolbar = new Gtk.Toolbar({ icon_size: Gtk.IconSize.MENU,
-                                                    halign: Gtk.Align.CENTER,
-                                                    show_arrow: false,
-                                                    visible: true });
-            rendererToolbar.get_style_context().add_class('osd');
-
             this._toolbar = new Gtk.Revealer({ valign: Gtk.Align.END,
                                                hexpand: true,
                                                margin_bottom: Constants.TOOLBAR_SPACING,
@@ -234,9 +240,12 @@ var MainWindow = new Lang.Class({
                                                transition_duration: 250,
                                                transition_type: Gtk.RevealerTransitionType.CROSSFADE,
                                                visible: true });
+
+            let rendererToolbar = new RendererToolbar();
             this._toolbar.add(rendererToolbar);
 
             this._renderer.populateToolbar(rendererToolbar);
+            this._toolbar.show_all();
         }
 
         if (!this._toolbar)
