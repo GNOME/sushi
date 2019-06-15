@@ -662,8 +662,8 @@ sushi_media_bin_deinit_video_sink (SushiMediaBin *self)
   /* Unref video sink */
   gst_object_replace ((GstObject**)&priv->video_sink, NULL);
 
-  /* Unref video widget */
-  g_clear_object (&priv->video_widget);
+  /* Destroy video widget */
+  g_clear_pointer (&priv->video_widget, gtk_widget_destroy);
 
   /* Unref playbin */
   gst_object_replace ((GstObject**)&priv->play, NULL);
