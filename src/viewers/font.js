@@ -30,6 +30,9 @@ const Renderer = imports.ui.renderer;
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
+        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                              GObject.ParamFlags.READABLE,
+                                              false),
         ready: GObject.ParamSpec.boolean('ready', '', '',
                                          GObject.ParamFlags.READABLE,
                                          false)
@@ -38,8 +41,6 @@ var Klass = GObject.registerClass({
     _init(file) {
         super._init({ uri: file.get_uri(),
                       visible: true })
-
-        this.canFullScreen = true;
 
         this.isReady();
     }

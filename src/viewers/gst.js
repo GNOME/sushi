@@ -32,6 +32,9 @@ const Utils = imports.ui.utils;
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
+        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                              GObject.ParamFlags.READABLE,
+                                              false),
         ready: GObject.ParamSpec.boolean('ready', '', '',
                                          GObject.ParamFlags.READABLE,
                                          false)
@@ -39,9 +42,6 @@ var Klass = GObject.registerClass({
 }, class GstRenderer extends Sushi.MediaBin {
     _init(file) {
         super._init({ uri: file.get_uri() });
-
-        // fullscreen is handled internally by the widget
-        this.canFullScreen = false;
 
         this._autoplayId = GLib.idle_add(0, () => {
             this._autoplayId = 0;
@@ -58,6 +58,11 @@ var Klass = GObject.registerClass({
             GLib.source_remove(this._autoplayId);
             this._autoplayId = 0;
         }
+    }
+
+    get canFullscreen() {
+        // fullscreen is handled internally by the widget
+        return false;
     }
 
     get resizePolicy() {

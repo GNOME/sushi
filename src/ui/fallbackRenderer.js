@@ -30,6 +30,9 @@ const Renderer = imports.ui.renderer;
 var FallbackRenderer = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
+        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                              GObject.ParamFlags.READABLE,
+                                              false),
         ready: GObject.ParamSpec.boolean('ready', '', '',
                                          GObject.ParamFlags.READABLE,
                                          false)
@@ -38,8 +41,6 @@ var FallbackRenderer = GObject.registerClass({
     _init(file) {
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
-
-        this.canFullScreen = false;
 
         this._fileLoader = new Sushi.FileLoader();
         this._fileLoader.file = file;

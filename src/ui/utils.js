@@ -66,16 +66,14 @@ function createToolButton(iconName, callback) {
     return button;
 }
 
-function createFullScreenButton(mainWindow) {
-    let button = createToolButton('view-fullscreen-symbolic', function() {
-        let fullscreen = mainWindow.toggleFullScreen();
-        if (fullscreen)
+function createFullscreenButton(renderer) {
+    return createToolButton('view-fullscreen-symbolic', function(button) {
+        renderer.toggleFullscreen();
+        if (renderer.fullscreen)
             button.icon_name = 'view-restore-symbolic';
         else
             button.icon_name = 'view-fullscreen-symbolic';
     });
-
-    return button;
 }
 
 function createOpenButton(file, mainWindow) {

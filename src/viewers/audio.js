@@ -50,6 +50,9 @@ function _formatTimeString(timeVal) {
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
+        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                              GObject.ParamFlags.READABLE,
+                                              false),
         ready: GObject.ParamSpec.boolean('ready', '', '',
                                          GObject.ParamFlags.READABLE,
                                          false)
@@ -58,8 +61,6 @@ var Klass = GObject.registerClass({
     _init(file, mainWindow) {
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
-
-        this.canFullScreen = false;
 
         this._mainWindow = mainWindow;
         this._file = file;

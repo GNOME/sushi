@@ -33,21 +33,20 @@ const Utils = imports.ui.utils;
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
+        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                              GObject.ParamFlags.READABLE,
+                                              false),
         ready: GObject.ParamSpec.boolean('ready', '', '',
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
 }, class ImageRenderer extends Gtk.DrawingArea {
-    _init(file, mainWindow) {
+    _init(file) {
         super._init();
 
         this._pix = null;
         this._scaledSurface = null;
         this._timeoutId = 0;
-        this.canFullScreen = true;
-
-        this._mainWindow = mainWindow;
-        this._file = file;
 
         this._createImageTexture(file);
 
@@ -163,7 +162,7 @@ var Klass = GObject.registerClass({
     }
 
     populateToolbar(toolbar) {
-        let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
+        let toolbarZoom = Utils.createFullscreenButton(this);
         toolbar.add(toolbarZoom);
     }
 

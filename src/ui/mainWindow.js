@@ -60,7 +60,6 @@ const Embed = GObject.registerClass(class Embed extends Gtk.Overlay {
 
 var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     _init(application) {
-        this._isFullScreen = false;
         this._renderer = null;
         this._lastWindowSize = [0, 0];
         this._toolbar = null;
@@ -116,7 +115,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
 
         if (key == Gdk.KEY_f ||
             key == Gdk.KEY_F11)
-            this.toggleFullScreen();
+            this._renderer.toggleFullscreen();
 
         return false;
     }
@@ -144,6 +143,15 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     /**************************************************************************
      *********************** texture allocation *******************************
      **************************************************************************/
+    _onRendererFullscreen() {
+        this._removeToolbarTimeout();
+
+        if (this._renderer.fullscreen)
+            this.fullscreen();
+        else
+            this.unfullscreen();
+    }
+
     _onRendererReady() {
         if (this._renderer.ready) {
             this._resizeWindow();
@@ -155,10 +163,10 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     }
 
     _resizeWindow() {
-        if (this._isFullScreen)
+        if (!this._renderer)
             return;
 
-        if (!this._renderer)
+        if (this._renderer.fullscreen)
             return;
 
         let maxSize = [Constants.VIEW_MAX_W, Constants.VIEW_MAX_H];
@@ -215,6 +223,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this._renderer.expand = true;
         this._embed.add(this._renderer);
 
+        this._renderer.connect('notify::fullscreen', this._onRendererFullscreen.bind(this));
         this._renderer.connect('notify::ready', this._onRendererReady.bind(this));
         this._onRendererReady();
 
@@ -296,22 +305,5 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
 
     setTitle(label) {
         this.set_title(label);
-    }
-
-    toggleFullScreen() {
-        if (!this._renderer.canFullScreen)
-            return false;
-
-        this._removeToolbarTimeout();
-
-        if (this._isFullScreen) {
-            this._isFullScreen = false;
-            this.unfullscreen();
-        } else {
-            this._isFullScreen = true;
-            this.fullscreen();
-        }
-
-        return this._isFullScreen;
     }
 });

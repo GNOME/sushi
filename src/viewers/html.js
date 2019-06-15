@@ -31,6 +31,9 @@ const Utils = imports.ui.utils;
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
+        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                              GObject.ParamFlags.READABLE,
+                                              false),
         ready: GObject.ParamSpec.boolean('ready', '', '',
                                          GObject.ParamFlags.READABLE,
                                          false)
@@ -38,8 +41,6 @@ var Klass = GObject.registerClass({
 }, class HTMLRenderer extends WebKit2.WebView {
     _init(file, mainWindow) {
         super._init();
-
-        this.canFullScreen = true;
 
         this._mainWindow = mainWindow;
         this._file = file;
@@ -57,7 +58,7 @@ var Klass = GObject.registerClass({
     }
 
     populateToolbar(toolbar) {
-        let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
+        let toolbarZoom = Utils.createFullscreenButton(this);
         toolbar.add(toolbarZoom);
 
         let separator = new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL });

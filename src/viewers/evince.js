@@ -32,20 +32,18 @@ const Utils = imports.ui.utils;
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
+        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                              GObject.ParamFlags.READABLE,
+                                              false),
         ready: GObject.ParamSpec.boolean('ready', '', '',
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
 }, class EvinceRenderer extends Gtk.ScrolledWindow {
-    _init(file, mainWindow) {
+    _init(file) {
         super._init({ visible: true,
                       min_content_height: Constants.VIEW_MIN,
                       min_content_width: Constants.VIEW_MIN });
-
-        this.canFullScreen = true;
-
-        this._mainWindow = mainWindow;
-        this._file = file;
 
         this._pdfLoader = new Sushi.PdfLoader();
         this._pdfLoader.connect('notify::document', this._onDocumentLoaded.bind(this));
@@ -103,7 +101,7 @@ var Klass = GObject.registerClass({
         let separator = new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL });
         toolbar.add(separator);
 
-        let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
+        let toolbarZoom = Utils.createFullscreenButton(this);
         toolbar.add(toolbarZoom);
     }
 
