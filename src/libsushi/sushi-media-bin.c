@@ -848,12 +848,33 @@ sushi_media_bin_init_volume_button (SushiMediaBin    *self,
 }
 
 static void
+sushi_media_bin_init_style (SushiMediaBin *self)
+{
+  static gsize style_initialized = 0;
+
+  if (g_once_init_enter (&style_initialized))
+    {
+      GtkCssProvider *css_provider = gtk_css_provider_new ();
+
+      gtk_css_provider_load_from_resource (css_provider, "/org/gnome/Sushi/libsushi/sushi-media-bin.css");
+      gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
+                                                 GTK_STYLE_PROVIDER (css_provider),
+                                                 GTK_STYLE_PROVIDER_PRIORITY_APPLICATION-10);
+      g_object_unref (css_provider);
+
+      g_once_init_leave (&style_initialized, 1);
+    }
+}
+
+static void
 sushi_media_bin_init (SushiMediaBin *self)
 {
   SushiMediaBinPrivate *priv = SMB_PRIVATE (self);
   gint i;
 
   gtk_widget_init_template (GTK_WIDGET (self));
+
+  sushi_media_bin_init_style (self);
 
   priv->state = SMB_INITIAL_STATE;
   priv->autohide_timeout = AUTOHIDE_TIMEOUT_DEFAULT;
@@ -1227,17 +1248,6 @@ sushi_media_bin_class_init (SushiMediaBinClass *klass)
 
   /* Setup CSS */
   gtk_widget_class_set_css_name (widget_class, "sushi-media-bin");
-
-  if (gdk_screen_get_default ())
-    {
-      GtkCssProvider *css_provider = gtk_css_provider_new ();
-
-      gtk_css_provider_load_from_resource (css_provider, "/org/gnome/Sushi/libsushi/sushi-media-bin.css");
-      gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
-                                                 GTK_STYLE_PROVIDER (css_provider),
-                                                 GTK_STYLE_PROVIDER_PRIORITY_APPLICATION-10);
-      g_object_unref (css_provider);
-    }
 
   /* Init GStreamer */
   gst_init_check (NULL, NULL, NULL);
