@@ -23,10 +23,7 @@
  *
  */
 
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
-const Pango = imports.gi.Pango;
-const Sushi = imports.gi.Sushi;
+const {Gio, Gtk, Pango, Sushi} = imports.gi;
 
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;

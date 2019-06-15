@@ -23,10 +23,7 @@
  *
  */
 
-const Gdk = imports.gi.Gdk;
-const Gtk = imports.gi.Gtk;
-
-const Lang = imports.lang;
+const {Gtk} = imports.gi;
 
 function getScaledSize(baseSize, allocSize, upscale) {
     let allocW = allocSize[0];

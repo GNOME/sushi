@@ -25,13 +25,9 @@
 
 imports.gi.versions.GtkSource = '4';
 
-const Gdk = imports.gi.Gdk;
-const Gtk = imports.gi.Gtk;
-const GLib = imports.gi.GLib;
-const GtkSource = imports.gi.GtkSource;
-const Gio = imports.gi.Gio;
+const {Gdk, Gio, GLib, Gtk, GtkSource, Sushi} = imports.gi;
+
 const Lang = imports.lang;
-const Sushi = imports.gi.Sushi;
 
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;

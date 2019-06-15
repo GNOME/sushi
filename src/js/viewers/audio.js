@@ -23,11 +23,7 @@
  *
  */
 
-const GdkPixbuf = imports.gi.GdkPixbuf;
-const Gio = imports.gi.Gio;
-const Gst = imports.gi.Gst;
-const Gtk = imports.gi.Gtk;
-const Sushi = imports.gi.Sushi;
+const {GdkPixbuf, Gio, Gst, Gtk, Sushi} = imports.gi;
 
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;

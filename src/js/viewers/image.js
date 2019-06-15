@@ -25,11 +25,7 @@
 imports.gi.versions.Gdk = '3.0';
 imports.gi.versions.Gtk = '3.0';
 
-const Gdk = imports.gi.Gdk;
-const GdkPixbuf = imports.gi.GdkPixbuf;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
+const {Gdk, GdkPixbuf, GLib, GObject, Gtk} = imports.gi;
 
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;

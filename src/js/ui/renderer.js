@@ -1,4 +1,5 @@
-const Gtk = imports.gi.Gtk;
+const {Gtk} = imports.gi;
+
 const Lang = imports.lang;
 
 var ResizePolicy = {

@@ -23,9 +23,9 @@
  *
  */
 
-const FallbackRenderer = imports.ui.fallbackRenderer;
+const {Gio} = imports.gi;
 
-const Gio = imports.gi.Gio;
+const FallbackRenderer = imports.ui.fallbackRenderer;
 
 let _mimeHandler = null;
 

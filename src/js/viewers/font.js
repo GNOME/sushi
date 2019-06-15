@@ -23,14 +23,12 @@
  *
  */
 
-const MimeHandler = imports.ui.mimeHandler;
+const {Gtk, GLib, Sushi} = imports.gi;
 
 const Lang = imports.lang;
 
-const Gtk = imports.gi.Gtk;
-const GLib = imports.gi.GLib;
+const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
-const Sushi = imports.gi.Sushi;
 
 const FontRenderer = new Lang.Class({
     Name: 'FontRenderer',

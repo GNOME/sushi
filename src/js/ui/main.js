@@ -25,9 +25,10 @@
 imports.gi.versions.GdkX11 = '3.0';
 imports.gi.versions.Gtk = '3.0';
 
+const {GLib} = imports.gi;
+
 const Format = imports.format;
 const Gettext = imports.gettext;
-const GLib = imports.gi.GLib;
 
 const Application = imports.ui.application;
 const Path = imports.util.path;

@@ -23,10 +23,7 @@
  *
  */
 
-const EvDoc = imports.gi.EvinceDocument;
-const EvView = imports.gi.EvinceView;
-const Gtk = imports.gi.Gtk;
-const Sushi = imports.gi.Sushi;
+const {EvinceDocument, EvinceView, Gtk, Sushi} = imports.gi;
 
 const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
@@ -56,7 +53,7 @@ const EvinceRenderer = new Lang.Class({
         this._pdfLoader.connect('notify::document', this._onDocumentLoaded.bind(this));
         this._pdfLoader.uri = file.get_uri();
 
-        this._view = EvView.View.new();
+        this._view = EvinceView.View.new();
         this._view.show();
         this.add(this._view);
 
@@ -74,8 +71,8 @@ const EvinceRenderer = new Lang.Class({
     },
 
     _onDocumentLoaded : function(pdfLoader) {
-        this._model = EvView.DocumentModel.new_with_document(pdfLoader.document);
-        this._model.set_sizing_mode(EvView.SizingMode.FIT_WIDTH);
+        this._model = EvinceView.DocumentModel.new_with_document(pdfLoader.document);
+        this._model.set_sizing_mode(EvinceView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);
 
         this._model.connect('page-changed', this._updatePageLabel.bind(this));
@@ -118,7 +115,7 @@ const EvinceRenderer = new Lang.Class({
 
 let handler = new MimeHandler.MimeHandler();
 
-EvDoc.init();
+EvinceDocument.init();
 let mimeTypes = Sushi.query_supported_document_types();
 handler.registerMimeTypes(mimeTypes, EvinceRenderer);
 
