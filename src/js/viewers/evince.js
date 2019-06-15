@@ -46,18 +46,24 @@ const EvinceRenderer = new Lang.Class({
         this.canFullScreen = true;
     },
 
-    prepare : function(file, mainWindow, callback) {
+    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
-        this._callback = callback;
 
         this._pdfLoader = new Sushi.PdfLoader();
         this._pdfLoader.connect('notify::document',
                                 Lang.bind(this, this._onDocumentLoaded));
         this._pdfLoader.uri = file.get_uri();
-    },
 
-    render : function() {
+        this._scrolledWin = new Gtk.ScrolledWindow();
+        this._scrolledWin.set_min_content_width(Constants.VIEW_MIN);
+        this._scrolledWin.set_min_content_height(Constants.VIEW_MIN);
+        this._scrolledWin.show();
+
+        this._view = EvView.View.new();
+        this._view.show();
+        this._scrolledWin.add(this._view);
+
         return this._scrolledWin;
     },
 
@@ -73,24 +79,13 @@ const EvinceRenderer = new Lang.Class({
 
     _onDocumentLoaded : function(pdfLoader) {
         this._model = EvView.DocumentModel.new_with_document(pdfLoader.document);
-
         this._model.set_sizing_mode(EvView.SizingMode.FIT_WIDTH);
-	this._model.set_continuous(true);
+        this._model.set_continuous(true);
 
         this._model.connect('page-changed', Lang.bind(this, this._updatePageLabel));
-
-        this._view = EvView.View.new();
-        this._view.show();
-
-        this._scrolledWin = new Gtk.ScrolledWindow();
-        this._scrolledWin.set_min_content_width(Constants.VIEW_MIN);
-        this._scrolledWin.set_min_content_height(Constants.VIEW_MIN);
-        this._scrolledWin.show();
+        this._updatePageLabel();
 
         this._view.set_model(this._model);
-        this._scrolledWin.add(this._view);
-
-        this._callback();
     },
 
     getSizeForAllocation : function(allocation) {
@@ -138,8 +133,6 @@ const EvinceRenderer = new Lang.Class({
 
         let toolbarZoom = Utils.createFullScreenButton(this._mainWindow);
         toolbar.insert(toolbarZoom, -1);
-
-        this._updatePageLabel();
     },
 
     clear : function() {

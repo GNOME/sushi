@@ -62,10 +62,9 @@ const AudioRenderer = new Lang.Class({
         this.canFullScreen = false;
     },
 
-    prepare : function(file, mainWindow, callback) {
+    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
-        this._callback = callback;
 
         this._createPlayer(file);
 
@@ -96,10 +95,6 @@ const AudioRenderer = new Lang.Class({
 
         this._box.show_all();
 
-        this._callback();
-    },
-
-    render : function() {
         return this._box;
     },
 

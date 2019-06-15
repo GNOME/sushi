@@ -56,6 +56,9 @@ const Image = new Lang.Class({
     },
 
     _ensureScaledPix: function() {
+        if (!this._pix)
+            return;
+
         let scaleFactor = this.get_scale_factor();
         let width = this.get_allocated_width() * scaleFactor;
         let height = this.get_allocated_height() * scaleFactor;
@@ -132,15 +135,11 @@ const ImageRenderer = new Lang.Class({
         this.canFullScreen = true;
     },
 
-    prepare : function(file, mainWindow, callback) {
+    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
-        this._callback = callback;
 
         this._createImageTexture(file);
-    },
-
-    render : function() {
         return this._texture;
     },
 
@@ -173,9 +172,6 @@ const ImageRenderer = new Lang.Class({
              if (!anim.is_static_image())
                  this._startTimeout();
 
-             /* we're ready now */
-             this._callback();
-
              stream.close_async(GLib.PRIORITY_DEFAULT,
                                 null, function(object, res) {
                                     try {
@@ -188,6 +184,9 @@ const ImageRenderer = new Lang.Class({
     },
 
     getSizeForAllocation : function(allocation) {
+        if (!this._texture.pix)
+            return allocation;
+
         let width = this._texture.pix.get_width();
         let height = this._texture.pix.get_height();
         return Utils.getScaledSize([width, height], allocation, false);

@@ -39,22 +39,12 @@ const FontRenderer = new Lang.Class({
         this.canFullScreen = true;
     },
 
-    prepare : function(file, mainWindow, callback) {
-        this._mainWindow = mainWindow;
+    render : function(file, mainWindow) {
         this._file = file;
-        this._callback = callback;
 
         this._fontWidget = new Sushi.FontWidget({ uri: file.get_uri() });
         this._fontWidget.show();
-        this._fontWidget.connect('loaded',
-                                 Lang.bind(this, this._onFontLoaded));
-    },
 
-    _onFontLoaded : function() {
-        this._callback();
-    },
-
-    render : function() {
         return this._fontWidget;
     },
 

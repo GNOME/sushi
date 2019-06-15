@@ -23,7 +23,7 @@
  *
  */
 
-const Sushi = imports.gi.Sushi;
+const {GLib, Sushi} = imports.gi;
 
 const Lang = imports.lang;
 
@@ -40,21 +40,28 @@ const GstRenderer = new Lang.Class({
         this.canFullScreen = false;
     },
 
-    prepare : function(file, mainWindow, callback) {
+    render : function(file, mainWindow) {
         this._player = new Sushi.MediaBin({ uri: file.get_uri() });
-        this._player.play();
         this._player.connect('size-change', function() {
             mainWindow.refreshSize();
         });
-        callback();
-    },
 
-    render : function() {
+        this._autoplayId = GLib.idle_add(0, () => {
+            this._autoplayId = 0;
+            this._player.play();
+            return false;
+        });
+
         return this._player;
     },
 
     clear : function() {
-        this._player.stop();
+        if (this._autoplayId > 0) {
+            GLib.source_remove(this._autoplayId);
+            this._autoplayId = 0;
+        } else {
+            this._player.stop();
+        }
     },
 
     getSizeForAllocation : function(allocation) {

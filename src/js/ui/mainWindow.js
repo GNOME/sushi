@@ -42,7 +42,6 @@ var MainWindow = new Lang.Class({
 
     _init : function(application) {
         this._isFullScreen = false;
-        this._pendingRenderer = null;
         this._renderer = null;
         this._view = null;
         this._toolbar = null;
@@ -192,37 +191,29 @@ var MainWindow = new Lang.Class({
          Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
          Gio.FileQueryInfoFlags.NONE,
          GLib.PRIORITY_DEFAULT, null,
-         Lang.bind (this,
-                    function(obj, res) {
-                        try {
-                            this._fileInfo = obj.query_info_finish(res);
-                            this.setTitle(this._fileInfo.get_display_name());
+         Lang.bind (this, function(obj, res) {
+             try {
+                 this._fileInfo = obj.query_info_finish(res);
+                 this.setTitle(this._fileInfo.get_display_name());
 
-                            /* now prepare the real renderer */
-                            this._pendingRenderer = this._mimeHandler.getObject(this._fileInfo.get_content_type());
-                            this._pendingRenderer.prepare(file, this, Lang.bind(this, this._onRendererPrepared));
-                        } catch(e) {
-                            /* FIXME: report the error */
-                            logError(e, 'Error calling prepare() on viewer');
-                        }}));
+                 /* now prepare the real renderer */
+                 this._renderer = this._mimeHandler.getObject(this._fileInfo.get_content_type());
+                 this._createView(file);
+                 this._createToolbar();
+             } catch(e) {
+                 /* FIXME: report the error */
+                 logError(e, 'Error calling prepare() on viewer');
+             }})
+        );
     },
 
-    _onRendererPrepared : function() {
-        this._renderer = this._pendingRenderer;
-        this._pendingRenderer = null;
-
-        /* generate the texture and toolbar for the new renderer */
-        this._createView();
-        this._createToolbar();
-    },
-
-    _createView : function() {
+    _createView : function(file) {
         if (this._view) {
             this._view.destroy();
             this._view = null;
         }
 
-        this._view = this._renderer.render();
+        this._view = this._renderer.render(file, this);
         this._view.expand = true;
         this._view.show();
 

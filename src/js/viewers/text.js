@@ -58,38 +58,19 @@ const TextRenderer = new Lang.Class({
         this.canFullScreen = true;
     },
 
-    prepare : function(file, mainWindow, callback) {
+    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
-        this._callback = callback;
 
         let textLoader = new Sushi.TextLoader();
         textLoader.connect('loaded',
                            Lang.bind(this, this._onBufferLoaded));
         textLoader.uri = file.get_uri();
-    },
 
-    render : function() {
-        return this._scrolledWin;
-    },
-
-    _onBufferLoaded : function(loader, buffer) {
-        buffer.highlight_syntax = true;
-
-        let styleManager = GtkSource.StyleSchemeManager.get_default();
-        let geditScheme = _getGeditScheme();
-        let scheme = styleManager.get_scheme(geditScheme);
-        this._buffer.set_style_scheme(scheme);
-
-        this._view = new GtkSource.View({ buffer: buffer,
-                                          editable: false,
+        this._view = new GtkSource.View({ editable: false,
                                           cursor_visible: false,
                                           monospace: true });
         this._view.set_can_focus(false);
-
-        if (buffer.get_language())
-            this._view.set_show_line_numbers(true);
-
         this._view.connect('button-press-event', Lang.bind(this, function(view, event) {
             let [, button] = event.get_button();
             if (button == Gdk.BUTTON_SECONDARY)
@@ -102,7 +83,20 @@ const TextRenderer = new Lang.Class({
         this._scrolledWin.add(this._view);
         this._scrolledWin.show_all();
 
-        this._callback();
+        return this._scrolledWin;
+    },
+
+    _onBufferLoaded : function(loader, buffer) {
+        buffer.highlight_syntax = true;
+
+        let styleManager = GtkSource.StyleSchemeManager.get_default();
+        let geditScheme = _getGeditScheme();
+        let scheme = styleManager.get_scheme(geditScheme);
+        buffer.set_style_scheme(scheme);
+
+        this._view.set_buffer(buffer);
+        if (buffer.get_language())
+            this._view.set_show_line_numbers(true);
     },
 
     getSizeForAllocation : function(allocation) {

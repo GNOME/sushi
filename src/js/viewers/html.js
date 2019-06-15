@@ -40,10 +40,9 @@ const HTMLRenderer = new Lang.Class({
         this.canFullScreen = true;
     },
 
-    prepare : function(file, mainWindow, callback) {
+    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
-        this._callback = callback;
 
         this._webView = new WebKit.WebView();
         this._webView.show_all();
@@ -54,10 +53,6 @@ const HTMLRenderer = new Lang.Class({
 
         this._webView.load_uri(file.get_uri());
 
-        this._callback();
-    },
-
-    render : function() {
         return this._webView;
     },
 

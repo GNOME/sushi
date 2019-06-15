@@ -45,7 +45,7 @@ var FallbackRenderer = new Lang.Class({
         this.canFullScreen = false;
     },
 
-    prepare : function(file, mainWindow, callback) {
+    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._lastWidth = 0;
         this._lastHeight = 0;
@@ -98,10 +98,6 @@ var FallbackRenderer = new Lang.Class({
 
         this._box.show_all();
 
-        callback();
-    },
-
-    render : function() {
         return this._box;
     },
 
