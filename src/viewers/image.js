@@ -30,49 +30,28 @@ const Mainloop = imports.mainloop;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-const Image = GObject.registerClass({
+var Klass = GObject.registerClass({
+    Implements: [Renderer.Renderer],
     Properties: {
-        pix: GObject.ParamSpec.object('pix', '', '',
-                                      GObject.ParamFlags.READWRITE,
-                                      GdkPixbuf.Pixbuf)
-    }
-}, class Image extends Gtk.DrawingArea {
-    _init() {
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class ImageRenderer extends Gtk.DrawingArea {
+    _init(file, mainWindow) {
         super._init();
 
         this._pix = null;
         this._scaledSurface = null;
-    }
+        this._timeoutId = 0;
+        this.canFullScreen = true;
 
-    _ensureScaledPix() {
-        if (!this._pix)
-            return;
+        this._mainWindow = mainWindow;
+        this._file = file;
 
-        let scaleFactor = this.get_scale_factor();
-        let width = this.get_allocated_width() * scaleFactor;
-        let height = this.get_allocated_height() * scaleFactor;
+        this._createImageTexture(file);
 
-        // Downscale original to fit, if necessary
-        let origWidth = this._pix.get_width();
-        let origHeight = this._pix.get_height();
-
-        let scaleX = width / origWidth;
-        let scaleY = height / origHeight;
-        let scale = Math.min(scaleX, scaleY);
-
-        let newWidth = Math.floor(origWidth * scale);
-        let newHeight = Math.floor(origHeight * scale);
-
-        let scaledWidth = this._scaledSurface ? this._scaledSurface.getWidth() : 0;
-        let scaledHeight = this._scaledSurface ? this._scaledSurface.getHeight() : 0;
-
-        if (newWidth != scaledWidth || newHeight != scaledHeight) {
-            let scaledPixbuf = this._pix.scale_simple(newWidth, newHeight,
-                                                      GdkPixbuf.InterpType.BILINEAR);
-            this._scaledSurface = Gdk.cairo_surface_create_from_pixbuf(scaledPixbuf,
-                                                                       scaleFactor,
-                                                                       this.get_window());
-        }
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     vfunc_get_preferred_width() {
@@ -104,39 +83,6 @@ const Image = GObject.registerClass({
         return false;
     }
 
-    set pix(p) {
-        this._pix = p;
-        this._scaledSurface = null;
-        this.queue_resize();
-    }
-
-    get pix() {
-        return this._pix;
-    }
-});
-
-var Klass = GObject.registerClass({
-    Implements: [Renderer.Renderer],
-    Properties: {
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class ImageRenderer extends Image {
-    _init(file, mainWindow) {
-        super._init();
-
-        this._timeoutId = 0;
-        this.canFullScreen = true;
-
-        this._mainWindow = mainWindow;
-        this._file = file;
-
-        this._createImageTexture(file);
-
-        this.connect('destroy', this._onDestroy.bind(this));
-    }
-
     _createImageTexture(file) {
         file.read_async(GLib.PRIORITY_DEFAULT, null, (obj, res) => {
             try {
@@ -148,16 +94,54 @@ var Klass = GObject.registerClass({
         });
     }
 
+    _ensureScaledPix() {
+        if (!this._pix)
+            return;
+
+        let scaleFactor = this.get_scale_factor();
+        let width = this.get_allocated_width() * scaleFactor;
+        let height = this.get_allocated_height() * scaleFactor;
+
+        // Scale original to fit, if necessary
+        let origWidth = this._pix.get_width();
+        let origHeight = this._pix.get_height();
+
+        let scaleX = width / origWidth;
+        let scaleY = height / origHeight;
+        let scale = Math.min(scaleX, scaleY);
+
+        let newWidth = Math.floor(origWidth * scale);
+        let newHeight = Math.floor(origHeight * scale);
+
+        let scaledWidth = this._scaledSurface ? this._scaledSurface.getWidth() : 0;
+        let scaledHeight = this._scaledSurface ? this._scaledSurface.getHeight() : 0;
+
+        if (newWidth != scaledWidth || newHeight != scaledHeight) {
+            let scaledPixbuf = this._pix.scale_simple(newWidth, newHeight,
+                                                      GdkPixbuf.InterpType.BILINEAR);
+            this._scaledSurface = Gdk.cairo_surface_create_from_pixbuf(scaledPixbuf,
+                                                                       scaleFactor,
+                                                                       this.get_window());
+        }
+    }
+
+    _setPix(pix) {
+        this._pix = pix;
+        this._scaledSurface = null;
+
+        this.queue_resize();
+        this.isReady();
+    }
+
     _textureFromStream(stream) {
         GdkPixbuf.PixbufAnimation.new_from_stream_async(stream, null, (obj, res) => {
             let anim = GdkPixbuf.PixbufAnimation.new_from_stream_finish(res);
 
             this._iter = anim.get_iter(null);
-            this.pix = this._iter.get_pixbuf().apply_embedded_orientation();
-            this.isReady();
-
             if (!anim.is_static_image())
                 this._startTimeout();
+
+            this._setPix(this._iter.get_pixbuf().apply_embedded_orientation());
 
             stream.close_async(GLib.PRIORITY_DEFAULT, null, (obj, res) => {
                 try {
@@ -195,8 +179,7 @@ var Klass = GObject.registerClass({
 
     _advanceImage() {
         this._iter.advance(null);
-        let pix = this._iter.get_pixbuf().apply_embedded_orientation();
-        this.set_from_pixbuf(pix);
+        this._setPix(this._iter.get_pixbuf().apply_embedded_orientation());
         return true;
     }
 });
