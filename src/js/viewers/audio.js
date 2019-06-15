@@ -29,7 +29,6 @@ const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
 
 const Constants = imports.util.constants;
-const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const Utils = imports.ui.utils;
@@ -51,7 +50,7 @@ function _formatTimeString(timeVal) {
     return str;
 }
 
-const AudioRenderer = GObject.registerClass(class AudioRenderer extends Gtk.Box {
+var Klass = GObject.registerClass(class AudioRenderer extends Gtk.Box {
     _init(file, mainWindow) {
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
@@ -261,6 +260,4 @@ const AudioRenderer = GObject.registerClass(class AudioRenderer extends Gtk.Box 
     }
 });
 
-let handler = new MimeHandler.MimeHandler();
-
-handler.registerMimeTypes(TotemMimeTypes.audioTypes, AudioRenderer);
+var mimeTypes = TotemMimeTypes.audioTypes;

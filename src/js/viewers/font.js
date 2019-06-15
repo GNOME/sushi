@@ -25,10 +25,9 @@
 
 const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
-const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 
-const FontRenderer = GObject.registerClass(class FontRenderer extends Sushi.FontWidget {
+var Klass = GObject.registerClass(class FontRenderer extends Sushi.FontWidget {
     _init(file, mainWindow) {
         super._init({ uri: file.get_uri(),
                       visible: true })
@@ -43,13 +42,9 @@ const FontRenderer = GObject.registerClass(class FontRenderer extends Sushi.Font
     }
 });
 
-let handler = new MimeHandler.MimeHandler();
-
-let mimeTypes = [
+var mimeTypes = [
     'application/x-font-ttf',
     'application/x-font-otf',
     'application/x-font-pcf',
     'application/x-font-type1'
 ];
-
-handler.registerMimeTypes(mimeTypes, FontRenderer);

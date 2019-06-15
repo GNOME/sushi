@@ -25,12 +25,11 @@
 
 const {GLib, GObject, Sushi} = imports.gi;
 
-const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const Utils = imports.ui.utils;
 
-const GstRenderer = GObject.registerClass(class GstRenderer extends Sushi.MediaBin {
+var Klass = GObject.registerClass(class GstRenderer extends Sushi.MediaBin {
     _init(file, mainWindow) {
         super._init({ uri: file.get_uri() });
 
@@ -59,6 +58,4 @@ const GstRenderer = GObject.registerClass(class GstRenderer extends Sushi.MediaB
     }
 });
 
-let handler = new MimeHandler.MimeHandler();
-
-handler.registerMimeTypes(TotemMimeTypes.videoTypes, GstRenderer);
+var mimeTypes = TotemMimeTypes.videoTypes;

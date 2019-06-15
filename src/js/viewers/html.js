@@ -25,11 +25,10 @@
 
 const {Gtk, GLib, GObject, Sushi, WebKit2} = imports.gi;
 
-const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-const HTMLRenderer = GObject.registerClass(class HTMLRenderer extends WebKit2.WebView {
+var Klass = GObject.registerClass(class HTMLRenderer extends WebKit2.WebView {
     _init(file, mainWindow) {
         super._init();
 
@@ -62,10 +61,6 @@ const HTMLRenderer = GObject.registerClass(class HTMLRenderer extends WebKit2.We
     }
 });
 
-let handler = new MimeHandler.MimeHandler();
-
-let mimeTypes = [
+var mimeTypes = [
     'text/html'
 ];
-
-handler.registerMimeTypes(mimeTypes, HTMLRenderer);

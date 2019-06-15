@@ -27,50 +27,27 @@ const {Gio} = imports.gi;
 
 const FallbackRenderer = imports.ui.fallbackRenderer;
 
-let _mimeHandler = null;
+var renderers = [];
+for (let i in imports.viewers)
+    renderers.push(imports.viewers[i]);
 
-function MimeHandler() {
-    if (_mimeHandler == null) {
-        this._init();
-        _mimeHandler = this;
-    }
+var getKlass = function(mime) {
+    let renderer = renderers.find((r) => {
+        // first, try a direct match with the mimetype itself
+        if (r.mimeTypes.includes(mime))
+            return true;
 
-    return _mimeHandler;
-}
+        // if this fails, try to see if we have any handlers
+        // registered for a parent type
+        if (r.mimeTypes.some((rm) => Gio.content_type_is_a(mime, rm)))
+            return true;
 
-function init() {
-    let handler = new MimeHandler();
-}
+        return false;
+    });
 
-MimeHandler.prototype = {
-    _init: function() {
-        this._mimeTypes = [];
-   },
+    if (renderer)
+        return renderer.Klass;
 
-    registerMime: function(mime, klass) {
-        this._mimeTypes[mime] = klass;
-    },
-
-    registerMimeTypes: function(mimeTypes, klass) {
-        for (let idx in mimeTypes)
-            this.registerMime(mimeTypes[idx], klass);
-    },
-
-    getKlass: function(mime) {
-        if (this._mimeTypes[mime]) {
-            /* first, try a direct match with the mimetype itself */
-            return this._mimeTypes[mime];
-        } else {
-            /* if this fails, try to see if we have any handlers
-             * registered for a parent type.
-             */
-            for (let key in this._mimeTypes) {
-                if (Gio.content_type_is_a (mime, key))
-                    return this._mimeTypes[key];
-            }
-
-            /* finally, resort to the fallback renderer */
-            return FallbackRenderer.FallbackRenderer;
-        }
-    }
+    // finally, resort to the fallback renderer
+    return FallbackRenderer.FallbackRenderer;
 }

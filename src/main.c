@@ -54,42 +54,6 @@ parse_options (int *argc, char ***argv)
   g_option_context_free (ctx);
 }
 
-static void
-register_all_viewers (GjsContext *ctx)
-{
-  GDir *dir;
-  const gchar *name;
-  gchar *path;
-  GError *error = NULL;
-
-  dir = g_dir_open (SUSHI_PKGDATADIR "/js/viewers", 0, &error);
-
-  if (dir == NULL) {
-    g_warning ("Can't open module directory: %s\n", error->message);
-    g_error_free (error);
-    return;
-  }
- 
-  name = g_dir_read_name (dir);
-
-  while (name != NULL) {
-    path = g_build_filename (SUSHI_PKGDATADIR "/js/viewers",
-                             name, NULL);
-    if (!gjs_context_eval_file (ctx,
-                                path,
-                                NULL,
-                                &error)) {
-      g_warning ("Unable to parse viewer %s: %s", name, error->message);
-      g_clear_error (&error);
-    }
-
-    g_free (path);
-    name = g_dir_read_name (dir);
-  }
-
-  g_dir_close (dir);
-}
-
 int
 main (int argc, char **argv)
 {
@@ -102,8 +66,6 @@ main (int argc, char **argv)
 
   js_context = gjs_context_new_with_search_path (NULL);
   error = NULL;
-
-  register_all_viewers (js_context);
 
   if (!gjs_context_eval (js_context,
                          "const Main = imports.ui.main;\n"

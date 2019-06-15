@@ -73,8 +73,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this._toolbarId = 0;
         this.file = null;
 
-        this._mimeHandler = new MimeHandler.MimeHandler();
-
         super._init({ type: Gtk.WindowType.TOPLEVEL,
                       skipPagerHint: true,
                       skipTaskbarHint: true,
@@ -197,7 +195,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
                     this.setTitle(this._fileInfo.get_display_name());
 
                     /* now prepare the real renderer */
-                    let klass = this._mimeHandler.getKlass(this._fileInfo.get_content_type());
+                    let klass = MimeHandler.getKlass(this._fileInfo.get_content_type());
                     this._createView(file, klass);
                     this._createToolbar();
                 } catch(e) {

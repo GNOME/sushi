@@ -31,7 +31,6 @@ const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
 const Mainloop = imports.mainloop;
 
-const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
@@ -120,7 +119,7 @@ const Image = GObject.registerClass({
     }
 });
 
-const ImageRenderer = GObject.registerClass(class ImageRenderer extends Image {
+var Klass = GObject.registerClass(class ImageRenderer extends Image {
     _init(file, mainWindow) {
         super._init();
 
@@ -199,10 +198,7 @@ const ImageRenderer = GObject.registerClass(class ImageRenderer extends Image {
     }
 });
 
-let handler = new MimeHandler.MimeHandler();
-
+var mimeTypes = [];
 let formats = GdkPixbuf.Pixbuf.get_formats();
-for (let idx in formats) {
-    let mimeTypes = formats[idx].get_mime_types();
-    handler.registerMimeTypes(mimeTypes, ImageRenderer);
-}
+for (let idx in formats)
+    mimeTypes = mimeTypes.concat(formats[idx].get_mime_types());

@@ -29,11 +29,10 @@ const Gettext = imports.gettext.domain('sushi');
 const _ = Gettext.gettext;
 
 const Constants = imports.util.constants;
-const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
-const EvinceRenderer = GObject.registerClass(class EvinceRenderer extends Gtk.ScrolledWindow {
+var Klass = GObject.registerClass(class EvinceRenderer extends Gtk.ScrolledWindow {
     _init(file, mainWindow) {
         super._init({ visible: true,
                       min_content_height: Constants.VIEW_MIN,
@@ -109,11 +108,7 @@ const EvinceRenderer = GObject.registerClass(class EvinceRenderer extends Gtk.Sc
     }
 });
 
-let handler = new MimeHandler.MimeHandler();
-
 EvinceDocument.init();
-let mimeTypes = Sushi.query_supported_document_types();
-handler.registerMimeTypes(mimeTypes, EvinceRenderer);
 
 let officeTypes = [
     'application/vnd.oasis.opendocument.text',
@@ -127,5 +122,4 @@ let officeTypes = [
     'application/vnd.ms-powerpoint',
     'application/rtf'
 ];
-
-handler.registerMimeTypes(officeTypes, EvinceRenderer);
+var mimeTypes = Sushi.query_supported_document_types().concat(officeTypes);

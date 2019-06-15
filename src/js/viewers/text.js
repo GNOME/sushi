@@ -27,7 +27,6 @@ imports.gi.versions.GtkSource = '4';
 
 const {Gdk, Gio, GLib, GObject, Gtk, GtkSource, Sushi} = imports.gi;
 
-const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
@@ -45,7 +44,7 @@ function _getGeditScheme() {
     return geditScheme;
 }
 
-const TextRenderer = GObject.registerClass(class TextRenderer extends Gtk.ScrolledWindow {
+var Klass = GObject.registerClass(class TextRenderer extends Gtk.ScrolledWindow {
     _init(file, mainWindow) {
         super._init();
 
@@ -96,13 +95,7 @@ const TextRenderer = GObject.registerClass(class TextRenderer extends Gtk.Scroll
     }
 });
 
-let handler = new MimeHandler.MimeHandler();
-
-/* register for text/plain and let the mime handler call us
- * for child types.
- */
-let mimeTypes = [
+// register for text/plain and let the mime handler call us for child types
+var mimeTypes = [
     'text/plain'
 ];
-
-handler.registerMimeTypes(mimeTypes, TextRenderer);
