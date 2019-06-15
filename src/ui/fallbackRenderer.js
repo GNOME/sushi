@@ -39,7 +39,6 @@ var FallbackRenderer = GObject.registerClass({
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
 
-        this.moveOnClick = true;
         this.canFullScreen = false;
 
         this._fileLoader = new Sushi.FileLoader();

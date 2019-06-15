@@ -20,6 +20,10 @@ var Renderer = GObject.registerClass({
         this.notify('ready');
     }
 
+    get moveOnClick() {
+        return true;
+    }
+
     get ready() {
         return !!this._ready;
     }

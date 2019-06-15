@@ -39,7 +39,6 @@ var Klass = GObject.registerClass({
         super._init({ uri: file.get_uri(),
                       visible: true })
 
-        this.moveOnClick = true;
         this.canFullScreen = true;
 
         this.isReady();

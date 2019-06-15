@@ -53,7 +53,6 @@ var Klass = GObject.registerClass({
     _init(file, mainWindow) {
         super._init();
 
-        this.moveOnClick = false;
         this.canFullScreen = true;
         this._mainWindow = mainWindow;
         this._file = file;
@@ -89,6 +88,10 @@ var Klass = GObject.registerClass({
         this._view.set_buffer(buffer);
         if (buffer.get_language())
             this._view.set_show_line_numbers(true);
+    }
+
+    get moveOnClick() {
+        return false;
     }
 
     populateToolbar(toolbar) {

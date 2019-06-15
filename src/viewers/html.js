@@ -39,7 +39,6 @@ var Klass = GObject.registerClass({
     _init(file, mainWindow) {
         super._init();
 
-        this.moveOnClick = false;
         this.canFullScreen = true;
 
         this._mainWindow = mainWindow;
@@ -51,6 +50,10 @@ var Klass = GObject.registerClass({
 
         this.load_uri(file.get_uri());
         this.isReady();
+    }
+
+    get moveOnClick() {
+        return false;
     }
 
     populateToolbar(toolbar) {

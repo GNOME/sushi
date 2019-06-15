@@ -59,7 +59,6 @@ var Klass = GObject.registerClass({
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
 
-        this.moveOnClick = true;
         this.canFullScreen = false;
 
         this._mainWindow = mainWindow;

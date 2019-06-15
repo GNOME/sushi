@@ -127,7 +127,6 @@ var Klass = GObject.registerClass({
         super._init();
 
         this._timeoutId = 0;
-        this.moveOnClick = true;
         this.canFullScreen = true;
 
         this._mainWindow = mainWindow;

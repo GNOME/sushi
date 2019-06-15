@@ -42,7 +42,6 @@ var Klass = GObject.registerClass({
                       min_content_height: Constants.VIEW_MIN,
                       min_content_width: Constants.VIEW_MIN });
 
-        this.moveOnClick = false;
         this.canFullScreen = true;
 
         this._mainWindow = mainWindow;
@@ -79,6 +78,10 @@ var Klass = GObject.registerClass({
         this._updatePageLabel();
 
         this._view.set_model(this._model);
+    }
+
+    get moveOnClick() {
+        return false;
     }
 
     populateToolbar(toolbar) {

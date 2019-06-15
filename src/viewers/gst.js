@@ -40,7 +40,6 @@ var Klass = GObject.registerClass({
     _init(file) {
         super._init({ uri: file.get_uri() });
 
-        this.moveOnClick = true;
         // fullscreen is handled internally by the widget
         this.canFullScreen = false;
 
