@@ -233,6 +233,10 @@ var Klass = GObject.registerClass({
         }
     }
 
+    get resizable() {
+        return false;
+    }
+
     get resizePolicy() {
         return Renderer.ResizePolicy.NAT_SIZE;
     }

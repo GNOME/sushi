@@ -217,6 +217,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
 
         this._renderer.connect('notify::ready', this._onRendererReady.bind(this));
         this._onRendererReady();
+
+        this.set_resizable(this._renderer.resizable);
     }
 
     /**************************************************************************

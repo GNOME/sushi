@@ -24,6 +24,10 @@ var Renderer = GObject.registerClass({
         return !!this._ready;
     }
 
+    get resizable() {
+        return true;
+    }
+
     get resizePolicy() {
         return ResizePolicy.MAX_SIZE;
     }
