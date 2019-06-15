@@ -109,19 +109,29 @@ var Klass = GObject.registerClass({
         let scaleY = height / origHeight;
         let scale = Math.min(scaleX, scaleY);
 
+        // Do not upscale unless we're fullscreen
+        if (!this.fullscreen)
+            scale = Math.min(scale, 1.0 * scaleFactor);
+
         let newWidth = Math.floor(origWidth * scale);
         let newHeight = Math.floor(origHeight * scale);
 
         let scaledWidth = this._scaledSurface ? this._scaledSurface.getWidth() : 0;
         let scaledHeight = this._scaledSurface ? this._scaledSurface.getHeight() : 0;
 
-        if (newWidth != scaledWidth || newHeight != scaledHeight) {
-            let scaledPixbuf = this._pix.scale_simple(newWidth, newHeight,
-                                                      GdkPixbuf.InterpType.BILINEAR);
-            this._scaledSurface = Gdk.cairo_surface_create_from_pixbuf(scaledPixbuf,
-                                                                       scaleFactor,
-                                                                       this.get_window());
-        }
+        if (newWidth == scaledWidth && newHeight == scaledHeight)
+            return;
+
+        // Avoid blur if we're upscaling a lot, e.g. when fullscreening
+        // a small image. We use nearest neighbor interpolation for that case.
+        let interpType = GdkPixbuf.InterpType.BILINEAR;
+        if (scale >= 3.0 * scaleFactor)
+            interpType = GdkPixbuf.InterpType.NEAREST;
+
+        let scaledPixbuf = this._pix.scale_simple(newWidth, newHeight, interpType);
+        this._scaledSurface = Gdk.cairo_surface_create_from_pixbuf(scaledPixbuf,
+                                                                   scaleFactor,
+                                                                   this.get_window());
     }
 
     _setPix(pix) {
