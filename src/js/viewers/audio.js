@@ -307,6 +307,5 @@ const AudioRenderer = new Lang.Class({
 });
 
 let handler = new MimeHandler.MimeHandler();
-let renderer = new AudioRenderer();
 
-handler.registerMimeTypes(TotemMimeTypes.audioTypes, renderer);
+handler.registerMimeTypes(TotemMimeTypes.audioTypes, AudioRenderer);

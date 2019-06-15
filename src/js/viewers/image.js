@@ -222,10 +222,9 @@ const ImageRenderer = new Lang.Class({
 });
 
 let handler = new MimeHandler.MimeHandler();
-let renderer = new ImageRenderer();
 
 let formats = GdkPixbuf.Pixbuf.get_formats();
 for (let idx in formats) {
     let mimeTypes = formats[idx].get_mime_types();
-    handler.registerMimeTypes(mimeTypes, renderer);
+    handler.registerMimeTypes(mimeTypes, ImageRenderer);
 }

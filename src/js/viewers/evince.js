@@ -141,10 +141,9 @@ const EvinceRenderer = new Lang.Class({
 });
 
 let handler = new MimeHandler.MimeHandler();
-let renderer = new EvinceRenderer();
 
 let mimeTypes = Sushi.query_supported_document_types();
-handler.registerMimeTypes(mimeTypes, renderer);
+handler.registerMimeTypes(mimeTypes, EvinceRenderer);
 
 let officeTypes = [
     'application/vnd.oasis.opendocument.text',
@@ -159,4 +158,4 @@ let officeTypes = [
     'application/rtf'
 ];
 
-handler.registerMimeTypes(officeTypes, renderer);
+handler.registerMimeTypes(officeTypes, EvinceRenderer);

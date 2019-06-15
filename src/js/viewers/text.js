@@ -110,7 +110,6 @@ const TextRenderer = new Lang.Class({
 });
 
 let handler = new MimeHandler.MimeHandler();
-let renderer = new TextRenderer();
 
 /* register for text/plain and let the mime handler call us
  * for child types.
@@ -119,4 +118,4 @@ let mimeTypes = [
     'text/plain'
 ];
 
-handler.registerMimeTypes(mimeTypes, renderer);
+handler.registerMimeTypes(mimeTypes, TextRenderer);

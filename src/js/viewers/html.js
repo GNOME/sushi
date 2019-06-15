@@ -74,10 +74,9 @@ const HTMLRenderer = new Lang.Class({
 });
 
 let handler = new MimeHandler.MimeHandler();
-let renderer = new HTMLRenderer();
 
 let mimeTypes = [
     'text/html'
 ];
 
-handler.registerMimeTypes(mimeTypes, renderer);
+handler.registerMimeTypes(mimeTypes, HTMLRenderer);

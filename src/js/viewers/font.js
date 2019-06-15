@@ -63,7 +63,6 @@ const FontRenderer = new Lang.Class({
 });
 
 let handler = new MimeHandler.MimeHandler();
-let renderer = new FontRenderer();
 
 let mimeTypes = [
     'application/x-font-ttf',
@@ -72,4 +71,4 @@ let mimeTypes = [
     'application/x-font-type1'
 ];
 
-handler.registerMimeTypes(mimeTypes, renderer);
+handler.registerMimeTypes(mimeTypes, FontRenderer);

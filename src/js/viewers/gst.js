@@ -72,6 +72,5 @@ const GstRenderer = new Lang.Class({
 });
 
 let handler = new MimeHandler.MimeHandler();
-let renderer = new GstRenderer();
 
-handler.registerMimeTypes(TotemMimeTypes.videoTypes, renderer);
+handler.registerMimeTypes(TotemMimeTypes.videoTypes, GstRenderer);
