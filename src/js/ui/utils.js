@@ -90,7 +90,7 @@ function createOpenButton(file, mainWindow) {
                          file.get_uri(),
                          timestamp);
 
-            mainWindow.close();
+            mainWindow.destroy();
         } catch (e) {
             log('Unable to execute the default application for ' +
                 file.get_uri() + ' : ' + e.toString());

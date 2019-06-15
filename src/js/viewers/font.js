@@ -33,24 +33,20 @@ const Sushi = imports.gi.Sushi;
 
 const FontRenderer = new Lang.Class({
     Name: 'FontRenderer',
+    Extends: Sushi.FontWidget,
 
-    _init : function(args) {
+    _init : function(file, mainWindow) {
+        this.parent({ uri: file.get_uri(),
+                      visible: true })
+
         this.moveOnClick = true;
         this.canFullScreen = true;
-    },
-
-    render : function(file, mainWindow) {
         this._file = file;
-
-        this._fontWidget = new Sushi.FontWidget({ uri: file.get_uri() });
-        this._fontWidget.show();
-
-        return this._fontWidget;
     },
 
     getSizeForAllocation : function(allocation) {
-        let size = [ this._fontWidget.get_preferred_size()[1].width,
-                     this._fontWidget.get_preferred_size()[1].height ];
+        let size = [ this.get_preferred_size()[1].width,
+                     this.get_preferred_size()[1].height ];
 
         if (size[0] > allocation[0])
             size[0] = allocation[0];

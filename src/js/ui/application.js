@@ -88,7 +88,7 @@ var Application = new Lang.Class({
     },
 
     Close: function() {
-        this._mainWindow.close();
+        this._mainWindow.destroy();
     },
 
     ShowFile : function(uri, xid, closeIfAlreadyShown) {
@@ -96,7 +96,7 @@ var Application = new Lang.Class({
         if (closeIfAlreadyShown &&
             this._mainWindow.file &&
             this._mainWindow.file.equal(file)) {
-            this._mainWindow.close();
+            this._mainWindow.destroy();
             return;
         }
         this._mainWindow.setParent(xid);

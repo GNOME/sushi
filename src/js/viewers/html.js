@@ -34,26 +34,22 @@ const Utils = imports.ui.utils;
 
 const HTMLRenderer = new Lang.Class({
     Name: 'HTMLRenderer',
+    Extends: WebKit.WebView,
 
-    _init : function(args) {
+    _init : function(file, mainWindow) {
+        this.parent();
+
         this.moveOnClick = false;
         this.canFullScreen = true;
-    },
 
-    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
 
-        this._webView = new WebKit.WebView();
-        this._webView.show_all();
-
         /* disable the default context menu of the web view */
-        this._webView.connect ("context-menu",
-                               function() {return true;});
+        this.connect('context-menu',
+                     function() {return true;});
 
-        this._webView.load_uri(file.get_uri());
-
-        return this._webView;
+        this.load_uri(file.get_uri());
     },
 
     getSizeForAllocation : function(allocation) {

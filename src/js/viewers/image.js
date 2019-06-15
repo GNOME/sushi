@@ -128,24 +128,24 @@ const Image = new Lang.Class({
 
 const ImageRenderer = new Lang.Class({
     Name: 'ImageRenderer',
+    Extends: Image,
 
-    _init : function(args) {
+    _init : function(file, mainWindow) {
+        this.parent();
+
         this._timeoutId = 0;
         this.moveOnClick = true;
         this.canFullScreen = true;
-    },
 
-    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
 
         this._createImageTexture(file);
-        return this._texture;
+
+        this.connect('destroy', this._onDestroy.bind(this));
     },
 
     _createImageTexture : function(file) {
-        this._texture = new Image();
-
         file.read_async
         (GLib.PRIORITY_DEFAULT, null,
          Lang.bind(this,
@@ -166,8 +166,7 @@ const ImageRenderer = new Lang.Class({
              let anim = GdkPixbuf.PixbufAnimation.new_from_stream_finish(res);
 
              this._iter = anim.get_iter(null);
-             let pix = this._iter.get_pixbuf().apply_embedded_orientation();
-             this._texture.pix = pix;
+             this.pix = this._iter.get_pixbuf().apply_embedded_orientation();
 
              if (!anim.is_static_image())
                  this._startTimeout();
@@ -184,11 +183,11 @@ const ImageRenderer = new Lang.Class({
     },
 
     getSizeForAllocation : function(allocation) {
-        if (!this._texture.pix)
+        if (!this.pix)
             return allocation;
 
-        let width = this._texture.pix.get_width();
-        let height = this._texture.pix.get_height();
+        let width = this.pix.get_width();
+        let height = this.pix.get_height();
         return Utils.getScaledSize([width, height], allocation, false);
     },
 
@@ -203,7 +202,7 @@ const ImageRenderer = new Lang.Class({
         toolbar.insert(toolbarZoom, 0);
     },
 
-    destroy : function () {
+    _onDestroy : function () {
         /* We should do the check here because it is possible
          * that we never created a source if our image is
          * not animated. */
@@ -216,7 +215,7 @@ const ImageRenderer = new Lang.Class({
     _advanceImage : function () {
         this._iter.advance(null);
         let pix = this._iter.get_pixbuf().apply_embedded_orientation();
-        this._texture.set_from_pixbuf(pix);
+        this.set_from_pixbuf(pix);
         return true;
     },
 });

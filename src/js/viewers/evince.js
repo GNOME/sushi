@@ -38,15 +38,16 @@ const Utils = imports.ui.utils;
 
 const EvinceRenderer = new Lang.Class({
     Name: 'EvinceRenderer',
+    Extends: Gtk.ScrolledWindow,
 
-    _init : function(args) {
-        EvDoc.init();
+    _init : function(file, mainWindow) {
+        this.parent({ visible: true,
+                      min_content_height: Constants.VIEW_MIN,
+                      min_content_width: Constants.VIEW_MIN });
 
         this.moveOnClick = false;
         this.canFullScreen = true;
-    },
 
-    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
 
@@ -55,16 +56,11 @@ const EvinceRenderer = new Lang.Class({
                                 Lang.bind(this, this._onDocumentLoaded));
         this._pdfLoader.uri = file.get_uri();
 
-        this._scrolledWin = new Gtk.ScrolledWindow();
-        this._scrolledWin.set_min_content_width(Constants.VIEW_MIN);
-        this._scrolledWin.set_min_content_height(Constants.VIEW_MIN);
-        this._scrolledWin.show();
-
         this._view = EvView.View.new();
         this._view.show();
-        this._scrolledWin.add(this._view);
+        this.add(this._view);
 
-        return this._scrolledWin;
+        this.connect('destroy', this._onDestroy.bind(this));
     },
 
     _updatePageLabel : function() {
@@ -135,13 +131,14 @@ const EvinceRenderer = new Lang.Class({
         toolbar.insert(toolbarZoom, -1);
     },
 
-    clear : function() {
+    _onDestroy : function() {
         this._pdfLoader = null;
     }
 });
 
 let handler = new MimeHandler.MimeHandler();
 
+EvDoc.init();
 let mimeTypes = Sushi.query_supported_document_types();
 handler.registerMimeTypes(mimeTypes, EvinceRenderer);
 

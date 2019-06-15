@@ -52,13 +52,13 @@ function _getGeditScheme() {
 
 const TextRenderer = new Lang.Class({
     Name: 'TextRenderer',
+    Extends: Gtk.ScrolledWindow,
 
-    _init : function(args) {
+    _init : function(file, mainWindow) {
+        this.parent();
+
         this.moveOnClick = false;
         this.canFullScreen = true;
-    },
-
-    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
 
@@ -79,11 +79,7 @@ const TextRenderer = new Lang.Class({
             return false;
         }));
 
-        this._scrolledWin = new Gtk.ScrolledWindow();
-        this._scrolledWin.add(this._view);
-        this._scrolledWin.show_all();
-
-        return this._scrolledWin;
+        this.add(this._view);
     },
 
     _onBufferLoaded : function(loader, buffer) {

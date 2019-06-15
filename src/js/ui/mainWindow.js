@@ -43,7 +43,6 @@ var MainWindow = new Lang.Class({
     _init : function(application) {
         this._isFullScreen = false;
         this._renderer = null;
-        this._view = null;
         this._toolbar = null;
         this._toolbarId = 0;
         this.file = null;
@@ -84,7 +83,7 @@ var MainWindow = new Lang.Class({
      ****************** main object event callbacks ***************************
      **************************************************************************/
     _onDeleteEvent : function() {
-        this._clearAndQuit();
+        this.destroy();
     },
 
     _onRealize: function() {
@@ -100,7 +99,7 @@ var MainWindow = new Lang.Class({
         if (key == Gdk.KEY_Escape ||
             key == Gdk.KEY_space ||
             key == Gdk.KEY_q)
-            this._clearAndQuit();
+            this.destroy();
 
         if (key == Gdk.KEY_f ||
             key == Gdk.KEY_F11)
@@ -174,18 +173,6 @@ var MainWindow = new Lang.Class({
     },
 
     _createRenderer : function(file) {
-        if (this._renderer) {
-            if (this._renderer.clear)
-                this._renderer.clear();
-
-            this._renderer = null;
-        }
-
-        /* create a temporary spinner renderer, that will timeout and show itself
-         * if the loading takes too long.
-         */
-        this._renderer = new SpinnerBox.SpinnerBox();
-
         file.query_info_async
         (Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME + ',' +
          Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
@@ -197,27 +184,27 @@ var MainWindow = new Lang.Class({
                  this.setTitle(this._fileInfo.get_display_name());
 
                  /* now prepare the real renderer */
-                 this._renderer = this._mimeHandler.getObject(this._fileInfo.get_content_type());
-                 this._createView(file);
+                 let klass = this._mimeHandler.getKlass(this._fileInfo.get_content_type());
+                 this._createView(file, klass);
                  this._createToolbar();
              } catch(e) {
                  /* FIXME: report the error */
-                 logError(e, 'Error calling prepare() on viewer');
+                 logError(e, 'Error creating viewer');
              }})
         );
     },
 
-    _createView : function(file) {
-        if (this._view) {
-            this._view.destroy();
-            this._view = null;
+    _createView : function (file, klass) {
+        if (this._renderer) {
+            this._renderer.destroy()
+            this._renderer = null;
         }
 
-        this._view = this._renderer.render(file, this);
-        this._view.expand = true;
-        this._view.show();
+        this._renderer = new klass(file, this);
+        this._renderer.show_all();
+        this._renderer.expand = true;
+        this._embed.add(this._renderer);
 
-        this._embed.add(this._view);
         this.refreshSize();
     },
 
@@ -282,16 +269,6 @@ var MainWindow = new Lang.Class({
     },
 
     /**************************************************************************
-     *********************** Window move/fade helpers *************************
-     **************************************************************************/
-    _clearAndQuit : function() {
-        if (this._renderer.clear)
-            this._renderer.clear();
-
-        this.destroy();
-    },
-
-    /**************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
     setParent : function(xid) {
@@ -308,10 +285,6 @@ var MainWindow = new Lang.Class({
     setFile : function(file) {
         this.file = file;
         this._createRenderer(file);
-        this._createView();
-        this._createToolbar();
-
-        this.show_all();
     },
 
     setTitle : function(label) {
@@ -337,9 +310,5 @@ var MainWindow = new Lang.Class({
         }
 
         return this._isFullScreen;
-    },
-
-    close : function() {
-        this._clearAndQuit();
     }
 });

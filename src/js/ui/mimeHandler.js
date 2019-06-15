@@ -58,11 +58,10 @@ MimeHandler.prototype = {
             this.registerMime(mimeTypes[idx], klass);
     },
 
-    getObject: function(mime) {
+    getKlass: function(mime) {
         if (this._mimeTypes[mime]) {
             /* first, try a direct match with the mimetype itself */
-            let klass = this._mimeTypes[mime];
-            return new klass();
+            return this._mimeTypes[mime];
         } else {
             /* if this fails, try to see if we have any handlers
              * registered for a parent type.
@@ -73,7 +72,7 @@ MimeHandler.prototype = {
             }
 
             /* finally, resort to the fallback renderer */
-            return new FallbackRenderer.FallbackRenderer();
+            return FallbackRenderer.FallbackRenderer;
         }
     }
 }

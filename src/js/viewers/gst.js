@@ -33,40 +33,38 @@ const Utils = imports.ui.utils;
 
 const GstRenderer = new Lang.Class({
     Name: 'GstRenderer',
+    Extends: Sushi.MediaBin,
 
-    _init : function(args) {
+    _init : function(file, mainWindow) {
+        this.parent({ uri: file.get_uri() });
+
         this.moveOnClick = true;
         // fullscreen is handled internally by the widget
         this.canFullScreen = false;
-    },
 
-    render : function(file, mainWindow) {
-        this._player = new Sushi.MediaBin({ uri: file.get_uri() });
-        this._player.connect('size-change', function() {
+        this.connect('size-change', function() {
             mainWindow.refreshSize();
         });
 
         this._autoplayId = GLib.idle_add(0, () => {
             this._autoplayId = 0;
-            this._player.play();
+            this.play();
             return false;
         });
 
-        return this._player;
+        this.connect('destroy', this._onDestroy.bind(this));
     },
 
-    clear : function() {
+    _onDestroy : function() {
         if (this._autoplayId > 0) {
             GLib.source_remove(this._autoplayId);
             this._autoplayId = 0;
-        } else {
-            this._player.stop();
         }
     },
 
     getSizeForAllocation : function(allocation) {
-        let baseSize = [this._player.get_preferred_width()[1],
-                        this._player.get_preferred_height()[1]];
+        let baseSize = [this.get_preferred_width()[1],
+                        this.get_preferred_height()[1]];
         return Utils.getScaledSize(baseSize, allocation, true);
     }
 });

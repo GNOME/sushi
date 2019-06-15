@@ -56,30 +56,30 @@ function _formatTimeString(timeVal) {
 
 const AudioRenderer = new Lang.Class({
     Name: 'AudioRenderer',
+    Extends: Gtk.Box,
 
-    _init : function() {
+    _init : function(file, mainWindow) {
+        this.parent({ orientation: Gtk.Orientation.HORIZONTAL,
+                      spacing: 6 });
+
         this.moveOnClick = true;
         this.canFullScreen = false;
-    },
 
-    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._file = file;
 
         this._createPlayer(file);
 
-        this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
-                                  spacing: 6 });
         this._image = new Gtk.Image({ icon_name: 'media-optical-symbolic',
                                       pixel_size: 256 });
-        this._box.pack_start(this._image, false, false, 0);
+        this.pack_start(this._image, false, false, 0);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
                                  margin_top: 48,
                                  margin_start: 12,
                                  margin_end: 12 });
-        this._box.pack_start(vbox, false, false, 0);
+        this.pack_start(vbox, false, false, 0);
 
         this._titleLabel = new Gtk.Label();
         this._titleLabel.set_halign(Gtk.Align.START);
@@ -93,9 +93,7 @@ const AudioRenderer = new Lang.Class({
         this._albumLabel.set_halign(Gtk.Align.START);
         vbox.pack_start(this._albumLabel, false, false, 0);
 
-        this._box.show_all();
-
-        return this._box;
+        this.connect('destroy', this._onDestroy.bind(this));
     },
 
     _createPlayer : function(file) {
@@ -121,7 +119,7 @@ const AudioRenderer = new Lang.Class({
                                  Lang.bind(this, this._onCoverArtChanged)));
     },
 
-    clear : function(file) {
+    _onDestroy : function() {
         this._playerNotifies.forEach(Lang.bind(this,
             function(id) {
                 this._player.disconnect(id);
@@ -251,8 +249,8 @@ const AudioRenderer = new Lang.Class({
     },
 
     getSizeForAllocation : function(allocation) {
-        let width = this._box.get_preferred_width();
-        let height = this._box.get_preferred_height();
+        let width = this.get_preferred_width()[1];
+        let height = this.get_preferred_height()[1];
 
         if (width[1] < Constants.VIEW_MIN &&
             height[1] < Constants.VIEW_MIN) {
@@ -260,7 +258,7 @@ const AudioRenderer = new Lang.Class({
         }
 
         /* return the natural */
-        return [ width[1], height[1] ];
+        return [ width, height ];
     },
 
     populateToolbar : function (toolbar) {

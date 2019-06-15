@@ -36,16 +36,15 @@ const Constants = imports.util.constants;
 
 var FallbackRenderer = new Lang.Class({
     Name: 'FallbackRenderer',
+    Extends: Gtk.Box,
 
-    _init : function() {
-        this._fileLoader = null;
-        this._fileLoaderId = 0;
+    _init : function(file, mainWindow) {
+        this.parent({ orientation: Gtk.Orientation.HORIZONTAL,
+                      spacing: 6 });
 
         this.moveOnClick = true;
         this.canFullScreen = false;
-    },
 
-    render : function(file, mainWindow) {
         this._mainWindow = mainWindow;
         this._lastWidth = 0;
         this._lastHeight = 0;
@@ -56,10 +55,8 @@ var FallbackRenderer = new Lang.Class({
             this._fileLoader.connect('notify',
                                      Lang.bind(this, this._onFileInfoChanged));
 
-        this._box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
-                                  spacing: 6 });
         this._image = new Gtk.Image();
-        this._box.pack_start(this._image, false, false, 0);
+        this.pack_start(this._image, false, false, 0);
         this._updateIcon(new Gio.ThemedIcon({ name: 'text-x-generic' }));
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
@@ -67,7 +64,7 @@ var FallbackRenderer = new Lang.Class({
                                  margin_top: 48,
                                  margin_start: 12,
                                  margin_end: 12 });
-        this._box.pack_start(vbox, false, false, 0);
+        this.pack_start(vbox, false, false, 0);
 
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                  spacing: 6 });
@@ -96,9 +93,7 @@ var FallbackRenderer = new Lang.Class({
 
         this._applyLabels();
 
-        this._box.show_all();
-
-        return this._box;
+        this.connect('destroy', this._onDestroy.bind(this));
     },
 
     _applyLabels : function() {
@@ -159,7 +154,7 @@ var FallbackRenderer = new Lang.Class({
         this._mainWindow.refreshSize();
     },
 
-    clear : function() {
+    _onDestroy : function() {
         if (this._fileLoader) {
             this._fileLoader.disconnect(this._fileLoaderId);
             this._fileLoaderId = 0;
@@ -170,8 +165,8 @@ var FallbackRenderer = new Lang.Class({
     },
 
     getSizeForAllocation : function(allocation) {
-        let width = this._box.get_preferred_width()[1];
-        let height = this._box.get_preferred_height()[1];
+        let width = this.get_preferred_width()[1];
+        let height = this.get_preferred_height()[1];
 
         if (width < Constants.VIEW_MIN &&
             height < Constants.VIEW_MIN) {
