@@ -22,13 +22,9 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  *
  */
-imports.gi.versions.Gdk = '3.0';
-imports.gi.versions.Gtk = '3.0';
 
 const {Gdk, GdkPixbuf, GLib, GObject, Gtk} = imports.gi;
 
-const Gettext = imports.gettext.domain('sushi');
-const _ = Gettext.gettext;
 const Mainloop = imports.mainloop;
 
 const Renderer = imports.ui.renderer;

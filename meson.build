@@ -1,5 +1,5 @@
 project(
-  'sushi',
+  'org.gnome.NautilusPreviewer',
   'c',
   version: '3.32.0',
   meson_version: '>=0.42.0'
@@ -29,9 +29,11 @@ bindir = join_paths(get_option('prefix'), get_option('bindir'))
 datadir = join_paths(get_option('prefix'), get_option('datadir'))
 libdir = join_paths(get_option('prefix'), get_option('libdir'))
 libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
+pkgdatadir = join_paths(datadir, meson.project_name())
+pkglibdir = join_paths(libdir, meson.project_name())
+gjs = find_program('gjs', 'gjs-console')
 
 add_project_arguments(
-  '-DSUSHI_PKGDATADIR="' + join_paths(datadir, 'sushi') + '"',
   '-DGETTEXT_PACKAGE="' + meson.project_name() + '"',
   language: 'c',
 )
@@ -39,3 +41,5 @@ add_project_arguments(
 subdir('data')
 subdir('po')
 subdir('src')
+
+meson.add_install_script('meson-post-install.py', libexecdir, bindir)

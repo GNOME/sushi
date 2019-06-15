@@ -25,8 +25,6 @@
 
 const {Gio, GObject, Gtk, Pango, Sushi} = imports.gi;
 
-const Gettext = imports.gettext.domain('sushi');
-const _ = Gettext.gettext;
 const Renderer = imports.ui.renderer;
 
 var FallbackRenderer = GObject.registerClass(class FallbackRenderer extends Gtk.Box {

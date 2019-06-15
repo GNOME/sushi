@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/NautilusPreviewer/js">
+    <file>ui/application.js</file>
+    <file>ui/fallbackRenderer.js</file>
+    <file>ui/main.js</file>
+    <file>ui/mainWindow.js</file>
+    <file>ui/mimeHandler.js</file>
+    <file>ui/renderer.js</file>
+    <file>ui/utils.js</file>
+    <file>util/constants.js</file>
+    <file>util/totemMimeTypes.js</file>
+    <file>viewers/audio.js</file>
+    <file>viewers/evince.js</file>
+    <file>viewers/font.js</file>
+    <file>viewers/gst.js</file>
+    <file>viewers/html.js</file>
+    <file>viewers/image.js</file>
+    <file>viewers/text.js</file>
+  </gresource>
+</gresources>

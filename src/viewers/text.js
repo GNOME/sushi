@@ -23,8 +23,6 @@
  *
  */
 
-imports.gi.versions.GtkSource = '4';
-
 const {Gdk, Gio, GLib, GObject, Gtk, GtkSource, Sushi} = imports.gi;
 
 const Renderer = imports.ui.renderer;

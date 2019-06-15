@@ -1,9 +1,6 @@
 dbus_conf = configuration_data()
 
-dbus_conf.set(
-  'bindir',
-  bindir,
-)
+dbus_conf.set('libexecdir', libexecdir)
 
 configure_file(
   input: 'org.gnome.NautilusPreviewer.service.in',

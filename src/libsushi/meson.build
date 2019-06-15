@@ -45,13 +45,7 @@ libsushi = shared_library(
     libsushi_resource
   ],
   install: true,
-  install_dir: join_paths(libdir, 'sushi')
-)
-
-# We use that later on to link the sushi-start executable against libsushi
-libsushi_shared_link = declare_dependency(
-  link_with: libsushi,
-  dependencies: deps,
+  install_dir: pkglibdir
 )
 
 gnome.generate_gir(
@@ -74,6 +68,6 @@ gnome.generate_gir(
     'EvinceDocument-3.0',
   ],
   install: true,
-  install_dir_gir: join_paths(datadir, 'sushi', 'gir-1.0'),
-  install_dir_typelib: join_paths(libdir, 'sushi', 'girepository-1.0'),
+  install_dir_gir: join_paths(pkgdatadir, 'gir-1.0'),
+  install_dir_typelib: join_paths(pkglibdir, 'girepository-1.0'),
 )

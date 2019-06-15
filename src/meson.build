@@ -1,9 +1,5 @@
 gnome = import('gnome')
 
-sushi_sources = [
-  'main.c',
-]
-
 deps = [
   epoxy_dep,
   evince_document_dep,
@@ -28,67 +24,37 @@ deps = [
 # Compile libsushi and its introspection data
 subdir('libsushi')
 
-sushi_resources = gnome.compile_resources(
-    'sushi-resources',
-    'org.gnome.Sushi.gresource.xml',
-    c_name: 'sushi',
+sushi_data_resources = gnome.compile_resources(
+    'org.gnome.NautilusPreviewer.data',
+    'org.gnome.NautilusPreviewer.data.gresource.xml',
+    gresource_bundle: true,
+    install: true,
+    install_dir: pkgdatadir,
 )
 
-sushi_sources += sushi_resources
-
-executable(
-  'sushi-start',
-  sushi_sources,
-  # link against the just built libsushi
-  dependencies: libsushi_shared_link,
-  install: true,
-  install_dir: libexecdir,
+sushi_src_resources = gnome.compile_resources(
+    'org.gnome.NautilusPreviewer.src',
+    'org.gnome.NautilusPreviewer.src.gresource.xml',
+    gresource_bundle: true,
+    install: true,
+    install_dir: pkgdatadir,
 )
 
 conf = configuration_data()
-
-conf.set(
-  'pkgdatadir',
-  join_paths(datadir, 'sushi'),
-)
-conf.set(
-  'pkglibdir',
-  join_paths(libdir, 'sushi'),
-)
-conf.set(
-  'libexecdir',
-  libexecdir,
-)
+conf.set('GJS', gjs.path())
+conf.set('PACKAGE_NAME', meson.project_name())
+conf.set('PACKAGE_VERSION', meson.project_version())
+conf.set('prefix', get_option('prefix'))
+conf.set('libdir', libdir)
 
 sushi_bin = configure_file(
-  input: 'sushi.in',
-  output: 'sushi',
+  input: 'org.gnome.NautilusPreviewer.in',
+  output: 'org.gnome.NautilusPreviewer',
   configuration: conf,
 )
 
 install_data(
   sushi_bin,
   install_mode: 'rwxr-xr-x',
-  install_dir: bindir,
-)
-
-# Install the Javascript components without installing path.js.in as well
-install_subdir(
-  'js',
-  install_dir: join_paths(datadir, 'sushi'),
-  exclude_files: 'util/path.js.in',
-)
-
-js_conf = configuration_data()
-
-js_conf.set(
-  'localedir',
-  join_paths(datadir, 'locale'),
-)
-
-configure_file(
-  input: 'js/util/path.js.in',
-  output: 'path.js',
-  configuration: js_conf,
-  install_dir: join_paths(datadir, 'sushi', 'js', 'util'),
+  install_dir: libexecdir,
 )

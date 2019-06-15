@@ -66,7 +66,7 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
 
     _defineStyleAndThemes() {
         let provider = new Gtk.CssProvider();
-        provider.load_from_resource('/org/gnome/Sushi/gtk-style.css');
+        provider.load_from_resource('/org/gnome/NautilusPreviewer/gtk-style.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  600);

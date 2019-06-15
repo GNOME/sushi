@@ -25,9 +25,6 @@
 
 const {EvinceDocument, EvinceView, GObject, Gtk, Sushi} = imports.gi;
 
-const Gettext = imports.gettext.domain('sushi');
-const _ = Gettext.gettext;
-
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;

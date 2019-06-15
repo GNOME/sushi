@@ -22,5 +22,29 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  *
  */
+pkg.initGettext();
+pkg.initFormat();
+pkg.require({
+    EvinceDocument: '3.0',
+    EvinceView: '3.0',
+    Gdk: '3.0',
+    GdkX11: '3.0',
+    Gio: '2.0',
+    GLib: '2.0',
+    GObject: '2.0',
+    Gst: '1.0',
+    Gtk: '3.0',
+    GtkSource: '4',
+    Pango: '1.0',
+    Sushi: '1.0',
+    WebKit2: '4.0',
+});
 
-var LOCALE_DIR = '@localedir@';
+const Application = imports.ui.application;
+
+const SUSHI_DBUS_NAME = 'org.gnome.NautilusPreviewer';
+
+function main(argv) {
+    let application = new Application.Application({ application_id: SUSHI_DBUS_NAME });
+    return application.run(argv);
+}
