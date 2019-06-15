@@ -98,18 +98,13 @@ var MainWindow = new Lang.Class({
                                              decoration_layout: 'menu:close' });
         this.set_titlebar(this._titlebar);
 
-        this.connect('delete-event',
-                     Lang.bind(this, this._onDeleteEvent));
-        this.connect('key-press-event',
-                     Lang.bind(this, this._onKeyPressEvent));
-        this.connect('motion-notify-event',
-                     Lang.bind(this, this._onMotionNotifyEvent));
-        this.connect('realize',
-                     Lang.bind(this, this._onRealize));
+        this.connect('delete-event', this._onDeleteEvent.bind(this));
+        this.connect('key-press-event', this._onKeyPressEvent.bind(this));
+        this.connect('motion-notify-event', this._onMotionNotifyEvent.bind(this));
+        this.connect('realize', this._onRealize.bind(this));
 
         let eventBox = new Gtk.EventBox({ visible_window: false });
-        eventBox.connect('button-press-event',
-                         Lang.bind(this, this._onButtonPressEvent));
+        eventBox.connect('button-press-event', this._onButtonPressEvent.bind(this));
         this.add(eventBox);
 
         this._embed = new Embed();
@@ -203,25 +198,24 @@ var MainWindow = new Lang.Class({
     },
 
     _createRenderer : function(file) {
-        file.query_info_async
-        (Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME + ',' +
-         Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-         Gio.FileQueryInfoFlags.NONE,
-         GLib.PRIORITY_DEFAULT, null,
-         Lang.bind (this, function(obj, res) {
-             try {
-                 this._fileInfo = obj.query_info_finish(res);
-                 this.setTitle(this._fileInfo.get_display_name());
+        file.query_info_async(
+            [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+             Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE].join(','),
+            Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, null,
+            (obj, res) => {
+                try {
+                    this._fileInfo = obj.query_info_finish(res);
+                    this.setTitle(this._fileInfo.get_display_name());
 
-                 /* now prepare the real renderer */
-                 let klass = this._mimeHandler.getKlass(this._fileInfo.get_content_type());
-                 this._createView(file, klass);
-                 this._createToolbar();
-             } catch(e) {
-                 /* FIXME: report the error */
-                 logError(e, 'Error creating viewer');
-             }})
-        );
+                    /* now prepare the real renderer */
+                    let klass = this._mimeHandler.getKlass(this._fileInfo.get_content_type());
+                    this._createView(file, klass);
+                    this._createToolbar();
+                } catch(e) {
+                    /* FIXME: report the error */
+                    logError(e, 'Error creating viewer');
+                }
+            });
     },
 
     _createView : function (file, klass) {
@@ -282,9 +276,7 @@ var MainWindow = new Lang.Class({
             this._toolbar.reveal_child = true;
 
         this._removeToolbarTimeout();
-        this._toolbarId = Mainloop.timeout_add(1500,
-                                               Lang.bind(this,
-                                                         this._onToolbarTimeout));
+        this._toolbarId = Mainloop.timeout_add(1500, this._onToolbarTimeout.bind(this));
     },
 
     _onToolbarTimeout : function() {

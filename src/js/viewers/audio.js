@@ -105,30 +105,21 @@ const AudioRenderer = new Lang.Class({
         this._player.playing = true;
 
         this._playerNotifies.push(
-            this._player.connect('notify::progress',
-                                 Lang.bind(this, this._onPlayerProgressChanged)));
+            this._player.connect('notify::progress', this._onPlayerProgressChanged.bind(this)));
         this._playerNotifies.push(
-            this._player.connect('notify::duration',
-                                 Lang.bind(this, this._onPlayerDurationChanged)));
+            this._player.connect('notify::duration', this._onPlayerDurationChanged.bind(this)));
         this._playerNotifies.push(
-            this._player.connect('notify::state',
-                                 Lang.bind(this, this._onPlayerStateChanged)));
+            this._player.connect('notify::state', this._onPlayerStateChanged.bind(this)));
         this._playerNotifies.push(
-            this._player.connect('notify::taglist',
-                                 Lang.bind(this, this._onTagListChanged)));
+            this._player.connect('notify::taglist', this._onTagListChanged.bind(this)));
         this._playerNotifies.push(
-            this._player.connect('notify::cover',
-                                 Lang.bind(this, this._onCoverArtChanged)));
+            this._player.connect('notify::cover', this._onCoverArtChanged.bind(this)));
     },
 
     _onDestroy : function() {
-        this._playerNotifies.forEach(Lang.bind(this,
-            function(id) {
-                this._player.disconnect(id);
-            }));
-
-        this._player.playing = false;
+        this._playerNotifies.forEach((id) => this._player.disconnect(id));
         this._playerNotifies = [];
+        this._player.playing = false;
         this._player = null;
     },
 
@@ -194,9 +185,7 @@ const AudioRenderer = new Lang.Class({
         this._mainWindow.setTitle(windowTitle);
 
         this._artFetcher = new Sushi.CoverArtFetcher();
-        this._artFetcher.connect('notify::cover',
-                                 Lang.bind(this, this._onCoverArtChanged));
-
+        this._artFetcher.connect('notify::cover', this._onCoverArtChanged.bind(this));
         this._artFetcher.taglist = tags;
 
         this._mainWindow.queue_allocate();
@@ -255,11 +244,10 @@ const AudioRenderer = new Lang.Class({
     },
 
     populateToolbar : function (toolbar) {
-        this._toolbarPlay =
-            Utils.createToolButton('media-playback-pause-symbolic', Lang.bind(this, function () {
-                let playing = !this._player.playing;
-                this._player.playing = playing;
-            }));
+        this._toolbarPlay = Utils.createToolButton('media-playback-pause-symbolic', () => {
+            let playing = !this._player.playing;
+            this._player.playing = playing;
+        });
         toolbar.add(this._toolbarPlay);
 
         this._currentLabel = new Gtk.Label({ margin_start: 6,
@@ -271,11 +259,10 @@ const AudioRenderer = new Lang.Class({
                                      0, 1000, 10);
         this._progressBar.set_value(0);
         this._progressBar.set_draw_value(false);
-        this._progressBar.connect('value-changed',
-                                  Lang.bind(this, function() {
-                                      if(!this._isSettingValue)
-                                          this._player.progress = this._progressBar.get_value() / 1000;
-                                  }));
+        this._progressBar.connect('value-changed', () => {
+            if(!this._isSettingValue)
+                this._player.progress = this._progressBar.get_value() / 1000;
+        });
         this._progressBar.set_size_request(200, -1);
         toolbar.add(this._progressBar);
 

@@ -46,9 +46,7 @@ var FallbackRenderer = new Lang.Class({
 
         this._fileLoader = new Sushi.FileLoader();
         this._fileLoader.file = file;
-        this._fileLoaderId =
-            this._fileLoader.connect('notify',
-                                     Lang.bind(this, this._onFileInfoChanged));
+        this._fileLoaderId = this._fileLoader.connect('notify', this._onFileInfoChanged.bind(this));
 
         this._image = new Gtk.Image();
         this.pack_start(this._image, false, false, 0);

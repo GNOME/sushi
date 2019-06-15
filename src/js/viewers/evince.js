@@ -53,8 +53,7 @@ const EvinceRenderer = new Lang.Class({
         this._file = file;
 
         this._pdfLoader = new Sushi.PdfLoader();
-        this._pdfLoader.connect('notify::document',
-                                Lang.bind(this, this._onDocumentLoaded));
+        this._pdfLoader.connect('notify::document', this._onDocumentLoaded.bind(this));
         this._pdfLoader.uri = file.get_uri();
 
         this._view = EvView.View.new();
@@ -79,7 +78,7 @@ const EvinceRenderer = new Lang.Class({
         this._model.set_sizing_mode(EvView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);
 
-        this._model.connect('page-changed', Lang.bind(this, this._updatePageLabel));
+        this._model.connect('page-changed', this._updatePageLabel.bind(this));
         this._updatePageLabel();
 
         this._view.set_model(this._model);
@@ -90,10 +89,9 @@ const EvinceRenderer = new Lang.Class({
     },
 
     populateToolbar : function(toolbar) {
-        this._toolbarBack =
-            Utils.createToolButton('go-previous-symbolic', Lang.bind(this, function () {
-                this._view.previous_page();
-            }));
+        this._toolbarBack = Utils.createToolButton('go-previous-symbolic', () => {
+            this._view.previous_page();
+        });
         toolbar.add(this._toolbarBack);
 
         this._pageLabel = new Gtk.Label({ hexpand: true,
@@ -101,10 +99,9 @@ const EvinceRenderer = new Lang.Class({
                                           margin_end: 10 });
         toolbar.add(this._pageLabel);
 
-        this._toolbarForward =
-            Utils.createToolButton('go-next-symbolic', Lang.bind(this, function () {
-                this._view.next_page();
-            }));
+        this._toolbarForward = Utils.createToolButton('go-next-symbolic', () => {
+            this._view.next_page();
+        });
         toolbar.add(this._toolbarForward);
 
         let separator = new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL });

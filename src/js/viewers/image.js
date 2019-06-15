@@ -147,40 +147,34 @@ const ImageRenderer = new Lang.Class({
     },
 
     _createImageTexture : function(file) {
-        file.read_async
-        (GLib.PRIORITY_DEFAULT, null,
-         Lang.bind(this,
-                   function(obj, res) {
-                       try {
-                           let stream = obj.read_finish(res);
-                           this._textureFromStream(stream);
-                       } catch (e) {
-                           logError(e, `Unable to read image file ${file.get_uri()}`);
-                       }
-                   }));
+        file.read_async(GLib.PRIORITY_DEFAULT, null, (obj, res) => {
+            try {
+                let stream = obj.read_finish(res);
+                this._textureFromStream(stream);
+            } catch (e) {
+                logError(e, `Unable to read image file ${file.get_uri()}`);
+            }
+        });
     },
 
     _textureFromStream : function(stream) {
-        GdkPixbuf.PixbufAnimation.new_from_stream_async
-        (stream, null,
-         Lang.bind(this, function(obj, res) {
-             let anim = GdkPixbuf.PixbufAnimation.new_from_stream_finish(res);
+        GdkPixbuf.PixbufAnimation.new_from_stream_async(stream, null, (obj, res) => {
+            let anim = GdkPixbuf.PixbufAnimation.new_from_stream_finish(res);
 
-             this._iter = anim.get_iter(null);
-             this.pix = this._iter.get_pixbuf().apply_embedded_orientation();
+            this._iter = anim.get_iter(null);
+            this.pix = this._iter.get_pixbuf().apply_embedded_orientation();
 
-             if (!anim.is_static_image())
-                 this._startTimeout();
+            if (!anim.is_static_image())
+                this._startTimeout();
 
-             stream.close_async(GLib.PRIORITY_DEFAULT,
-                                null, function(object, res) {
-                                    try {
-                                        object.close_finish(res);
-                                    } catch (e) {
-                                        logError(e, 'Unable to close the stream');
-                                    }
-                                });
-         }));
+            stream.close_async(GLib.PRIORITY_DEFAULT, null, (obj, res) => {
+                try {
+                    obj.close_finish(res);
+                } catch (e) {
+                    logError(e, 'Unable to close the stream');
+                }
+            });
+         });
     },
 
     get resizePolicy() {
@@ -188,9 +182,8 @@ const ImageRenderer = new Lang.Class({
     },
 
     _startTimeout : function() {
-        this._timeoutId = Mainloop.timeout_add(this._iter.get_delay_time(),
-                                               Lang.bind(this,
-                                                         this._advanceImage));
+        this._timeoutId = Mainloop.timeout_add(
+            this._iter.get_delay_time(), this._advanceImage.bind(this));
     },
 
     populateToolbar : function(toolbar) {

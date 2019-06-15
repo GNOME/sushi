@@ -64,21 +64,20 @@ const TextRenderer = new Lang.Class({
         this._file = file;
 
         let textLoader = new Sushi.TextLoader();
-        textLoader.connect('loaded',
-                           Lang.bind(this, this._onBufferLoaded));
+        textLoader.connect('loaded', this._onBufferLoaded.bind(this));
         textLoader.uri = file.get_uri();
 
         this._view = new GtkSource.View({ editable: false,
                                           cursor_visible: false,
                                           monospace: true });
         this._view.set_can_focus(false);
-        this._view.connect('button-press-event', Lang.bind(this, function(view, event) {
+        this._view.connect('button-press-event', (view, event) => {
             let [, button] = event.get_button();
             if (button == Gdk.BUTTON_SECONDARY)
                 return true;
 
             return false;
-        }));
+        });
 
         this.add(this._view);
     },
