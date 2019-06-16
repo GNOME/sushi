@@ -66,6 +66,7 @@ const ImageRenderer = new Lang.Class({
                            let stream = obj.read_finish(res);
                            this._textureFromStream(stream);
                        } catch (e) {
+                           logError(e, `Unable to read image file ${file.get_uri()}`);
                        }
                    }));
     },
@@ -93,7 +94,7 @@ const ImageRenderer = new Lang.Class({
                                     try {
                                         object.close_finish(res);
                                     } catch (e) {
-                                        log('Unable to close the stream ' + e.toString());
+                                        logError(e, 'Unable to close the stream');
                                     }
                                 });
          }));
