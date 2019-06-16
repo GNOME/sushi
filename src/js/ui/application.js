@@ -62,10 +62,10 @@ var Application = new Lang.Class({
     },
 
     vfunc_dbus_register : function(connection, path) {
-	this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(SushiIface, this);
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(SushiIface, this);
         this._dbusImpl.export(connection, SUSHI_DBUS_PATH);
 
-	return this.parent(connection, path);
+        return this.parent(connection, path);
     },
 
     vfunc_activate : function() {
@@ -78,7 +78,7 @@ var Application = new Lang.Class({
 
     _defineStyleAndThemes : function() {
         let provider = new Gtk.CssProvider();
-	provider.load_from_resource('/org/gnome/Sushi/gtk-style.css');
+        provider.load_from_resource('/org/gnome/Sushi/gtk-style.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  600);
@@ -92,13 +92,13 @@ var Application = new Lang.Class({
     },
 
     ShowFile : function(uri, xid, closeIfAlreadyShown) {
-	let file = Gio.file_new_for_uri(uri);
-	if (closeIfAlreadyShown &&
-	    this._mainWindow.file &&
-	    this._mainWindow.file.equal(file)) {
-	    this._mainWindow.close();
-	    return;
-	}
+        let file = Gio.file_new_for_uri(uri);
+        if (closeIfAlreadyShown &&
+            this._mainWindow.file &&
+            this._mainWindow.file.equal(file)) {
+            this._mainWindow.close();
+            return;
+        }
         this._mainWindow.setParent(xid);
         this._mainWindow.setFile(file);
     }
