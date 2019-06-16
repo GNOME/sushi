@@ -46,7 +46,6 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
         super.vfunc_startup();
 
         this._defineStyleAndThemes();
-        this._createMainWindow();
     }
 
     vfunc_dbus_register(connection, path) {
@@ -59,9 +58,14 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
     vfunc_activate() {
     }
 
-    _createMainWindow() {
-        this._mainWindow =
-            new MainWindow.MainWindow(this);
+    _ensureMainWindow() {
+        if (this._mainWindow)
+            return;
+
+        this._mainWindow = new MainWindow.MainWindow(this);
+        this._mainWindow.connect('destroy', () => {
+            this._mainWindow = null;
+        });
     }
 
     _defineStyleAndThemes() {
@@ -76,10 +80,13 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
     }
 
     Close() {
-        this._mainWindow.destroy();
+        if (this._mainWindow)
+            this._mainWindow.destroy();
     }
 
     ShowFile(uri, xid, closeIfAlreadyShown) {
+        this._ensureMainWindow();
+
         let file = Gio.file_new_for_uri(uri);
         if (closeIfAlreadyShown &&
             this._mainWindow.file &&
