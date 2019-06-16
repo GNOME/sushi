@@ -53,11 +53,8 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class TextRenderer extends Gtk.ScrolledWindow {
-    _init(file, mainWindow) {
+    _init(file) {
         super._init();
-
-        this._mainWindow = mainWindow;
-        this._file = file;
 
         let textLoader = new Sushi.TextLoader();
         textLoader.connect('loaded', this._onBufferLoaded.bind(this));
@@ -94,11 +91,6 @@ var Klass = GObject.registerClass({
 
     get moveOnClick() {
         return false;
-    }
-
-    populateToolbar(toolbar) {
-        let toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
-        toolbar.add(toolbarRun);
     }
 });
 

@@ -39,11 +39,8 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class HTMLRenderer extends WebKit2.WebView {
-    _init(file, mainWindow) {
+    _init(file) {
         super._init();
-
-        this._mainWindow = mainWindow;
-        this._file = file;
 
         /* disable the default context menu of the web view */
         this.connect('context-menu',
@@ -60,12 +57,6 @@ var Klass = GObject.registerClass({
     populateToolbar(toolbar) {
         let toolbarZoom = Utils.createFullscreenButton(this);
         toolbar.add(toolbarZoom);
-
-        let separator = new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL });
-        toolbar.add(separator);
-
-        let toolbarRun = Utils.createOpenButton(this._file, this._mainWindow);
-        toolbar.add(toolbarRun);
     }
 });
 

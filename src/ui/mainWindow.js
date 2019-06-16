@@ -78,6 +78,10 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
                                              decoration_layout: 'menu:close' });
         this.set_titlebar(this._titlebar);
 
+        this._openButton = new Gtk.Button();
+        this._openButton.connect('clicked', this._onFileOpenClicked.bind(this));
+        this._titlebar.pack_end(this._openButton);
+
         this.connect('delete-event', this._onDeleteEvent.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
         this.connect('key-press-event', this._onKeyPressEvent.bind(this));
@@ -290,6 +294,41 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         return false;
     }
 
+    _updateTitlebar() {
+        try {
+            let appInfo = this.file.query_default_handler(null);
+            // TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+            this._openButton.set_label(_("Open With %s").format(appInfo.get_display_name()));
+        } catch (e) {
+            // This happens when running under flatpak, since we don't have direct access
+            // to the other applications
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED))
+                logError(e, `Failed to query default handler for ${this.file.get_uri()}`);
+            this._openButton.set_label(_("Open"));
+        }
+    }
+
+    _onFileOpenClicked() {
+        let ctx = this.get_display().get_app_launch_context();
+        ctx.set_timestamp(Gtk.get_current_event_time());
+        ctx.set_screen(this.get_screen());
+
+        // Ideally we would use gtk_show_uri_on_window() here, since it properly
+        // parents dialogs that may come from a flatpak portal over the window.
+        //
+        // Unfortunately we need to wait until the result of the launch before
+        // destroying our window, which gtk_show_uri_on_window() doesn't allow,
+        // so we use GIO directly.
+        Gio.AppInfo.launch_default_for_uri_async(this.file.get_uri(), ctx, null, (obj, result) => {
+            try {
+                Gio.AppInfo.launch_default_for_uri_finish(result);
+                this.destroy();
+            } catch (e) {
+                logError(e, `Failed to launch default handler for ${this.file.get_uri()}`);
+            }
+        });
+    }
+
     /**************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
@@ -305,6 +344,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
 
     setFile(file) {
         this.file = file;
+        this._updateTitlebar();
         this._createRenderer(file);
     }
 
