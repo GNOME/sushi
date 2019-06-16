@@ -82,7 +82,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this._openButton.connect('clicked', this._onFileOpenClicked.bind(this));
         this._titlebar.pack_end(this._openButton);
 
-        this.connect('delete-event', this._onDeleteEvent.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
         this.connect('key-press-event', this._onKeyPressEvent.bind(this));
         this.connect('motion-notify-event', this._onMotionNotifyEvent.bind(this));
@@ -99,10 +98,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     /**************************************************************************
      ****************** main object event callbacks ***************************
      **************************************************************************/
-    _onDeleteEvent() {
-        this.destroy();
-    }
-
     _onDestroy() {
         this._removeToolbarTimeout();
     }
