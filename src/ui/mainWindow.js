@@ -200,19 +200,15 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         }
     }
 
-    _createRenderer(file) {
-        file.query_info_async(
+    _createRenderer() {
+        this.file.query_info_async(
             [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
              Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE].join(','),
             Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, null,
             (obj, res) => {
                 try {
-                    this._fileInfo = obj.query_info_finish(res);
-                    this.setTitle(this._fileInfo.get_display_name());
-
-                    /* now prepare the real renderer */
-                    let klass = MimeHandler.getKlass(this._fileInfo.get_content_type());
-                    this._createView(file, klass);
+                    let fileInfo = obj.query_info_finish(res);
+                    this._createView(fileInfo);
                     this._createToolbar();
                 } catch(e) {
                     /* FIXME: report the error */
@@ -221,13 +217,14 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
             });
     }
 
-    _createView(file, klass) {
+    _createView(fileInfo) {
         if (this._renderer) {
             this._renderer.destroy()
             this._renderer = null;
         }
 
-        this._renderer = new klass(file, this);
+        let klass = MimeHandler.getKlass(fileInfo.get_content_type());
+        this._renderer = new klass(this.file);
         this._renderer.show_all();
         this._renderer.expand = true;
         this._embed.add(this._renderer);
@@ -237,6 +234,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this._onRendererReady();
 
         this.set_resizable(this._renderer.resizable);
+        this.set_title(fileInfo.get_display_name());
     }
 
     /**************************************************************************
@@ -345,10 +343,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     setFile(file) {
         this.file = file;
         this._updateTitlebar();
-        this._createRenderer(file);
-    }
-
-    setTitle(label) {
-        this.set_title(label);
+        this._createRenderer();
     }
 });
