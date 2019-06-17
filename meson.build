@@ -1,5 +1,5 @@
 project(
-  'org.gnome.NautilusPreviewer',
+  'sushi',
   'c',
   version: '3.32.0',
   meson_version: '>=0.46.0'
