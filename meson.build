@@ -2,7 +2,7 @@ project(
   'org.gnome.NautilusPreviewer',
   'c',
   version: '3.32.0',
-  meson_version: '>=0.42.0'
+  meson_version: '>=0.46.0'
 )
 
 epoxy_dep = dependency('epoxy')
@@ -10,6 +10,7 @@ evince_document_dep = dependency('evince-document-3.0')
 evince_view_dep = dependency('evince-view-3.0')
 freetype_dep = dependency('freetype2')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>=2.23.0')
+gio_unix_dep = dependency('gio-unix-2.0', version: '>=2.29.14')
 gjs_dep = dependency('gjs-1.0', version: '>=1.38.0')
 glib_dep = dependency('glib-2.0', version: '>=2.29.14')
 gstreamer_dep = dependency('gstreamer-1.0')

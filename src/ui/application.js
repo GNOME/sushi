@@ -23,23 +23,9 @@
  *
  */
 
-const {Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
+const {Gdk, Gio, GObject, Gtk, NautilusPreviewerDBus} = imports.gi;
 
 const MainWindow = imports.ui.mainWindow;
-
-const SUSHI_DBUS_PATH = '/org/gnome/NautilusPreviewer';
-
-const SushiIface = '<node> \
-<interface name="org.gnome.NautilusPreviewer"> \
-<method name="ShowFile"> \
-    <arg type="s" direction="in" name="uri" /> \
-    <arg type="i" direction="in" name="xid" /> \
-    <arg type="b" direction="in" name="closeIfAlreadyShown" /> \
-</method> \
-<method name="Close"> \
-</method> \
-</interface> \
-</node>';
 
 var Application = GObject.registerClass(class Application extends Gtk.Application {
     vfunc_startup() {
@@ -49,10 +35,21 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
     }
 
     vfunc_dbus_register(connection, path) {
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(SushiIface, this);
-        this._dbusImpl.export(connection, SUSHI_DBUS_PATH);
+        this._skeleton = new NautilusPreviewerDBus.Skeleton();
+        try {
+            this._skeleton.export(connection, path);
+        } catch (e) {
+            logError(e, 'Failed to export NautilusPreviewer DBus interface');
+        }
 
         return super.vfunc_dbus_register(connection, path);
+    }
+
+    vfunc_dbus_unregister(connection, path) {
+        if (this._skeleton && this._skeleton.has_connection(connection))
+            this._skeleton.unexport_from_connection(connection);
+
+        return super.vfunc_dbus_unregister(connection, path);
     }
 
     vfunc_activate() {
