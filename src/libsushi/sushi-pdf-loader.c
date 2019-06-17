@@ -31,16 +31,7 @@
 #include <glib/gstdio.h>
 #include <gdk/gdkx.h>
 
-G_DEFINE_TYPE (SushiPdfLoader, sushi_pdf_loader, G_TYPE_OBJECT);
-
-enum {
-  PROP_DOCUMENT = 1,
-  PROP_URI
-};
-
-static void load_libreoffice (SushiPdfLoader *self);
-
-struct _SushiPdfLoaderPrivate {
+struct _SushiPdfLoader {
   EvDocument *document;
   gchar *uri;
   gchar *pdf_path;
@@ -49,6 +40,15 @@ struct _SushiPdfLoaderPrivate {
   gboolean have_libreoffice_flatpak;
   GPid libreoffice_pid;
 };
+
+G_DEFINE_TYPE (SushiPdfLoader, sushi_pdf_loader, G_TYPE_OBJECT)
+
+enum {
+  PROP_DOCUMENT = 1,
+  PROP_URI
+};
+
+static void load_libreoffice (SushiPdfLoader *self);
 
 static void
 load_job_done (EvJob *job,
@@ -63,7 +63,7 @@ load_job_done (EvJob *job,
     return;
   }
 
-  self->priv->document = g_object_ref (job->document);
+  self->document = g_object_ref (job->document);
   g_object_unref (job);
 
   g_object_notify (G_OBJECT (self), "document");
@@ -145,9 +145,9 @@ libreoffice_child_watch_cb (GPid pid,
   gchar *uri;
 
   g_spawn_close_pid (pid);
-  self->priv->libreoffice_pid = -1;
+  self->libreoffice_pid = -1;
 
-  file = g_file_new_for_path (self->priv->pdf_path);
+  file = g_file_new_for_path (self->pdf_path);
   uri = g_file_get_uri (file);
   load_pdf (self, uri);
 
@@ -166,10 +166,10 @@ check_libreoffice_flatpak (SushiPdfLoader *self,
   gint exit_status = -1;
   GError *error = NULL;
 
-  if (self->priv->checked_libreoffice_flatpak)
-    return self->priv->have_libreoffice_flatpak;
+  if (self->checked_libreoffice_flatpak)
+    return self->have_libreoffice_flatpak;
 
-  self->priv->checked_libreoffice_flatpak = TRUE;
+  self->checked_libreoffice_flatpak = TRUE;
 
   ret = g_spawn_sync (NULL, (gchar **) check_argv, NULL,
                       G_SPAWN_DEFAULT |
@@ -183,7 +183,7 @@ check_libreoffice_flatpak (SushiPdfLoader *self,
     GError *child_error = NULL;
     if (g_spawn_check_exit_status (exit_status, &child_error)) {
       g_debug ("Found LibreOffice flatpak!");
-      self->priv->have_libreoffice_flatpak = TRUE;
+      self->have_libreoffice_flatpak = TRUE;
     } else {
       g_debug ("LibreOffice flatpak not found, flatpak info returned %i (%s)",
                exit_status, child_error->message);
@@ -195,7 +195,7 @@ check_libreoffice_flatpak (SushiPdfLoader *self,
     g_clear_error (&error);
   }
 
-  return self->priv->have_libreoffice_flatpak;
+  return self->have_libreoffice_flatpak;
 }
 
 static void
@@ -224,7 +224,7 @@ load_libreoffice (SushiPdfLoader *self)
     }
   }
 
-  file = g_file_new_for_uri (self->priv->uri);
+  file = g_file_new_for_uri (self->uri);
   doc_path = g_file_get_path (file);
   doc_name = g_file_get_basename (file);
   g_object_unref (file);
@@ -237,7 +237,7 @@ load_libreoffice (SushiPdfLoader *self)
   g_free (doc_name);
 
   pdf_dir = g_build_filename (g_get_user_cache_dir (), "sushi", NULL);
-  self->priv->pdf_path = g_build_filename (pdf_dir, tmp_name, NULL);
+  self->pdf_path = g_build_filename (pdf_dir, tmp_name, NULL);
   g_mkdir_with_parents (pdf_dir, 0700);
 
   g_free (tmp_name);
@@ -308,7 +308,7 @@ load_libreoffice (SushiPdfLoader *self)
   }
 
   g_child_watch_add (pid, libreoffice_child_watch_cb, self);
-  self->priv->libreoffice_pid = pid;
+  self->libreoffice_pid = pid;
 }
 
 static gboolean
@@ -346,7 +346,7 @@ query_info_ready_cb (GObject *obj,
 
   if (error != NULL) {
     g_warning ("Unable to query the mimetype of %s: %s",
-               self->priv->uri, error->message);
+               self->uri, error->message);
     g_error_free (error);
 
     return;
@@ -355,7 +355,7 @@ query_info_ready_cb (GObject *obj,
   content_type = g_file_info_get_content_type (info);
 
   if (content_type_is_native (content_type))
-    load_pdf (self, self->priv->uri);
+    load_pdf (self, self->uri);
   else
     load_libreoffice (self);
 
@@ -367,7 +367,7 @@ start_loading_document (SushiPdfLoader *self)
 {
   GFile *file;
 
-  file = g_file_new_for_uri (self->priv->uri);
+  file = g_file_new_for_uri (self->uri);
   g_file_query_info_async (file,
                            G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                            G_FILE_QUERY_INFO_NONE,
@@ -383,10 +383,10 @@ static void
 sushi_pdf_loader_set_uri (SushiPdfLoader *self,
                           const gchar *uri)
 {
-  g_clear_object (&self->priv->document);
-  g_free (self->priv->uri);
+  g_clear_object (&self->document);
+  g_free (self->uri);
 
-  self->priv->uri = g_strdup (uri);
+  self->uri = g_strdup (uri);
   start_loading_document (self);
 }
 
@@ -395,18 +395,18 @@ sushi_pdf_loader_dispose (GObject *object)
 {
   SushiPdfLoader *self = SUSHI_PDF_LOADER (object);
 
-  if (self->priv->pdf_path) {
-    g_unlink (self->priv->pdf_path);
-    g_free (self->priv->pdf_path);
+  if (self->pdf_path) {
+    g_unlink (self->pdf_path);
+    g_free (self->pdf_path);
   }
 
-  if (self->priv->libreoffice_pid != -1) {
-    kill (self->priv->libreoffice_pid, SIGKILL);
-    self->priv->libreoffice_pid = -1;
+  if (self->libreoffice_pid != -1) {
+    kill (self->libreoffice_pid, SIGKILL);
+    self->libreoffice_pid = -1;
   }
 
-  g_clear_object (&self->priv->document);
-  g_free (self->priv->uri);
+  g_clear_object (&self->document);
+  g_free (self->uri);
 
   G_OBJECT_CLASS (sushi_pdf_loader_parent_class)->dispose (object);
 }
@@ -421,10 +421,10 @@ sushi_pdf_loader_get_property (GObject *object,
 
   switch (prop_id) {
   case PROP_DOCUMENT:
-    g_value_set_object (value, self->priv->document);
+    g_value_set_object (value, self->document);
     break;
   case PROP_URI:
-    g_value_set_string (value, self->priv->uri);
+    g_value_set_string (value, self->uri);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -477,18 +477,12 @@ sushi_pdf_loader_class_init (SushiPdfLoaderClass *klass)
                             "The URI to load",
                             NULL,
                             G_PARAM_READWRITE));
-
-    g_type_class_add_private (klass, sizeof (SushiPdfLoaderPrivate));
 }
 
 static void
 sushi_pdf_loader_init (SushiPdfLoader *self)
 {
-  self->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                 SUSHI_TYPE_PDF_LOADER,
-                                 SushiPdfLoaderPrivate);
-  self->priv->libreoffice_pid = -1;
+  self->libreoffice_pid = -1;
 }
 
 SushiPdfLoader *

@@ -46,7 +46,24 @@
 
 #define NOTIFICATION_TIMEOUT 300
 
-G_DEFINE_TYPE (SushiFileLoader, sushi_file_loader, G_TYPE_OBJECT);
+struct _SushiFileLoader {
+  GFile *file;
+  GFileInfo *info;
+
+  GCancellable *cancellable;
+
+  gint file_items;
+  gint directory_items;
+  gint unreadable_items;
+
+  goffset total_size;
+
+  gboolean loading;
+
+  guint size_notify_timeout_id;
+};
+
+G_DEFINE_TYPE (SushiFileLoader, sushi_file_loader, G_TYPE_OBJECT)
 
 enum {
   PROP_NAME = 1,
@@ -71,23 +88,6 @@ typedef struct {
 
 } DeepCountState;
 
-struct _SushiFileLoaderPrivate {
-  GFile *file;
-  GFileInfo *info;
-
-  GCancellable *cancellable;
-
-  gint file_items;
-  gint directory_items;
-  gint unreadable_items;
-
-  goffset total_size;
-
-  gboolean loading;
-
-  guint size_notify_timeout_id;
-};
-
 #define DIRECTORY_LOAD_ITEMS_PER_CALLBACK 100
 
 static void deep_count_load (DeepCountState *state,
@@ -98,7 +98,7 @@ size_notify_timeout_cb (gpointer user_data)
 {
   SushiFileLoader *self = user_data;
 
-  self->priv->size_notify_timeout_id = 0;
+  self->size_notify_timeout_id = 0;
 
   g_object_notify (G_OBJECT (self), "size");
 
@@ -108,12 +108,11 @@ size_notify_timeout_cb (gpointer user_data)
 static void
 queue_size_notify (SushiFileLoader *self)
 {
-  if (self->priv->size_notify_timeout_id != 0)
+  if (self->size_notify_timeout_id != 0)
     return;
 
-  self->priv->size_notify_timeout_id =
-    g_timeout_add (NOTIFICATION_TIMEOUT,
-                   size_notify_timeout_cb, self);
+  self->size_notify_timeout_id = g_timeout_add (NOTIFICATION_TIMEOUT,
+                                                size_notify_timeout_cb, self);
 }
 
 /* adapted from nautilus/libnautilus-private/nautilus-directory-async.c */
@@ -159,7 +158,7 @@ deep_count_one (DeepCountState *state,
 
   if (g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY) {
     /* count the directory */
-    state->self->priv->directory_items += 1;
+    state->self->directory_items += 1;
 
     /* record the fact that we have to descend into this directory */
     subdir = g_file_get_child (state->file, g_file_info_get_name (info));
@@ -167,19 +166,19 @@ deep_count_one (DeepCountState *state,
       g_list_prepend (state->deep_count_subdirectories, subdir);
   } else {
     /* even non-regular files count as files */
-    state->self->priv->file_items += 1;
+    state->self->file_items += 1;
   }
 
   /* count the size */
   if (!is_seen_inode &&
       g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
-    state->self->priv->total_size += g_file_info_get_size (info);
+    state->self->total_size += g_file_info_get_size (info);
 }
 
 static void
 deep_count_state_free (DeepCountState *state)
 {
-  state->self->priv->loading = FALSE;
+  state->self->loading = FALSE;
   
   if (state->enumerator) {
     if (!g_file_enumerator_is_closed (state->enumerator))
@@ -189,7 +188,7 @@ deep_count_state_free (DeepCountState *state)
     g_object_unref (state->enumerator);
   }
 
-  g_cancellable_reset (state->self->priv->cancellable);
+  g_cancellable_reset (state->self->cancellable);
   g_clear_object (&state->file);
 
   g_list_free_full (state->deep_count_subdirectories, g_object_unref);
@@ -228,13 +227,11 @@ deep_count_more_files_callback (GObject *source_object,
 				GAsyncResult *res,
 				gpointer user_data)
 {
-  DeepCountState *state;
+  DeepCountState *state = user_data;
   GList *files, *l;
   GFileInfo *info;
 
-  state = user_data;
-
-  if (g_cancellable_is_cancelled (state->self->priv->cancellable)) {
+  if (g_cancellable_is_cancelled (state->self->cancellable)) {
     deep_count_state_free (state);
     return;
   }
@@ -258,7 +255,7 @@ deep_count_more_files_callback (GObject *source_object,
     g_file_enumerator_next_files_async (state->enumerator,
                                         DIRECTORY_LOAD_ITEMS_PER_CALLBACK,
                                         G_PRIORITY_DEFAULT,
-                                        state->self->priv->cancellable,
+                                        state->self->cancellable,
                                         deep_count_more_files_callback,
                                         state);
   }
@@ -271,12 +268,10 @@ deep_count_callback (GObject *source_object,
 		     GAsyncResult *res,
 		     gpointer user_data)
 {
-  DeepCountState *state;
+  DeepCountState *state = user_data;
   GFileEnumerator *enumerator;
 
-  state = user_data;
-
-  if (g_cancellable_is_cancelled (state->self->priv->cancellable)) {
+  if (g_cancellable_is_cancelled (state->self->cancellable)) {
     deep_count_state_free (state);
     return;
   }
@@ -285,14 +280,14 @@ deep_count_callback (GObject *source_object,
                                                  res, NULL);
 	
   if (enumerator == NULL) {
-    state->self->priv->unreadable_items += 1;	
+    state->self->unreadable_items += 1;	
     deep_count_next_dir (state);
   } else {
     state->enumerator = enumerator;
     g_file_enumerator_next_files_async (state->enumerator,
                                         DIRECTORY_LOAD_ITEMS_PER_CALLBACK,
                                         G_PRIORITY_LOW,
-                                        state->self->priv->cancellable,
+                                        state->self->cancellable,
                                         deep_count_more_files_callback,
                                         state);
   }
@@ -302,13 +297,12 @@ static void
 deep_count_load (DeepCountState *state,
                  GFile *file)
 {
-  state->file = g_object_ref (file);
-
+  state->self->file = g_object_ref (file);
   g_file_enumerate_children_async (state->file,
                                    DEEP_COUNT_ATTRS,
                                    G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, /* flags */
                                    G_PRIORITY_LOW, /* prio */
-                                   state->self->priv->cancellable,
+                                   state->self->cancellable,
                                    deep_count_callback,
                                    state);
 }
@@ -323,7 +317,7 @@ deep_count_start (SushiFileLoader *self)
   state->seen_deep_count_inodes = g_hash_table_new (g_int64_hash,
                                                     g_int64_equal);
 
-  deep_count_load (state, self->priv->file);
+  deep_count_load (state, state->self->file);
 }
 
 static void
@@ -340,10 +334,10 @@ query_info_async_ready_cb (GObject *source,
 
   if (error != NULL) {
 
-    if (!g_cancellable_is_cancelled (self->priv->cancellable)) {
+    if (!g_cancellable_is_cancelled (self->cancellable)) {
       gchar *uri;
 
-      uri = g_file_get_uri (self->priv->file);
+      uri = g_file_get_uri (self->file);
       g_warning ("Unable to query info for file %s: %s", uri, error->message);
 
       g_free (uri);
@@ -354,7 +348,7 @@ query_info_async_ready_cb (GObject *source,
     return;
   }
 
-  self->priv->info = info;
+  self->info = info;
 
   g_object_notify (G_OBJECT (self), "icon");
   g_object_notify (G_OBJECT (self), "name");
@@ -363,7 +357,7 @@ query_info_async_ready_cb (GObject *source,
   g_object_notify (G_OBJECT (self), "file-type");
 
   if (g_file_info_get_file_type (info) != G_FILE_TYPE_DIRECTORY) {
-    self->priv->loading = FALSE;
+    self->loading = FALSE;
     g_object_notify (G_OBJECT (self), "size");
   } else {
     deep_count_start (self);
@@ -373,13 +367,12 @@ query_info_async_ready_cb (GObject *source,
 static void
 start_loading_file (SushiFileLoader *self)
 {
-  self->priv->loading = TRUE;
-
-  g_file_query_info_async (self->priv->file,
+  self->loading = TRUE;
+  g_file_query_info_async (self->file,
                            LOADER_ATTRS,
                            G_FILE_QUERY_INFO_NONE,
                            G_PRIORITY_DEFAULT,
-                           self->priv->cancellable,
+                           self->cancellable,
                            query_info_async_ready_cb,
                            self);
 }
@@ -388,10 +381,10 @@ static void
 sushi_file_loader_set_file (SushiFileLoader *self,
                             GFile *file)
 {
-  g_clear_object (&self->priv->file);
-  g_clear_object (&self->priv->info);
+  g_clear_object (&self->file);
+  g_clear_object (&self->info);
 
-  self->priv->file = g_object_ref (file);
+  self->file = g_object_ref (file);
   start_loading_file (self);
 }
 
@@ -400,17 +393,17 @@ sushi_file_loader_dispose (GObject *object)
 {
   SushiFileLoader *self = SUSHI_FILE_LOADER (object);
 
-  g_clear_object (&self->priv->file);
-  g_clear_object (&self->priv->info);
+  g_clear_object (&self->file);
+  g_clear_object (&self->info);
 
-  if (self->priv->cancellable != NULL) {
-    g_cancellable_cancel (self->priv->cancellable);
-    g_clear_object (&self->priv->cancellable);
+  if (self->cancellable != NULL) {
+    g_cancellable_cancel (self->cancellable);
+    g_clear_object (&self->cancellable);
   }
 
-  if (self->priv->size_notify_timeout_id != 0) {
-    g_source_remove (self->priv->size_notify_timeout_id);
-    self->priv->size_notify_timeout_id = 0;
+  if (self->size_notify_timeout_id != 0) {
+    g_source_remove (self->size_notify_timeout_id);
+    self->size_notify_timeout_id = 0;
   }
 
   G_OBJECT_CLASS (sushi_file_loader_parent_class)->dispose (object);
@@ -438,7 +431,7 @@ sushi_file_loader_get_property (GObject *object,
     g_value_set_object (value, sushi_file_loader_get_icon (self));
     break;
   case PROP_FILE:
-    g_value_set_object (value, self->priv->file);
+    g_value_set_object (value, self->file);
     break;
   case PROP_CONTENT_TYPE:
     g_value_take_string (value, sushi_file_loader_get_content_type_string (self));
@@ -524,20 +517,14 @@ sushi_file_loader_class_init (SushiFileLoaderClass *klass)
                          G_TYPE_ICON,
                          G_PARAM_READABLE);
 
-  g_type_class_add_private (klass, sizeof (SushiFileLoaderPrivate));
   g_object_class_install_properties (oclass, NUM_PROPERTIES, properties);
 }
 
 static void
 sushi_file_loader_init (SushiFileLoader *self)
 {
-  self->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                 SUSHI_TYPE_FILE_LOADER,
-                                 SushiFileLoaderPrivate);
-
-  self->priv->cancellable = g_cancellable_new ();
-  self->priv->total_size = -1;
+  self->cancellable = g_cancellable_new ();
+  self->total_size = -1;
 }
 
 SushiFileLoader *
@@ -557,10 +544,10 @@ sushi_file_loader_new (GFile *file)
 gchar *
 sushi_file_loader_get_display_name (SushiFileLoader *self)
 {
-  if (self->priv->info == NULL)
+  if (self->info == NULL)
     return NULL;
 
-  return g_strdup (g_file_info_get_display_name (self->priv->info));
+  return g_strdup (g_file_info_get_display_name (self->info));
 }
 
 /**
@@ -572,10 +559,10 @@ sushi_file_loader_get_display_name (SushiFileLoader *self)
 GIcon *
 sushi_file_loader_get_icon (SushiFileLoader *self)
 {
-  if (self->priv->info == NULL)
+  if (self->info == NULL)
     return NULL;
 
-  return g_file_info_get_icon (self->priv->info);
+  return g_file_info_get_icon (self->info);
 }
 
 /**
@@ -589,19 +576,19 @@ sushi_file_loader_get_size_string (SushiFileLoader *self)
 {
   goffset size;
 
-  if (self->priv->info == NULL)
+  if (self->info == NULL)
     return NULL;
 
-  if (g_file_info_get_file_type (self->priv->info) != G_FILE_TYPE_DIRECTORY) {
-    size = g_file_info_get_size (self->priv->info);
+  if (g_file_info_get_file_type (self->info) != G_FILE_TYPE_DIRECTORY) {
+    size = g_file_info_get_size (self->info);
     return g_format_size (size);
   }
 
-  if (self->priv->total_size != -1) {
+  if (self->total_size != -1) {
     gchar *str, *size_str, *retval;
     const gchar *items_str;
 
-    size = self->priv->total_size;
+    size = self->total_size;
 
     /* FIXME: we prolly could also use directory_items and unreadable_items
      * somehow.
@@ -609,8 +596,8 @@ sushi_file_loader_get_size_string (SushiFileLoader *self)
     items_str = g_dngettext (GETTEXT_PACKAGE,
                              "%d item",
                              "%d items",
-                             self->priv->file_items + self->priv->directory_items);
-    str = g_strdup_printf (items_str, self->priv->file_items + self->priv->directory_items);
+                             self->file_items + self->directory_items);
+    str = g_strdup_printf (items_str, self->file_items + self->directory_items);
     size_str = g_format_size (size);
     
     retval = g_strconcat (size_str, ", ", str, NULL);
@@ -618,7 +605,7 @@ sushi_file_loader_get_size_string (SushiFileLoader *self)
     g_free (size_str);
 
     return retval;
-  } else if (!self->priv->loading) {
+  } else if (!self->loading) {
     return g_strdup (_("Empty Folder"));
   }
 
@@ -628,7 +615,7 @@ sushi_file_loader_get_size_string (SushiFileLoader *self)
 gboolean
 sushi_file_loader_get_loading (SushiFileLoader *self)
 {
-  return self->priv->loading;
+  return self->loading;
 }
 
 /**
@@ -644,10 +631,10 @@ sushi_file_loader_get_date_string (SushiFileLoader *self)
   GDateTime *date;
   gchar *retval;
 
-  if (self->priv->info == NULL)
+  if (self->info == NULL)
     return NULL;
 
-  g_file_info_get_modification_time (self->priv->info,
+  g_file_info_get_modification_time (self->info,
                                      &timeval);
   date = g_date_time_new_from_timeval_local (&timeval);
 
@@ -667,10 +654,10 @@ sushi_file_loader_get_date_string (SushiFileLoader *self)
 gchar *
 sushi_file_loader_get_content_type_string (SushiFileLoader *self)
 {
-  if (self->priv->info == NULL)
+  if (self->info == NULL)
     return NULL;
 
-  return g_content_type_get_description (g_file_info_get_content_type (self->priv->info));
+  return g_content_type_get_description (g_file_info_get_content_type (self->info));
 }
 
 /**
@@ -682,17 +669,14 @@ sushi_file_loader_get_content_type_string (SushiFileLoader *self)
 GFileType
 sushi_file_loader_get_file_type (SushiFileLoader *self)
 {
-  if (self->priv->info == NULL)
+  if (self->info == NULL)
     return G_FILE_TYPE_UNKNOWN;
 
-  return g_file_info_get_file_type (self->priv->info);
+  return g_file_info_get_file_type (self->info);
 }
 
 void
 sushi_file_loader_stop (SushiFileLoader *self)
 {
-  if (self->priv->cancellable == NULL)
-    return;
-
-  g_cancellable_cancel (self->priv->cancellable);
+  g_cancellable_cancel (self->cancellable);
 }

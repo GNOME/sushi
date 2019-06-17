@@ -31,7 +31,13 @@
 
 #include "sushi-utils.h"
 
-G_DEFINE_TYPE (SushiTextLoader, sushi_text_loader, G_TYPE_OBJECT);
+struct _SushiTextLoader {
+  gchar *uri;
+  GtkSourceFile *source_file;
+  GtkSourceBuffer *buffer;
+};
+
+G_DEFINE_TYPE (SushiTextLoader, sushi_text_loader, G_TYPE_OBJECT)
 
 enum {
   PROP_URI = 1,
@@ -45,12 +51,6 @@ enum {
 
 static GParamSpec* properties[NUM_PROPERTIES] = { NULL, };
 static guint signals[NUM_SIGNALS] = { 0, };
-
-struct _SushiTextLoaderPrivate {
-  gchar *uri;
-  GtkSourceFile *source_file;
-  GtkSourceBuffer *buffer;
-};
 
 /* code adapted from gtksourceview:tests/test-widget.c
  * License: LGPL v2.1+
@@ -110,7 +110,7 @@ static GtkSourceLanguage *
 text_loader_get_buffer_language (SushiTextLoader *self,
                                  GFile *file)
 {
-  GtkSourceBuffer *buffer = self->priv->buffer;
+  GtkSourceBuffer *buffer = self->buffer;
   GtkSourceLanguage *language = NULL;
   GtkTextIter start, end;
   gchar *text;
@@ -173,9 +173,9 @@ load_contents_async_ready_cb (GObject *source,
   }
 
   language = text_loader_get_buffer_language (self, gtk_source_file_loader_get_location (loader));
-  gtk_source_buffer_set_language (self->priv->buffer, language);
+  gtk_source_buffer_set_language (self->buffer, language);
 
-  g_signal_emit (self, signals[LOADED], 0, self->priv->buffer);
+  g_signal_emit (self, signals[LOADED], 0, self->buffer);
 }
 
 static void
@@ -184,16 +184,16 @@ start_loading_buffer (SushiTextLoader *self)
   GFile *file;
   GtkSourceFileLoader *loader;
 
-  if (self->priv->source_file == NULL)
-    self->priv->source_file = gtk_source_file_new ();
+  if (self->source_file == NULL)
+    self->source_file = gtk_source_file_new ();
 
-  file = g_file_new_for_uri (self->priv->uri);
-  gtk_source_file_set_location (self->priv->source_file, file);
+  file = g_file_new_for_uri (self->uri);
+  gtk_source_file_set_location (self->source_file, file);
   g_object_unref (file);
 
-  self->priv->buffer = gtk_source_buffer_new (NULL);
-  loader = gtk_source_file_loader_new (self->priv->buffer,
-				       self->priv->source_file);
+  self->buffer = gtk_source_buffer_new (NULL);
+  loader = gtk_source_file_loader_new (self->buffer,
+				       self->source_file);
 
   gtk_source_file_loader_load_async (loader, G_PRIORITY_DEFAULT,
 				     NULL, NULL, NULL, NULL,
@@ -205,11 +205,11 @@ static void
 sushi_text_loader_set_uri (SushiTextLoader *self,
                           const gchar *uri)
 {
-  if (g_strcmp0 (uri, self->priv->uri) != 0) {
-    g_free (self->priv->uri);
+  if (g_strcmp0 (uri, self->uri) != 0) {
+    g_free (self->uri);
 
-    self->priv->uri = g_strdup (uri);
-    g_clear_object (&self->priv->buffer);
+    self->uri = g_strdup (uri);
+    g_clear_object (&self->buffer);
 
     start_loading_buffer (self);
 
@@ -222,8 +222,8 @@ sushi_text_loader_dispose (GObject *object)
 {
   SushiTextLoader *self = SUSHI_TEXT_LOADER (object);
 
-  g_free (self->priv->uri);
-  g_clear_object (&self->priv->source_file);
+  g_free (self->uri);
+  g_clear_object (&self->source_file);
 
   G_OBJECT_CLASS (sushi_text_loader_parent_class)->dispose (object);
 }
@@ -238,7 +238,7 @@ sushi_text_loader_get_property (GObject *object,
 
   switch (prop_id) {
   case PROP_URI:
-    g_value_set_string (value, self->priv->uri);
+    g_value_set_string (value, self->uri);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -291,17 +291,11 @@ sushi_text_loader_class_init (SushiTextLoaderClass *klass)
                   1, GTK_SOURCE_TYPE_BUFFER);
 
   g_object_class_install_properties (oclass, NUM_PROPERTIES, properties);
-
-  g_type_class_add_private (klass, sizeof (SushiTextLoaderPrivate));
 }
 
 static void
 sushi_text_loader_init (SushiTextLoader *self)
 {
-  self->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                 SUSHI_TYPE_TEXT_LOADER,
-                                 SushiTextLoaderPrivate);
 }
 
 SushiTextLoader *
