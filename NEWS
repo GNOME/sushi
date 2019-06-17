@@ -1,3 +1,9 @@
+3.33.3
+======
+
+- Rewrite to use GTK directly, drop Clutter dependency
+- Use GtkSourceView 4 (Joel Ong, Martin Blanchard)
+
 3.32.0
 ======
 
