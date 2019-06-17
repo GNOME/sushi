@@ -32,7 +32,27 @@
 #include "sushi-enum-types.h"
 #include "sushi-sound-player.h"
 
-struct _SushiSoundPlayer {
+G_DEFINE_TYPE (SushiSoundPlayer, sushi_sound_player, G_TYPE_OBJECT);
+
+#define SUSHI_SOUND_PLAYER_GET_PRIVATE(obj)    \
+(G_TYPE_INSTANCE_GET_PRIVATE ((obj), SUSHI_TYPE_SOUND_PLAYER, SushiSoundPlayerPrivate))
+
+#define TICK_TIMEOUT 0.5
+
+enum
+{
+  PROP_0,
+
+  PROP_PLAYING,
+  PROP_STATE,
+  PROP_PROGRESS,
+  PROP_DURATION,
+  PROP_URI,
+  PROP_TAGLIST
+};
+
+struct _SushiSoundPlayerPrivate
+{
   GstElement            *pipeline;
   GstBus                *bus;
   SushiSoundPlayerState     state;
@@ -50,22 +70,6 @@ struct _SushiSoundPlayer {
   guint                  in_seek : 1;
 };
 
-G_DEFINE_TYPE (SushiSoundPlayer, sushi_sound_player, G_TYPE_OBJECT)
-
-#define TICK_TIMEOUT 0.5
-
-enum
-{
-  PROP_0,
-
-  PROP_PLAYING,
-  PROP_STATE,
-  PROP_PROGRESS,
-  PROP_DURATION,
-  PROP_URI,
-  PROP_TAGLIST
-};
-
 static void sushi_sound_player_destroy_pipeline (SushiSoundPlayer *player);
 static gboolean sushi_sound_player_ensure_pipeline (SushiSoundPlayer *player);
 
@@ -73,12 +77,16 @@ static void
 sushi_sound_player_set_state (SushiSoundPlayer      *player,
                               SushiSoundPlayerState  state)
 {
+  SushiSoundPlayerPrivate *priv;
+
   g_return_if_fail (SUSHI_IS_SOUND_PLAYER (player));
 
-  if (player->state == state)
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (priv->state == state)
     return;
 
-  player->state = state;
+  priv->state = state;
 
   g_object_notify (G_OBJECT (player), "state");
 }
@@ -87,21 +95,23 @@ sushi_sound_player_set_state (SushiSoundPlayer      *player,
 static void
 sushi_sound_player_destroy_discoverer (SushiSoundPlayer *player)
 {
-  if (player->discoverer == NULL)
+  SushiSoundPlayerPrivate *priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (priv->discoverer == NULL)
     return;
 
-  if (player->taglist != NULL) {
-    gst_tag_list_free (player->taglist);
-    player->taglist = NULL;
+  if (priv->taglist != NULL) {
+    gst_tag_list_free (priv->taglist);
+    priv->taglist = NULL;
   }
 
-  gst_discoverer_stop (player->discoverer);
-  gst_object_unref (player->discoverer);
-  player->discoverer = NULL;
+  gst_discoverer_stop (priv->discoverer);
+  gst_object_unref (priv->discoverer);
+  priv->discoverer = NULL;
 
   g_object_notify (G_OBJECT (player), "taglist");
 
-  g_clear_object (&player->taglist);
+  g_clear_object (&priv->taglist);
 }
 
 static void
@@ -111,7 +121,10 @@ discoverer_discovered_cb (GstDiscoverer *disco,
                           gpointer user_data)
 {
   SushiSoundPlayer *player = user_data;
+  SushiSoundPlayerPrivate *priv;
   const GstTagList *taglist;
+
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
 
   if (error != NULL)
     return;
@@ -120,7 +133,7 @@ discoverer_discovered_cb (GstDiscoverer *disco,
 
   if (taglist)
     {
-      player->taglist = gst_tag_list_copy (taglist);
+      priv->taglist = gst_tag_list_copy (taglist);
       g_object_notify (G_OBJECT (player), "taglist");
     }
 }
@@ -128,19 +141,22 @@ discoverer_discovered_cb (GstDiscoverer *disco,
 static gboolean
 sushi_sound_player_ensure_discoverer (SushiSoundPlayer *player)
 {
-  if (player->discoverer)
+  SushiSoundPlayerPrivate *priv;
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (priv->discoverer)
     return TRUE;
 
-  player->discoverer = gst_discoverer_new (GST_SECOND * 60,
+  priv->discoverer = gst_discoverer_new (GST_SECOND * 60,
                                          NULL);
 
-  if (player->discoverer == NULL)
+  if (priv->discoverer == NULL)
     return FALSE;
 
-  g_signal_connect (player->discoverer, "discovered",
+  g_signal_connect (priv->discoverer, "discovered",
                     G_CALLBACK (discoverer_discovered_cb), player);
-  gst_discoverer_start (player->discoverer);
-  gst_discoverer_discover_uri_async (player->discoverer, player->uri);
+  gst_discoverer_start (priv->discoverer);
+  gst_discoverer_discover_uri_async (priv->discoverer, priv->uri);
 
   return TRUE;
 }
@@ -149,18 +165,22 @@ static void
 sushi_sound_player_set_uri (SushiSoundPlayer *player,
                             const char    *uri)
 {
+  SushiSoundPlayerPrivate *priv;
+
   g_return_if_fail (SUSHI_IS_SOUND_PLAYER (player));
 
-  if (!g_strcmp0 (player->uri, uri))
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (!g_strcmp0 (priv->uri, uri))
     return;
 
-  g_free (player->uri);
-  player->uri = g_strdup (uri);
+  g_free (priv->uri);
+  priv->uri = g_strdup (uri);
 
-  if (player->pipeline)
+  if (priv->pipeline)
     sushi_sound_player_destroy_pipeline (player);
 
-  if (player->discoverer)
+  if (priv->discoverer)
     sushi_sound_player_destroy_discoverer (player);
 
   sushi_sound_player_ensure_pipeline (player);
@@ -173,31 +193,34 @@ static void
 sushi_sound_player_set_progress (SushiSoundPlayer *player,
                                  gdouble        progress)
 {
+  SushiSoundPlayerPrivate *priv;
   GstState pending;
   GstQuery *duration_q;
   gint64 position;
 
-  if (!player->pipeline)
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (!priv->pipeline)
     return;
 
-  player->target_progress = progress;
+  priv->target_progress = progress;
 
-  if (player->in_seek)
+  if (priv->in_seek)
     {
-      player->stacked_progress = progress;
+      priv->stacked_progress = progress;
       return;
     }
 
-  gst_element_get_state (player->pipeline, &player->stacked_state, &pending, 0);
+  gst_element_get_state (priv->pipeline, &priv->stacked_state, &pending, 0);
 
   if (pending)
-    player->stacked_state = pending;
+    priv->stacked_state = pending;
 
-  gst_element_set_state (player->pipeline, GST_STATE_PAUSED);
+  gst_element_set_state (priv->pipeline, GST_STATE_PAUSED);
 
   duration_q = gst_query_new_duration (GST_FORMAT_TIME);
 
-  if (gst_element_query (player->pipeline, duration_q))
+  if (gst_element_query (priv->pipeline, duration_q))
     {
       gint64 duration = 0;
 
@@ -210,7 +233,7 @@ sushi_sound_player_set_progress (SushiSoundPlayer *player,
 
   gst_query_unref (duration_q);
 
-  gst_element_seek (player->pipeline,
+  gst_element_seek (priv->pipeline,
 		    1.0,
 		    GST_FORMAT_TIME,
 		    GST_SEEK_FLAG_FLUSH,
@@ -218,29 +241,32 @@ sushi_sound_player_set_progress (SushiSoundPlayer *player,
 		    position,
 		    GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE);
 
-  player->in_seek = TRUE;
-  player->stacked_progress = 0.0;
+  priv->in_seek = TRUE;
+  priv->stacked_progress = 0.0;
 }
 
 static gdouble
 sushi_sound_player_get_progress (SushiSoundPlayer *player)
 {
+  SushiSoundPlayerPrivate *priv;
   GstQuery *position_q, *duration_q;
   gdouble progress;
 
-  if (!player->pipeline)
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (!priv->pipeline)
     return 0.0;
 
-  if (player->in_seek)
+  if (priv->in_seek)
     {
-      return player->target_progress;
+      return priv->target_progress;
     }
 
   position_q = gst_query_new_position (GST_FORMAT_TIME);
   duration_q = gst_query_new_duration (GST_FORMAT_TIME);
 
-  if (gst_element_query (player->pipeline, position_q) &&
-      gst_element_query (player->pipeline, duration_q))
+  if (gst_element_query (priv->pipeline, position_q) &&
+      gst_element_query (priv->pipeline, duration_q))
     {
       gint64 position, duration;
 
@@ -263,19 +289,22 @@ sushi_sound_player_get_progress (SushiSoundPlayer *player)
 static void
 sushi_sound_player_query_duration (SushiSoundPlayer *player)
 {
+  SushiSoundPlayerPrivate *priv;
   gdouble new_duration, difference;
   gint64 duration;
 
-  if (!gst_element_query_duration (player->pipeline, GST_FORMAT_TIME, &duration))
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (!gst_element_query_duration (priv->pipeline, GST_FORMAT_TIME, &duration))
     return;
 
   new_duration = (gdouble) duration / GST_SECOND;
 
-  difference = ABS (player->duration - new_duration);
+  difference = ABS (priv->duration - new_duration);
 
   if (difference > 1e-3)
     {
-      player->duration = new_duration;
+      priv->duration = new_duration;
 
       if (difference > 1.0)
         g_object_notify (G_OBJECT (player), "duration");
@@ -285,13 +314,16 @@ sushi_sound_player_query_duration (SushiSoundPlayer *player)
 static void
 sushi_sound_player_reset_pipeline (SushiSoundPlayer *player)
 {
+  SushiSoundPlayerPrivate *priv;
   GstState state, pending;
   GstMessage *msg;
 
-  if (!player->pipeline)
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (!priv->pipeline)
     return;
 
-  gst_element_get_state (player->pipeline, &state, &pending, 0);
+  gst_element_get_state (priv->pipeline, &state, &pending, 0);
 
   if (state == GST_STATE_NULL && pending == GST_STATE_VOID_PENDING)
     {
@@ -299,17 +331,17 @@ sushi_sound_player_reset_pipeline (SushiSoundPlayer *player)
     }
   else if (state == GST_STATE_NULL && pending != GST_STATE_VOID_PENDING)
     {
-      gst_element_set_state (player->pipeline, GST_STATE_NULL);
+      gst_element_set_state (priv->pipeline, GST_STATE_NULL);
       return;
     }
 
-  gst_element_set_state (player->pipeline, GST_STATE_READY);
-  gst_element_get_state (player->pipeline, NULL, NULL, -1);
+  gst_element_set_state (priv->pipeline, GST_STATE_READY);
+  gst_element_get_state (priv->pipeline, NULL, NULL, -1);
 
-  while ((msg = gst_bus_pop (player->bus)))
-    gst_bus_async_signal_func (player->bus, msg, NULL);
+  while ((msg = gst_bus_pop (priv->bus)))
+    gst_bus_async_signal_func (priv->bus, msg, NULL);
 
-  gst_element_set_state (player->pipeline, GST_STATE_NULL);
+  gst_element_set_state (priv->pipeline, GST_STATE_NULL);
 
   g_object_notify (G_OBJECT (player), "duration");
   g_object_notify (G_OBJECT (player), "progress");
@@ -318,27 +350,31 @@ sushi_sound_player_reset_pipeline (SushiSoundPlayer *player)
 static void
 sushi_sound_player_destroy_pipeline (SushiSoundPlayer *player)
 {
-  if (player->bus)
-    {
-      gst_bus_set_flushing (player->bus, TRUE);
-      gst_bus_remove_signal_watch (player->bus);
+  SushiSoundPlayerPrivate *priv;
 
-      gst_object_unref (player->bus);
-      player->bus = NULL;
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (priv->bus)
+    {
+      gst_bus_set_flushing (priv->bus, TRUE);
+      gst_bus_remove_signal_watch (priv->bus);
+
+      gst_object_unref (priv->bus);
+      priv->bus = NULL;
     }
 
-  if (player->pipeline)
+  if (priv->pipeline)
     {
-      gst_element_set_state (player->pipeline, GST_STATE_NULL);
+      gst_element_set_state (priv->pipeline, GST_STATE_NULL);
 
-      gst_object_unref (player->pipeline);
-      player->pipeline = NULL;
+      gst_object_unref (priv->pipeline);
+      priv->pipeline = NULL;
     }
 
-  if (player->tick_timeout_id != 0)
+  if (priv->tick_timeout_id != 0)
     {
-      g_source_remove (player->tick_timeout_id);
-      player->tick_timeout_id = 0;
+      g_source_remove (priv->tick_timeout_id);
+      priv->tick_timeout_id = 0;
     }
 
   g_object_notify (G_OBJECT (player), "duration");
@@ -360,11 +396,14 @@ sushi_sound_player_on_state_changed (GstBus        *bus,
                                   GstMessage    *msg,
                                   SushiSoundPlayer *player)
 {
+  SushiSoundPlayerPrivate *priv;
   GstState state, old_state;
 
   g_return_if_fail (SUSHI_IS_SOUND_PLAYER (player));
 
-  if (msg->src != GST_OBJECT (player->pipeline))
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (msg->src != GST_OBJECT (priv->pipeline))
     return;
 
   gst_message_parse_state_changed (msg, &old_state, &state, NULL);
@@ -377,9 +416,9 @@ sushi_sound_player_on_state_changed (GstBus        *bus,
     case GST_STATE_PLAYING:
       sushi_sound_player_set_state (player, SUSHI_SOUND_PLAYER_STATE_PLAYING);
 
-      if (player->tick_timeout_id == 0)
+      if (priv->tick_timeout_id == 0)
         {
-          player->tick_timeout_id =
+          priv->tick_timeout_id =
             g_timeout_add (TICK_TIMEOUT * 1000,
                            sushi_sound_player_tick_timeout,
                            player);
@@ -390,10 +429,10 @@ sushi_sound_player_on_state_changed (GstBus        *bus,
     case GST_STATE_PAUSED:
       sushi_sound_player_set_state (player, SUSHI_SOUND_PLAYER_STATE_IDLE);
 
-      if (player->tick_timeout_id != 0)
+      if (priv->tick_timeout_id != 0)
         {
-          g_source_remove (player->tick_timeout_id);
-          player->tick_timeout_id = 0;
+          g_source_remove (priv->tick_timeout_id);
+          priv->tick_timeout_id = 0;
         }
       break;
 
@@ -428,16 +467,20 @@ sushi_sound_player_on_async_done (GstBus        *bus,
                                GstMessage    *msg,
                                SushiSoundPlayer *player)
 {
-  if (player->in_seek)
+  SushiSoundPlayerPrivate *priv;
+
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (priv->in_seek)
     {
       g_object_notify (G_OBJECT (player), "progress");
 
-      player->in_seek = FALSE;
-      gst_element_set_state (player->pipeline, player->stacked_state);
+      priv->in_seek = FALSE;
+      gst_element_set_state (priv->pipeline, priv->stacked_state);
 
-      if (player->stacked_progress)
+      if (priv->stacked_progress)
         {
-          sushi_sound_player_set_progress (player, player->stacked_progress);
+          sushi_sound_player_set_progress (player, priv->stacked_progress);
         }
     }
 }
@@ -460,13 +503,16 @@ sushi_sound_player_on_duration (GstBus        *bus,
 static gboolean
 sushi_sound_player_ensure_pipeline (SushiSoundPlayer *player)
 {
+  SushiSoundPlayerPrivate *priv;
   GError *error;
   gchar *pipeline_desc;
 
-  if (player->pipeline)
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (priv->pipeline)
     return TRUE;
 
-  if (player->uri == NULL)
+  if (priv->uri == NULL)
     {
       sushi_sound_player_set_state (player, SUSHI_SOUND_PLAYER_STATE_ERROR);
       return FALSE;
@@ -475,62 +521,62 @@ sushi_sound_player_ensure_pipeline (SushiSoundPlayer *player)
   error = NULL;
 
   pipeline_desc = g_strdup_printf("playbin uri=\"%s\"",
-                                  player->uri);
+                                  priv->uri);
 
-  player->pipeline = gst_parse_launch (pipeline_desc, &error);
+  priv->pipeline = gst_parse_launch (pipeline_desc, &error);
 
   g_free (pipeline_desc);
 
   if (error)
     {
       g_error_free (error);
-      player->pipeline = NULL;
+      priv->pipeline = NULL;
 
       sushi_sound_player_set_state (player, SUSHI_SOUND_PLAYER_STATE_ERROR);
       return FALSE;
     }
 
-  if (!gst_element_set_state (player->pipeline, GST_STATE_READY))
+  if (!gst_element_set_state (priv->pipeline, GST_STATE_READY))
     {
-      g_object_unref (player->pipeline);
-      player->pipeline = NULL;
+      g_object_unref (priv->pipeline);
+      priv->pipeline = NULL;
 
       sushi_sound_player_set_state (player, SUSHI_SOUND_PLAYER_STATE_ERROR);
       return FALSE;
     }
 
-  player->bus = gst_element_get_bus (player->pipeline);
+  priv->bus = gst_element_get_bus (priv->pipeline);
 
-  gst_bus_add_signal_watch (player->bus);
+  gst_bus_add_signal_watch (priv->bus);
 
-  g_signal_connect (player->bus,
+  g_signal_connect (priv->bus,
                     "message::state-changed",
                     G_CALLBACK (sushi_sound_player_on_state_changed),
                     player);
 
-  g_signal_connect (player->bus,
+  g_signal_connect (priv->bus,
                     "message::error",
                     G_CALLBACK (sushi_sound_player_on_error),
                     player);
 
-  g_signal_connect (player->bus,
+  g_signal_connect (priv->bus,
                     "message::eos",
                     G_CALLBACK (sushi_sound_player_on_eos),
                     player);
 
-  g_signal_connect (player->bus,
+  g_signal_connect (priv->bus,
                     "message::async-done",
                     G_CALLBACK (sushi_sound_player_on_async_done),
                     player);
 
-  g_signal_connect (player->bus,
+  g_signal_connect (priv->bus,
                     "message::duration",
                     G_CALLBACK (sushi_sound_player_on_duration),
                     player);
 
   /* Pause pipeline so that the file duration becomes
    * available as soon as possible */
-  gst_element_set_state (player->pipeline, GST_STATE_PAUSED);
+  gst_element_set_state (priv->pipeline, GST_STATE_PAUSED);
 
   return TRUE;
 }
@@ -539,9 +585,12 @@ void
 sushi_sound_player_set_playing (SushiSoundPlayer *player,
                              gboolean       playing)
 {
+  SushiSoundPlayerPrivate *priv;
   GstState state;
 
   g_return_if_fail (SUSHI_IS_SOUND_PLAYER (player));
+
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
 
   if (playing)
     state = GST_STATE_PLAYING;
@@ -549,7 +598,7 @@ sushi_sound_player_set_playing (SushiSoundPlayer *player,
     state = GST_STATE_PAUSED;
 
   if (sushi_sound_player_ensure_pipeline (player))
-    gst_element_set_state (player->pipeline, state);
+    gst_element_set_state (priv->pipeline, state);
 
   g_object_notify (G_OBJECT (player), "playing");
   g_object_notify (G_OBJECT (player), "progress");
@@ -558,15 +607,18 @@ sushi_sound_player_set_playing (SushiSoundPlayer *player,
 static gboolean
 sushi_sound_player_get_playing (SushiSoundPlayer *player)
 {
+  SushiSoundPlayerPrivate *priv;
   GstState state, pending;
   gboolean playing;
 
   g_return_val_if_fail (SUSHI_IS_SOUND_PLAYER (player), FALSE);
 
-  if (!player->pipeline)
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  if (!priv->pipeline)
     return FALSE;
 
-  gst_element_get_state (player->pipeline, &state, &pending, 0);
+  gst_element_get_state (priv->pipeline, &state, &pending, 0);
 
   if (pending)
     playing = (pending == GST_STATE_PLAYING);
@@ -598,8 +650,10 @@ sushi_sound_player_get_property (GObject    *gobject,
                                  GParamSpec *pspec)
 {
   SushiSoundPlayer *player;
+  SushiSoundPlayerPrivate *priv;
   
   player = SUSHI_SOUND_PLAYER (gobject);
+  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
 
   switch (prop_id)
     {
@@ -609,7 +663,7 @@ sushi_sound_player_get_property (GObject    *gobject,
       break;
 
     case PROP_STATE:
-      g_value_set_enum (value, player->state);
+      g_value_set_enum (value, priv->state);
       break;
 
     case PROP_PROGRESS:
@@ -618,15 +672,15 @@ sushi_sound_player_get_property (GObject    *gobject,
       break;
 
     case PROP_DURATION:
-      g_value_set_double (value, player->duration);
+      g_value_set_double (value, priv->duration);
       break;
 
     case PROP_URI:
-      g_value_set_string (value, player->uri);
+      g_value_set_string (value, priv->uri);
       break;
 
     case PROP_TAGLIST:
-      g_value_set_boxed (value, player->taglist);
+      g_value_set_boxed (value, priv->taglist);
       break;
 
     default:
@@ -670,6 +724,8 @@ static void
 sushi_sound_player_class_init (SushiSoundPlayerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  g_type_class_add_private (klass, sizeof (SushiSoundPlayerPrivate));
 
   gobject_class->get_property = sushi_sound_player_get_property;
   gobject_class->set_property = sushi_sound_player_set_property;
@@ -740,12 +796,14 @@ sushi_sound_player_class_init (SushiSoundPlayerClass *klass)
 static void
 sushi_sound_player_init (SushiSoundPlayer *player)
 {
-  player->state = SUSHI_SOUND_PLAYER_STATE_UNKNOWN;
-  player->playing = FALSE;
-  player->uri = NULL;
-  player->pipeline = NULL;
-  player->bus = NULL;
-  player->stacked_progress = 0.0;
-  player->duration = 0.0;
-  player->tick_timeout_id = 0;
+  player->priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
+
+  player->priv->state = SUSHI_SOUND_PLAYER_STATE_UNKNOWN;
+  player->priv->playing = FALSE;
+  player->priv->uri = NULL;
+  player->priv->pipeline = NULL;
+  player->priv->bus = NULL;
+  player->priv->stacked_progress = 0.0;
+  player->priv->duration = 0.0;
+  player->priv->tick_timeout_id = 0;
 }

@@ -28,20 +28,23 @@
 #include <musicbrainz5/mb5_c.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-struct _SushiCoverArtFetcher {
+G_DEFINE_TYPE (SushiCoverArtFetcher, sushi_cover_art_fetcher, G_TYPE_OBJECT);
+
+#define SUSHI_COVER_ART_FETCHER_GET_PRIVATE(obj)\
+  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), SUSHI_TYPE_COVER_ART_FETCHER, SushiCoverArtFetcherPrivate))
+
+enum {
+  PROP_COVER = 1,
+  PROP_TAGLIST,
+};
+
+struct _SushiCoverArtFetcherPrivate {
   GdkPixbuf *cover;
   GstTagList *taglist;
 
   gchar *asin;
   gboolean tried_cache;
   GInputStream *input_stream;
-};
-
-G_DEFINE_TYPE (SushiCoverArtFetcher, sushi_cover_art_fetcher, G_TYPE_OBJECT)
-
-enum {
-  PROP_COVER = 1,
-  PROP_TAGLIST,
 };
 
 #define AMAZON_IMAGE_FORMAT "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg"
@@ -59,18 +62,18 @@ static void try_read_from_file (SushiCoverArtFetcher *self,
 static void
 sushi_cover_art_fetcher_dispose (GObject *object)
 {
-  SushiCoverArtFetcher *self = SUSHI_COVER_ART_FETCHER (object);
+  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (object);
 
-  g_clear_object (&self->cover);
-  g_clear_object (&self->input_stream);
+  g_clear_object (&priv->cover);
+  g_clear_object (&priv->input_stream);
 
-  if (self->taglist != NULL) {
-    gst_tag_list_free (self->taglist);
-    self->taglist = NULL;
+  if (priv->taglist != NULL) {
+    gst_tag_list_free (priv->taglist);
+    priv->taglist = NULL;
   }
 
-  g_free (self->asin);
-  self->asin = NULL;
+  g_free (priv->asin);
+  priv->asin = NULL;
 
   G_OBJECT_CLASS (sushi_cover_art_fetcher_parent_class)->dispose (object);
 }
@@ -82,13 +85,14 @@ sushi_cover_art_fetcher_get_property (GObject    *gobject,
                                       GParamSpec *pspec)
 {
   SushiCoverArtFetcher *self = SUSHI_COVER_ART_FETCHER (gobject);
+  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
 
   switch (prop_id) {
   case PROP_COVER:
-    g_value_set_object (value, self->cover);
+    g_value_set_object (value, priv->cover);
     break;
   case PROP_TAGLIST:
-    g_value_set_boxed (value, self->taglist);
+    g_value_set_boxed (value, priv->taglist);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -117,6 +121,7 @@ sushi_cover_art_fetcher_set_property (GObject    *gobject,
 static void
 sushi_cover_art_fetcher_init (SushiCoverArtFetcher *self)
 {
+  self->priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
 }
 
 static void
@@ -145,6 +150,8 @@ sushi_cover_art_fetcher_class_init (SushiCoverArtFetcherClass *klass)
                          "Current file tags",
                           GST_TYPE_TAG_LIST,
                           G_PARAM_READWRITE));
+
+  g_type_class_add_private (klass, sizeof (SushiCoverArtFetcherPrivate));
 }
 
 typedef struct {
@@ -272,7 +279,7 @@ get_gfile_for_amazon (SushiCoverArtFetcher *self)
   GFile *retval;
   gchar *uri;
 
-  uri = g_strdup_printf (AMAZON_IMAGE_FORMAT, self->asin);
+  uri = g_strdup_printf (AMAZON_IMAGE_FORMAT, self->priv->asin);
   retval = g_file_new_for_uri (uri);
   g_free (uri);
 
@@ -290,7 +297,7 @@ get_gfile_for_cache (SushiCoverArtFetcher *self)
                                  "sushi", NULL);
   g_mkdir_with_parents (cache_path, 0700);
 
-  filename = g_strdup_printf ("%s.jpg", self->asin);
+  filename = g_strdup_printf ("%s.jpg", self->priv->asin);
   path = g_build_filename (cache_path, filename, NULL);
   retval = g_file_new_for_path (path);
 
@@ -338,11 +345,11 @@ cache_replace_ready_cb (GObject *source,
     return;
   }
 
-  g_seekable_seek (G_SEEKABLE (self->input_stream), 0, G_SEEK_SET,
+  g_seekable_seek (G_SEEKABLE (self->priv->input_stream), 0, G_SEEK_SET,
                    NULL, NULL);
 
   g_output_stream_splice_async (G_OUTPUT_STREAM (cache_stream), 
-                                self->input_stream,
+                                self->priv->input_stream,
                                 G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE |
                                 G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
                                 G_PRIORITY_DEFAULT,
@@ -358,6 +365,7 @@ pixbuf_from_stream_async_cb (GObject *source,
                              gpointer user_data)
 {
   SushiCoverArtFetcher *self = user_data;
+  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
   GError *error = NULL;
   GdkPixbuf *pix;
   GFile *file, *cache_file;
@@ -365,8 +373,8 @@ pixbuf_from_stream_async_cb (GObject *source,
   pix = gdk_pixbuf_new_from_stream_finish (res, &error);
 
   if (error != NULL) {
-    if (!self->tried_cache) {
-      self->tried_cache = TRUE;
+    if (!self->priv->tried_cache) {
+      self->priv->tried_cache = TRUE;
 
       file = get_gfile_for_amazon (self);
       try_read_from_file (self, file);
@@ -380,10 +388,10 @@ pixbuf_from_stream_async_cb (GObject *source,
     return;
   }
 
-  self->cover = pix;
+  priv->cover = pix;
   g_object_notify (G_OBJECT (self), "cover");
 
-  if (self->tried_cache) {
+  if (self->priv->tried_cache) {
     /* the pixbuf has been loaded. if we didn't hit the cache,
      * save it now.
      */
@@ -406,6 +414,7 @@ read_async_ready_cb (GObject *source,
                      gpointer user_data)
 {
   SushiCoverArtFetcher *self = user_data;
+  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
   GFileInputStream *stream;
   GError *error = NULL;
   GFile *file;
@@ -414,8 +423,8 @@ read_async_ready_cb (GObject *source,
                                res, &error);
 
   if (error != NULL) {
-    if (!self->tried_cache) {
-      self->tried_cache = TRUE;
+    if (!self->priv->tried_cache) {
+      self->priv->tried_cache = TRUE;
 
       file = get_gfile_for_amazon (self);
       try_read_from_file (self, file);
@@ -429,8 +438,8 @@ read_async_ready_cb (GObject *source,
     return;
   }
 
-  self->input_stream = G_INPUT_STREAM (stream);
-  gdk_pixbuf_new_from_stream_async (self->input_stream, NULL,
+  priv->input_stream = G_INPUT_STREAM (stream);
+  gdk_pixbuf_new_from_stream_async (priv->input_stream, NULL,
                                     pixbuf_from_stream_async_cb, self);
 }
 
@@ -457,7 +466,7 @@ cache_file_query_info_cb (GObject *source,
                                          res, &error);
 
   if (error != NULL) {
-    self->tried_cache = TRUE;
+    self->priv->tried_cache = TRUE;
     file = get_gfile_for_amazon (self);
     g_error_free (error);
   } else {
@@ -479,7 +488,7 @@ amazon_cover_uri_async_ready_cb (GObject *source,
   GError *error = NULL;
   GFile *file;
 
-  self->asin = sushi_cover_art_fetcher_get_uri_for_track_finish
+  self->priv->asin = sushi_cover_art_fetcher_get_uri_for_track_finish
     (self, res, &error);
 
   if (error != NULL) {
@@ -503,12 +512,13 @@ amazon_cover_uri_async_ready_cb (GObject *source,
 static void
 try_fetch_from_amazon (SushiCoverArtFetcher *self)
 {
+  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
   gchar *artist = NULL;
   gchar *album = NULL;
 
-  gst_tag_list_get_string (self->taglist,
+  gst_tag_list_get_string (priv->taglist,
                            GST_TAG_ARTIST, &artist);
-  gst_tag_list_get_string (self->taglist,
+  gst_tag_list_get_string (priv->taglist,
                            GST_TAG_ALBUM, &album);
 
   if (artist == NULL &&
@@ -636,15 +646,17 @@ totem_gst_tag_list_get_cover (GstTagList *tag_list)
 static void
 try_fetch_from_tags (SushiCoverArtFetcher *self)
 {
-  if (self->taglist == NULL)
+  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
+
+  if (priv->taglist == NULL)
     return;
 
-  if (self->cover != NULL)
-    g_clear_object (&self->cover);
+  if (priv->cover != NULL)
+    g_clear_object (&priv->cover);
 
-  self->cover = totem_gst_tag_list_get_cover (self->taglist);
+  priv->cover = totem_gst_tag_list_get_cover (priv->taglist);
 
-  if (self->cover != NULL)
+  if (priv->cover != NULL)
     g_object_notify (G_OBJECT (self), "cover");
   else
     try_fetch_from_amazon (self);
@@ -654,14 +666,16 @@ static void
 sushi_cover_art_fetcher_set_taglist (SushiCoverArtFetcher *self,
                                      GstTagList *taglist)
 {
-  g_clear_object (&self->cover);
+  SushiCoverArtFetcherPrivate *priv = SUSHI_COVER_ART_FETCHER_GET_PRIVATE (self);
 
-  if (self->taglist != NULL) {
-    gst_tag_list_free (self->taglist);
-    self->taglist = NULL;
+  g_clear_object (&priv->cover);
+
+  if (priv->taglist != NULL) {
+    gst_tag_list_free (priv->taglist);
+    priv->taglist = NULL;
   }
 
-  self->taglist = gst_tag_list_copy (taglist);
+  priv->taglist = gst_tag_list_copy (taglist);
   try_fetch_from_tags (self);
 }
 
