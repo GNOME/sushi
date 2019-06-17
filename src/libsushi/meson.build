@@ -6,7 +6,6 @@ libsushi_c = [
   'sushi-media-bin.c',
   'sushi-pdf-loader.c',
   'sushi-sound-player.c',
-  'sushi-text-loader.c',
   'sushi-utils.c',
 ]
 
@@ -18,7 +17,6 @@ libsushi_headers = [
   'sushi-media-bin.h',
   'sushi-pdf-loader.h',
   'sushi-sound-player.h',
-  'sushi-text-loader.h',
   'sushi-utils.h',
 ]
 

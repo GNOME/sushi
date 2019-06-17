@@ -219,7 +219,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         }
 
         let klass = MimeHandler.getKlass(fileInfo.get_content_type());
-        this._renderer = new klass(this.file);
+        this._renderer = new klass(this.file, fileInfo);
         this._renderer.show_all();
         this._renderer.expand = true;
         this._embed.add(this._renderer);

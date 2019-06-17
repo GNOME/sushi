@@ -23,7 +23,7 @@
  *
  */
 
-const {Gdk, Gio, GLib, GObject, Gtk, GtkSource, Sushi} = imports.gi;
+const {Gdk, Gio, GLib, GObject, Gtk, GtkSource} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
@@ -53,16 +53,15 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class TextRenderer extends Gtk.ScrolledWindow {
-    _init(file) {
+    _init(file, fileInfo) {
         super._init();
 
-        let textLoader = new Sushi.TextLoader();
-        textLoader.connect('loaded', this._onBufferLoaded.bind(this));
-        textLoader.uri = file.get_uri();
-
-        this._view = new GtkSource.View({ editable: false,
+        let buffer = this._createBuffer(file, fileInfo);
+        this._view = new GtkSource.View({ buffer: buffer,
+                                          editable: false,
                                           cursor_visible: false,
-                                          monospace: true });
+                                          monospace: true,
+                                          show_line_numbers: !!buffer.language });
         this._view.set_can_focus(false);
         this._view.connect('button-press-event', (view, event) => {
             let [, button] = event.get_button();
@@ -76,17 +75,31 @@ var Klass = GObject.registerClass({
         this.isReady();
     }
 
-    _onBufferLoaded(loader, buffer) {
-        buffer.highlight_syntax = true;
-
+    _createBuffer(file, fileInfo) {
+        let buffer = new GtkSource.Buffer();
         let styleManager = GtkSource.StyleSchemeManager.get_default();
         let geditScheme = _getGeditScheme();
         let scheme = styleManager.get_scheme(geditScheme);
         buffer.set_style_scheme(scheme);
 
-        this._view.set_buffer(buffer);
-        if (buffer.get_language())
-            this._view.set_show_line_numbers(true);
+        let langManager = GtkSource.LanguageManager.get_default();
+        let language = langManager.guess_language(file.get_basename(),
+                                                  fileInfo.get_content_type());
+        if (language)
+            buffer.set_language(language);
+
+        let sourceFile = new GtkSource.File({ location: file });
+        let loader = new GtkSource.FileLoader({ buffer: buffer,
+                                                file: sourceFile });
+        loader.load_async(0, null, null, (loader, result) => {
+            try {
+                loader.load_finish(result);
+            } catch (e) {
+                logError(e, `Unable to load the text file at ${loader.location.get_uri()}`);
+            }
+        });
+
+        return buffer;
     }
 
     get moveOnClick() {
