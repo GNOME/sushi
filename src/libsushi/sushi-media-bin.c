@@ -1815,8 +1815,8 @@ sushi_media_bin_handle_streams_selected (SushiMediaBin *self, GstMessage *msg)
 {
   SushiMediaBinPrivate *priv = SMB_PRIVATE (self);
   GstStreamCollection *collection = NULL;
+  GstStream *stream = NULL;
   GstStructure *caps_struct;
-  GstStream *stream;
   GstCaps *caps;
   gint i, n, w, h;
 
@@ -1830,6 +1830,9 @@ sushi_media_bin_handle_streams_selected (SushiMediaBin *self, GstMessage *msg)
       if (gst_stream_get_stream_type (stream) == GST_STREAM_TYPE_VIDEO)
         break;
     }
+
+  if (!stream)
+    return;
 
   caps = gst_stream_get_caps (stream);
   caps_struct = gst_caps_get_structure (caps, 0);
