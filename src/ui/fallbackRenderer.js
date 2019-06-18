@@ -229,8 +229,7 @@ var FallbackRenderer = GObject.registerClass({
         if (state.fileInfo.get_file_type() != Gio.FileType.DIRECTORY) {
             let contentType = state.fileInfo.get_content_type();
             let typeDescr = Gio.content_type_get_description(contentType);
-            let typeStr = '<small><b>' + _("Type") + '  </b>' +
-                `${typeDescr}</small>`;
+            let typeStr = '<small><b>' + _("Type") + '  </b>' + typeDescr + '</small>';
             this._typeLabel.set_markup(typeStr);
         } else {
             this._typeLabel.hide();
@@ -241,7 +240,7 @@ var FallbackRenderer = GObject.registerClass({
             sizeFormatted = GLib.format_size(state.fileInfo.get_size());
         } else if (state.totalSize > 0) {
             let itemsStr = Gettext.ngettext(
-                "%d item", "%d items",
+                N_("%d item"), N_("%d items"),
                 state.fileItems + state.directoryItems).
                 format(state.fileItems + state.directoryItems);
             sizeFormatted = `${GLib.format_size(state.totalSize)}, ${itemsStr}`;
@@ -249,15 +248,12 @@ var FallbackRenderer = GObject.registerClass({
             sizeFormatted = _("Empty Folder");
         }
 
-        let sizeStr = '<small><b>' + _("Size") + '  </b>' +
-            `${sizeFormatted}</small>`;
+        let sizeStr = '<small><b>' + _("Size") + '  </b>' + sizeFormatted + '</small>';
         this._sizeLabel.set_markup(sizeStr);
 
         let date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
         let dateFormatted = date.format('%x %X');
-        let dateStr =
-            '<small><b>' + _("Modified") + '  </b>' +
-            `${dateFormatted}</small>`;
+        let dateStr = '<small><b>' + _("Modified") + '  </b>' + dateFormatted + '</small>';
         this._dateLabel.set_markup(dateStr);
     }
 
