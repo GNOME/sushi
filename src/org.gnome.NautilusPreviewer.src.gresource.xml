@@ -16,6 +16,7 @@
     <file>viewers/gst.js</file>
     <file>viewers/html.js</file>
     <file>viewers/image.js</file>
+    <file>viewers/libreoffice.js</file>
     <file>viewers/text.js</file>
   </gresource>
 </gresources>

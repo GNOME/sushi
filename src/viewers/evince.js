@@ -29,6 +29,8 @@ const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
+const Libreoffice = imports.viewers.libreoffice;
+
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
@@ -111,17 +113,7 @@ var Klass = GObject.registerClass({
 });
 
 EvinceDocument.init();
-
-let officeTypes = [
-    'application/vnd.oasis.opendocument.text',
-    'application/vnd.oasis.opendocument.presentation',
-    'application/vnd.oasis.opendocument.spreadsheet',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-    'application/msword',
-    'application/vnd.ms-excel',
-    'application/vnd.ms-powerpoint',
-    'application/rtf'
-];
-var mimeTypes = Sushi.query_supported_document_types().concat(officeTypes);
+var evinceTypes = Sushi.query_supported_document_types();
+var mimeTypes = evinceTypes;
+if (!Libreoffice.isAvailable())
+    mimeTypes = mimeTypes.concat(Libreoffice.officeTypes);
