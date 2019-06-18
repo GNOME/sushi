@@ -4,7 +4,6 @@ libsushi_c = [
   'sushi-font-loader.c',
   'sushi-font-widget.c',
   'sushi-media-bin.c',
-  'sushi-pdf-loader.c',
   'sushi-sound-player.c',
   'sushi-utils.c',
 ]
@@ -15,7 +14,6 @@ libsushi_headers = [
   'sushi-font-loader.h',
   'sushi-font-widget.h',
   'sushi-media-bin.h',
-  'sushi-pdf-loader.h',
   'sushi-sound-player.h',
   'sushi-utils.h',
 ]
@@ -64,6 +62,7 @@ gnome.generate_gir(
     'Gtk-3.0',
     'GtkSource-4',
     'EvinceDocument-3.0',
+    'EvinceView-3.0',
   ],
   install: true,
   install_dir_gir: join_paths(pkgdatadir, 'gir-1.0'),

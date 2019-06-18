@@ -27,12 +27,21 @@
 #define __SUSHI_UTILS_H__
 
 #include <evince-document.h>
+#include <evince-view.h>
 #include <gdk/gdk.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
 GdkWindow *    sushi_create_foreign_window (guint xid);
 gchar **       sushi_query_supported_document_types (void);
+EvDocument *   sushi_get_evince_document_from_job (EvJob *job);
+
+void           sushi_convert_libreoffice (GFile *file,
+                                          GAsyncReadyCallback callback,
+                                          gpointer user_data);
+GFile *        sushi_convert_libreoffice_finish (GAsyncResult *result,
+                                                 GError **error);
 
 G_END_DECLS
 

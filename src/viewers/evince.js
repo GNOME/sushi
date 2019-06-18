@@ -42,14 +42,26 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class EvinceRenderer extends Gtk.ScrolledWindow {
-    _init(file) {
+    _init(file, fileInfo) {
         super._init({ visible: true,
                       min_content_height: Constants.VIEW_MIN,
                       min_content_width: Constants.VIEW_MIN });
 
-        this._pdfLoader = new Sushi.PdfLoader();
-        this._pdfLoader.connect('notify::document', this._onDocumentLoaded.bind(this));
-        this._pdfLoader.uri = file.get_uri();
+        if (evinceTypes.includes(fileInfo.get_content_type())) {
+            this._loadFile(file);
+        } else {
+            Sushi.convert_libreoffice(file, (o, res) => {
+                let convertedFile;
+                try {
+                    convertedFile = Sushi.convert_libreoffice_finish(res);
+                } catch (e) {
+                    logError(e, 'Unable to convert Libreoffice document to PDF');
+                    return;
+                }
+
+                this._loadFile(convertedFile);
+            });
+        }
 
         this._view = EvinceView.View.new();
         this._view.show();
@@ -57,6 +69,12 @@ var Klass = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
         this.isReady();
+    }
+
+    _loadFile(file) {
+        let job = EvinceView.JobLoad.new(file.get_uri());
+        job.connect('finished', this._onLoadJobFinished.bind(this));
+        job.scheduler_push_job(EvinceView.JobPriority.PRIORITY_NONE);
     }
 
     _updatePageLabel() {
@@ -69,8 +87,9 @@ var Klass = GObject.registerClass({
         this._pageLabel.set_text(_("%d of %d").format(curPage + 1, totPages));
     }
 
-    _onDocumentLoaded(pdfLoader) {
-        this._model = EvinceView.DocumentModel.new_with_document(pdfLoader.document);
+    _onLoadJobFinished(job) {
+        let document = Sushi.get_evince_document_from_job(job);
+        this._model = EvinceView.DocumentModel.new_with_document(document);
         this._model.set_sizing_mode(EvinceView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);
 
@@ -105,10 +124,6 @@ var Klass = GObject.registerClass({
 
         let toolbarZoom = Utils.createFullscreenButton(this);
         toolbar.add(toolbarZoom);
-    }
-
-    _onDestroy() {
-        this._pdfLoader = null;
     }
 });
 
