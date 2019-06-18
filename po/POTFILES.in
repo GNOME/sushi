@@ -1,5 +1,4 @@
-src/js/ui/fallbackRenderer.js
-src/js/ui/spinnerBox.js
-src/js/viewers/audio.js
-src/js/viewers/evince.js
-src/libsushi/sushi-file-loader.c
+src/ui/fallbackRenderer.js
+src/ui/mainWindow.js
+src/viewers/audio.js
+src/viewers/evince.js
