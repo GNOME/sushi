@@ -197,8 +197,12 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
 
     _createRenderer() {
         this.file.query_info_async(
-            [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
-             Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE].join(','),
+            [Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+             Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+             Gio.FILE_ATTRIBUTE_STANDARD_ICON,
+             Gio.FILE_ATTRIBUTE_STANDARD_SIZE,
+             Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
+             Gio.FILE_ATTRIBUTE_TIME_MODIFIED].join(','),
             Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, null,
             (obj, res) => {
                 try {

@@ -38,24 +38,13 @@ function _getDeepCountAttrs() {
     ].join(',');
 }
 
-function _getLoaderAttrs() {
-    return [
-        Gio.FILE_ATTRIBUTE_STANDARD_ICON,
-        Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
-        Gio.FILE_ATTRIBUTE_STANDARD_SIZE,
-        Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-        Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-        Gio.FILE_ATTRIBUTE_TIME_MODIFIED
-    ].join(',');
-}
-
-const loadFile = function(_fileToLoad, _cancellable, _updateCallback) {
+const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback) {
     let _seenInodes = new Set();
     let _subDirectories = [];
     let _enumerator = null;
     let _file = null;
 
-    let _state = { fileInfo: null,
+    let _state = { fileInfo: _fileInfo,
                    directoryItems: 0,
                    fileItems: 0,
                    loading: true,
@@ -165,23 +154,13 @@ const loadFile = function(_fileToLoad, _cancellable, _updateCallback) {
     _cancellable.connect(_unqueueUpdate);
 
     _file = _fileToLoad;
-    _file.query_info_async(_getLoaderAttrs(), 0, 0, _cancellable, (f, res) => {
-        try {
-            _state.fileInfo = _file.query_info_finish(res);
-        } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                logError(e, `Unable to query info for file ${_file.get_uri()}`);
-            return;
-        }
+    let fileType = _fileInfo.get_file_type();
+    if (fileType == Gio.FileType.DIRECTORY)
+        _deepCountLoad();
+    else
+        _state.loading = false;
 
-        let fileType = _state.fileInfo.get_file_type();
-        if (fileType == Gio.FileType.DIRECTORY)
-            _deepCountLoad();
-        else
-            _state.loading = false;
-
-        _sendUpdate();
-    });
+    _sendUpdate();
 };
 
 var FallbackRenderer = GObject.registerClass({
@@ -195,12 +174,9 @@ var FallbackRenderer = GObject.registerClass({
                                          false)
     },
 }, class FallbackRenderer extends Gtk.Box {
-    _init(file) {
+    _init(file, fileInfo) {
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
-
-        this._cancellable = new Gio.Cancellable();
-        loadFile(file, this._cancellable, this._onFileInfoUpdated.bind(this));
 
         this._image = new Gtk.Image();
         this.pack_start(this._image, false, false, 0);
@@ -238,6 +214,9 @@ var FallbackRenderer = GObject.registerClass({
         this._dateLabel = new Gtk.Label();
         this._dateLabel.set_halign(Gtk.Align.START);
         vbox.pack_start(this._dateLabel, false, false, 0);
+
+        this._cancellable = new Gio.Cancellable();
+        loadFile(file, fileInfo, this._cancellable, this._onFileInfoUpdated.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
         this.isReady();
