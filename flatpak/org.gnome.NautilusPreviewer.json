@@ -21,6 +21,7 @@
         "--socket=x11",
         "--socket=wayland",
         "--share=ipc",
+        "--share=network",
         "--device=dri",
         "--talk-name=org.freedesktop.FileManager1",
         "--filesystem=xdg-run/dconf",
