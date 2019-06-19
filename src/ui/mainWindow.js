@@ -58,6 +58,22 @@ const Embed = GObject.registerClass(class Embed extends Gtk.Overlay {
     }
 });
 
+function _getDecorationLayout() {
+    function _isSupported(name) {
+        // We don't support maximize and minimize
+        return ['menu', 'close'].includes(name);
+    }
+
+    let settings = Gtk.Settings.get_default();
+    let decorationLayout = settings.gtk_decoration_layout;
+    let [lhs, rhs] = decorationLayout.split(':');
+
+    let leftGroup = lhs.split(',').filter(_isSupported);
+    let rightGroup = rhs.split(',').filter(_isSupported);
+
+    return [leftGroup.join(','), rightGroup.join(',')].join(':');
+};
+
 var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     _init(application) {
         this._renderer = null;
@@ -74,8 +90,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
                       application: application });
 
         this._titlebar = new Gtk.HeaderBar({ show_close_button: true,
-                                             // don't support maximize and minimize
-                                             decoration_layout: 'menu:close' });
+                                             decoration_layout: _getDecorationLayout() });
         this.set_titlebar(this._titlebar);
 
         this._openButton = new Gtk.Button();
