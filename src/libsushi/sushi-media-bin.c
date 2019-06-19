@@ -107,6 +107,7 @@ typedef struct
   /* Internal Audio Widgets */
   GtkWidget      *audio_box;
   GtkScaleButton *audio_volume_button;
+  GtkLabel       *audio_duration_label;
   GtkLabel       *audio_position_label;
   GtkImage       *audio_playback_image;
 
@@ -1237,6 +1238,7 @@ sushi_media_bin_class_init (SushiMediaBinClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, SushiMediaBin, bottom_revealer);
 
   gtk_widget_class_bind_template_child_private (widget_class, SushiMediaBin, audio_box);
+  gtk_widget_class_bind_template_child_private (widget_class, SushiMediaBin, audio_duration_label);
   gtk_widget_class_bind_template_child_private (widget_class, SushiMediaBin, audio_volume_button);
   gtk_widget_class_bind_template_child_private (widget_class, SushiMediaBin, audio_position_label);
   gtk_widget_class_bind_template_child_private (widget_class, SushiMediaBin, audio_playback_image);
@@ -1457,6 +1459,7 @@ sushi_media_bin_update_duration (SushiMediaBin *self)
   priv->duration = duration;
 
   duration = GST_TIME_AS_SECONDS (duration);
+  gtk_label_set_label (priv->audio_duration_label, format_time (duration));
   gtk_label_set_label (priv->duration_label, format_time (duration));
   gtk_label_set_label (priv->progress_duration_label, format_time (duration));
   gtk_adjustment_set_upper (priv->playback_adjustment, duration);

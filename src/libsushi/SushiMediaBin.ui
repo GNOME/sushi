@@ -290,14 +290,15 @@
           <object class="GtkBox" id="audio_box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="valign">center</property>
-            <property name="orientation">vertical</property>
+            <property name="spacing">2</property>
             <child>
-              <object class="GtkScale" id="audio_progress_scale">
+              <object class="GtkButton" id="audio_playback_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="adjustment">playback_adjustment</property>
-                <property name="draw_value">False</property>
+                <property name="receives_default">False</property>
+                <property name="image">audio_playback_image</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="sushi_media_bin_toggle_playback" swapped="yes"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -306,90 +307,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox">
+              <object class="GtkLabel" id="audio_position_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">2</property>
-                <child>
-                  <object class="GtkButton" id="audio_playback_button">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="image">audio_playback_image</property>
-                    <property name="relief">none</property>
-                    <signal name="clicked" handler="sushi_media_bin_toggle_playback" swapped="yes"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="width_chars">12</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkVolumeButton" id="audio_volume_button">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="focus_on_click">False</property>
-                    <property name="receives_default">False</property>
-                    <property name="relief">none</property>
-                    <property name="orientation">vertical</property>
-                    <property name="value">1</property>
-                    <property name="size">menu</property>
-                    <property name="adjustment">volume_adjustment</property>
-                    <child internal-child="plus_button">
-                      <object class="GtkButton">
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="halign">center</property>
-                        <property name="valign">center</property>
-                        <property name="relief">none</property>
-                      </object>
-                    </child>
-                    <child internal-child="minus_button">
-                      <object class="GtkButton">
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="halign">center</property>
-                        <property name="valign">center</property>
-                        <property name="relief">none</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="pack_type">end</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="audio_position_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="width_chars">4</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="pack_type">end</property>
-                    <property name="position">3</property>
-                  </packing>
-                </child>
-                <style>
-                  <class name="bottom"/>
-                </style>
+                <property name="width_chars">4</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -397,7 +318,71 @@
                 <property name="position">1</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkScale" id="audio_progress_scale">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="adjustment">playback_adjustment</property>
+                <property name="draw_value">False</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="audio_duration_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="width_chars">4</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVolumeButton" id="audio_volume_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="receives_default">False</property>
+                <property name="relief">none</property>
+                <property name="orientation">vertical</property>
+                <property name="value">1</property>
+                <property name="size">menu</property>
+                <property name="adjustment">volume_adjustment</property>
+                <child internal-child="plus_button">
+                  <object class="GtkButton">
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="relief">none</property>
+                  </object>
+                </child>
+                <child internal-child="minus_button">
+                  <object class="GtkButton">
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="relief">none</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
             <style>
+              <class name="bottom"/>
               <class name="audio"/>
             </style>
           </object>
