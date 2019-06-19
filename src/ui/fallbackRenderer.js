@@ -240,7 +240,7 @@ var FallbackRenderer = GObject.registerClass({
             sizeFormatted = GLib.format_size(state.fileInfo.get_size());
         } else if (state.totalSize > 0) {
             let itemsStr = Gettext.ngettext(
-                N_("%d item"), N_("%d items"),
+                "%d item", "%d items",
                 state.fileItems + state.directoryItems).
                 format(state.fileItems + state.directoryItems);
             sizeFormatted = `${GLib.format_size(state.totalSize)}, ${itemsStr}`;
