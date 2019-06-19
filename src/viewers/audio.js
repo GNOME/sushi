@@ -338,12 +338,18 @@ var Klass = GObject.registerClass({
             titleName = file.get_basename();
         }
 
-        if (albumName)
-            this._albumLabel.set_markup('<small><i>' + _("from") + '  </i>' + albumName + '</small>');
-        if (artistName)
-            this._authorLabel.set_markup('<small><i>' + _("by") + '  </i><b>' + artistName + '</b></small>');
+        if (albumName) {
+            let escaped = GLib.markup_escape_text(albumName, -1);
+            this._albumLabel.set_markup('<small><i>' + _("from") + '  </i>' + escaped + '</small>');
+        }
 
-        this._titleLabel.set_markup('<b>' + titleName + '</b>');
+        if (artistName) {
+            let escaped = GLib.markup_escape_text(artistName, -1);
+            this._authorLabel.set_markup('<small><i>' + _("by") + '  </i><b>' + escaped + '</b></small>');
+        }
+
+        let escaped = GLib.markup_escape_text(titleName, -1);
+        this._titleLabel.set_markup('<b>' + escaped + '</b>');
 
         if (artistName && albumName && !this._coverFetched) {
             fetchCoverArt(tags, this._onCoverArtFetched.bind(this));
