@@ -34,7 +34,6 @@ pkg.require({
     GLib: '2.0',
     GObject: '2.0',
     Gst: '1.0',
-    GstPbutils: '1.0',
     GstTag: '1.0',
     Gtk: '3.0',
     GtkSource: '4',

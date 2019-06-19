@@ -23,7 +23,7 @@
  *
  */
 
-const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gst, GstPbutils, GstTag, Gtk, Soup, Sushi} = imports.gi;
+const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
@@ -247,13 +247,16 @@ var Klass = GObject.registerClass({
     _init(file) {
         super._init();
 
-        this._discoverAudioTags(file);
+        this._coverFetched = false;
 
         let box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                 spacing: 6 });
         this.add(box);
 
         this._player = new AudioPlayer(file);
+        this._player.connect('tags-change', (p) => {
+            this._updateFromTags(this._player.get_audio_tags());
+        });
         this.add_overlay(this._player);
 
         this._autoplayId = GLib.idle_add(0, () => {
@@ -289,30 +292,11 @@ var Klass = GObject.registerClass({
         this.isReady();
     }
 
-    _discoverAudioTags(file) {
-        this._discoverer = new GstPbutils.Discoverer();
-        this._discoverer.connect('discovered', (d, info, err) => {
-            if (err) {
-                logError(err, `Unable to discover audio tags for ${file.get_uri()}`);
-                return;
-            }
-
-            let tags = info.get_tags();
-            if (tags)
-                this._updateFromTags(tags);
-        });
-        this._discoverer.start();
-        this._discoverer.discover_uri_async(file.get_uri());
-    }
-
     _onDestroy() {
         if (this._autoplayId > 0) {
             GLib.source_remove(this._autoplayId);
             this._autoplayId = 0;
         }
-
-        this._discoverer.stop();
-        this._discoverer = null;
     }
 
     _setCover(cover) {
@@ -360,8 +344,10 @@ var Klass = GObject.registerClass({
 
         this._titleLabel.set_markup('<b>' + titleName + '</b>');
 
-        if (artistName && albumName)
+        if (artistName && albumName && !this._coverFetched) {
             fetchCoverArt(tags, this._onCoverArtFetched.bind(this));
+            this._coverFetched = true;
+        }
     }
 
     get resizable() {

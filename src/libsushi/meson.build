@@ -7,7 +7,6 @@ libsushi_deps = [
   glib_dep,
   gstreamer_dep,
   gstreamer_audio_dep,
-  gstreamer_pbutils_dep,
   gstreamer_tag_dep,
   gstreamer_video_dep,
   gtk_dep,
