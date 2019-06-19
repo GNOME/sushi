@@ -23,7 +23,7 @@
  *
  */
 
-const {GdkPixbuf, Gio, GLib, GObject, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
+const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
@@ -286,26 +286,23 @@ var Klass = GObject.registerClass({
         this._player = null;
     }
 
-    _ensurePixbufSize(cover) {
-        let width, height;
+    _setCover(cover) {
+        let scaleFactor = this.get_scale_factor();
+        let size = 256 * scaleFactor;
+        let width = cover.get_width();
+        let height = cover.get_height();
+        let targetWidth = size;
+        let targetHeight = size;
 
-        width = cover.get_width();
-        height = cover.get_height();
+        if (width > height)
+            targetHeight = height * size / width;
+        else
+            targetWidth = width * size / height;
 
-        if (width > 256 ||
-            height > 256) {
-            if (width > height) {
-                this._coverArt = cover.scale_simple(256,
-                                                    height * 256 / width,
-                                                    GdkPixbuf.InterpType.BILINEAR);
-            } else {
-                this._coverArt = cover.scale_simple(width * 256 / height,
-                                                    256,
-                                                    GdkPixbuf.InterpType.BILINEAR);
-            }
-        } else {
-            this._coverArt = cover;
-        }
+        let coverArt = cover.scale_simple(targetWidth, targetHeight,
+                                          GdkPixbuf.InterpType.BILINEAR);
+        let surface = Gdk.cairo_surface_create_from_pixbuf(coverArt, scaleFactor, this.get_window());
+        this._image.set_from_surface(surface);
     }
 
     _onCoverArtFetched(err, cover) {
@@ -314,8 +311,7 @@ var Klass = GObject.registerClass({
             return;
         }
 
-        this._ensurePixbufSize(cover);
-        this._image.set_from_pixbuf(this._coverArt);
+        this._setCover(cover);
     }
 
     _onTagListChanged() {
