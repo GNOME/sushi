@@ -1,3 +1,20 @@
+libsushi_deps = [
+  epoxy_dep,
+  evince_document_dep,
+  evince_view_dep,
+  freetype_dep,
+  gdk_pixbuf_dep,
+  glib_dep,
+  gstreamer_dep,
+  gstreamer_audio_dep,
+  gstreamer_pbutils_dep,
+  gstreamer_tag_dep,
+  gstreamer_video_dep,
+  gtk_dep,
+  harfbuzz_dep,
+  musicbrainz_dep
+]
+
 libsushi_c = [
   'sushi-font-loader.c',
   'sushi-font-widget.c',
@@ -27,7 +44,7 @@ libsushi_resource = gnome.compile_resources(
 
 libsushi = shared_library(
   'sushi-1.0',
-  dependencies: deps,
+  dependencies: libsushi_deps,
   sources: [
     libsushi_c,
     libsushi_enum,
@@ -53,7 +70,6 @@ gnome.generate_gir(
     'GstTag-1.0',
     'GdkPixbuf-2.0',
     'Gtk-3.0',
-    'GtkSource-4',
     'EvinceDocument-3.0',
     'EvinceView-3.0',
   ],

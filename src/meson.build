@@ -1,26 +1,5 @@
 gnome = import('gnome')
 
-deps = [
-  epoxy_dep,
-  evince_document_dep,
-  evince_view_dep,
-  freetype_dep,
-  gdk_pixbuf_dep,
-  gjs_dep,
-  glib_dep,
-  gstreamer_dep,
-  gstreamer_audio_dep,
-  gstreamer_pbutils_dep,
-  gstreamer_tag_dep,
-  gstreamer_video_dep,
-  gtk_dep,
-  gtksourceview_dep,
-  harfbuzz_dep,
-  introspection_dep,
-  musicbrainz_dep,
-  webkit_dep,
-]
-
 # Compile libsushi and its introspection data
 subdir('libsushi')
 
