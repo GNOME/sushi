@@ -219,6 +219,20 @@ const fetchCoverArt = function(_tagList, _callback) {
     _fetchFromASIN(_callback);
 }
 
+const AudioPlayer = GObject.registerClass({
+    CssName: 'toolbar',
+}, class AudioPlayer extends Sushi.MediaBin {
+    _init(file) {
+        super._init({ audio_mode: true,
+                      uri: file.get_uri(),
+                      margin_bottom: Constants.TOOLBAR_SPACING,
+                      margin_start: Constants.TOOLBAR_SPACING,
+                      margin_end: Constants.TOOLBAR_SPACING,
+                      valign: Gtk.Align.END });
+        this.get_style_context().add_class('osd');
+    }
+});
+
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
@@ -229,24 +243,35 @@ var Klass = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class AudioRenderer extends Gtk.Box {
+}, class AudioRenderer extends Gtk.Overlay {
     _init(file) {
-        super._init({ orientation: Gtk.Orientation.HORIZONTAL,
-                      spacing: 6 });
+        super._init();
 
         this._discoverAudioTags(file);
-        this._createPlayer(file);
+
+        let box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
+                                spacing: 6 });
+        this.add(box);
+
+        this._player = new AudioPlayer(file);
+        this.add_overlay(this._player);
+
+        this._autoplayId = GLib.idle_add(0, () => {
+            this._autoplayId = 0;
+            this._player.play();
+            return false;
+        });
 
         this._image = new Gtk.Image({ icon_name: 'media-optical-symbolic',
                                       pixel_size: 256 });
-        this.pack_start(this._image, false, false, 0);
+        box.pack_start(this._image, false, false, 0);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
                                  margin_top: 48,
                                  margin_start: 12,
                                  margin_end: 12 });
-        this.pack_start(vbox, false, false, 0);
+        box.pack_start(vbox, false, false, 0);
 
         this._titleLabel = new Gtk.Label();
         this._titleLabel.set_halign(Gtk.Align.START);
@@ -280,28 +305,14 @@ var Klass = GObject.registerClass({
         this._discoverer.discover_uri_async(file.get_uri());
     }
 
-    _createPlayer(file) {
-        this._playerNotifies = [];
-
-        this._player = new Sushi.SoundPlayer({ uri: file.get_uri() });
-        this._player.playing = true;
-
-        this._playerNotifies.push(
-            this._player.connect('notify::progress', this._onPlayerProgressChanged.bind(this)));
-        this._playerNotifies.push(
-            this._player.connect('notify::duration', this._onPlayerDurationChanged.bind(this)));
-        this._playerNotifies.push(
-            this._player.connect('notify::state', this._onPlayerStateChanged.bind(this)));
-    }
-
     _onDestroy() {
+        if (this._autoplayId > 0) {
+            GLib.source_remove(this._autoplayId);
+            this._autoplayId = 0;
+        }
+
         this._discoverer.stop();
         this._discoverer = null;
-
-        this._playerNotifies.forEach((id) => this._player.disconnect(id));
-        this._playerNotifies = [];
-        this._player.playing = false;
-        this._player = null;
     }
 
     _setCover(cover) {
@@ -353,87 +364,12 @@ var Klass = GObject.registerClass({
             fetchCoverArt(tags, this._onCoverArtFetched.bind(this));
     }
 
-    _updateProgressBar() {
-        if (!this._progressBar)
-            return;
-
-        this._isSettingValue = true;
-        this._progressBar.set_value(this._player.progress * 1000);
-        this._isSettingValue = false;
-    }
-
-    _updateCurrentLabel() {
-        if (!this._currentLabel)
-            return;
-
-        let currentTime =
-            Math.floor(this._player.duration * this._player.progress);
-
-        this._currentLabel.set_text(_formatTimeString(currentTime));
-    }
-
-    _updateDurationLabel() {
-        if (!this._durationLabel)
-            return;
-
-        let totalTime = this._player.duration;
-
-        this._durationLabel.set_text(_formatTimeString(totalTime));
-    }
-
-    _onPlayerProgressChanged() {
-        this._updateProgressBar();
-        this._updateCurrentLabel();
-    }
-
-    _onPlayerDurationChanged() {
-        this._updateDurationLabel();
-    }
-
-    _onPlayerStateChanged() {
-        switch(this._player.state) {
-        case Sushi.SoundPlayerState.PLAYING:
-            this._toolbarPlay.image.set_from_icon_name('media-playback-pause-symbolic', Gtk.IconSize.MENU);
-            break;
-        default:
-            let iconName = 'media-playback-start-symbolic';
-            this._toolbarPlay.image.set_from_icon_name(iconName, Gtk.IconSize.MENU);
-        }
-    }
-
     get resizable() {
         return false;
     }
 
     get resizePolicy() {
         return Renderer.ResizePolicy.NAT_SIZE;
-    }
-
-    populateToolbar(toolbar) {
-        this._toolbarPlay = Utils.createToolButton('media-playback-pause-symbolic', () => {
-            let playing = !this._player.playing;
-            this._player.playing = playing;
-        });
-        toolbar.add(this._toolbarPlay);
-
-        this._currentLabel = new Gtk.Label({ margin_start: 6,
-                                             margin_end: 3 });
-        toolbar.add(this._currentLabel);
-
-        this._progressBar =
-            Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,
-                                     0, 1000, 10);
-        this._progressBar.set_value(0);
-        this._progressBar.set_draw_value(false);
-        this._progressBar.connect('value-changed', () => {
-            if(!this._isSettingValue)
-                this._player.progress = this._progressBar.get_value() / 1000;
-        });
-        this._progressBar.set_size_request(200, -1);
-        toolbar.add(this._progressBar);
-
-        this._durationLabel = new Gtk.Label({ margin_start: 3 });
-        toolbar.add(this._durationLabel);
     }
 });
 
