@@ -67,7 +67,6 @@ var Klass = GObject.registerClass({
         this._view.show();
         this.add(this._view);
 
-        this.connect('destroy', this._onDestroy.bind(this));
         this.isReady();
     }
 
