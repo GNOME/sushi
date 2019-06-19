@@ -30,6 +30,7 @@
 #include <evince-view.h>
 #include <gdk/gdk.h>
 #include <gio/gio.h>
+#include <gst/gst.h>
 
 G_BEGIN_DECLS
 
@@ -42,6 +43,16 @@ void           sushi_convert_libreoffice (GFile *file,
                                           gpointer user_data);
 GFile *        sushi_convert_libreoffice_finish (GAsyncResult *result,
                                                  GError **error);
+
+void           sushi_get_asin_for_track (const gchar *artist,
+                                         const gchar *album,
+                                         GAsyncReadyCallback callback,
+                                         gpointer user_data);
+gchar *        sushi_get_asin_for_track_finish (GAsyncResult *result,
+                                                GError **error);
+
+GdkPixbuf *    sushi_pixbuf_from_gst_sample (GstSample *sample,
+                                             GError   **error);
 
 G_END_DECLS
 

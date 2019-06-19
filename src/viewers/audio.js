@@ -23,7 +23,7 @@
  *
  */
 
-const {GdkPixbuf, Gio, GObject, Gst, Gtk, Sushi} = imports.gi;
+const {GdkPixbuf, Gio, GLib, GObject, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
@@ -45,6 +45,178 @@ function _formatTimeString(timeVal) {
     }
 
     return str;
+}
+
+const AMAZON_IMAGE_FORMAT = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg";
+const fetchCoverArt = function(_tagList, _callback) {
+    function _fetchFromTags() {
+        let coverSample = null;
+        let idx = 0;
+
+        while (true) {
+            let [res, sample] = _tagList.get_sample_index(Gst.TAG_IMAGE, idx);
+            if (!res)
+                break;
+
+            idx++;
+
+            let caps = sample.get_caps();
+            let capsStruct = caps.get_structure(0);
+            let [r, type] = capsStruct.get_enum('image-type', GstTag.TagImageType.$gtype);
+            if (type == GstTag.TagImageType.UNDEFINED) {
+                coverSample = sample;
+            } else if (type == GstTag.TagImageType.FRONT_COVER) {
+                coverSample = sample;
+                break;
+            }
+        }
+
+        // Fallback to preview
+        if (!coverSample)
+            coverSample = _tagList.get_sample_index(Gst.TAG_PREVIEW_IMAGE, 0)[1];
+
+        if (coverSample) {
+            try {
+                return Sushi.pixbuf_from_gst_sample(coverSample)
+            } catch (e) {
+                logError(e, 'Unable to fetch cover art from GstSample');
+            }
+        }
+        return null;
+    }
+
+    function _getCacheFile(asin) {
+        let cachePath = GLib.build_filenamev([GLib.get_user_cache_dir(), 'sushi']);
+        return Gio.File.new_for_path(GLib.build_filenamev([cachePath, `${asin}.jpg`]));
+    }
+
+    function _fetchFromStream(stream, done) {
+        GdkPixbuf.Pixbuf.new_from_stream_async(stream, null, (o, res) => {
+            let cover;
+            try {
+                cover = GdkPixbuf.Pixbuf.new_from_stream_finish(res);
+            } catch (e) {
+                done(e, null);
+                return;
+            }
+
+            done(null, cover);
+        });
+    }
+
+    function _fetchFromCache(asin, done) {
+        let file = _getCacheFile(asin);
+        file.query_info_async(Gio.FILE_ATTRIBUTE_STANDARD_TYPE, 0, 0, null, (f, res) => {
+            try {
+                file.query_info_finish(res);
+            } catch (e) {
+                done(e, null);
+                return;
+            }
+
+            file.read_async(0, null, (f, res) => {
+                let stream;
+                try {
+                    stream = file.read_finish(res);
+                } catch (e) {
+                    done(e, null);
+                    return;
+                }
+
+                _fetchFromStream(stream, done);
+            });
+        });
+    }
+
+    function _saveToCache(asin, stream, done) {
+        let cacheFile = _getCacheFile(asin);
+        let cachePath = cacheFile.get_parent().get_path();
+        GLib.mkdir_with_parents(cachePath, 448);
+
+        cacheFile.replace_async(null, false, Gio.FileCreateFlags.PRIVATE, 0, null, (f, res) => {
+            let outStream;
+            try {
+                outStream = cacheFile.replace_finish(res);
+            } catch (e) {
+                done(e);
+                return;
+            }
+
+            outStream.splice_async(
+                stream,
+                Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
+                Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
+                0, null, (s, res) => {
+                    try {
+                        outStream.splice_finish(res);
+                    } catch (e) {
+                        done(e);
+                        return;
+                    }
+
+                    done();
+                });
+        });
+    }
+
+    function _fetchFromAmazon(asin, done) {
+        let uri = AMAZON_IMAGE_FORMAT.format(asin);
+        let session = new Soup.Session();
+
+        let request;
+        try {
+            request = session.request(uri);
+        } catch (e) {
+            done(e, null);
+            return;
+        }
+
+        request.send_async(null, (r, res) => {
+            let stream;
+            try {
+                stream = request.send_finish(res);
+            } catch (e) {
+                done(e, null);
+                return;
+            }
+
+            _saveToCache(asin, stream, (err) => {
+                if (err)
+                    logError(err, 'Unable to save cover to cache');
+                _fetchFromCache(asin, done);
+            });
+        });
+    }
+
+    function _fetchFromASIN(done) {
+        let artist = _tagList.get_string('artist')[1];
+        let album = _tagList.get_string('album')[1];
+
+        Sushi.get_asin_for_track(artist, album, (o, res) => {
+            let asin
+            try {
+                asin = Sushi.get_asin_for_track_finish(res);
+            } catch (e) {
+                done(e, null);
+                return;
+            }
+
+            _fetchFromCache(asin, (err, cover) => {
+                if (cover)
+                    done(null, cover);
+                else
+                    _fetchFromAmazon(asin, done);
+            });
+        });
+    }
+
+   let cover = _fetchFromTags();
+   if (cover) {
+       _callback(null, cover);
+       return;
+   }
+
+    _fetchFromASIN(_callback);
 }
 
 var Klass = GObject.registerClass({
@@ -105,8 +277,6 @@ var Klass = GObject.registerClass({
             this._player.connect('notify::state', this._onPlayerStateChanged.bind(this)));
         this._playerNotifies.push(
             this._player.connect('notify::taglist', this._onTagListChanged.bind(this)));
-        this._playerNotifies.push(
-            this._player.connect('notify::cover', this._onCoverArtChanged.bind(this)));
     }
 
     _onDestroy() {
@@ -138,13 +308,13 @@ var Klass = GObject.registerClass({
         }
     }
 
-    _onCoverArtChanged() {
-        if (!this._artFetcher.cover) {
-            this._image.set_from_icon_name('media-optical-symbolic');
+    _onCoverArtFetched(err, cover) {
+        if (err) {
+            logError(err, 'Unable to fetch cover art');
             return;
         }
 
-        this._ensurePixbufSize(this._artFetcher.cover);
+        this._ensurePixbufSize(cover);
         this._image.set_from_pixbuf(this._coverArt);
     }
 
@@ -166,9 +336,8 @@ var Klass = GObject.registerClass({
 
         this._titleLabel.set_markup('<b>' + titleName + '</b>');
 
-        this._artFetcher = new Sushi.CoverArtFetcher();
-        this._artFetcher.connect('notify::cover', this._onCoverArtChanged.bind(this));
-        this._artFetcher.taglist = tags;
+        if (artistName && albumName)
+            fetchCoverArt(tags, this._onCoverArtFetched.bind(this));
     }
 
     _updateProgressBar() {
