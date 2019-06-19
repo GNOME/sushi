@@ -1794,23 +1794,32 @@ sushi_media_bin_handle_msg_tag (SushiMediaBin *self, GstMessage *msg)
 
   if (g_type_is_a (G_OBJECT_TYPE (src), GST_TYPE_VIDEO_SINK))
     {
-      type = "video-tags-changed";
       old_tags = priv->video_tags;
-      priv->video_tags = gst_tag_list_merge (old_tags, tags, GST_TAG_MERGE_REPLACE);
+      if (!old_tags || (old_tags && !gst_tag_list_is_equal (old_tags, tags)))
+        {
+          type = "video-tags-changed";
+          priv->video_tags = gst_tag_list_merge (old_tags, tags, GST_TAG_MERGE_REPLACE);
+        }
     }
   else if (g_type_is_a (G_OBJECT_TYPE (src), GST_TYPE_AUDIO_BASE_SINK))
     {
-      type = "audio-tags-changed";
       old_tags = priv->audio_tags;
-      priv->audio_tags = gst_tag_list_merge (old_tags, tags, GST_TAG_MERGE_REPLACE);
+      if (!old_tags || (old_tags && !gst_tag_list_is_equal (old_tags, tags)))
+        {
+          type = "audio-tags-changed";
+          priv->audio_tags = gst_tag_list_merge (old_tags, tags, GST_TAG_MERGE_REPLACE);
+        }
     }
 
   /* Post message on the bus for the main thread to pick it up */
   if (type)
-    sushi_media_bin_post_message_application (self, type);
+    {
+      sushi_media_bin_post_message_application (self, type);
+      g_signal_emit (self, sushi_media_bin_signals[TAGS_CHANGE], 0);
+      g_clear_pointer (&old_tags, gst_tag_list_unref);
+    }
 
   gst_tag_list_unref (tags);
-  g_clear_pointer (&old_tags, gst_tag_list_unref);
 }
 
 static inline void
