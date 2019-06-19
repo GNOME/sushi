@@ -23,7 +23,7 @@
  *
  */
 
-const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
+const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gst, GstPbutils, GstTag, Gtk, Soup, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
@@ -234,6 +234,7 @@ var Klass = GObject.registerClass({
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
 
+        this._discoverAudioTags(file);
         this._createPlayer(file);
 
         this._image = new Gtk.Image({ icon_name: 'media-optical-symbolic',
@@ -263,6 +264,22 @@ var Klass = GObject.registerClass({
         this.isReady();
     }
 
+    _discoverAudioTags(file) {
+        this._discoverer = new GstPbutils.Discoverer();
+        this._discoverer.connect('discovered', (d, info, err) => {
+            if (err) {
+                logError(err, `Unable to discover audio tags for ${file.get_uri()}`);
+                return;
+            }
+
+            let tags = info.get_tags();
+            if (tags)
+                this._updateFromTags(tags);
+        });
+        this._discoverer.start();
+        this._discoverer.discover_uri_async(file.get_uri());
+    }
+
     _createPlayer(file) {
         this._playerNotifies = [];
 
@@ -275,11 +292,12 @@ var Klass = GObject.registerClass({
             this._player.connect('notify::duration', this._onPlayerDurationChanged.bind(this)));
         this._playerNotifies.push(
             this._player.connect('notify::state', this._onPlayerStateChanged.bind(this)));
-        this._playerNotifies.push(
-            this._player.connect('notify::taglist', this._onTagListChanged.bind(this)));
     }
 
     _onDestroy() {
+        this._discoverer.stop();
+        this._discoverer = null;
+
         this._playerNotifies.forEach((id) => this._player.disconnect(id));
         this._playerNotifies = [];
         this._player.playing = false;
@@ -314,8 +332,7 @@ var Klass = GObject.registerClass({
         this._setCover(cover);
     }
 
-    _onTagListChanged() {
-        let tags = this._player.taglist;
+    _updateFromTags(tags) {
         let albumName = tags.get_string('album')[1];
         let artistName = tags.get_string('artist')[1];
         let titleName = tags.get_string('title')[1];

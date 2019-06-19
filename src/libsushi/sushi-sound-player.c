@@ -27,7 +27,6 @@
 #include <glib-object.h>
 
 #include <gst/gst.h>
-#include <gst/pbutils/pbutils.h>
 
 #include "sushi-enum-types.h"
 #include "sushi-sound-player.h"
@@ -48,7 +47,6 @@ enum
   PROP_PROGRESS,
   PROP_DURATION,
   PROP_URI,
-  PROP_TAGLIST
 };
 
 struct _SushiSoundPlayerPrivate
@@ -63,9 +61,6 @@ struct _SushiSoundPlayerPrivate
   gdouble                target_progress;
   gdouble                duration;
   guint                  tick_timeout_id;
-
-  GstDiscoverer         *discoverer;
-  GstTagList            *taglist;
 
   guint                  in_seek : 1;
 };
@@ -91,76 +86,6 @@ sushi_sound_player_set_state (SushiSoundPlayer      *player,
   g_object_notify (G_OBJECT (player), "state");
 }
 
-
-static void
-sushi_sound_player_destroy_discoverer (SushiSoundPlayer *player)
-{
-  SushiSoundPlayerPrivate *priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
-
-  if (priv->discoverer == NULL)
-    return;
-
-  if (priv->taglist != NULL) {
-    gst_tag_list_free (priv->taglist);
-    priv->taglist = NULL;
-  }
-
-  gst_discoverer_stop (priv->discoverer);
-  gst_object_unref (priv->discoverer);
-  priv->discoverer = NULL;
-
-  g_object_notify (G_OBJECT (player), "taglist");
-
-  g_clear_object (&priv->taglist);
-}
-
-static void
-discoverer_discovered_cb (GstDiscoverer *disco,
-                          GstDiscovererInfo *info,
-                          GError *error,
-                          gpointer user_data)
-{
-  SushiSoundPlayer *player = user_data;
-  SushiSoundPlayerPrivate *priv;
-  const GstTagList *taglist;
-
-  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
-
-  if (error != NULL)
-    return;
-
-  taglist = gst_discoverer_info_get_tags (info);
-
-  if (taglist)
-    {
-      priv->taglist = gst_tag_list_copy (taglist);
-      g_object_notify (G_OBJECT (player), "taglist");
-    }
-}
-
-static gboolean
-sushi_sound_player_ensure_discoverer (SushiSoundPlayer *player)
-{
-  SushiSoundPlayerPrivate *priv;
-  priv = SUSHI_SOUND_PLAYER_GET_PRIVATE (player);
-
-  if (priv->discoverer)
-    return TRUE;
-
-  priv->discoverer = gst_discoverer_new (GST_SECOND * 60,
-                                         NULL);
-
-  if (priv->discoverer == NULL)
-    return FALSE;
-
-  g_signal_connect (priv->discoverer, "discovered",
-                    G_CALLBACK (discoverer_discovered_cb), player);
-  gst_discoverer_start (priv->discoverer);
-  gst_discoverer_discover_uri_async (priv->discoverer, priv->uri);
-
-  return TRUE;
-}
-
 static void
 sushi_sound_player_set_uri (SushiSoundPlayer *player,
                             const char    *uri)
@@ -180,11 +105,7 @@ sushi_sound_player_set_uri (SushiSoundPlayer *player,
   if (priv->pipeline)
     sushi_sound_player_destroy_pipeline (player);
 
-  if (priv->discoverer)
-    sushi_sound_player_destroy_discoverer (player);
-
   sushi_sound_player_ensure_pipeline (player);
-  sushi_sound_player_ensure_discoverer (player);
 
   g_object_notify (G_OBJECT (player), "uri");
 }
@@ -638,7 +559,6 @@ static void
 sushi_sound_player_dispose (GObject *gobject)
 {
   sushi_sound_player_destroy_pipeline (SUSHI_SOUND_PLAYER (gobject));
-  sushi_sound_player_destroy_discoverer (SUSHI_SOUND_PLAYER (gobject));
 
   G_OBJECT_CLASS (sushi_sound_player_parent_class)->dispose (gobject);
 }
@@ -677,10 +597,6 @@ sushi_sound_player_get_property (GObject    *gobject,
 
     case PROP_URI:
       g_value_set_string (value, priv->uri);
-      break;
-
-    case PROP_TAGLIST:
-      g_value_set_boxed (value, priv->taglist);
       break;
 
     default:
@@ -782,15 +698,6 @@ sushi_sound_player_class_init (SushiSoundPlayerClass *klass)
                                        NULL,
                                        G_PARAM_READWRITE |
                                        G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property
-    (gobject_class,
-     PROP_TAGLIST,
-     g_param_spec_boxed ("taglist",
-                         "Taglist",
-                         "Taglist for the current URI",
-                         GST_TYPE_TAG_LIST,
-                         G_PARAM_READABLE));
 }
 
 static void
