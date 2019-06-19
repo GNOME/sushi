@@ -3,14 +3,6 @@ gnome = import('gnome')
 # Compile libsushi and its introspection data
 subdir('libsushi')
 
-sushi_data_resources = gnome.compile_resources(
-    'org.gnome.NautilusPreviewer.data',
-    'org.gnome.NautilusPreviewer.data.gresource.xml',
-    gresource_bundle: true,
-    install: true,
-    install_dir: pkgdatadir,
-)
-
 sushi_src_resources = gnome.compile_resources(
     'org.gnome.NautilusPreviewer.src',
     'org.gnome.NautilusPreviewer.src.gresource.xml',
