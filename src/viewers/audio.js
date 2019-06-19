@@ -320,7 +320,8 @@ var Klass = GObject.registerClass({
 
     _onCoverArtFetched(err, cover) {
         if (err) {
-            logError(err, 'Unable to fetch cover art');
+            if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+                logError(err, 'Unable to fetch cover art');
             return;
         }
 

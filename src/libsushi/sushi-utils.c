@@ -498,7 +498,7 @@ fetch_uri_job (GTask *task,
   if (retval == NULL)
     g_task_return_new_error (task,
                              G_IO_ERROR,
-                             G_IO_ERROR_FAILED, "%s",
+                             G_IO_ERROR_NOT_FOUND, "%s",
                              "Error getting the ASIN from MusicBrainz");
   else
     g_task_return_pointer (task, retval, g_free);
