@@ -168,6 +168,7 @@ enum
 {
   ERROR,
   SIZE_CHANGE,
+  TAGS_CHANGE,
   LAST_SIGNAL
 };
 
@@ -1213,6 +1214,17 @@ sushi_media_bin_class_init (SushiMediaBinClass *klass)
                     0, NULL, NULL, NULL,
                     G_TYPE_NONE, 0);
 
+  /**
+   * SushiMediaBin::tags-change:
+   * @self: the #SushiMediaBin which received the signal.
+   */
+  sushi_media_bin_signals[TAGS_CHANGE] =
+      g_signal_new ("tags-change",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    0, NULL, NULL, NULL,
+                    G_TYPE_NONE, 0);
+
   /* Action signals for key bindings */
   SMB_DEFINE_ACTION_SIGNAL (object_class, "toggle", sushi_media_bin_action_toggle, 1, G_TYPE_STRING);
   SMB_DEFINE_ACTION_SIGNAL (object_class, "seek", sushi_media_bin_action_seek, 1, G_TYPE_INT);
@@ -2113,6 +2125,26 @@ SMB_DEFINE_SETTER_FULL (gdouble, volume, VOLUME,
   volume = CLAMP (volume, 0.0, 1.0),
   gtk_adjustment_get_value (priv->volume_adjustment) != volume,
   gtk_adjustment_set_value (priv->volume_adjustment, volume),
+)
+
+/**
+ * sushi_media_bin_get_audio_tags:
+ * @self: a #SushiMediaBin
+ *
+ * Returns a #GstTagList with the audio tags for the played media
+ */
+SMB_DEFINE_GETTER_FULL (GstTagList *, audio_tags, NULL,
+  return (SMB_PRIVATE (self)->audio_tags);
+)
+
+/**
+ * sushi_media_bin_get_video_tags:
+ * @self: a #SushiMediaBin
+ *
+ * Returns a #GstTagList with the video tags for the played media
+ */
+SMB_DEFINE_GETTER_FULL (GstTagList *, video_tags, NULL,
+  return (SMB_PRIVATE (self)->video_tags);
 )
 
 /**

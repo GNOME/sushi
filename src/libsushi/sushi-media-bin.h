@@ -26,6 +26,7 @@
 
 #pragma once
 
+#include <gst/gst.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
@@ -63,6 +64,8 @@ const gchar   *sushi_media_bin_get_description      (SushiMediaBin *self);
 void           sushi_media_bin_set_description      (SushiMediaBin *self,
                                                      const gchar *description);
 
+GstTagList    *sushi_media_bin_get_audio_tags       (SushiMediaBin *self);
+GstTagList    *sushi_media_bin_get_video_tags       (SushiMediaBin *self);
 
 void           sushi_media_bin_play                 (SushiMediaBin *self);
 void           sushi_media_bin_pause                (SushiMediaBin *self);
