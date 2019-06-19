@@ -8,3 +8,8 @@ configure_file(
   configuration: dbus_conf,
   install_dir: join_paths(datadir, 'dbus-1', 'services'),
 )
+
+install_data(
+  'org.gnome.NautilusPreviewer.appdata.xml',
+  install_dir: join_paths(datadir, 'metainfo')
+)
