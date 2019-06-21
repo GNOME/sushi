@@ -233,6 +233,7 @@ const AudioPlayer = GObject.registerClass({
     }
 });
 
+const COVER_SIZE = 256;
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
@@ -265,9 +266,14 @@ var Klass = GObject.registerClass({
             return false;
         });
 
+        let frame = new Gtk.Frame({ height_request: COVER_SIZE,
+                                    width_request: COVER_SIZE,
+                                    shadow_type: Gtk.ShadowType.NONE });
+        box.pack_start(frame, false, false, 0);
+
         this._image = new Gtk.Image({ icon_name: 'media-optical-symbolic',
-                                      pixel_size: 256 });
-        box.pack_start(this._image, false, false, 0);
+                                      pixel_size: COVER_SIZE });
+        frame.add(this._image);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
@@ -301,7 +307,7 @@ var Klass = GObject.registerClass({
 
     _setCover(cover) {
         let scaleFactor = this.get_scale_factor();
-        let size = 256 * scaleFactor;
+        let size = COVER_SIZE * scaleFactor;
         let width = cover.get_width();
         let height = cover.get_height();
         let targetWidth = size;
