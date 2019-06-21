@@ -357,6 +357,7 @@ sushi_convert_libreoffice (GFile *file,
 {
   GTask *task = g_task_new (NULL, NULL, callback, user_data);
   TaskData *data = g_new0 (TaskData, 1);
+  data->libreoffice_pid = -1;
   data->file = g_object_ref (file);
 
   g_task_set_task_data (task, data, (GDestroyNotify) task_data_free);
