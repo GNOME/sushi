@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-02 03:25+0000\n"
-"PO-Revision-Date: 2017-04-08 18:23+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2019-06-19 01:25+0000\n"
+"PO-Revision-Date: 2019-06-21 12:06+0200\n"
+"Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
@@ -17,47 +17,54 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"Last-Translator: gogo <trebelnik2@gmail.com>\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.2.1\n"
 
-#: ../src/js/ui/fallbackRenderer.js:119
+#: src/ui/fallbackRenderer.js:232
 msgid "Type"
 msgstr "Vrsta"
 
-#: ../src/js/ui/fallbackRenderer.js:120 ../src/js/ui/fallbackRenderer.js:129
-#: ../src/js/ui/fallbackRenderer.js:135 ../src/js/ui/spinnerBox.js:56
-msgid "Loading…"
-msgstr "Učitavanje..."
-
-#: ../src/js/ui/fallbackRenderer.js:128
-msgid "Size"
-msgstr "Veličina"
-
-#: ../src/js/ui/fallbackRenderer.js:134
-msgid "Modified"
-msgstr "Promijenjeno"
-
-#: ../src/js/viewers/audio.js:172
-msgid "from"
-msgstr "iz"
-
-#: ../src/js/viewers/audio.js:174
-msgid "by"
-msgstr "od"
-
-#: ../src/js/viewers/evince.js:77
+#: src/ui/fallbackRenderer.js:243
 #, javascript-format
-msgid "%d of %d"
-msgstr "%d od %d"
-
-#: ../src/libsushi/sushi-file-loader.c:639
-#, c-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d stavka"
 msgstr[1] "%d stavke"
 msgstr[2] "%d stavaka"
 
-#: ../src/libsushi/sushi-file-loader.c:651
+#: src/ui/fallbackRenderer.js:248
 msgid "Empty Folder"
 msgstr "Prazna mapa"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr "Veličina"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr "Promijenjeno"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:298
+#, javascript-format
+msgid "Open With %s"
+msgstr "Otvori s(a) %s"
+
+#: src/ui/mainWindow.js:304
+msgid "Open"
+msgstr "Otvori"
+
+#: src/viewers/audio.js:333
+msgid "from"
+msgstr "iz"
+
+#: src/viewers/audio.js:335
+msgid "by"
+msgstr "od"
+
+#: src/viewers/evince.js:87
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d od %d"
+
+#~ msgid "Loading…"
+#~ msgstr "Učitavanje..."
