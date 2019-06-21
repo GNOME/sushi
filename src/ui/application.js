@@ -23,7 +23,9 @@
  *
  */
 
-const {Gdk, Gio, GObject, Gtk, NautilusPreviewerDBus} = imports.gi;
+const {Gdk, Gio, GObject, Gtk} = imports.gi;
+
+const ByteArray = imports.byteArray;
 
 const MainWindow = imports.ui.mainWindow;
 
@@ -35,9 +37,10 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
     }
 
     vfunc_dbus_register(connection, path) {
-        this._skeleton = new NautilusPreviewerDBus.Skeleton();
-        this._skeleton.connect('handle-close', this._close.bind(this));
-        this._skeleton.connect('handle-show-file', this._showFile.bind(this));
+        let bytes = Gio.resources_lookup_data(
+            '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer.xml', 0);
+        this._skeleton = Gio.DBusExportedObject.wrapJSObject(
+            ByteArray.toString(bytes.toArray()), this);
 
         try {
             this._skeleton.export(connection, path);
@@ -73,15 +76,12 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
         settings.gtk_application_prefer_dark_theme = true;
     }
 
-    _close(skel, invocation) {
+    Close() {
         if (this._mainWindow)
             this._mainWindow.destroy();
-
-        invocation.return_value(null);
-        return true;
     }
 
-    _showFile(skel, invocation, uri, xid, closeIfAlreadyShown) {
+    ShowFile(uri, xid, closeIfAlreadyShown) {
         this._ensureMainWindow();
 
         let file = Gio.file_new_for_uri(uri);
@@ -93,8 +93,5 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
             this._mainWindow.setParent(xid);
             this._mainWindow.setFile(file);
         }
-
-        invocation.return_value(null);
-        return true;
     }
 });

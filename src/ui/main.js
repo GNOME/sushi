@@ -37,7 +37,6 @@ pkg.require({
     GstTag: '1.0',
     Gtk: '3.0',
     GtkSource: '4',
-    NautilusPreviewerDBus: '1.0',
     Pango: '1.0',
     Soup: '2.4',
     Sushi: '1.0',
