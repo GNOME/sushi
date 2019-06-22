@@ -25,8 +25,6 @@
 
 const {Gdk, Gio, GLib, GObject, Gtk, Sushi} = imports.gi;
 
-const Mainloop = imports.mainloop;
-
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
@@ -122,8 +120,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     _init(application) {
         this._renderer = null;
         this._lastWindowSize = [0, 0];
-        this._toolbar = null;
-        this._toolbarId = 0;
         this.file = null;
 
         super._init({ type: Gtk.WindowType.TOPLEVEL,
@@ -141,7 +137,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this._openButton.connect('clicked', this._onFileOpenClicked.bind(this));
         this._titlebar.pack_end(this._openButton);
 
-        this.connect('destroy', this._onDestroy.bind(this));
         this.connect('key-press-event', this._onKeyPressEvent.bind(this));
         this.connect('motion-notify-event', this._onMotionNotifyEvent.bind(this));
         this.connect('realize', this._onRealize.bind(this));
@@ -157,10 +152,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     /**************************************************************************
      ****************** main object event callbacks ***************************
      **************************************************************************/
-    _onDestroy() {
-        this._removeToolbarTimeout();
-    }
-
     _onRealize() {
         // don't support maximize and minimize
         this.get_window().set_functions(Gdk.WMFunction.MOVE |
@@ -197,9 +188,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     }
 
     _onMotionNotifyEvent() {
-        if (this._toolbar)
-            this._resetToolbar();
-
+        if (this._renderer.toolbar)
+            this._renderer.toolbar.resetTimeout();
         return false;
     }
 
@@ -212,8 +202,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     }
 
     _onRendererFullscreen() {
-        this._removeToolbarTimeout();
-
         if (this._renderer.fullscreen)
             this.fullscreen();
         else
@@ -272,7 +260,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
                 try {
                     let fileInfo = obj.query_info_finish(res);
                     this._createView(fileInfo);
-                    this._createToolbar();
                 } catch(e) {
                     this._reportError(e);
                 }
@@ -289,6 +276,9 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this._renderer.show_all();
         this._renderer.expand = true;
         this._embed.add(this._renderer);
+
+        if (this._renderer.toolbar)
+            this._embed.add_overlay(this._renderer.toolbar);
     }
 
     _createView(fileInfo) {
@@ -308,58 +298,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     /**************************************************************************
      ************************* toolbar helpers ********************************
      **************************************************************************/
-    _createToolbar() {
-        this._removeToolbarTimeout();
-
-        if (this._toolbar) {
-            this._toolbar.destroy();
-            this._toolbar = null;
-        }
-
-        if (this._renderer.populateToolbar) {
-            this._toolbar = new Gtk.Revealer({ valign: Gtk.Align.END,
-                                               hexpand: true,
-                                               margin_bottom: Constants.TOOLBAR_SPACING,
-                                               margin_start: Constants.TOOLBAR_SPACING,
-                                               margin_end: Constants.TOOLBAR_SPACING,
-                                               transition_duration: 250,
-                                               transition_type: Gtk.RevealerTransitionType.CROSSFADE,
-                                               visible: true });
-
-            let rendererToolbar = new Renderer.RendererToolbar();
-            this._toolbar.add(rendererToolbar);
-
-            this._renderer.populateToolbar(rendererToolbar);
-            this._toolbar.show_all();
-        }
-
-        if (!this._toolbar)
-            return;
-
-        this._embed.add_overlay(this._toolbar);
-    }
-
-    _removeToolbarTimeout() {
-        if (this._toolbarId != 0) {
-            Mainloop.source_remove(this._toolbarId);
-            this._toolbarId = 0;
-        }
-    }
-
-    _resetToolbar() {
-        if (this._toolbarId == 0)
-            this._toolbar.reveal_child = true;
-
-        this._removeToolbarTimeout();
-        this._toolbarId = Mainloop.timeout_add(1500, this._onToolbarTimeout.bind(this));
-    }
-
-    _onToolbarTimeout() {
-        this._toolbarId = 0;
-        this._toolbar.reveal_child = false;
-        return false;
-    }
-
     _updateTitlebar() {
         try {
             let appInfo = this.file.query_default_handler(null);
