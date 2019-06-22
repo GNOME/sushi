@@ -73,8 +73,8 @@ function createFullscreenButton(renderer) {
     return createToolButton(renderer, 'view-fullscreen-symbolic', (button) => {
         renderer.toggleFullscreen();
         if (renderer.fullscreen)
-            button.icon_name = 'view-restore-symbolic';
+            button.image.icon_name = 'view-restore-symbolic';
         else
-            button.icon_name = 'view-fullscreen-symbolic';
+            button.image.icon_name = 'view-fullscreen-symbolic';
     });
 }
