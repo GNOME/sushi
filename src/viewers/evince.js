@@ -110,7 +110,7 @@ var Klass = GObject.registerClass({
     }
 
     populateToolbar(toolbar) {
-        this._toolbarBack = Utils.createToolButton('go-previous-symbolic', () => {
+        this._toolbarBack = Utils.createToolButton(this, 'go-previous-symbolic', () => {
             this._view.previous_page();
         });
         toolbar.add(this._toolbarBack);
@@ -120,7 +120,7 @@ var Klass = GObject.registerClass({
                                           margin_end: 10 });
         toolbar.add(this._pageLabel);
 
-        this._toolbarForward = Utils.createToolButton('go-next-symbolic', () => {
+        this._toolbarForward = Utils.createToolButton(this, 'go-next-symbolic', () => {
             this._view.next_page();
         });
         toolbar.add(this._toolbarForward);
