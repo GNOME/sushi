@@ -36,7 +36,9 @@ G_BEGIN_DECLS
 
 GdkWindow *    sushi_create_foreign_window (guint xid);
 gchar **       sushi_query_supported_document_types (void);
-EvDocument *   sushi_get_evince_document_from_job (EvJob *job);
+
+EvDocument *   sushi_get_evince_document_from_job (EvJob   *job,
+                                                   GError **error);
 
 void           sushi_convert_libreoffice (GFile *file,
                                           GAsyncReadyCallback callback,

@@ -47,6 +47,9 @@ var Klass = GObject.registerClass({
                      function() {return true;});
 
         this.load_uri(file.get_uri());
+        this.connect('load-failed', (view, loadEvent, uri, error) => {
+            this.emit('error', error);
+        });
         this.isReady();
     }
 

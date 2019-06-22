@@ -1,4 +1,4 @@
-const {GObject, Gtk} = imports.gi;
+const {GLib, GObject, Gtk} = imports.gi;
 
 var ResizePolicy = {
     MAX_SIZE: 0,
@@ -17,6 +17,9 @@ var Renderer = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
+    Signals: {
+        'error': { param_types: [GLib.Error.$gtype] }
+    }
 }, class Renderer extends GObject.Interface {
     isReady() {
         this._ready = true;

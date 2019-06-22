@@ -676,7 +676,7 @@ font_face_async_ready_cb (GObject *object,
                                        &error);
 
   if (error != NULL) {
-    g_signal_emit (self, signals[ERROR], 0, error->message);
+    g_signal_emit (self, signals[ERROR], 0, error);
     g_print ("Can't load the font face: %s\n", error->message);
     g_error_free (error);
 
@@ -831,7 +831,7 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   0, NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1, G_TYPE_STRING);
+                  G_TYPE_NONE, 1, G_TYPE_ERROR);
 
   g_object_class_install_properties (oclass, NUM_PROPERTIES, properties);
 }

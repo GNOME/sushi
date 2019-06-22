@@ -95,7 +95,7 @@ var Klass = GObject.registerClass({
             try {
                 loader.load_finish(result);
             } catch (e) {
-                logError(e, `Unable to load the text file at ${loader.location.get_uri()}`);
+                this.emit('error', e);
             }
         });
 

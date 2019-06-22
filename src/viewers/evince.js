@@ -55,7 +55,7 @@ var Klass = GObject.registerClass({
                 try {
                     convertedFile = Sushi.convert_libreoffice_finish(res);
                 } catch (e) {
-                    logError(e, 'Unable to convert Libreoffice document to PDF');
+                    this.emit('error', e);
                     return;
                 }
 
@@ -87,7 +87,14 @@ var Klass = GObject.registerClass({
     }
 
     _onLoadJobFinished(job) {
-        let document = Sushi.get_evince_document_from_job(job);
+        let document;
+        try {
+            document = Sushi.get_evince_document_from_job(job);
+        } catch (e) {
+            this.emit('error', e);
+            return;
+        }
+
         this._model = EvinceView.DocumentModel.new_with_document(document);
         this._model.set_sizing_mode(EvinceView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);

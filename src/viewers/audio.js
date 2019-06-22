@@ -258,6 +258,10 @@ var Klass = GObject.registerClass({
         this._player.connect('tags-change', (p) => {
             this._updateFromTags(this._player.get_audio_tags());
         });
+        this._player.connect('error', (p, error) => {
+            this.emit('error', error);
+            return false;
+        });
         this.add_overlay(this._player);
 
         this._autoplayId = GLib.idle_add(0, () => {

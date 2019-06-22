@@ -88,7 +88,7 @@ var Klass = GObject.registerClass({
                 let stream = obj.read_finish(res);
                 this._textureFromStream(stream);
             } catch (e) {
-                logError(e, `Unable to read image file ${file.get_uri()}`);
+                this.emit('error', e);
             }
         });
     }
@@ -144,7 +144,13 @@ var Klass = GObject.registerClass({
 
     _textureFromStream(stream) {
         GdkPixbuf.PixbufAnimation.new_from_stream_async(stream, null, (obj, res) => {
-            let anim = GdkPixbuf.PixbufAnimation.new_from_stream_finish(res);
+            let anim;
+            try {
+                anim = GdkPixbuf.PixbufAnimation.new_from_stream_finish(res);
+            } catch (e) {
+                this.emit('error', e);
+                return;
+            }
 
             this._iter = anim.get_iter(null);
             if (!anim.is_static_image())

@@ -55,12 +55,19 @@ sushi_create_foreign_window (guint xid)
 /**
  * sushi_get_evince_document_from_job:
  * @job:
+ * @error:
  *
  * Returns: (transfer none):
  */
 EvDocument *
-sushi_get_evince_document_from_job (EvJob *job)
+sushi_get_evince_document_from_job (EvJob   *job,
+                                    GError **error)
 {
+  if (job->failed) {
+    g_propagate_error (error, job->error);
+    return NULL;
+  }
+
   return job->document;
 }
 
