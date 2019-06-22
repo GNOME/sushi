@@ -58,6 +58,50 @@ const Embed = GObject.registerClass(class Embed extends Gtk.Overlay {
     }
 });
 
+const ErrorBox = GObject.registerClass({
+    Implements: [Renderer.Renderer],
+    Properties: {
+        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                              GObject.ParamFlags.READABLE,
+                                              false),
+        ready: GObject.ParamSpec.boolean('ready', '', '',
+                                         GObject.ParamFlags.READABLE,
+                                         false)
+    },
+}, class ErrorBox extends Gtk.Grid {
+    _init(file, error) {
+        super._init({ orientation: Gtk.Orientation.VERTICAL,
+                      row_spacing: 12,
+                      hexpand: true,
+                      vexpand: true,
+                      halign: Gtk.Align.CENTER,
+                      valign: Gtk.Align.CENTER });
+
+        let image = new Gtk.Image({ pixel_size: 128,
+                                    icon_name: 'face-uncertain-symbolic',
+                                    halign: Gtk.Align.CENTER,
+                                    valign: Gtk.Align.CENTER });
+        this.add(image);
+
+        // TRANSLATORS: This is a filename, e.g. "image.jpg"
+        let primary = _("Unable to display %s").format(file.get_basename());
+        let primaryMarkup = '<big><b>%s</b></big>'.format(GLib.markup_escape_text(primary, -1));
+        let primaryLabel = new Gtk.Label({ label: primaryMarkup,
+                                           use_markup: true,
+                                           halign: Gtk.Align.CENTER,
+                                           valign: Gtk.Align.CENTER });
+        this.add(primaryLabel);
+
+        let secondaryLabel = new Gtk.Label({ label: error.message,
+                                             wrap: true,
+                                             halign: Gtk.Align.CENTER,
+                                             valign: Gtk.Align.CENTER });
+        this.add(secondaryLabel);
+
+        this.show_all();
+    }
+});
+
 function _getDecorationLayout() {
     function _isSupported(name) {
         // We don't support maximize and minimize
@@ -162,6 +206,11 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     /**************************************************************************
      *********************** texture allocation *******************************
      **************************************************************************/
+    _reportError(error) {
+        let renderer = new ErrorBox(this.file, error);
+        this._embedRenderer(renderer);
+    }
+
     _onRendererFullscreen() {
         this._removeToolbarTimeout();
 
@@ -225,26 +274,31 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
                     this._createView(fileInfo);
                     this._createToolbar();
                 } catch(e) {
-                    /* FIXME: report the error */
-                    logError(e, 'Error creating viewer');
+                    this._reportError(e);
                 }
             });
     }
 
-    _createView(fileInfo) {
+    _embedRenderer(renderer) {
         if (this._renderer) {
             this._renderer.destroy()
             this._renderer = null;
         }
 
-        let klass = MimeHandler.getKlass(fileInfo.get_content_type());
-        this._renderer = new klass(this.file, fileInfo);
+        this._renderer = renderer;
         this._renderer.show_all();
         this._renderer.expand = true;
         this._embed.add(this._renderer);
+    }
 
-        this._renderer.connect('notify::fullscreen', this._onRendererFullscreen.bind(this));
-        this._renderer.connect('notify::ready', this._onRendererReady.bind(this));
+    _createView(fileInfo) {
+        let klass = MimeHandler.getKlass(fileInfo.get_content_type());
+        let renderer = new klass(this.file, fileInfo);
+        this._embedRenderer(renderer);
+
+        renderer.connect('error', (r, err) => { this._reportError(err); });
+        renderer.connect('notify::fullscreen', this._onRendererFullscreen.bind(this));
+        renderer.connect('notify::ready', this._onRendererReady.bind(this));
         this._onRendererReady();
 
         this.set_resizable(this._renderer.resizable);
