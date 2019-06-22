@@ -149,9 +149,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         eventBox.add(this._embed);
     }
 
-    /**************************************************************************
-     ****************** main object event callbacks ***************************
-     **************************************************************************/
     _onRealize() {
         // don't support maximize and minimize
         this.get_window().set_functions(Gdk.WMFunction.MOVE |
@@ -193,9 +190,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         return false;
     }
 
-    /**************************************************************************
-     *********************** texture allocation *******************************
-     **************************************************************************/
     _reportError(error) {
         let renderer = new ErrorBox(this.file, error);
         this._embedRenderer(renderer);
@@ -295,9 +289,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this.set_title(fileInfo.get_display_name());
     }
 
-    /**************************************************************************
-     ************************* toolbar helpers ********************************
-     **************************************************************************/
     _updateTitlebar() {
         try {
             let appInfo = this.file.query_default_handler(null);
