@@ -28,7 +28,6 @@ const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gst, GstTag, Gtk, Soup, Sushi} = impo
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
-const Utils = imports.ui.utils;
 
 function _formatTimeString(timeVal) {
     let hours = Math.floor(timeVal / 3600);
@@ -365,6 +364,11 @@ var Klass = GObject.registerClass({
             fetchCoverArt(tags, this._onCoverArtFetched.bind(this));
             this._coverFetched = true;
         }
+    }
+
+    get hasToolbar() {
+        // SushiMediaBin uses its own toolbar
+        return false;
     }
 
     get resizable() {

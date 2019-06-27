@@ -1,6 +1,7 @@
 const {GLib, GObject, Gtk} = imports.gi;
 
 const Constants = imports.util.constants;
+const Utils = imports.ui.utils;
 
 var ResizePolicy = {
     MAX_SIZE: 0,
@@ -28,6 +29,10 @@ var Renderer = GObject.registerClass({
         this.notify('ready');
     }
 
+    populateToolbar() {
+        // do nothing, this is optional
+    }
+
     toggleFullscreen() {
         if (!this.canFullscreen)
             return;
@@ -43,6 +48,10 @@ var Renderer = GObject.registerClass({
 
     get fullscreen() {
         return !!this._fullscreen;
+    }
+
+    get hasToolbar() {
+        return true;
     }
 
     get moveOnClick() {
@@ -62,13 +71,21 @@ var Renderer = GObject.registerClass({
     }
 
     get toolbar() {
-        if (!this.populateToolbar)
+        if (!this.hasToolbar)
             return null;
 
         if (!this._toolbar) {
             this._toolbar = new RendererToolbar();
             this.connect('destroy', () => { this._toolbar.destroy(); });
+
             this.populateToolbar(this._toolbar.box);
+
+            if (this.canFullscreen) {
+                if (this._toolbar.box.get_children().length > 0)
+                    this._toolbar.box.add(new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL }));
+
+                this._toolbar.box.add(Utils.createFullscreenButton(this));
+            }
         }
 
         return this._toolbar;

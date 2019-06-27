@@ -124,12 +124,6 @@ var Klass = GObject.registerClass({
             this._view.next_page();
         });
         toolbar.add(this._toolbarForward);
-
-        let separator = new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL });
-        toolbar.add(separator);
-
-        let toolbarZoom = Utils.createFullscreenButton(this);
-        toolbar.add(toolbarZoom);
     }
 });
 

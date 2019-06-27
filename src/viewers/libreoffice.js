@@ -12,7 +12,6 @@ var isAvailable = function() {
 
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
-const Utils = imports.ui.utils;
 
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
@@ -86,11 +85,6 @@ var Klass = GObject.registerClass({
 
     get moveOnClick() {
         return false;
-    }
-
-    populateToolbar(toolbar) {
-        let toolbarZoom = Utils.createFullscreenButton(this);
-        toolbar.add(toolbarZoom);
     }
 });
 

@@ -27,7 +27,6 @@ const {GLib, GObject, Sushi} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
-const Utils = imports.ui.utils;
 
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
@@ -62,6 +61,11 @@ var Klass = GObject.registerClass({
 
     get canFullscreen() {
         // fullscreen is handled internally by the widget
+        return false;
+    }
+
+    get hasToolbar() {
+        // SushiMediaBin uses its own toolbar
         return false;
     }
 

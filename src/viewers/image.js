@@ -26,7 +26,6 @@
 const {Gdk, GdkPixbuf, GLib, GObject, Gtk} = imports.gi;
 
 const Renderer = imports.ui.renderer;
-const Utils = imports.ui.utils;
 
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
@@ -180,11 +179,6 @@ var Klass = GObject.registerClass({
 
     get resizePolicy() {
         return Renderer.ResizePolicy.SCALED;
-    }
-
-    populateToolbar(toolbar) {
-        let toolbarZoom = Utils.createFullscreenButton(this);
-        toolbar.add(toolbarZoom);
     }
 
     _onDestroy() {
