@@ -25,8 +25,6 @@
 
 const {Gdk, GdkPixbuf, GLib, GObject, Gtk} = imports.gi;
 
-const Mainloop = imports.mainloop;
-
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
@@ -153,10 +151,7 @@ var Klass = GObject.registerClass({
             }
 
             this._iter = anim.get_iter(null);
-            if (!anim.is_static_image())
-                this._startTimeout();
-
-            this._setPix(this._iter.get_pixbuf().apply_embedded_orientation());
+            this._update();
 
             stream.close_async(GLib.PRIORITY_DEFAULT, null, (obj, res) => {
                 try {
@@ -168,13 +163,23 @@ var Klass = GObject.registerClass({
          });
     }
 
-    get resizePolicy() {
-        return Renderer.ResizePolicy.SCALED;
+    _update() {
+        this._setPix(this._iter.get_pixbuf().apply_embedded_orientation());
+
+        let delay = this._iter.get_delay_time();
+        if (delay == -1)
+            return;
+
+        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, delay, () => {
+            this._timeoutId = 0;
+            if (this._iter.advance(null))
+                this._update();
+            return false;
+        });
     }
 
-    _startTimeout() {
-        this._timeoutId = Mainloop.timeout_add(
-            this._iter.get_delay_time(), this._advanceImage.bind(this));
+    get resizePolicy() {
+        return Renderer.ResizePolicy.SCALED;
     }
 
     populateToolbar(toolbar) {
@@ -183,19 +188,10 @@ var Klass = GObject.registerClass({
     }
 
     _onDestroy() {
-        /* We should do the check here because it is possible
-         * that we never created a source if our image is
-         * not animated. */
         if (this._timeoutId) {
-            Mainloop.source_remove(this._timeoutId);
+            GLib.source_remove(this._timeoutId);
             this._timeoutId = 0;
         }
-    }
-
-    _advanceImage() {
-        this._iter.advance(null);
-        this._setPix(this._iter.get_pixbuf().apply_embedded_orientation());
-        return true;
     }
 });
 
