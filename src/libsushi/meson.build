@@ -28,13 +28,6 @@ libsushi_headers = [
   'sushi-utils.h',
 ]
 
-libsushi_enum = gnome.mkenums(
-  'libsushi_enum',
-  c_template: 'sushi-enum-types.c.in',
-  h_template: 'sushi-enum-types.h.in',
-  sources: libsushi_headers,
-)
-
 libsushi_resource = gnome.compile_resources(
   'sushi-lib-resources',
   'org.gnome.Libsushi.gresource.xml',
@@ -46,7 +39,6 @@ libsushi = shared_library(
   dependencies: libsushi_deps,
   sources: [
     libsushi_c,
-    libsushi_enum,
     libsushi_headers,
     libsushi_resource
   ],
@@ -58,7 +50,6 @@ gnome.generate_gir(
   libsushi,
   sources: [
     libsushi_c,
-    libsushi_enum,
     libsushi_headers,
   ],
   nsversion: '1.0',
