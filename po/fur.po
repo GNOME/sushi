@@ -6,63 +6,75 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi gnome-3-6\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-10 17:29+0000\n"
-"PO-Revision-Date: 2012-12-28 14:29+0100\n"
-"Last-Translator: TmTFx <f.t.public@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2019-06-22 05:41+0000\n"
+"PO-Revision-Date: 2019-06-30 17:23+0200\n"
+"Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.3\n"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:1
-msgid "Client decoration"
-msgstr "Decorazion Client"
-
-#: ../data/org.gnome.sushi.gschema.xml.in.h:2
-msgid "Whether the window draws WM decorations itself"
-msgstr "Se il barcon al disegne di besôl lis decorazions dal WM"
-
-#: ../src/js/ui/fallbackRenderer.js:120
+#: src/ui/fallbackRenderer.js:232
 msgid "Type"
 msgstr "Gjenar"
 
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
-#: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
-msgid "Loading…"
-msgstr "Cjariament…"
-
-#: ../src/js/ui/fallbackRenderer.js:129
-msgid "Size"
-msgstr "Dimension"
-
-#: ../src/js/ui/fallbackRenderer.js:135
-msgid "Modified"
-msgstr "Modificât"
-
-#: ../src/js/viewers/audio.js:172
-msgid "from"
-msgstr "di"
-
-#: ../src/js/viewers/audio.js:174
-msgid "by"
-msgstr "di"
-
-#: ../src/js/viewers/evince.js:79
-#, c-format
-msgid "%d of %d"
-msgstr "%d di %d"
-
-#: ../src/libsushi/sushi-file-loader.c:639
-#, c-format
+#: src/ui/fallbackRenderer.js:243
+#, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d element"
 msgstr[1] "%d elements"
 
-#: ../src/libsushi/sushi-file-loader.c:651
+#: src/ui/fallbackRenderer.js:248
 msgid "Empty Folder"
 msgstr "Cartele Vueide"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr "Dimension"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr "Modificât"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:87
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "Impussibil mostrâ %s"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:367
+#, javascript-format
+msgid "Open With %s"
+msgstr "Vierç cun %s"
+
+#: src/ui/mainWindow.js:373
+msgid "Open"
+msgstr "Vierç"
+
+#: src/viewers/audio.js:353
+msgid "from"
+msgstr "di"
+
+#: src/viewers/audio.js:358
+msgid "by"
+msgstr "di"
+
+#: src/viewers/evince.js:86
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d di %d"
+
+#~ msgid "Client decoration"
+#~ msgstr "Decorazion Client"
+
+#~ msgid "Whether the window draws WM decorations itself"
+#~ msgstr "Se il barcon al disegne di besôl lis decorazions dal WM"
+
+#~ msgid "Loading…"
+#~ msgstr "Cjariament…"
