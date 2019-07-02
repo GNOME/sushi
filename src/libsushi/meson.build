@@ -14,17 +14,14 @@ libsushi_deps = [
   musicbrainz_dep
 ]
 
-libsushi_c = [
+libsushi_sources = [
   'sushi-font-loader.c',
-  'sushi-font-widget.c',
-  'sushi-media-bin.c',
-  'sushi-utils.c',
-]
-
-libsushi_headers = [
   'sushi-font-loader.h',
+  'sushi-font-widget.c',
   'sushi-font-widget.h',
+  'sushi-media-bin.c',
   'sushi-media-bin.h',
+  'sushi-utils.c',
   'sushi-utils.h',
 ]
 
@@ -38,8 +35,7 @@ libsushi = shared_library(
   'sushi-1.0',
   dependencies: libsushi_deps,
   sources: [
-    libsushi_c,
-    libsushi_headers,
+    libsushi_sources,
     libsushi_resource
   ],
   install: true,
@@ -49,8 +45,7 @@ libsushi = shared_library(
 gnome.generate_gir(
   libsushi,
   sources: [
-    libsushi_c,
-    libsushi_headers,
+    libsushi_sources,
   ],
   nsversion: '1.0',
   namespace: 'Sushi',
