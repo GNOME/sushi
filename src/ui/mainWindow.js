@@ -328,13 +328,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
      ************************ public methods **********************************
      **************************************************************************/
     setParent(xid) {
-        this._parent = Sushi.create_foreign_window(xid);
-        this.realize();
-        if (this._parent)
-            this.get_window().set_transient_for(this._parent);
-
-        if (this.get_window().move_to_current_desktop)
-            this.get_window().move_to_current_desktop();
+        let handle = 'x11:%d'.format(xid);
+        Sushi.window_set_child_of_external(this, handle);
     }
 
     setFile(file) {

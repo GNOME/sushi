@@ -33,23 +33,21 @@
 #include <gdk/gdkx.h>
 #endif
 
-/**
- * sushi_create_foreign_window:
- * @xid:
- *
- * Returns: (transfer full): a #GdkWindow
- */
-GdkWindow *
-sushi_create_foreign_window (guint xid)
+#include "externalwindow.h"
+
+void
+sushi_window_set_child_of_external (GtkWindow *window,
+                                    const char *handle)
 {
-  GdkWindow *retval = NULL;
+  ExternalWindow *external_window = create_external_window_from_handle (handle);
 
-#ifdef GDK_WINDOWING_X11
-  if (GDK_IS_X11_DISPLAY (gdk_display_get_default ()))
-    retval = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (), xid);
-#endif
+  if (!external_window)
+    return;
 
-  return retval;
+  gtk_widget_realize (GTK_WIDGET (window));
+  external_window_set_parent_of (external_window,
+                                 gtk_widget_get_window (GTK_WIDGET (window)));
+  g_object_unref (external_window);
 }
 
 /**
@@ -160,12 +158,14 @@ libreoffice_missing (GTask *task)
   GtkWidget *widget = GTK_WIDGET (gtk_application_get_active_window (GTK_APPLICATION (app)));
   GDBusConnection *connection = g_application_get_dbus_connection (app);
   guint xid = 0;
-  GdkWindow *gdk_window;
   const gchar *libreoffice_path[2];
 
+#ifdef GDK_WINDOWING_X11
+  GdkWindow *gdk_window;
   gdk_window = gtk_widget_get_window (widget);
   if (gdk_window != NULL)
     xid = GDK_WINDOW_XID (gdk_window);
+#endif
 
   libreoffice_path[0] = "/usr/bin/libreoffice";
   libreoffice_path[1] = NULL;

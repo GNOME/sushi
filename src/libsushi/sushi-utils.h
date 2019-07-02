@@ -34,7 +34,6 @@
 
 G_BEGIN_DECLS
 
-GdkWindow *    sushi_create_foreign_window (guint xid);
 gchar **       sushi_query_supported_document_types (void);
 
 EvDocument *   sushi_get_evince_document_from_job (EvJob   *job,
@@ -55,6 +54,9 @@ gchar *        sushi_get_asin_for_track_finish (GAsyncResult *result,
 
 GdkPixbuf *    sushi_pixbuf_from_gst_sample (GstSample *sample,
                                              GError   **error);
+
+void           sushi_window_set_child_of_external (GtkWindow *window,
+                                                   const char *handle);
 
 G_END_DECLS
 

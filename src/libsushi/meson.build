@@ -1,3 +1,17 @@
+config_data = configuration_data()
+config_data.set10('HAVE_GTK_X11', gtk_x11_dep.found())
+config_data.set10('HAVE_GTK_WAYLAND', gtk_wayland_dep.found())
+configure_file(output: 'config.h', configuration: config_data)
+
+externalwindow_sources = [
+  'externalwindow.c',
+  'externalwindow.h',
+  'externalwindow-wayland.c',
+  'externalwindow-wayland.h',
+  'externalwindow-x11.c',
+  'externalwindow-x11.h',
+]
+
 libsushi_deps = [
   epoxy_dep,
   evince_document_dep,
@@ -35,6 +49,7 @@ libsushi = shared_library(
   'sushi-1.0',
   dependencies: libsushi_deps,
   sources: [
+    externalwindow_sources,
     libsushi_sources,
     libsushi_resource
   ],

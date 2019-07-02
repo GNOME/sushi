@@ -29,7 +29,6 @@ pkg.require({
     EvinceView: '3.0',
     Gdk: '3.0',
     GdkPixbuf: '2.0',
-    GdkX11: '3.0',
     Gio: '2.0',
     GLib: '2.0',
     GObject: '2.0',
