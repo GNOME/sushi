@@ -6,63 +6,75 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-25 23:14+0000\n"
-"PO-Revision-Date: 2012-10-23 16:20+0200\n"
-"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2019-06-22 05:41+0000\n"
+"PO-Revision-Date: 2019-07-03 21:06+0300\n"
+"Last-Translator: Efstathios Iosifidis <iosifidis@opensuse.org>\n"
 "Language-Team: Greek <team@lists.gnome.gr>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.3\n"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:1
-msgid "Client decoration"
-msgstr "Διακόσμηση πελάτη"
-
-#: ../data/org.gnome.sushi.gschema.xml.in.h:2
-msgid "Whether the window draws WM decorations itself"
-msgstr "Αν το παράθυρο θα σχεδιάζει διακοσμήσεις του διαχειριστή παραθύρων"
-
-#: ../src/js/ui/fallbackRenderer.js:120
+#: src/ui/fallbackRenderer.js:232
 msgid "Type"
 msgstr "Τύπος"
 
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
-#: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
-msgid "Loading…"
-msgstr "Φορτώνει…"
-
-#: ../src/js/ui/fallbackRenderer.js:129
-msgid "Size"
-msgstr "Μέγεθος"
-
-#: ../src/js/ui/fallbackRenderer.js:135
-msgid "Modified"
-msgstr "Τροποποιήθηκε"
-
-#: ../src/js/viewers/audio.js:172
-msgid "from"
-msgstr "του"
-
-#: ../src/js/viewers/audio.js:174
-msgid "by"
-msgstr "από"
-
-#: ../src/js/viewers/evince.js:79
-#, c-format
-msgid "%d of %d"
-msgstr "%d από %d"
-
-#: ../src/libsushi/sushi-file-loader.c:639
-#, c-format
+#: src/ui/fallbackRenderer.js:243
+#, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d αντικείμενο"
 msgstr[1] "%d αντικείμενα"
 
-#: ../src/libsushi/sushi-file-loader.c:651
+#: src/ui/fallbackRenderer.js:248
 msgid "Empty Folder"
 msgstr "Άδειασμα του φακέλου"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr "Μέγεθος"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr "Τροποποιήθηκε"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:87
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "Αδυναμία εμφάνισης %s"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:367
+#, javascript-format
+msgid "Open With %s"
+msgstr "Άνοιγμα με %s"
+
+#: src/ui/mainWindow.js:373
+msgid "Open"
+msgstr "Άνοιγμα"
+
+#: src/viewers/audio.js:353
+msgid "from"
+msgstr "του"
+
+#: src/viewers/audio.js:358
+msgid "by"
+msgstr "από"
+
+#: src/viewers/evince.js:86
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d από %d"
+
+#~ msgid "Client decoration"
+#~ msgstr "Διακόσμηση πελάτη"
+
+#~ msgid "Whether the window draws WM decorations itself"
+#~ msgstr "Αν το παράθυρο θα σχεδιάζει διακοσμήσεις του διαχειριστή παραθύρων"
+
+#~ msgid "Loading…"
+#~ msgstr "Φορτώνει…"
