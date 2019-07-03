@@ -29,6 +29,54 @@ const ByteArray = imports.byteArray;
 
 const MainWindow = imports.ui.mainWindow;
 
+var NautilusPreviewerSkeleton = class {
+    constructor(application, resource) {
+        this.application = application;
+
+        let bytes = Gio.resources_lookup_data(resource, 0);
+        this._skeleton = Gio.DBusExportedObject.wrapJSObject(
+            ByteArray.toString(bytes.toArray()), this);
+    }
+
+    export(connection, path) {
+        try {
+            this._skeleton.export(connection, path);
+        } catch (e) {
+            logError(e, 'Failed to export NautilusPreviewer DBus interface');
+        }
+    }
+
+    unexport(connection) {
+        if (this._skeleton && this._skeleton.has_connection(connection))
+            this._skeleton.unexport_from_connection(connection);
+    }
+
+    Close() {
+        this.application.close();
+    }
+}
+
+var NautilusPreviewer1Skeleton = class extends NautilusPreviewerSkeleton {
+    constructor(application) {
+        super(application, '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer.xml');
+    }
+
+    ShowFile(uri, xid, closeIfAlreadyShown) {
+        let handle = 'x11:%d'.format(xid);
+        this.application.showFile(uri, handle, closeIfAlreadyShown);
+    }
+}
+
+var NautilusPreviewer2Skeleton = class extends NautilusPreviewerSkeleton {
+    constructor(application) {
+        super(application, '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer2.xml');
+    }
+
+    ShowFile(uri, windowHandle, closeIfAlreadyShown) {
+        this.application.showFile(uri, windowHandle, closeIfAlreadyShown);
+    }
+}
+
 var Application = GObject.registerClass(class Application extends Gtk.Application {
     vfunc_startup() {
         super.vfunc_startup();
@@ -37,23 +85,18 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
     }
 
     vfunc_dbus_register(connection, path) {
-        let bytes = Gio.resources_lookup_data(
-            '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer.xml', 0);
-        this._skeleton = Gio.DBusExportedObject.wrapJSObject(
-            ByteArray.toString(bytes.toArray()), this);
+        this._skeleton = new NautilusPreviewer1Skeleton(this);
+        this._skeleton2 = new NautilusPreviewer2Skeleton(this);
 
-        try {
-            this._skeleton.export(connection, path);
-        } catch (e) {
-            logError(e, 'Failed to export NautilusPreviewer DBus interface');
-        }
+        this._skeleton.export(connection, path);
+        this._skeleton2.export(connection, path);
 
         return super.vfunc_dbus_register(connection, path);
     }
 
     vfunc_dbus_unregister(connection, path) {
-        if (this._skeleton && this._skeleton.has_connection(connection))
-            this._skeleton.unexport_from_connection(connection);
+        this._skeleton.unexport(connection);
+        this._skeleton2.unexport(connection);
 
         return super.vfunc_dbus_unregister(connection, path);
     }
@@ -76,12 +119,12 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
         settings.gtk_application_prefer_dark_theme = true;
     }
 
-    Close() {
+    close() {
         if (this._mainWindow)
             this._mainWindow.destroy();
     }
 
-    ShowFile(uri, xid, closeIfAlreadyShown) {
+    showFile(uri, windowHandle, closeIfAlreadyShown) {
         this._ensureMainWindow();
 
         let file = Gio.file_new_for_uri(uri);
@@ -90,7 +133,7 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
             this._mainWindow.file.equal(file)) {
             this._mainWindow.destroy();
         } else {
-            this._mainWindow.setParent(xid);
+            this._mainWindow.setParent(windowHandle);
             this._mainWindow.setFile(file);
         }
     }
