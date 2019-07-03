@@ -327,8 +327,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
     /**************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
-    setParent(xid) {
-        let handle = 'x11:%d'.format(xid);
+    setParent(handle) {
         Sushi.window_set_child_of_external(this, handle);
     }
 
