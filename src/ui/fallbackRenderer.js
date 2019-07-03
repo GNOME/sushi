@@ -203,7 +203,7 @@ var FallbackRenderer = GObject.registerClass({
         this._spinner.start();
         this._spinner.show();
 
-        this._typeLabel = new Gtk.Label();
+        this._typeLabel = new Gtk.Label({ no_show_all: true });
         this._typeLabel.set_halign(Gtk.Align.START);
         vbox.pack_start(this._typeLabel, false, false, 0);
 
@@ -231,8 +231,7 @@ var FallbackRenderer = GObject.registerClass({
             let typeDescr = Gio.content_type_get_description(contentType);
             let typeStr = '<small><b>' + _("Type") + '  </b>' + typeDescr + '</small>';
             this._typeLabel.set_markup(typeStr);
-        } else {
-            this._typeLabel.hide();
+            this._typeLabel.show();
         }
 
         let sizeFormatted;
