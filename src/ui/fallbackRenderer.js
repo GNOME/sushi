@@ -290,6 +290,10 @@ var FallbackRenderer = GObject.registerClass({
         this._cancellable.cancel();
     }
 
+    get hasToolbar() {
+        return false;
+    }
+
     get resizable() {
         return false;
     }
