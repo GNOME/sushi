@@ -42,7 +42,9 @@ enum {
   NUM_SIGNALS
 };
 
-typedef struct {
+struct _SushiFontWidget {
+  GtkDrawingArea parent_instance;
+
   gchar *uri;
   gint face_index;
 
@@ -57,19 +59,12 @@ typedef struct {
   gchar *sample_string;
 
   gchar *font_name;
-} SushiFontWidgetPrivate;
-
-struct _SushiFontWidget {
-  GtkDrawingArea parent_instance;
-
-  SushiFontWidgetPrivate *priv;
 };
 
 static GParamSpec *properties[NUM_PROPERTIES] = { NULL, };
 static guint signals[NUM_SIGNALS] = { 0, };
 
-G_DEFINE_TYPE_WITH_PRIVATE (SushiFontWidget, sushi_font_widget,
-                            GTK_TYPE_DRAWING_AREA)
+G_DEFINE_TYPE (SushiFontWidget, sushi_font_widget, GTK_TYPE_DRAWING_AREA)
 
 #define SURFACE_SIZE 4
 #define SECTION_SPACING 16
@@ -325,18 +320,18 @@ set_pango_sample_string (SushiFontWidget *self)
   gboolean retval = FALSE;
 
   sample_string = pango_language_get_sample_string (pango_language_from_string (NULL));
-  if (check_font_contain_text (self->priv->face, sample_string))
+  if (check_font_contain_text (self->face, sample_string))
     retval = TRUE;
 
   if (!retval) {
     sample_string = pango_language_get_sample_string (pango_language_from_string ("C"));
-    if (check_font_contain_text (self->priv->face, sample_string))
+    if (check_font_contain_text (self->face, sample_string))
       retval = TRUE;
   }
 
   if (retval) {
-    g_free (self->priv->sample_string);
-    self->priv->sample_string = g_strdup (sample_string);
+    g_free (self->sample_string);
+    self->sample_string = g_strdup (sample_string);
   }
 
   return retval;
@@ -348,34 +343,34 @@ build_strings_for_face (SushiFontWidget *self)
   /* if we don't have lowercase/uppercase/punctuation text in the face,
    * we omit it directly, and render a random text below.
    */
-  if (check_font_contain_text (self->priv->face, lowercase_text_stock))
-    self->priv->lowercase_text = lowercase_text_stock;
+  if (check_font_contain_text (self->face, lowercase_text_stock))
+    self->lowercase_text = lowercase_text_stock;
   else
-    self->priv->lowercase_text = NULL;
+    self->lowercase_text = NULL;
 
-  if (check_font_contain_text (self->priv->face, uppercase_text_stock))
-    self->priv->uppercase_text = uppercase_text_stock;
+  if (check_font_contain_text (self->face, uppercase_text_stock))
+    self->uppercase_text = uppercase_text_stock;
   else
-    self->priv->uppercase_text = NULL;
+    self->uppercase_text = NULL;
 
-  if (check_font_contain_text (self->priv->face, punctuation_text_stock))
-    self->priv->punctuation_text = punctuation_text_stock;
+  if (check_font_contain_text (self->face, punctuation_text_stock))
+    self->punctuation_text = punctuation_text_stock;
   else
-    self->priv->punctuation_text = NULL;
+    self->punctuation_text = NULL;
 
   if (!set_pango_sample_string (self))
-    self->priv->sample_string = random_string_from_available_chars (self->priv->face, 36);
+    self->sample_string = random_string_from_available_chars (self->face, 36);
 
-  g_free (self->priv->font_name);
-  self->priv->font_name = NULL;
+  g_free (self->font_name);
+  self->font_name = NULL;
 
-  if (self->priv->face->family_name != NULL) {
+  if (self->face->family_name != NULL) {
     gchar *font_name = 
-      g_strconcat (self->priv->face->family_name, " ",
-                   self->priv->face->style_name, NULL);
+      g_strconcat (self->face->family_name, " ",
+                   self->face->style_name, NULL);
 
-    if (check_font_contain_text (self->priv->face, font_name))
-      self->priv->font_name = font_name;
+    if (check_font_contain_text (self->face, font_name))
+      self->font_name = font_name;
     else
       g_free (font_name);
   }
@@ -444,7 +439,6 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
                                 gint *min_height)
 {
   SushiFontWidget *self = SUSHI_FONT_WIDGET (drawing_area);
-  SushiFontWidgetPrivate *priv = self->priv;
   gint i, pixmap_width, pixmap_height;
   cairo_text_extents_t extents;
   cairo_font_extents_t font_extents;
@@ -452,7 +446,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   gint *sizes = NULL, n_sizes, alpha_size, title_size;
   cairo_t *cr;
   cairo_surface_t *surface;
-  FT_Face face = priv->face;
+  FT_Face face = self->face;
   GtkStyleContext *context;
   GtkStateFlags state;
   GtkBorder padding;
@@ -488,10 +482,10 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   cairo_set_font_face (cr, font);
   cairo_font_face_destroy (font);
 
-  if (self->priv->font_name != NULL) {
+  if (self->font_name != NULL) {
       cairo_set_font_size (cr, title_size);
       cairo_font_extents (cr, &font_extents);
-      text_extents (cr, self->priv->font_name, &extents);
+      text_extents (cr, self->font_name, &extents);
       pixmap_height += font_extents.ascent + font_extents.descent +
         extents.y_advance + LINE_SPACING;
       pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
@@ -501,34 +495,34 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   cairo_set_font_size (cr, alpha_size);
   cairo_font_extents (cr, &font_extents);
 
-  if (self->priv->lowercase_text != NULL) {
-    text_extents (cr, self->priv->lowercase_text, &extents);
+  if (self->lowercase_text != NULL) {
+    text_extents (cr, self->lowercase_text, &extents);
     pixmap_height += font_extents.ascent + font_extents.descent + 
       extents.y_advance + LINE_SPACING;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
-  if (self->priv->uppercase_text != NULL) {
-    text_extents (cr, self->priv->uppercase_text, &extents);
+  if (self->uppercase_text != NULL) {
+    text_extents (cr, self->uppercase_text, &extents);
     pixmap_height += font_extents.ascent + font_extents.descent +
       extents.y_advance + LINE_SPACING;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
-  if (self->priv->punctuation_text != NULL) {
-    text_extents (cr, self->priv->punctuation_text, &extents);
+  if (self->punctuation_text != NULL) {
+    text_extents (cr, self->punctuation_text, &extents);
     pixmap_height += font_extents.ascent + font_extents.descent +
       extents.y_advance + LINE_SPACING;
     pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
   }
 
-  if (self->priv->sample_string != NULL) {
+  if (self->sample_string != NULL) {
     pixmap_height += SECTION_SPACING;
 
     for (i = 0; i < n_sizes; i++) {
       cairo_set_font_size (cr, sizes[i]);
       cairo_font_extents (cr, &font_extents);
-      text_extents (cr, self->priv->sample_string, &extents);
+      text_extents (cr, self->sample_string, &extents);
       pixmap_height += font_extents.ascent + font_extents.descent +
         extents.y_advance + LINE_SPACING;
       pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
@@ -585,10 +579,9 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
                         cairo_t *cr)
 {
   SushiFontWidget *self = SUSHI_FONT_WIDGET (drawing_area);
-  SushiFontWidgetPrivate *priv = self->priv;
   gint *sizes = NULL, n_sizes, alpha_size, title_size, pos_y = 0, i;
   cairo_font_face_t *font;
-  FT_Face face = priv->face;
+  FT_Face face = self->face;
   GtkStyleContext *context;
   GdkRGBA color;
   GtkBorder padding;
@@ -620,9 +613,9 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
 
   /* draw text */
 
-  if (self->priv->font_name != NULL) {
+  if (self->font_name != NULL) {
     cairo_set_font_size (cr, title_size);
-    draw_string (self, cr, padding, self->priv->font_name, &pos_y);
+    draw_string (self, cr, padding, self->font_name, &pos_y);
   }
 
   if (pos_y > allocated_height)
@@ -631,18 +624,18 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   pos_y += SECTION_SPACING / 2;
   cairo_set_font_size (cr, alpha_size);
 
-  if (self->priv->lowercase_text != NULL)
-    draw_string (self, cr, padding, self->priv->lowercase_text, &pos_y);
+  if (self->lowercase_text != NULL)
+    draw_string (self, cr, padding, self->lowercase_text, &pos_y);
   if (pos_y > allocated_height)
     goto end;
 
-  if (self->priv->uppercase_text != NULL)
-    draw_string (self, cr, padding, self->priv->uppercase_text, &pos_y);
+  if (self->uppercase_text != NULL)
+    draw_string (self, cr, padding, self->uppercase_text, &pos_y);
   if (pos_y > allocated_height)
     goto end;
 
-  if (self->priv->punctuation_text != NULL)
-    draw_string (self, cr, padding, self->priv->punctuation_text, &pos_y);
+  if (self->punctuation_text != NULL)
+    draw_string (self, cr, padding, self->punctuation_text, &pos_y);
   if (pos_y > allocated_height)
     goto end;
 
@@ -650,8 +643,8 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
 
   for (i = 0; i < n_sizes; i++) {
     cairo_set_font_size (cr, sizes[i]);
-    if (self->priv->sample_string !=  NULL)
-      draw_string (self, cr, padding, self->priv->sample_string, &pos_y);
+    if (self->sample_string !=  NULL)
+      draw_string (self, cr, padding, self->sample_string, &pos_y);
     if (pos_y > allocated_height)
       break;
   }
@@ -670,9 +663,9 @@ font_face_async_ready_cb (GObject *object,
   SushiFontWidget *self = user_data;
   GError *error = NULL;
 
-  self->priv->face =
+  self->face =
     sushi_new_ft_face_from_uri_finish (result,
-                                       &self->priv->face_contents,
+                                       &self->face_contents,
                                        &error);
 
   if (error != NULL) {
@@ -692,9 +685,9 @@ font_face_async_ready_cb (GObject *object,
 void
 sushi_font_widget_load (SushiFontWidget *self)
 {
-  sushi_new_ft_face_from_uri_async (self->priv->library,
-                                    self->priv->uri,
-                                    self->priv->face_index,
+  sushi_new_ft_face_from_uri_async (self->library,
+                                    self->uri,
+                                    self->face_index,
                                     font_face_async_ready_cb,
                                     self);
 }
@@ -704,11 +697,8 @@ sushi_font_widget_init (SushiFontWidget *self)
 {
   FT_Error err;
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, SUSHI_TYPE_FONT_WIDGET,
-                                            SushiFontWidgetPrivate);
-
-  self->priv->face = NULL;
-  err = FT_Init_FreeType (&self->priv->library);
+  self->face = NULL;
+  err = FT_Init_FreeType (&self->library);
 
   if (err != FT_Err_Ok)
     g_error ("Unable to initialize FreeType");
@@ -727,10 +717,10 @@ sushi_font_widget_get_property (GObject *object,
 
   switch (prop_id) {
   case PROP_URI:
-    g_value_set_string (value, self->priv->uri);
+    g_value_set_string (value, self->uri);
     break;
   case PROP_FACE_INDEX:
-    g_value_set_int (value, self->priv->face_index);
+    g_value_set_int (value, self->face_index);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -748,10 +738,10 @@ sushi_font_widget_set_property (GObject *object,
 
   switch (prop_id) {
   case PROP_URI:
-    self->priv->uri = g_value_dup_string (value);
+    self->uri = g_value_dup_string (value);
     break;
   case PROP_FACE_INDEX:
-    self->priv->face_index = g_value_get_int (value);
+    self->face_index = g_value_get_int (value);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -764,20 +754,20 @@ sushi_font_widget_finalize (GObject *object)
 {
   SushiFontWidget *self = SUSHI_FONT_WIDGET (object);
 
-  g_free (self->priv->uri);
+  g_free (self->uri);
 
-  if (self->priv->face != NULL) {
-    FT_Done_Face (self->priv->face);
-    self->priv->face = NULL;
+  if (self->face != NULL) {
+    FT_Done_Face (self->face);
+    self->face = NULL;
   }
 
-  g_free (self->priv->font_name);
-  g_free (self->priv->sample_string);
-  g_free (self->priv->face_contents);
+  g_free (self->font_name);
+  g_free (self->sample_string);
+  g_free (self->face_contents);
 
-  if (self->priv->library != NULL) {
-    FT_Done_FreeType (self->priv->library);
-    self->priv->library = NULL;
+  if (self->library != NULL) {
+    FT_Done_FreeType (self->library);
+    self->library = NULL;
   }
 
   G_OBJECT_CLASS (sushi_font_widget_parent_class)->finalize (object);
@@ -852,11 +842,11 @@ sushi_font_widget_new (const gchar *uri, gint face_index)
 FT_Face
 sushi_font_widget_get_ft_face (SushiFontWidget *self)
 {
-  return self->priv->face;
+  return self->face;
 }
 
 const gchar *
 sushi_font_widget_get_uri (SushiFontWidget *self)
 {
-  return self->priv->uri;
+  return self->uri;
 }
