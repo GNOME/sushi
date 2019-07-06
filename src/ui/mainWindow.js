@@ -116,7 +116,7 @@ function _getDecorationLayout() {
     return [leftGroup.join(','), rightGroup.join(',')].join(':');
 };
 
-var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
+var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationWindow {
     _init(application) {
         this._renderer = null;
         this._lastWindowSize = [0, 0];
@@ -137,7 +137,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
         this._openButton.connect('clicked', this._onFileOpenClicked.bind(this));
         this._titlebar.pack_end(this._openButton);
 
-        this.connect('key-press-event', this._onKeyPressEvent.bind(this));
         this.connect('motion-notify-event', this._onMotionNotifyEvent.bind(this));
         this.connect('realize', this._onRealize.bind(this));
 
@@ -147,6 +146,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
 
         this._embed = new Embed();
         eventBox.add(this._embed);
+
+        this._defineActions();
     }
 
     _onRealize() {
@@ -156,19 +157,20 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.Window {
                                         Gdk.WMFunction.CLOSE);
     }
 
-    _onKeyPressEvent(widget, event) {
-        let key = event.get_keyval()[1];
-
-        if (key == Gdk.KEY_Escape ||
-            key == Gdk.KEY_space ||
-            key == Gdk.KEY_q)
+    _defineActions() {
+        let quit = new Gio.SimpleAction({ name: 'quit' });
+        quit.connect('activate', () => {
             this.destroy();
+        });
+        this.application.set_accels_for_action('win.quit', ['q', 'Escape', 'space']);
+        this.add_action(quit);
 
-        if (key == Gdk.KEY_f ||
-            key == Gdk.KEY_F11)
+        let fullscreen = new Gio.SimpleAction({ name: 'fullscreen' });
+        fullscreen.connect('activate', () => {
             this._renderer.toggleFullscreen();
-
-        return false;
+        });
+        this.application.set_accels_for_action('win.fullscreen', ['f', 'F11']);
+        this.add_action(fullscreen);
     }
 
     _onButtonPressEvent(window, event) {
