@@ -136,14 +136,13 @@ libreoffice_missing_ready_cb (GObject *source,
                               GAsyncResult *res,
                               gpointer user_data)
 {
-  GTask *task = user_data;
-  GError *error = NULL;
+  g_autoptr(GTask) task = user_data;
+  g_autoptr(GError) error = NULL;
 
   g_dbus_connection_call_finish (G_DBUS_CONNECTION (source), res, &error);
   if (error != NULL) {
     /* can't install libreoffice with packagekit - nothing else we can do */
-    g_task_return_error (task, error);
-    g_object_unref (task);
+    g_task_return_error (task, g_steal_pointer (&error));
     return;
   }
 
@@ -182,7 +181,7 @@ libreoffice_missing (GTask *task)
                           NULL, G_DBUS_CALL_FLAGS_NONE,
                           G_MAXINT, NULL,
                           libreoffice_missing_ready_cb,
-                          task);
+                          g_object_ref (task));
 }
 
 static void
@@ -190,16 +189,13 @@ libreoffice_child_watch_cb (GPid pid,
                             gint status,
                             gpointer user_data)
 {
-  GTask *task = user_data;
+  g_autoptr(GTask) task = user_data;
   TaskData *data = g_task_get_task_data (task);
-  GFile *file;
 
   g_spawn_close_pid (pid);
   data->libreoffice_pid = -1;
 
-  file = g_file_new_for_path (data->pdf_path);
-  g_task_return_pointer (task, file, g_object_unref);
-  g_object_unref (task);
+  g_task_return_pointer (task, g_file_new_for_path (data->pdf_path), g_object_unref);
 }
 
 #define LIBREOFFICE_FLATPAK "org.libreoffice.LibreOffice"
@@ -209,9 +205,9 @@ check_libreoffice_flatpak (GTask       *task,
                            const gchar *flatpak_path)
 {
   const gchar *check_argv[] = { flatpak_path, "info", LIBREOFFICE_FLATPAK, NULL };
+  g_autoptr(GError) error = NULL;
   gboolean ret;
   gint exit_status = -1;
-  GError *error = NULL;
   TaskData *data = g_task_get_task_data (task);
 
   if (data->checked_libreoffice_flatpak)
@@ -228,19 +224,17 @@ check_libreoffice_flatpak (GTask       *task,
                       &exit_status, &error);
 
   if (ret) {
-    GError *child_error = NULL;
+    g_autoptr(GError) child_error = NULL;
     if (g_spawn_check_exit_status (exit_status, &child_error)) {
       g_debug ("Found LibreOffice flatpak!");
       data->have_libreoffice_flatpak = TRUE;
     } else {
       g_debug ("LibreOffice flatpak not found, flatpak info returned %i (%s)",
                exit_status, child_error->message);
-      g_clear_error (&child_error);
     }
   } else {
     g_warning ("Error while checking for LibreOffice flatpak: %s",
                error->message);
-    g_clear_error (&error);
   }
 
   return data->have_libreoffice_flatpak;
@@ -249,14 +243,14 @@ check_libreoffice_flatpak (GTask       *task,
 static void
 load_libreoffice (GTask *task)
 {
-  gchar *flatpak_path, *libreoffice_path = NULL;
+  g_autofree gchar *flatpak_path = NULL, *libreoffice_path = NULL;
+  g_autofree gchar *doc_path = NULL, *doc_name = NULL, *tmp_name = NULL;
+  g_autofree gchar *command = NULL, *pdf_dir = NULL;
+  g_auto(GStrv) argv = NULL;
+  g_autoptr(GError) error = NULL;
   gboolean use_flatpak = FALSE;
-  gchar *doc_path, *doc_name, *tmp_name, *pdf_dir;
-  gchar *flatpak_doc = NULL, *flatpak_dir = NULL;
   gboolean res;
   GPid pid;
-  GError *error = NULL;
-  gchar **argv = NULL;
   TaskData *data = g_task_get_task_data (task);
 
   flatpak_path = g_find_program_in_path ("flatpak");
@@ -267,7 +261,6 @@ load_libreoffice (GTask *task)
     libreoffice_path = g_find_program_in_path ("libreoffice");
     if (libreoffice_path == NULL) {
       libreoffice_missing (task);
-      g_free (flatpak_path);
       return;
     }
   }
@@ -280,17 +273,14 @@ load_libreoffice (GTask *task)
   if (tmp_name)
     *tmp_name = '\0';
   tmp_name = g_strdup_printf ("%s.pdf", doc_name);
-  g_free (doc_name);
 
   pdf_dir = g_build_filename (g_get_user_cache_dir (), "sushi", NULL);
   data->pdf_path = g_build_filename (pdf_dir, tmp_name, NULL);
   g_mkdir_with_parents (pdf_dir, 0700);
 
-  g_free (tmp_name);
-
   if (use_flatpak) {
-    flatpak_doc = g_strdup_printf ("--filesystem=%s:ro", doc_path);
-    flatpak_dir = g_strdup_printf ("--filesystem=%s", pdf_dir);
+    g_autofree gchar *flatpak_doc = g_strdup_printf ("--filesystem=%s:ro", doc_path);
+    g_autofree gchar *flatpak_dir = g_strdup_printf ("--filesystem=%s", pdf_dir);
 
     const gchar *flatpak_argv[] = {
       NULL, /* to be replaced with flatpak binary */
@@ -328,32 +318,20 @@ load_libreoffice (GTask *task)
     argv = g_strdupv ((gchar **) libreoffice_argv);
   }
 
-  tmp_name = g_strjoinv (" ", (gchar **) argv);
-  g_debug ("Executing LibreOffice command: %s", tmp_name);
-  g_free (tmp_name);
+  command = g_strjoinv (" ", (gchar **) argv);
+  g_debug ("Executing LibreOffice command: %s", command);
 
   res = g_spawn_async (NULL, (gchar **) argv, NULL,
                        G_SPAWN_DO_NOT_REAP_CHILD,
                        NULL, NULL,
                        &pid, &error);
 
-  g_free (pdf_dir);
-  g_free (doc_path);
-  g_free (libreoffice_path);
-  g_free (flatpak_path);
-  g_free (flatpak_doc);
-  g_free (flatpak_dir);
-  g_strfreev (argv);
-
   if (!res) {
-    g_warning ("Error while spawning libreoffice: %s",
-               error->message);
-    g_error_free (error);
-
+    g_warning ("Error while spawning libreoffice: %s", error->message);
     return;
   }
 
-  g_child_watch_add (pid, libreoffice_child_watch_cb, task);
+  g_child_watch_add (pid, libreoffice_child_watch_cb, g_object_ref (task));
   data->libreoffice_pid = pid;
 }
 
@@ -396,9 +374,9 @@ GdkPixbuf *
 sushi_pixbuf_from_gst_sample (GstSample *sample,
                               GError   **error)
 {
+  g_autoptr(GdkPixbufLoader) loader = NULL;
   GstBuffer *buffer = gst_sample_get_buffer (sample);
   GdkPixbuf *pixbuf = NULL;
-  GdkPixbufLoader *loader;
   GstMapInfo info;
 
   if (!gst_buffer_map (buffer, &info, GST_MAP_READ)) {
@@ -416,7 +394,6 @@ sushi_pixbuf_from_gst_sample (GstSample *sample,
   if (pixbuf)
     g_object_ref (pixbuf);
 
-  g_object_unref (loader);
   gst_buffer_unmap (buffer, &info);
 
   return pixbuf;
@@ -458,13 +435,12 @@ fetch_uri_job (GTask *task,
                GCancellable *cancellable)
 {
   FetchUriTaskData *data = task_data;
+  g_autofree gchar *retval = NULL;
+  g_auto(GStrv) param_names = NULL, param_values = NULL;
   Mb5Metadata metadata;
   Mb5Query query;
   Mb5Release release;
   Mb5ReleaseList release_list;
-  gchar *retval = NULL;
-  gchar **param_names = NULL;
-  gchar **param_values = NULL;
 
   query = mb5_query_new ("sushi", NULL, 0);
 
@@ -509,10 +485,7 @@ fetch_uri_job (GTask *task,
                              G_IO_ERROR_NOT_FOUND, "%s",
                              "Error getting the ASIN from MusicBrainz");
   else
-    g_task_return_pointer (task, retval, g_free);
-
-  g_strfreev (param_names);
-  g_strfreev (param_values);
+    g_task_return_pointer (task, g_steal_pointer (&retval), g_free);
 }
 
 gchar *
@@ -528,10 +501,9 @@ sushi_get_asin_for_track (const gchar *artist,
                           GAsyncReadyCallback callback,
                           gpointer user_data)
 {
+  g_autoptr(GTask) task = g_task_new (NULL, NULL, callback, user_data);
   FetchUriTaskData *data = fetch_uri_task_data_new (artist, album);
-  GTask *task = g_task_new (NULL, NULL, callback, user_data);
-  g_task_set_task_data (task, data, fetch_uri_task_data_free);
 
+  g_task_set_task_data (task, data, fetch_uri_task_data_free);
   g_task_run_in_thread (task, fetch_uri_job);
-  g_object_unref (task);
 }

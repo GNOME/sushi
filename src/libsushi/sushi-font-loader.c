@@ -60,9 +60,12 @@ static void
 font_load_job_free (FontLoadJob *job)
 {
   g_clear_object (&job->file);
+  g_free (job->face_contents);
 
   g_slice_free (FontLoadJob, job);
 }
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (FontLoadJob, font_load_job_free)
 
 static FT_Face
 create_face_from_contents (FontLoadJob *job,
@@ -79,34 +82,23 @@ create_face_from_contents (FontLoadJob *job,
                                  &retval);
 
   if (ft_error != 0) {
-    gchar *uri;
-    uri = g_file_get_uri (job->file);
+    g_autofree gchar *uri = g_file_get_uri (job->file);
     g_set_error (error, G_IO_ERROR, 0,
                  "Unable to read the font face file '%s'", uri);
-    retval = NULL;
-    g_free (job->face_contents);
-    g_free (uri);
-  } else {
-    *contents = job->face_contents;
+    return NULL;
   }
 
+  *contents = g_steal_pointer (&job->face_contents);
   return retval;
 }
 
-static void
+static gboolean
 font_load_job_do_load (FontLoadJob *job,
                        GError **error)
 {
-  gchar *contents;
-  gsize length;
-
-  g_file_load_contents (job->file, NULL,
-                        &contents, &length, NULL, error);
-
-  if ((error != NULL) && (*error == NULL)) {
-    job->face_contents = contents;
-    job->face_length = length;
-  }
+  return g_file_load_contents (job->file, NULL,
+                               &job->face_contents, &job->face_length,
+                               NULL, error);
 }
 
 static void
@@ -116,12 +108,12 @@ font_load_job (GTask *task,
                GCancellable *cancellable)
 {
   FontLoadJob *job = user_data;
-  GError *error = NULL;
+  g_autoptr(GError) error = NULL;
 
   font_load_job_do_load (job, &error);
 
   if (error != NULL)
-    g_task_return_error (task, error);
+    g_task_return_error (task, g_steal_pointer (&error));
   else
     g_task_return_boolean (task, TRUE);
 }
@@ -137,21 +129,11 @@ sushi_new_ft_face_from_uri (FT_Library library,
                             gchar **contents,
                             GError **error)
 {
-  FontLoadJob *job = NULL;
-  FT_Face face;
-
-  job = font_load_job_new (library, uri, face_index, NULL, NULL);
-  font_load_job_do_load (job, error);
-
-  if ((error != NULL) && (*error != NULL)) {
-    font_load_job_free (job);
+  g_autoptr(FontLoadJob) job = font_load_job_new (library, uri, face_index, NULL, NULL);
+  if (!font_load_job_do_load (job, error))
     return NULL;
-  }
 
-  face = create_face_from_contents (job, contents, error);
-  font_load_job_free (job);
-
-  return face;
+  return create_face_from_contents (job, contents, error);
 }
 
 /**
@@ -166,12 +148,10 @@ sushi_new_ft_face_from_uri_async (FT_Library library,
                                   gpointer user_data)
 {
   FontLoadJob *job = font_load_job_new (library, uri, face_index, callback, user_data);
-  GTask *task;
+  g_autoptr(GTask) task = g_task_new (NULL, NULL, callback, user_data);
 
-  task = g_task_new (NULL, NULL, callback, user_data);
   g_task_set_task_data (task, job, (GDestroyNotify) font_load_job_free);
   g_task_run_in_thread (task, font_load_job);
-  g_object_unref (task);
 }
 
 /**

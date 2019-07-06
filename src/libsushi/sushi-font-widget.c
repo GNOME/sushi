@@ -173,11 +173,11 @@ text_extents (cairo_t *cr,
               const char *text,
               cairo_text_extents_t *extents)
 {
-  cairo_glyph_t *glyphs;
+  g_autofree cairo_glyph_t *glyphs = NULL;
   gint num_glyphs;
+
   text_to_glyphs (cr, text, &glyphs, &num_glyphs);
   cairo_glyph_extents (cr, glyphs, num_glyphs, extents);
-  g_free (glyphs);
 }
 
 /* adapted from gnome-utils:font-viewer/font-view.c
@@ -194,9 +194,9 @@ draw_string (SushiFontWidget *self,
 	     const gchar *text,
 	     gint *pos_y)
 {
+  g_autofree cairo_glyph_t *glyphs = NULL;
   cairo_font_extents_t font_extents;
   cairo_text_extents_t extents;
-  cairo_glyph_t *glyphs;
   GtkTextDirection text_dir;
   gint pos_x;
   gint num_glyphs;
@@ -227,8 +227,6 @@ draw_string (SushiFontWidget *self,
   cairo_move_to (cr, pos_x, *pos_y);
   cairo_show_glyphs (cr, glyphs, num_glyphs);
 
-  g_free (glyphs);
-
   *pos_y += LINE_SPACING / 2;
 }
 
@@ -236,30 +234,25 @@ static gboolean
 check_font_contain_text (FT_Face face,
                          const gchar *text)
 {
-  gunichar *string;
+  g_autofree gunichar *string = NULL;
   glong len, idx;
-  gboolean retval = TRUE;
 
   string = g_utf8_to_ucs4_fast (text, -1, &len);
   for (idx = 0; idx < len; idx++) {
     gunichar c = string[idx];
 
-    if (!FT_Get_Char_Index (face, c)) {
-      retval = FALSE;
-      break;
-    }
+    if (!FT_Get_Char_Index (face, c))
+      return FALSE;
   }
 
-  g_free (string);
-
-  return retval;
+  return TRUE;
 }
 
 static gchar *
 build_charlist_for_face (FT_Face face,
                          gint *length)
 {
-  GString *string;
+  g_autoptr(GString) string = NULL;
   gulong c;
   guint glyph;
   gint total_chars = 0;
@@ -277,16 +270,16 @@ build_charlist_for_face (FT_Face face,
   if (length)
     *length = total_chars;
 
-  return g_string_free (string, FALSE);
+  return g_strdup (string->str);
 }
 
 static gchar *
 random_string_from_available_chars (FT_Face face,
                                     gint n_chars)
 {
-  gchar *chars;
+  g_autofree gchar *chars = NULL;
+  g_autoptr(GString) retval = NULL;
   gint idx, rand, total_chars;
-  GString *retval;
   gchar *ptr, *end;
 
   idx = 0;
@@ -296,7 +289,7 @@ random_string_from_available_chars (FT_Face face,
     return NULL;
 
   if (total_chars <= n_chars)
-    return chars;
+    return g_steal_pointer (&chars);
 
   retval = g_string_new (NULL);
 
@@ -310,7 +303,7 @@ random_string_from_available_chars (FT_Face face,
     idx++;
   }
 
-  return g_string_free (retval, FALSE);
+  return g_strdup (retval->str);
 }
 
 static gboolean
@@ -456,7 +449,8 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   cairo_text_extents_t extents;
   cairo_font_extents_t font_extents;
   cairo_font_face_t *font;
-  gint *sizes = NULL, n_sizes, alpha_size, title_size;
+  g_autofree gint *sizes = NULL;
+  gint n_sizes, alpha_size, title_size;
   cairo_t *cr;
   cairo_surface_t *surface;
   FT_Face face = self->face;
@@ -562,7 +556,6 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   cairo_destroy (cr);
   cairo_font_face_destroy (font);
   cairo_surface_destroy (surface);
-  g_free (sizes);
 }
 
 static void
@@ -596,7 +589,8 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
                         cairo_t *cr)
 {
   SushiFontWidget *self = SUSHI_FONT_WIDGET (drawing_area);
-  gint *sizes = NULL, n_sizes, alpha_size, title_size, pos_y = 0, i;
+  g_autofree gint *sizes = NULL;
+  gint n_sizes, alpha_size, title_size, pos_y = 0, i;
   cairo_font_face_t *font = NULL;
   FT_Face face = self->face;
   GtkStyleContext *context;
@@ -606,7 +600,7 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   gint allocated_width, allocated_height;
 
   if (face == NULL)
-    goto end;
+    return FALSE;
 
   context = gtk_widget_get_style_context (drawing_area);
   state = gtk_style_context_get_state (context);
@@ -668,9 +662,7 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   }
 
  end:
-  if (font != NULL)
-    cairo_font_face_destroy (font);
-  g_free (sizes);
+  cairo_font_face_destroy (font);
 
   return FALSE;
 }
@@ -681,7 +673,7 @@ font_face_async_ready_cb (GObject *object,
                           gpointer user_data)
 {
   SushiFontWidget *self = user_data;
-  GError *error = NULL;
+  g_autoptr(GError) error = NULL;
 
   self->face =
     sushi_new_ft_face_from_uri_finish (result,
@@ -691,7 +683,6 @@ font_face_async_ready_cb (GObject *object,
   if (error != NULL) {
     g_signal_emit (self, signals[ERROR], 0, error);
     g_print ("Can't load the font face: %s\n", error->message);
-    g_error_free (error);
 
     return;
   }
@@ -715,10 +706,7 @@ sushi_font_widget_load (SushiFontWidget *self)
 static void
 sushi_font_widget_init (SushiFontWidget *self)
 {
-  FT_Error err;
-
-  self->face = NULL;
-  err = FT_Init_FreeType (&self->library);
+  FT_Error err = FT_Init_FreeType (&self->library);
 
   if (err != FT_Err_Ok)
     g_error ("Unable to initialize FreeType");
