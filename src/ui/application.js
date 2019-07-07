@@ -23,7 +23,7 @@
  *
  */
 
-const {Gdk, Gio, GObject, Gtk} = imports.gi;
+const {Gio, GLib, GObject, Gtk} = imports.gi;
 
 const ByteArray = imports.byteArray;
 
@@ -36,6 +36,10 @@ var NautilusPreviewerSkeleton = class {
         let bytes = Gio.resources_lookup_data(resource, 0);
         this._skeleton = Gio.DBusExportedObject.wrapJSObject(
             ByteArray.toString(bytes.toArray()), this);
+    }
+
+    get impl() {
+        return this._skeleton;
     }
 
     export(connection, path) {
@@ -122,6 +126,11 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
     close() {
         if (this._mainWindow)
             this._mainWindow.destroy();
+    }
+
+    emitSelectionEvent(direction) {
+        this._skeleton2.impl.emit_signal(
+            'SelectionEvent', new GLib.Variant('(u)', [direction]));
     }
 
     showFile(uri, windowHandle, closeIfAlreadyShown) {
