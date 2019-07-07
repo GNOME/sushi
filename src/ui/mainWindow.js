@@ -176,6 +176,21 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         });
         this.application.set_accels_for_action('win.fullscreen', ['f', 'F11']);
         this.add_action(fullscreen);
+
+        var _addSelectAction = ((name, accel, direction) => {
+            let action = new Gio.SimpleAction({ name: name });
+            action.connect('activate', () => {
+                this.application.emitSelectionEvent(direction);
+            });
+
+            this.application.set_accels_for_action(`win.${name}`, [accel]);
+            this.add_action(action);
+        });
+
+        _addSelectAction('select-left', 'Left', Gtk.DirectionType.LEFT);
+        _addSelectAction('select-right', 'Right', Gtk.DirectionType.RIGHT);
+        _addSelectAction('select-up', 'Up', Gtk.DirectionType.UP);
+        _addSelectAction('select-down', 'Down', Gtk.DirectionType.DOWN);
     }
 
     _onButtonPressEvent(window, event) {
