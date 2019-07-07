@@ -113,8 +113,13 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
             return;
 
         this._mainWindow = new MainWindow.MainWindow(this);
+        this._skeleton2.impl.emit_property_changed(
+            'Visible', new GLib.Variant('b', true));
+
         this._mainWindow.connect('destroy', () => {
             this._mainWindow = null;
+            this._skeleton2.impl.emit_property_changed(
+                'Visible', new GLib.Variant('b', false));
         });
     }
 
