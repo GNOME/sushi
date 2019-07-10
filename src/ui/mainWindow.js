@@ -30,6 +30,9 @@ const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
 
+const WINDOW_MAX_W = 800;
+const WINDOW_MAX_H = 600;
+
 const Embed = GObject.registerClass(class Embed extends Gtk.Overlay {
     vfunc_get_request_mode() {
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
@@ -214,6 +217,10 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
             this.show_all();
     }
 
+    _getMaxSize() {
+        return [WINDOW_MAX_W, WINDOW_MAX_H];
+    }
+
     _resizeWindow() {
         if (!this._renderer)
             return;
@@ -221,7 +228,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         if (this._renderer.fullscreen)
             return;
 
-        let maxSize = [Constants.VIEW_MAX_W, Constants.VIEW_MAX_H];
+        let maxSize = this._getMaxSize();
         let rendererSize = [this._renderer.get_preferred_width(), this._renderer.get_preferred_height()];
         let natSize = [rendererSize[0][1], rendererSize[1][1]];
         let windowSize;

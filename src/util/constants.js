@@ -24,6 +24,4 @@
  */
 
 var VIEW_MIN = 400;
-var VIEW_MAX_W = 800;
-var VIEW_MAX_H = 600;
 var TOOLBAR_SPACING = 32;
