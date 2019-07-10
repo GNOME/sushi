@@ -67,7 +67,8 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
                     _enumerator = _file.enumerate_children_finish(res);
                 } catch(e) {
                     _state.unreadableItems++;
-                    _deepCountNext();
+                    if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                        _deepCountNext();
                     return;
                 }
 
