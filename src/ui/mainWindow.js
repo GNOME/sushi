@@ -32,6 +32,8 @@ const Utils = imports.ui.utils;
 
 const WINDOW_MAX_W = 800;
 const WINDOW_MAX_H = 600;
+const WINDOW_MAX_W_BASE = 1368;
+const WINDOW_MAX_H_BASE = 768;
 
 const Embed = GObject.registerClass(class Embed extends Gtk.Overlay {
     vfunc_get_request_mode() {
@@ -218,7 +220,27 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
     }
 
     _getMaxSize() {
-        return [WINDOW_MAX_W, WINDOW_MAX_H];
+        let gdkWin = this.get_window();
+        let display = this.get_display();
+        let monitor = display.get_monitor_at_window(gdkWin);
+        let geometry = monitor.get_geometry();
+
+        // Scale our maximum with the actual monitor geometry
+        let scaleW = 1.0;
+        let scaleH = 1.0;
+
+        // FIXME: We can only trust GTK >= 3.24.9 to report the right
+        // monitor geometry under Wayland when fractional scaling is enabled.
+        // Disable the scaling logic for older GTK versions.
+        // See https://gitlab.gnome.org/GNOME/gtk/issues/1828
+        let versionCheck = Gtk.check_version(3, 24, 9);
+        if (!versionCheck) {
+            scaleW = geometry.width / WINDOW_MAX_W_BASE;
+            scaleH = geometry.height / WINDOW_MAX_H_BASE;
+        }
+
+        return [Math.floor(scaleW * WINDOW_MAX_W),
+                Math.floor(scaleH * WINDOW_MAX_H)];
     }
 
     _resizeWindow() {
