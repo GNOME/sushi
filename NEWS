@@ -1,3 +1,19 @@
+3.33.4
+======
+
+- Add a native LibreofficeKit renderer
+- Fix translation infrastructure regression (#18)
+- Fix loading album cover art from Amazon
+- Fix several glitches on HiDpi and fractional scaling displays
+- Respect placement of close button preference (#14)
+- Fix audio metadata tags retrieval (#13)
+- Only load a single GstTagList copy (#654500)
+- Fix displaying audio tag content with markup characters (#700589)
+- Add an appdata file (#761038)
+- Properly letterbox album cover art
+- Add a way to report loading errors in the main view
+- Scale window size with display resolution (#7)
+
 3.33.3
 ======
 
