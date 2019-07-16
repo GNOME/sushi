@@ -40,5 +40,3 @@ add_project_arguments(
 subdir('data')
 subdir('po')
 subdir('src')
-
-meson.add_install_script('meson-post-install.py', libexecdir, bindir)

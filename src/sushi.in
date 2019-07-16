@@ -1,0 +1,54 @@
+#!@GJS@
+
+const {Gio, GLib, GObject} = imports.gi;
+
+const ByteArray = imports.byteArray;
+const System = imports.system;
+
+GLib.set_prgname('sushi');
+
+function help() {
+    print(`Usage:
+    sushi FILE
+    Opens FILE in a NautilusPreviewer window.`);
+}
+
+if (ARGV.includes('-h') || ARGV.includes('--help')) {
+    help();
+    System.exit(0);
+}
+
+if (ARGV.length != 1) {
+    printerr('The launcher takes exactly one argument\n');
+    help();
+    System.exit(1);
+}
+
+let file = Gio.File.new_for_commandline_arg(ARGV[0]);
+if (!file.query_exists(null)) {
+    printerr(`The file at ${file.get_uri()} does not exist.`);
+    System.exit(1);
+}
+
+try {
+    let dataResource = Gio.Resource.load('@pkgdatadir@/org.gnome.NautilusPreviewer.data.gresource');
+    dataResource._register();
+} catch(e) {
+    logError(e, 'Unable to load data resource');
+    System.exit(1);
+}
+
+let bytes = Gio.resources_lookup_data(
+    '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer.xml', 0);
+let wrapper = Gio.DBusProxy.makeProxyWrapper(ByteArray.toString(bytes.toArray()));
+
+let proxy;
+try {
+    proxy = new wrapper(
+        Gio.DBus.session, 'org.gnome.NautilusPreviewer', '/org/gnome/NautilusPreviewer');
+} catch(e) {
+    logError(e, 'Unable to create DBus proxy for NautilusPreviewer');
+    System.exit(1);
+}
+
+proxy.ShowFileSync(file.get_uri(), 0, false);

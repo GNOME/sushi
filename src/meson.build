@@ -25,15 +25,28 @@ conf.set('PACKAGE_NAME', meson.project_name())
 conf.set('PACKAGE_VERSION', meson.project_version())
 conf.set('prefix', get_option('prefix'))
 conf.set('libdir', libdir)
+conf.set('pkgdatadir', pkgdatadir)
 
-sushi_bin = configure_file(
+nautilus_previewer_bin = configure_file(
   input: 'org.gnome.NautilusPreviewer.in',
   output: 'org.gnome.NautilusPreviewer',
   configuration: conf,
 )
 
 install_data(
-  sushi_bin,
+  nautilus_previewer_bin,
   install_mode: 'rwxr-xr-x',
   install_dir: libexecdir,
+)
+
+sushi_bin = configure_file(
+  input: 'sushi.in',
+  output: 'sushi',
+  configuration: conf,
+)
+
+install_data(
+  sushi_bin,
+  install_mode: 'rwxr-xr-x',
+  install_dir: bindir,
 )
