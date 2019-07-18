@@ -36,14 +36,18 @@ var getKlass = function(mime) {
         // first, try a direct match with the mimetype itself
         if (r.mimeTypes.includes(mime))
             return true;
-
-        // if this fails, try to see if we have any handlers
-        // registered for a parent type
-        if (r.mimeTypes.some((rm) => Gio.content_type_is_a(mime, rm)))
-            return true;
-
         return false;
     });
+
+    if (!renderer) {
+        renderer = renderers.find((r) => {
+            // if this fails, try to see if we have any handlers
+            // registered for a parent type
+            if (r.mimeTypes.some((rm) => Gio.content_type_is_a(mime, rm)))
+                return true;
+            return false;
+        });
+    }
 
     if (renderer)
         return renderer.Klass;
