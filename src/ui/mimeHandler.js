@@ -23,13 +23,22 @@
  *
  */
 
-const {Gio} = imports.gi;
+const {Gio, GLib} = imports.gi;
 
 const FallbackRenderer = imports.ui.fallbackRenderer;
 
 var renderers = [];
+
+//Patch import path
+let oldSearchPath = imports.searchPath.slice();  // make a copy
+let localPath = GLib.get_user_data_dir() + "/sushi";
+imports.searchPath = imports.searchPath.concat([localPath])
+
 for (let i in imports.viewers)
     renderers.push(imports.viewers[i]);
+
+//Restore import path
+imports.searchPath = oldSearchPath;
 
 var getKlass = function(mime) {
     let renderer = renderers.find((r) => {
