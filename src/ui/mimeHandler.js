@@ -39,7 +39,7 @@ var getKlass = function(mime) {
         return false;
     });
 
-    if (!renderer){
+    if (!renderer) {
         renderer = renderers.find((r) => {
             // if this fails, try to see if we have any handlers
             // registered for a parent type
