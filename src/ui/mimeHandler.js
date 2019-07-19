@@ -31,7 +31,7 @@ var renderers = [];
 
 //Patch import path
 
-let localPath = GLib.build_filenamev([GLib.get_user_data_dir(), "sushi"]);
+let localPath = GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi']);
 imports.searchPath.push(localPath)
 
 for (let i in imports.viewers)
