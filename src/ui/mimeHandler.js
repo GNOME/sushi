@@ -30,15 +30,14 @@ const FallbackRenderer = imports.ui.fallbackRenderer;
 var renderers = [];
 
 //Patch import path
-let oldSearchPath = imports.searchPath.slice();  // make a copy
-let localPath = GLib.get_user_data_dir() + "/sushi";
+let localPath = GLib.build_filenamev([GLib.get_user_data_dir(), "sushi"]);
 imports.searchPath = imports.searchPath.concat([localPath])
 
 for (let i in imports.viewers)
     renderers.push(imports.viewers[i]);
 
 //Restore import path
-imports.searchPath = oldSearchPath;
+imports.searchPath.unshift(localPath);
 
 var getKlass = function(mime) {
     let renderer = renderers.find((r) => {
