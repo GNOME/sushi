@@ -23,11 +23,16 @@
  *
  */
 
-const {Gio} = imports.gi;
+const {Gio, GLib} = imports.gi;
 
 const FallbackRenderer = imports.ui.fallbackRenderer;
 
 var renderers = [];
+
+//Patch import path
+let localPath = GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi']);
+imports.searchPath.push(localPath);
+
 for (let i in imports.viewers)
     renderers.push(imports.viewers[i]);
 
