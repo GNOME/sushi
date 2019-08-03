@@ -1,0 +1,71 @@
+# Karbi translation for sushi.
+# Copyright (C) 2019 sushi's Free Software Foundation, Inc.
+# This file is distributed under the same license as the sushi package.
+# Jor Teron <jor.teron@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2019-08-03 12:16+0000\n"
+"PO-Revision-Date: 2019-08-03 21:49+0530\n"
+"Last-Translator: Jor Teron <jor.teron@gmail.com>\n"
+"Language-Team: Karbi <karbi.translation@gmail.com>\n"
+"Language: mjw\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: gedit 3.28.1\n"
+
+#: src/ui/fallbackRenderer.js:233
+msgid "Type"
+msgstr ""
+
+#: src/ui/fallbackRenderer.js:243
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "Son %d"
+msgstr[1] "Son %d"
+
+#: src/ui/fallbackRenderer.js:248
+msgid "Empty Folder"
+msgstr "Angse Folder"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr ""
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr ""
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr ""
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:327
+#, javascript-format
+msgid "Open With %s"
+msgstr "%s pen kangpu"
+
+#: src/ui/mainWindow.js:333
+msgid "Open"
+msgstr "Kangpu"
+
+#: src/viewers/audio.js:352
+msgid "from"
+msgstr ""
+
+#: src/viewers/audio.js:357
+msgid "by"
+msgstr ""
+
+#: src/viewers/evince.js:86
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d do %d longpen"
