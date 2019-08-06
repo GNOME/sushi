@@ -1,7 +1,7 @@
 {
     "app-id": "org.gnome.NautilusPreviewer",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.32",
+    "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
     "build-options": {
         "cflags": "-O2 -g",

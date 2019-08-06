@@ -1,3 +1,11 @@
+3.3.90
+======
+
+- Add a command line launcher (#758253)
+- Fix viewer mimetype matching (#20, Joel Ong)
+- Load viewers from home directory (#19, Joel Ong)
+- Translation updates
+
 3.33.4
 ======
 
