@@ -1,3 +1,4 @@
+data/org.gnome.NautilusPreviewer.appdata.xml.in
 src/ui/fallbackRenderer.js
 src/ui/mainWindow.js
 src/viewers/audio.js
