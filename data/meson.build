@@ -9,7 +9,10 @@ configure_file(
   install_dir: join_paths(datadir, 'dbus-1', 'services'),
 )
 
-install_data(
-  'org.gnome.NautilusPreviewer.appdata.xml',
+i18n.merge_file(
+  input: 'org.gnome.NautilusPreviewer.appdata.xml.in',
+  output: 'org.gnome.NautilusPreviewer.appdata.xml',
+  po_dir: '../po',
+  install: true,
   install_dir: join_paths(datadir, 'metainfo')
 )

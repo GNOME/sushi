@@ -37,6 +37,8 @@ add_project_arguments(
   language: 'c',
 )
 
+i18n = import('i18n')
+
 subdir('data')
 subdir('po')
 subdir('src')
