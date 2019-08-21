@@ -57,7 +57,7 @@ msgstr "No s'ha pogut mostrar %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
 #: src/ui/mainWindow.js:327
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open With %s"
 msgstr "Obre amb %s"
 
