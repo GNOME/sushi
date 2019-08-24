@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-06-30 15:23+0000\n"
-"PO-Revision-Date: 2019-07-02 18:07+0200\n"
+"POT-Creation-Date: 2019-08-24 16:34+0000\n"
+"PO-Revision-Date: 2019-08-24 18:59+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -22,7 +22,15 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: src/ui/fallbackRenderer.js:232
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "Sushi"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "Program za hitro pregledovanje različnih vrst datotek"
+
+#: src/ui/fallbackRenderer.js:233
 msgid "Type"
 msgstr "Vrsta"
 
@@ -48,18 +56,18 @@ msgid "Modified"
 msgstr "Spremenjeno"
 
 #. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:85
+#: src/ui/mainWindow.js:90
 #, javascript-format
 msgid "Unable to display %s"
 msgstr "Datoteke %s ni mogoče prikazati."
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:296
+#: src/ui/mainWindow.js:327
 #, javascript-format
 msgid "Open With %s"
 msgstr "Odpri s programom %s"
 
-#: src/ui/mainWindow.js:302
+#: src/ui/mainWindow.js:333
 msgid "Open"
 msgstr "Odpri"
 
