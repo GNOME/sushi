@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-19 19:38+0200\n"
-"PO-Revision-Date: 2012-04-19 19:39+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2019-08-20 19:13+0000\n"
+"PO-Revision-Date: 2019-08-25 18:50+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -18,53 +18,73 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Poedit 2.2.1\n"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:1
-msgid "Client decoration"
-msgstr "Decoración do cliente"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "Sushi"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:2
-msgid "Whether the window draws WM decorations itself"
-msgstr "Indica se a xanela debuxa decoracións WM por si mesma"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "Fornece a capacidade de ver de forma rápida diferentes tipos de ficheiros"
 
-#: ../src/js/ui/fallbackRenderer.js:117
+#: src/ui/fallbackRenderer.js:233
 msgid "Type"
 msgstr "Tipo"
 
-#: ../src/js/ui/fallbackRenderer.js:118 ../src/js/ui/fallbackRenderer.js:123
-#: ../src/js/ui/fallbackRenderer.js:128 ../src/js/ui/spinnerBox.js:57
-#: ../src/js/viewers/folder.js:124 ../src/js/viewers/folder.js:129
-msgid "Loading…"
-msgstr "Cargando…"
-
-#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/viewers/folder.js:123
-msgid "Size"
-msgstr "Tamaño"
-
-#: ../src/js/ui/fallbackRenderer.js:127 ../src/js/viewers/folder.js:128
-msgid "Modified"
-msgstr "Modificada"
-
-#: ../src/js/viewers/audio.js:171
-msgid "from"
-msgstr "desde"
-
-#: ../src/js/viewers/audio.js:173
-msgid "by"
-msgstr "por"
-
-#: ../src/js/viewers/evince.js:79
-#, c-format
-msgid "%d of %d"
-msgstr "%d de %d"
-
-#: ../src/libsushi/sushi-file-loader.c:640
-#, c-format
+#: src/ui/fallbackRenderer.js:243
+#, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d elemento"
 msgstr[1] "%d elementos"
 
-#: ../src/libsushi/sushi-file-loader.c:652
+#: src/ui/fallbackRenderer.js:248
 msgid "Empty Folder"
 msgstr "Cartafol baleiro"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr "Tamaño"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr "Modificada"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "Non foi posíbel mostrar %s"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:327
+#, javascript-format
+msgid "Open With %s"
+msgstr "Abrir con %s"
+
+#: src/ui/mainWindow.js:333
+msgid "Open"
+msgstr "Abrir"
+
+#: src/viewers/audio.js:352
+msgid "from"
+msgstr "desde"
+
+#: src/viewers/audio.js:357
+msgid "by"
+msgstr "por"
+
+#: src/viewers/evince.js:86
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d de %d"
+
+#~ msgid "Client decoration"
+#~ msgstr "Decoración do cliente"
+
+#~ msgid "Whether the window draws WM decorations itself"
+#~ msgstr "Indica se a xanela debuxa decoracións WM por si mesma"
+
+#~ msgid "Loading…"
+#~ msgstr "Cargando…"
