@@ -27,20 +27,6 @@ const {Gdk, Gio, GLib, GObject, Gtk, GtkSource} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 
-function _getGeditScheme() {
-    let geditScheme = 'tango';
-    let schemaName = 'org.gnome.gedit.preferences.editor';
-    let installedSchemas = Gio.Settings.list_schemas();
-    if (installedSchemas.indexOf(schemaName) > -1) {
-        let geditSettings = new Gio.Settings({ schema: schemaName });
-        let geditSchemeName = geditSettings.get_string('scheme');
-        if (geditSchemeName != '')
-            geditScheme = geditSchemeName;
-    }
-
-    return geditScheme;
-}
-
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
@@ -77,8 +63,12 @@ var Klass = GObject.registerClass({
     _createBuffer(file, fileInfo) {
         let buffer = new GtkSource.Buffer();
         let styleManager = GtkSource.StyleSchemeManager.get_default();
-        let geditScheme = _getGeditScheme();
-        let scheme = styleManager.get_scheme(geditScheme);
+        let stylePath = GLib.build_filenamev([pkg.pkgdatadir,
+                                              'gtksourceview-4',
+                                              'styles']);
+        styleManager.prepend_search_path(stylePath);
+
+        let scheme = styleManager.get_scheme('builder-dark');
         buffer.set_style_scheme(scheme);
 
         let langManager = GtkSource.LanguageManager.get_default();
