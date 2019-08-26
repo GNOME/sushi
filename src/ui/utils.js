@@ -62,7 +62,7 @@ function createToolButton(renderer, iconName, callback) {
     let button = Gtk.Button.new_from_icon_name(iconName, Gtk.IconSize.MENU);
     button.set_relief(Gtk.ReliefStyle.NONE);
     button.connect('clicked', () => {
-        renderer.resetToolbarTimeout();
+        renderer.toolbar.resetTimeout();
         callback(button);
     });
 
