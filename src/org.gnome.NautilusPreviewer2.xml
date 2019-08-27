@@ -1,0 +1,11 @@
+<node>
+  <interface name="org.gnome.NautilusPreviewer2">
+    <method name="ShowFile">
+      <arg type="s" direction="in" name="uri" />
+      <arg type="s" direction="in" name="windowHandle" />
+      <arg type="b" direction="in" name="closeIfAlreadyShown" />
+    </method>
+    <method name="Close">
+    </method>
+  </interface>
+</node>
