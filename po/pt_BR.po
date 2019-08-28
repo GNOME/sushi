@@ -4,23 +4,32 @@
 # Djavan Fagundes <djavan@comum.org>, 2011.
 # Og Maciel <ogmaciel@gnome.org>, 2011.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2012-2019.
+# Enrico Nicoletto <enriconlto@src.gnome.org>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-06-22 05:41+0000\n"
-"PO-Revision-Date: 2019-07-22 00:03-0300\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"POT-Creation-Date: 2019-08-20 19:13+0000\n"
+"PO-Revision-Date: 2019-08-28 10:07-0300\n"
+"Last-Translator: Enrico Nicoletto <enriconlto@src.gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 3.32.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.2.3\n"
 
-#: src/ui/fallbackRenderer.js:232
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "Sushi"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "Oferece uma facilidade para visualizar rapidamente diferentes tipos de arquivos"
+
+#: src/ui/fallbackRenderer.js:233
 msgid "Type"
 msgstr "Tipo"
 
@@ -44,26 +53,26 @@ msgid "Modified"
 msgstr "Modificado"
 
 #. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:87
+#: src/ui/mainWindow.js:90
 #, javascript-format
 msgid "Unable to display %s"
 msgstr "Não foi possível exibir %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:367
+#: src/ui/mainWindow.js:327
 #, javascript-format
 msgid "Open With %s"
 msgstr "Abrir com %s"
 
-#: src/ui/mainWindow.js:373
+#: src/ui/mainWindow.js:333
 msgid "Open"
 msgstr "Abrir"
 
-#: src/viewers/audio.js:353
+#: src/viewers/audio.js:352
 msgid "from"
 msgstr "de"
 
-#: src/viewers/audio.js:358
+#: src/viewers/audio.js:357
 msgid "by"
 msgstr "por"
 
