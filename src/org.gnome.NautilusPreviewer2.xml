@@ -7,5 +7,9 @@
     </method>
     <method name="Close">
     </method>
+    <property name="Visible" type="b" access="read" />
+    <signal name="SelectionEvent">
+      <arg type="q" name="direction" />
+    </signal>
   </interface>
 </node>
