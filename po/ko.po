@@ -2,15 +2,14 @@
 # This file is distributed under the same license as the sushi package.
 #
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2011.
-# Changwoo Ryu <cwryu@debian.org>, 2012.
+# Changwoo Ryu <cwryu@debian.org>, 2012, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-12 19:27+0000\n"
-"PO-Revision-Date: 2012-09-16 17:31+0900\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2019-08-20 19:13+0000\n"
+"PO-Revision-Date: 2019-08-26 20:24+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -19,51 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:1
-msgid "Client decoration"
-msgstr "클라이언트 장식"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "스시"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:2
-msgid "Whether the window draws WM decorations itself"
-msgstr "창에서 창관리자 장식을 직접 그릴지 여부"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "여러가지 종류의 파일을 빠르게 보는 기능을 제공합니다"
 
-#: ../src/js/ui/fallbackRenderer.js:117
+#: src/ui/fallbackRenderer.js:233
 msgid "Type"
 msgstr "유형"
 
-#: ../src/js/ui/fallbackRenderer.js:118 ../src/js/ui/fallbackRenderer.js:123
-#: ../src/js/ui/fallbackRenderer.js:128 ../src/js/ui/spinnerBox.js:57
-#: ../src/js/viewers/folder.js:124 ../src/js/viewers/folder.js:129
-msgid "Loading…"
-msgstr "불러오는 중…"
-
-#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/viewers/folder.js:123
-msgid "Size"
-msgstr "크기"
-
-#: ../src/js/ui/fallbackRenderer.js:127 ../src/js/viewers/folder.js:128
-msgid "Modified"
-msgstr "수정됨"
-
-#: ../src/js/viewers/audio.js:171
-msgid "from"
-msgstr "앨범"
-
-#: ../src/js/viewers/audio.js:173
-msgid "by"
-msgstr "만든 이"
-
-#: ../src/js/viewers/evince.js:79
-#, c-format
-msgid "%d of %d"
-msgstr "%d (전체 %d)"
-
-#: ../src/libsushi/sushi-file-loader.c:640
-#, c-format
+#: src/ui/fallbackRenderer.js:243
+#, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "항목 %d개"
 
-#: ../src/libsushi/sushi-file-loader.c:652
+#: src/ui/fallbackRenderer.js:248
 msgid "Empty Folder"
 msgstr "빈 폴더"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr "크기"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr "수정됨"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "%s 파일을 표시할 수 없습니다"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:327
+#, javascript-format
+msgid "Open With %s"
+msgstr "%s 프로그램으로 열기"
+
+#: src/ui/mainWindow.js:333
+msgid "Open"
+msgstr "열기"
+
+#: src/viewers/audio.js:352
+msgid "from"
+msgstr "앨범"
+
+#: src/viewers/audio.js:357
+msgid "by"
+msgstr "만든 이"
+
+#: src/viewers/evince.js:86
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d (전체 %d)"
+
+#~ msgid "Client decoration"
+#~ msgstr "클라이언트 장식"
+
+#~ msgid "Whether the window draws WM decorations itself"
+#~ msgstr "창에서 창관리자 장식을 직접 그릴지 여부"
+
+#~ msgid "Loading…"
+#~ msgstr "불러오는 중…"
