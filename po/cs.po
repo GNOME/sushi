@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-06-22 05:41+0000\n"
-"PO-Revision-Date: 2019-08-16 13:01+0200\n"
+"POT-Creation-Date: 2019-08-20 19:13+0000\n"
+"PO-Revision-Date: 2019-09-02 01:16+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -20,7 +20,15 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
-#: src/ui/fallbackRenderer.js:232
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "Sushi"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "Poskytuje příslušenství pro rychlé náhledy různých druhů souborů"
+
+#: src/ui/fallbackRenderer.js:233
 msgid "Type"
 msgstr "Typ"
 
@@ -45,26 +53,26 @@ msgid "Modified"
 msgstr "Změněno"
 
 #. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:87
+#: src/ui/mainWindow.js:90
 #, javascript-format
 msgid "Unable to display %s"
 msgstr "Nelze zobrazit %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:367
+#: src/ui/mainWindow.js:327
 #, javascript-format
 msgid "Open With %s"
 msgstr "Otevřít pomocí %s"
 
-#: src/ui/mainWindow.js:373
+#: src/ui/mainWindow.js:333
 msgid "Open"
 msgstr "Otevřít"
 
-#: src/viewers/audio.js:353
+#: src/viewers/audio.js:352
 msgid "from"
 msgstr "z"
 
-#: src/viewers/audio.js:358
+#: src/viewers/audio.js:357
 msgid "by"
 msgstr "od"
 
