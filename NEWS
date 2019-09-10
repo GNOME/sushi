@@ -1,4 +1,12 @@
-3.3.90
+3.34.0
+======
+
+- Add support for moving Nautilus selection with arrow keys (#5)
+- Add support for parenting the window on Wayland (#1)
+- Use builder-dark style for text/source viewer (#24)
+- Add localization for appdata file (!11, Piotr Drąg)
+
+3.33.90
 ======
 
 - Add a command line launcher (#758253)
