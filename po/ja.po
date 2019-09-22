@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-08 07:16+0000\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2019-08-20 19:13+0000\n"
 "PO-Revision-Date: 2012-07-09 21:08+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -19,51 +19,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:1
-msgid "Client decoration"
-msgstr "クライアントで装飾"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr ""
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:2
-msgid "Whether the window draws WM decorations itself"
-msgstr "ウインドウが自分自身で WM 装飾を描画するかどうか"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr ""
 
-#: ../src/js/ui/fallbackRenderer.js:120
+#: src/ui/fallbackRenderer.js:233
 msgid "Type"
 msgstr "種類"
 
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
-#: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
-msgid "Loading…"
-msgstr "読み込み中…"
-
-#: ../src/js/ui/fallbackRenderer.js:129
-msgid "Size"
-msgstr "サイズ"
-
-#: ../src/js/ui/fallbackRenderer.js:135
-msgid "Modified"
-msgstr "更新日時"
-
-#: ../src/js/viewers/audio.js:172
-msgid "from"
-msgstr "(アルバム)"
-
-#: ../src/js/viewers/audio.js:174
-msgid "by"
-msgstr "(アーティスト)"
-
-#: ../src/js/viewers/evince.js:79
-#, c-format
-msgid "%d of %d"
-msgstr "%d / %d"
-
 # sushi
-#: ../src/libsushi/sushi-file-loader.c:639
-#, c-format
+#: src/ui/fallbackRenderer.js:243
+#, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d 個のアイテム"
 
-#: ../src/libsushi/sushi-file-loader.c:651
+#: src/ui/fallbackRenderer.js:248
 msgid "Empty Folder"
 msgstr "空のフォルダー"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr "サイズ"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr "更新日時"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr ""
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:327
+#, javascript-format
+msgid "Open With %s"
+msgstr ""
+
+#: src/ui/mainWindow.js:333
+msgid "Open"
+msgstr ""
+
+#: src/viewers/audio.js:352
+msgid "from"
+msgstr "(アルバム)"
+
+#: src/viewers/audio.js:357
+msgid "by"
+msgstr "(アーティスト)"
+
+#: src/viewers/evince.js:86
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d / %d"
+
+#~ msgid "Client decoration"
+#~ msgstr "クライアントで装飾"
+
+#~ msgid "Whether the window draws WM decorations itself"
+#~ msgstr "ウインドウが自分自身で WM 装飾を描画するかどうか"
+
+#~ msgid "Loading…"
+#~ msgstr "読み込み中…"
