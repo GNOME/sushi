@@ -1,17 +1,18 @@
 # sushi ja.po.
-# Copyright (C) 2011, 2012 Free Software Foundation, Inc.
+# Copyright (C) 2011-2019 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sushi package.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2011.
 # Jiro Matsuzawa <jmatsuzawa@src.gnome.org>, 2012.
 # Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2012.
+# sicklylife <translation@sicklylife.jp>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
 "POT-Creation-Date: 2019-08-20 19:13+0000\n"
-"PO-Revision-Date: 2012-07-09 21:08+0900\n"
-"Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
+"PO-Revision-Date: 2019-09-22 19:00+0900\n"
+"Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -21,11 +22,11 @@ msgstr ""
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
 msgid "Sushi"
-msgstr ""
+msgstr "Sushi"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr ""
+msgstr "さまざまな種類のファイルを素早く表示できるようにします"
 
 #: src/ui/fallbackRenderer.js:233
 msgid "Type"
@@ -54,17 +55,17 @@ msgstr "更新日時"
 #: src/ui/mainWindow.js:90
 #, javascript-format
 msgid "Unable to display %s"
-msgstr ""
+msgstr "%s を表示できません"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
 #: src/ui/mainWindow.js:327
 #, javascript-format
 msgid "Open With %s"
-msgstr ""
+msgstr "%s で開く"
 
 #: src/ui/mainWindow.js:333
 msgid "Open"
-msgstr ""
+msgstr "開く"
 
 #: src/viewers/audio.js:352
 msgid "from"
