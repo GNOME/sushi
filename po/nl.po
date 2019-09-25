@@ -2,67 +2,89 @@
 #
 # This file is distributed under the same license as the sushi package.
 #
-# Wouter Bolsterlee <wbolster@gnome.org>, 2011‒2013
+# Wouter Bolsterlee <wbolster@gnome.org>, 2011‒2013.
+# Nathan Follens <nthn@unseen.is>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Sushi\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-23 23:43+0100\n"
-"PO-Revision-Date: 2013-03-23 23:42+0100\n"
-"Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2019-09-22 10:28+0000\n"
+"PO-Revision-Date: 2019-09-25 13:20+0200\n"
+"Last-Translator: Nathan Follens <nthn@unseen.is>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.3\n"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:1
-msgid "Client decoration"
-msgstr "Vensterdecoratie"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "Sushi"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:2
-msgid "Whether the window draws WM decorations itself"
-msgstr "Geeft aan of het venster de eigen vensterdecoratie moet tekenen"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "Biedt de mogelijkheid om verschillende soorten bestanden in een oogopslag te bekijken"
 
-#: ../src/js/ui/fallbackRenderer.js:120
+#: src/ui/fallbackRenderer.js:233
 msgid "Type"
 msgstr "Type"
 
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
-#: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
-msgid "Loading…"
-msgstr "Laden…"
-
-#: ../src/js/ui/fallbackRenderer.js:129
-msgid "Size"
-msgstr "Grootte"
-
-#: ../src/js/ui/fallbackRenderer.js:135
-msgid "Modified"
-msgstr "Gewijzigd"
-
-#: ../src/js/viewers/audio.js:172
-msgid "from"
-msgstr "van"
-
-#: ../src/js/viewers/audio.js:174
-msgid "by"
-msgstr "door"
-
-#: ../src/js/viewers/evince.js:78
-#, c-format
-msgid "%d of %d"
-msgstr "%d van %d"
-
-#: ../src/libsushi/sushi-file-loader.c:639
-#, c-format
+#: src/ui/fallbackRenderer.js:243
+#, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d item"
 msgstr[1] "%d items"
 
-#: ../src/libsushi/sushi-file-loader.c:651
+#: src/ui/fallbackRenderer.js:248
 msgid "Empty Folder"
 msgstr "Lege map"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr "Grootte"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr "Gewijzigd"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "Kan %s niet weergeven"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:342
+#, javascript-format
+msgid "Open With %s"
+msgstr "Openen met %s"
+
+#: src/ui/mainWindow.js:348
+msgid "Open"
+msgstr "Openen"
+
+#: src/viewers/audio.js:352
+msgid "from"
+msgstr "van"
+
+#: src/viewers/audio.js:357
+msgid "by"
+msgstr "door"
+
+#: src/viewers/evince.js:86
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d van %d"
+
+#~ msgid "Client decoration"
+#~ msgstr "Vensterdecoratie"
+
+#~ msgid "Whether the window draws WM decorations itself"
+#~ msgstr "Geeft aan of het venster de eigen vensterdecoratie moet tekenen"
+
+#~ msgid "Loading…"
+#~ msgstr "Laden…"
