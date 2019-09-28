@@ -6,11 +6,21 @@ configure_file(output: 'config.h', configuration: config_data)
 externalwindow_sources = [
   'externalwindow.c',
   'externalwindow.h',
-  'externalwindow-wayland.c',
-  'externalwindow-wayland.h',
-  'externalwindow-x11.c',
-  'externalwindow-x11.h',
 ]
+
+if gtk_x11_dep.found()
+  externalwindow_sources += [
+    'externalwindow-x11.c',
+    'externalwindow-x11.h',
+  ]
+endif
+
+if gtk_wayland_dep.found()
+  externalwindow_sources += [
+    'externalwindow-wayland.c',
+    'externalwindow-wayland.h',
+  ]
+endif
 
 libsushi_deps = [
   epoxy_dep,

@@ -23,10 +23,10 @@
 #include <string.h>
 
 #include "externalwindow.h"
-#ifdef HAVE_GTK_X11
+#if HAVE_GTK_X11
 #include "externalwindow-x11.h"
 #endif
-#ifdef HAVE_GTK_WAYLAND
+#if HAVE_GTK_WAYLAND
 #include "externalwindow-wayland.h"
 #endif
 
@@ -47,7 +47,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (ExternalWindow, external_window, G_TYPE_OBJECT)
 ExternalWindow *
 create_external_window_from_handle (const char *handle_str)
 {
-#ifdef HAVE_GTK_X11
+#if HAVE_GTK_X11
     {
       const char x11_prefix[] = "x11:";
       if (g_str_has_prefix (handle_str, x11_prefix))
@@ -60,7 +60,7 @@ create_external_window_from_handle (const char *handle_str)
         }
     }
 #endif
-#ifdef HAVE_GTK_WAYLAND
+#if HAVE_GTK_WAYLAND
     {
       const char wayland_prefix[] = "wayland:";
       if (g_str_has_prefix (handle_str, wayland_prefix))
