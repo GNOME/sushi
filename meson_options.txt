@@ -1,0 +1,8 @@
+option('wayland',
+	type: 'feature',
+	value: 'auto',
+	description: 'Build with Wayland support.')
+option('X11',
+	type: 'feature',
+	value: 'auto',
+	description: 'Build with legacy X11 support.')
