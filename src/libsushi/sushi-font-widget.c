@@ -378,8 +378,7 @@ build_strings_for_face (SushiFontWidget *self)
     self->sample_string = random_string_from_available_chars (self->face, 36);
 
   g_free (self->font_name);
-  self->font_name = g_strconcat (self->face->family_name, " ",
-                                 self->face->style_name, NULL);
+  self->font_name = sushi_get_font_name (self->face, FALSE);
 }
 
 static gint *

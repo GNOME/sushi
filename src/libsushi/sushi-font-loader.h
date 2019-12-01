@@ -46,4 +46,7 @@ FT_Face sushi_new_ft_face_from_uri_finish (GAsyncResult *result,
                                            gchar **contents,
                                            GError **error);
 
+gchar * sushi_get_font_name (FT_Face face,
+                             gboolean short_form);
+
 #endif /* __SUSHI_FONT_LOADER_H__ */
