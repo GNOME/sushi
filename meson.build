@@ -2,7 +2,7 @@ project(
   'sushi',
   'c',
   version: '3.34.0',
-  meson_version: '>=0.46.0'
+  meson_version: '>=0.47.0'
 )
 
 epoxy_dep = dependency('epoxy')
@@ -17,8 +17,8 @@ gstreamer_audio_dep = dependency('gstreamer-audio-1.0')
 gstreamer_tag_dep = dependency('gstreamer-tag-1.0')
 gstreamer_video_dep = dependency('gstreamer-video-1.0')
 gtk_dep = dependency('gtk+-3.0', version: '>=3.13.2')
-gtk_x11_dep = dependency('gtk+-x11-3.0', required: false)
-gtk_wayland_dep = dependency('gtk+-wayland-3.0', version: '>= 3.21.5', required: false)
+gtk_x11_dep = dependency('gtk+-x11-3.0', required: get_option('X11'))
+gtk_wayland_dep = dependency('gtk+-wayland-3.0', version: '>= 3.21.5', required: get_option('wayland'))
 gtksourceview_dep = dependency('gtksourceview-4', version: '>=4.0.3')
 harfbuzz_dep = dependency('harfbuzz', version: '>=0.9.9')
 musicbrainz_dep = dependency('libmusicbrainz5')
