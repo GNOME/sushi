@@ -1,0 +1,80 @@
+# Kurdish (Sorani) translation for gnome-sushi
+# Copyright (c) 2020 Rosetta Contributors and Canonical Ltd 2020
+# This file is distributed under the same license as the gnome-sushi package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-sushi\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-04-16 02:06+0000\n"
+"PO-Revision-Date: 2020-05-05 00:49+0300\n"
+"Last-Translator: Jwtiyar Nariman <jwtiyar@gmail.com>\n"
+"Language-Team: Kurdish (Sorani) <ckb@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2020-05-04 21:40+0000\n"
+"X-Generator: Poedit 2.3\n"
+"Language: ckb\n"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "سوشی"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr ""
+
+#: src/ui/fallbackRenderer.js:233
+msgid "Type"
+msgstr "جۆر"
+
+#: src/ui/fallbackRenderer.js:243
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d بڕگە"
+msgstr[1] "%d بڕگە"
+
+#: src/ui/fallbackRenderer.js:248
+msgid "Empty Folder"
+msgstr "بوخچەی بەتاڵ"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr "قەبارە"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr "دەستکاریکراوە"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "ناتوانرێت %s پیشانبدرێت"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:342
+#, javascript-format
+msgid "Open With %s"
+msgstr "بیکەرەوە لەڕێگەی %s"
+
+#: src/ui/mainWindow.js:348
+msgid "Open"
+msgstr "کردنەوە"
+
+#: src/viewers/audio.js:352
+msgid "from"
+msgstr "لە"
+
+#: src/viewers/audio.js:357
+msgid "by"
+msgstr "لەلایەن"
+
+#: src/viewers/evince.js:86
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d  لە %d"
