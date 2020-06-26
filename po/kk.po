@@ -6,10 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-10-06 22:51+0000\n"
-"PO-Revision-Date: 2014-10-24 09:23+0600\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2020-03-29 15:39+0000\n"
+"PO-Revision-Date: 2020-06-26 12:46+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk@li.org>\n"
 "Language: kk\n"
@@ -17,52 +16,72 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 2.3.1\n"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:1
-msgid "Client decoration"
-msgstr "Клиент безендіруі"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "Суши"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:2
-msgid "Whether the window draws WM decorations itself"
-msgstr "Терезе ТБ безендіруін өздігінен салу керек пе"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "Әр түрлі файлдарды жылдам карауды қамтамасыз ету"
 
-#: ../src/js/ui/fallbackRenderer.js:121
+#: src/ui/fallbackRenderer.js:233
 msgid "Type"
 msgstr "Түрі"
 
-#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/ui/fallbackRenderer.js:131
-#: ../src/js/ui/fallbackRenderer.js:137 ../src/js/ui/spinnerBox.js:58
-msgid "Loading…"
-msgstr "Жүктеу…"
-
-#: ../src/js/ui/fallbackRenderer.js:130
-msgid "Size"
-msgstr "Өлшемі"
-
-#: ../src/js/ui/fallbackRenderer.js:136
-msgid "Modified"
-msgstr "Өзгертілген"
-
-#: ../src/js/viewers/audio.js:173
-msgid "from"
-msgstr "альбомнан"
-
-#: ../src/js/viewers/audio.js:175
-msgid "by"
-msgstr "орындайтын"
-
-#: ../src/js/viewers/evince.js:79
+#: src/ui/fallbackRenderer.js:243
 #, javascript-format
-msgid "%d of %d"
-msgstr "%d, барлығы %d"
-
-#: ../src/libsushi/sushi-file-loader.c:639
-#, c-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d нәрсе"
 
-#: ../src/libsushi/sushi-file-loader.c:651
+#: src/ui/fallbackRenderer.js:248
 msgid "Empty Folder"
 msgstr "Бос бума"
+
+#: src/ui/fallbackRenderer.js:251
+msgid "Size"
+msgstr "Өлшемі"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Modified"
+msgstr "Өзгертілген"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "%s көрсету мүмкін емес"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:342
+#, javascript-format
+msgid "Open With %s"
+msgstr "%s көмегімен ашу"
+
+#: src/ui/mainWindow.js:348
+msgid "Open"
+msgstr "Ашу"
+
+#: src/viewers/audio.js:352
+msgid "from"
+msgstr "альбомнан"
+
+#: src/viewers/audio.js:357
+msgid "by"
+msgstr "орындайтын"
+
+#: src/viewers/evince.js:86
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d, барлығы %d"
+
+#~ msgid "Client decoration"
+#~ msgstr "Клиент безендіруі"
+
+#~ msgid "Whether the window draws WM decorations itself"
+#~ msgstr "Терезе ТБ безендіруін өздігінен салу керек пе"
+
+#~ msgid "Loading…"
+#~ msgstr "Жүктеу…"
