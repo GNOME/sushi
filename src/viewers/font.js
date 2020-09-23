@@ -38,6 +38,14 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class FontRenderer extends Sushi.FontWidget {
+    get ready() {
+        return !!this._ready;
+    }
+
+    get fullscreen() {
+        return !!this._fullscreen;
+    }
+
     _init(file) {
         super._init({ uri: file.get_uri(),
                       visible: true })

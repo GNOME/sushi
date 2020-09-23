@@ -38,6 +38,14 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class HTMLRenderer extends WebKit2.WebView {
+    get ready() {
+        return !!this._ready;
+    }
+
+    get fullscreen() {
+        return !!this._fullscreen;
+    }
+
     _init(file) {
         super._init();
 

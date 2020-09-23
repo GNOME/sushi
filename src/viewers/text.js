@@ -38,6 +38,14 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class TextRenderer extends Gtk.ScrolledWindow {
+    get ready() {
+        return !!this._ready;
+    }
+
+    get fullscreen() {
+        return !!this._fullscreen;
+    }
+
     _init(file, fileInfo) {
         super._init();
 

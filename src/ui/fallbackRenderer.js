@@ -175,6 +175,14 @@ var FallbackRenderer = GObject.registerClass({
                                          false)
     },
 }, class FallbackRenderer extends Gtk.Box {
+    get ready() {
+        return !!this._ready;
+    }
+
+    get fullscreen() {
+        return !!this._fullscreen;
+    }
+
     _init(file, fileInfo) {
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
