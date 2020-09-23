@@ -244,6 +244,13 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class AudioRenderer extends Gtk.Overlay {
+    get ready() {
+        return !!this._ready;
+    }
+    get fullscreen() {
+        return !!this._fullscreen;
+    }
+
     _init(file) {
         super._init();
 

@@ -39,6 +39,14 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class GstRenderer extends Sushi.MediaBin {
+    get ready() {
+        return !!this._ready;
+    }
+
+    get fullscreen() {
+        return !!this._fullscreen;
+    }
+
     _init(file) {
         super._init({ uri: file.get_uri() });
 

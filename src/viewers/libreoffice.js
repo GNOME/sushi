@@ -24,6 +24,14 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class LibreofficeRenderer extends Gtk.ScrolledWindow {
+    get ready() {
+        return !!this._ready;
+    }
+
+    get fullscreen() {
+        return !!this._fullscreen;
+    }
+
     _init(file) {
         super._init({ hexpand: true,
                       visible: true,

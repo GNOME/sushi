@@ -42,6 +42,14 @@ var Klass = GObject.registerClass({
                                          false)
     },
 }, class EvinceRenderer extends Gtk.ScrolledWindow {
+    get ready() {
+        return !!this._ready;
+    }
+
+    get fullscreen() {
+        return !!this._fullscreen;
+    }
+
     _init(file, fileInfo) {
         super._init({ visible: true,
                       min_content_height: Constants.VIEW_MIN,
