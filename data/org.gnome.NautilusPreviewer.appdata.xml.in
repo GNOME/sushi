@@ -8,6 +8,12 @@
   <project_license>GPL-2.0+</project_license>
   <name>Sushi</name>
   <summary>Provide a facility for quickly viewing different kinds of files</summary>
+  <description>
+    <p>
+      Sushi is a file previewer for the GNOME desktop environment. It is an independent component that
+      integrates with GNOME Files (Nautilus).
+    </p>
+  </description>
   <keywords>
     <keyword>nautilus</keyword>
     <keyword>sushi</keyword>
@@ -15,8 +21,17 @@
     <keyword>previewer</keyword>
     <keyword>preview</keyword>
   </keywords>
+  <releases>
+    <release version="3.38.0" date="2020-10-02">
+      <description>
+        <p>Sushi 3.38.0 is the latest stable version of GNOME Sushi, and it contains all
+        features and bugfixes introduced since our last release.</p>
+      </description>
+    </release>
+  </releases>
   <translation type="gettext">sushi</translation>
+  <url type="translate">https://wiki.gnome.org/TranslationProject</url>
   <url type="homepage">https://gitlab.gnome.org/GNOME/sushi</url>
   <url type="bugtracker">https://gitlab.gnome.org/GNOME/sushi/issues</url>
-  <updatecontact>eischmann_at_redhat.com</updatecontact>
+  <update_contact>eischmann_at_redhat.com</update_contact>
 </component>

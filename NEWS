@@ -1,3 +1,13 @@
+3.38.0
+======
+
+- Fix build when Wayland is disabled (Ting-Wei Lan)
+- Make X11 and Wayland configurable at build time (!12, David Heidelberg)
+- Sync font-widget with gnome-font-viewer
+- Fix various meson build issues
+- Sandbox webkitgtk
+- Fix crash caused by the lack of getters for viewers' properties
+
 3.34.0
 ======
 
