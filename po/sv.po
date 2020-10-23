@@ -1,15 +1,15 @@
 # Swedish translation for sushi.
-# Copyright © 2011-2019 Free Software Foundation, Inc.
+# Copyright © 2011-2020 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sushi package.
 # Daniel Nylander <po@danielnylander.se>, 2011, 2012.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2016, 2019.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2016, 2019, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-08-20 19:13+0000\n"
-"PO-Revision-Date: 2019-08-20 23:09+0200\n"
+"POT-Creation-Date: 2020-10-22 14:35+0000\n"
+"PO-Revision-Date: 2020-10-23 18:51+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
 msgid "Sushi"
@@ -27,26 +27,34 @@ msgstr "Sushi"
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Tillhandahåll ett verktyg för att snabbt visa olika typer av filer"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Sushi är en filförhandsvisare för skrivbordsmiljön GNOME. Det är en "
+"oberoende komponent som integrerar med GNOME Filer (Nautilus)."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "Typ"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d objekt"
 msgstr[1] "%d objekt"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "Tom mapp"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "Storlek"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "Ändrad"
 
@@ -57,24 +65,24 @@ msgid "Unable to display %s"
 msgstr "Kunde inte visa %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:327
+#: src/ui/mainWindow.js:342
 #, javascript-format
 msgid "Open With %s"
 msgstr "Öppna med %s"
 
-#: src/ui/mainWindow.js:333
+#: src/ui/mainWindow.js:348
 msgid "Open"
 msgstr "Öppna"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
 msgstr "från"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
 msgstr "av"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d av %d"
@@ -86,4 +94,5 @@ msgstr "%d av %d"
 #~ msgstr "Klientdekoration"
 
 #~ msgid "Whether the window draws WM decorations itself"
-#~ msgstr "Huruvida fönstret ritar ut dekorationer från fönsterhanteraren själv"
+#~ msgstr ""
+#~ "Huruvida fönstret ritar ut dekorationer från fönsterhanteraren själv"
