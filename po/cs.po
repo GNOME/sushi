@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the sushi package.
 #
 # PW <petr.wudi@gmail.com>, 2011.
-# Marek Černocký <marek@manet.cz>, 2011, 2012, 2019.
+# Marek Černocký <marek@manet.cz>, 2011, 2012, 2019, 2020.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sushi master\n"
+"Project-Id-Version: sushi gnome-3.38\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-08-20 19:13+0000\n"
-"PO-Revision-Date: 2019-09-02 01:16+0200\n"
+"POT-Creation-Date: 2020-10-22 14:35+0000\n"
+"PO-Revision-Date: 2020-10-26 19:33+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -28,11 +28,20 @@ msgstr "Sushi"
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Poskytuje příslušenství pro rychlé náhledy různých druhů souborů"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Sushi slouží k zobrazení náhledů souborů v uživatelském prostředí GNOME. "
+"Jedná se o nezávislou komponentu, která se začleňuje do aplikace Soubory "
+"GNOME (Nautilus)."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "Typ"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -40,15 +49,15 @@ msgstr[0] "%d položka"
 msgstr[1] "%d položky"
 msgstr[2] "%d položek"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "Prázdná složka"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "Velikost"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "Změněno"
 
@@ -59,33 +68,24 @@ msgid "Unable to display %s"
 msgstr "Nelze zobrazit %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:327
+#: src/ui/mainWindow.js:342
 #, javascript-format
 msgid "Open With %s"
 msgstr "Otevřít pomocí %s"
 
-#: src/ui/mainWindow.js:333
+#: src/ui/mainWindow.js:348
 msgid "Open"
 msgstr "Otevřít"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
 msgstr "z"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
 msgstr "od"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d z %d"
-
-#~ msgid "Client decoration"
-#~ msgstr "Dekorace klienta"
-
-#~ msgid "Whether the window draws WM decorations itself"
-#~ msgstr "Zda si okno samo kreslí dekorace okenního správce"
-
-#~ msgid "Loading…"
-#~ msgstr "Načítá se…"
