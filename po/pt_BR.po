@@ -4,22 +4,22 @@
 # Djavan Fagundes <djavan@comum.org>, 2011.
 # Og Maciel <ogmaciel@gnome.org>, 2011.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2012-2019.
-# Enrico Nicoletto <enriconlto@src.gnome.org>, 2019.
+# Enrico Nicoletto <enriconlto@src.gnome.org>, 2019, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-08-20 19:13+0000\n"
-"PO-Revision-Date: 2019-08-28 10:07-0300\n"
-"Last-Translator: Enrico Nicoletto <enriconlto@src.gnome.org>\n"
+"POT-Creation-Date: 2020-10-22 14:35+0000\n"
+"PO-Revision-Date: 2020-11-10 08:14-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
 msgid "Sushi"
@@ -27,28 +27,38 @@ msgstr "Sushi"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr "Oferece uma facilidade para visualizar rapidamente diferentes tipos de arquivos"
+msgstr ""
+"Oferece uma facilidade para visualizar rapidamente diferentes tipos de "
+"arquivos"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Sushi é um visualizador de arquivos para a área de trabalho do GNOME. É um "
+"componente independente que se integra com o Arquivos do GNOME (Nautilus)."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "Tipo"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d item"
 msgstr[1] "%d itens"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "Pasta vazia"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "Modificado"
 
@@ -59,33 +69,24 @@ msgid "Unable to display %s"
 msgstr "Não foi possível exibir %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:327
+#: src/ui/mainWindow.js:342
 #, javascript-format
 msgid "Open With %s"
 msgstr "Abrir com %s"
 
-#: src/ui/mainWindow.js:333
+#: src/ui/mainWindow.js:348
 msgid "Open"
 msgstr "Abrir"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
 msgstr "de"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
 msgstr "por"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d de %d"
-
-#~ msgid "Client decoration"
-#~ msgstr "Decoração do cliente"
-
-#~ msgid "Whether the window draws WM decorations itself"
-#~ msgstr "Se a própria janela desenha as decorações do Gerenciador de janelas"
-
-#~ msgid "Loading…"
-#~ msgstr "Carregando…"
