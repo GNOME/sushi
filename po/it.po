@@ -1,15 +1,15 @@
 # Italian translation for sushi
-# Copyright (C) 2011, 2012, 2019 Free Software Foundation, Inc
+# Copyright (C) 2011, 2012, 2019, 2020 Free Software Foundation, Inc
 # This file is distributed under the same license as the sushi package.
 # Luca Ferretti <lferrett@gnome.org>, 2011.
-# Milo Casagrande <milo@milo.name>, 2012, 2019.
+# Milo Casagrande <milo@milo.name>, 2012, 2019, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-08-20 19:13+0000\n"
-"PO-Revision-Date: 2019-09-04 15:08+0200\n"
+"POT-Creation-Date: 2020-10-22 14:35+0000\n"
+"PO-Revision-Date: 2020-11-16 09:44+0100\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
 msgid "Sushi"
@@ -27,26 +27,35 @@ msgstr "Sushi"
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Fornisce un sistema per visualizzare velocemente file diversi"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Sushi è un'applicazione per la visualizzazione di anteprime di file per "
+"l'ambiente GNOME. È un componente indipendente che si integra con File di "
+"GNOME (Nautilus)."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "Tipo"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d oggetto"
 msgstr[1] "%d oggetti"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "Cartella vuota"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "Dimensione"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "Ultima modifica"
 
@@ -57,24 +66,24 @@ msgid "Unable to display %s"
 msgstr "Impossibile visualizzare %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:327
+#: src/ui/mainWindow.js:342
 #, javascript-format
 msgid "Open With %s"
 msgstr "Apri con %s"
 
-#: src/ui/mainWindow.js:333
+#: src/ui/mainWindow.js:348
 msgid "Open"
 msgstr "Apri"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
 msgstr "da"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
 msgstr "di"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d di %d"
