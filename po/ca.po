@@ -34,7 +34,7 @@ msgid ""
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
 "El Sushi és un previsualitzador de fitxers per a l'entorn d'escriptori "
-"GNOME. Es tracta d'un component independent que se integra amb el "
+"GNOME. Es tracta d'un component independent que s'integra amb el "
 "Fitxers del GNOME (Nautilus)."
 
 #: src/ui/fallbackRenderer.js:241
