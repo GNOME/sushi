@@ -1,14 +1,14 @@
 # Norwegian bokmål translation of sushi.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Kjartan Maraas <kmaraas@gnome.org>, 2011-2012.
+# Kjartan Maraas <kmaraas@gnome.org>, 2011-2020.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sushi 0.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-18 20:46+0200\n"
-"PO-Revision-Date: 2012-04-18 20:47+0200\n"
+"Project-Id-Version: sushi 3.38.x\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2020-10-22 14:35+0000\n"
+"PO-Revision-Date: 2021-01-13 15:09+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: nb\n"
@@ -17,52 +17,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:1
-msgid "Client decoration"
-msgstr "Dekorasjon for klient"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "Sushi"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:2
-msgid "Whether the window draws WM decorations itself"
-msgstr "Om vinduet tegner dekorasjoner selv"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "Gir mulighet for å vise forskjellige typer filer raskt"
 
-#: ../src/js/ui/fallbackRenderer.js:117
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr "Sushi gjør forhåndsvisning av filer for GNOME skrivebordsmiljøet. Det er en uavhengig komponent som integrerer med GNOME file (Nautilus)."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "Type"
 
-#: ../src/js/ui/fallbackRenderer.js:118 ../src/js/ui/fallbackRenderer.js:123
-#: ../src/js/ui/fallbackRenderer.js:128 ../src/js/ui/spinnerBox.js:57
-#: ../src/js/viewers/folder.js:124 ../src/js/viewers/folder.js:129
-msgid "Loading…"
-msgstr "Laster …"
-
-#: ../src/js/ui/fallbackRenderer.js:122 ../src/js/viewers/folder.js:123
-msgid "Size"
-msgstr "Størrelse"
-
-#: ../src/js/ui/fallbackRenderer.js:127 ../src/js/viewers/folder.js:128
-msgid "Modified"
-msgstr "Endret"
-
-#: ../src/js/viewers/audio.js:171
-msgid "from"
-msgstr "fra"
-
-#: ../src/js/viewers/audio.js:173
-msgid "by"
-msgstr "av"
-
-#: ../src/js/viewers/evince.js:79
-#, c-format
-msgid "%d of %d"
-msgstr "%d av %d"
-
-#: ../src/libsushi/sushi-file-loader.c:640
-#, c-format
+#: src/ui/fallbackRenderer.js:251
+#, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d oppføring"
 msgstr[1] "%d oppføringer"
 
-#: ../src/libsushi/sushi-file-loader.c:652
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "Tom mappe"
+
+#: src/ui/fallbackRenderer.js:259
+msgid "Size"
+msgstr "Størrelse"
+
+#: src/ui/fallbackRenderer.js:264
+msgid "Modified"
+msgstr "Endret"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "Kan ikke vise %s"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:342
+#, javascript-format
+msgid "Open With %s"
+msgstr "Åpne med %s"
+
+#: src/ui/mainWindow.js:348
+msgid "Open"
+msgstr "Åpne"
+
+#: src/viewers/audio.js:359
+msgid "from"
+msgstr "fra"
+
+#: src/viewers/audio.js:364
+msgid "by"
+msgstr "av"
+
+#: src/viewers/evince.js:94
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d av %d"
