@@ -1,23 +1,24 @@
 # Hungarian translation for sushi.
-# Copyright (C) 2011, 2012, 2019 Free Software Foundation, Inc.
+# Copyright (C) 2011, 2012, 2019, 2021 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sushi package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2011, 2012.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2019.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2019, 2021.
+# Balázs Meskó <mesko.balazs at fsf dot hu>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-08-20 19:13+0000\n"
-"PO-Revision-Date: 2019-08-24 23:28+0200\n"
-"Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
+"POT-Creation-Date: 2020-10-22 14:35+0000\n"
+"PO-Revision-Date: 2021-02-14 01:24+0100\n"
+"Last-Translator: Balázs Meskó <mesko.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 18.12.3\n"
+"X-Generator: Lokalize 19.12.3\n"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
 msgid "Sushi"
@@ -25,28 +26,36 @@ msgstr "Sushi"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr "Képesség nyújtása különféle típusú fájlok gyors megtekintéséhez"
+msgstr "Lehetőség biztosítása különféle típusú fájlok gyors megtekintéséhez"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"A Sushi egy fájlelőnézet-készítő a GNOME asztali környezethez. Egy "
+"független összetevő, amely a GNOME Fájlokba (Nautilusba) épül be."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "Típus"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d elem"
 msgstr[1] "%d elem"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "Üres mappa"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "Méret"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "Módosítva"
 
@@ -57,24 +66,24 @@ msgid "Unable to display %s"
 msgstr "Nem jeleníthető meg: %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:327
+#: src/ui/mainWindow.js:342
 #, javascript-format
 msgid "Open With %s"
 msgstr "Megnyitás ezzel: %s"
 
-#: src/ui/mainWindow.js:333
+#: src/ui/mainWindow.js:348
 msgid "Open"
 msgstr "Megnyitás"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
 msgstr "ettől:"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
 msgstr "–"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d / %d"
