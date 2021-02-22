@@ -5,21 +5,22 @@
 # Muhammet Kara <muhammet.k@gmail.com>, 2011.
 # Necdet Yücel <necdetyucel@gmail.com>, 2014.
 # Sabri Ünal <libreajans@gmail.com>, 2019.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-08-20 19:13+0000\n"
-"PO-Revision-Date: 2019-08-21 23:38+0300\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"POT-Creation-Date: 2020-10-22 14:15+0000\n"
+"PO-Revision-Date: 2021-02-22 10:51+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-POOTLE-MTIME: 1415555003.000000\n"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
@@ -28,27 +29,35 @@ msgstr "Sushi"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr "Farklı türdeki dosyaları hızlıca görüntüleme olanağı sağlar"
+msgstr "Değişik türdeki dosyaları hızlıca görüntülemeyi sağlar"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Sushi, GNOME masaüstü ortamı için dosya ön izleyicidir. GNOME "
+"Dosyalar (Nautilus) ile tümleşen bağımsız bileşendir."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "Tür"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d öge"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "Boş Klasör"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "Boyut"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "Değiştirildi"
 
@@ -59,24 +68,24 @@ msgid "Unable to display %s"
 msgstr "%s gösterilemiyor"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:327
+#: src/ui/mainWindow.js:342
 #, javascript-format
 msgid "Open With %s"
 msgstr "%s İle Aç"
 
-#: src/ui/mainWindow.js:333
+#: src/ui/mainWindow.js:348
 msgid "Open"
 msgstr "Aç"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
-msgstr "gönderen"
+msgstr "Albüm:"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
-msgstr "sahibi"
+msgstr "Sanatçı:"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d / %d"
