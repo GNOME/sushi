@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
 "POT-Creation-Date: 2020-10-22 14:15+0000\n"
-"PO-Revision-Date: 2021-02-22 10:51+0300\n"
+"PO-Revision-Date: 2021-02-22 10:56+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -59,7 +59,7 @@ msgstr "Boyut"
 
 #: src/ui/fallbackRenderer.js:264
 msgid "Modified"
-msgstr "Değiştirildi"
+msgstr "Değiştirilme"
 
 #. TRANSLATORS: This is a filename, e.g. "image.jpg"
 #: src/ui/mainWindow.js:90
