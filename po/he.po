@@ -2,14 +2,14 @@
 # Copyright (C) 2011 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Yaron Shahrabani <sh.yaron@gmail.com>, 2011.
-# Yosef Or Boczko <yoseforb@gmail.com>, 2020.
+# Yosef Or Boczko <yoseforb@gmail.com>, 2020-2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-09-25 11:22+0000\n"
-"PO-Revision-Date: 2020-03-29 18:37+0300\n"
+"POT-Creation-Date: 2020-10-23 08:16+0000\n"
+"PO-Revision-Date: 2021-03-29 02:32+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-Language: Hebrew\n"
 "X-Poedit-Country: ISRAEL\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Gtranslator 3.34.0\n"
+"X-Generator: Gtranslator 3.38.0\n"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
 msgid "Sushi"
@@ -30,11 +30,19 @@ msgstr "Sushi"
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "מספק אמצעי להצגה מהירה של מגוון קבצים"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"‏Sushi הוא מציג תצוגה מקדימה של קבצים עבור שולחן העבודה GNOME. זהו רכיב עצמאי "
+"שמשתלב עם יישום הקבצים של GNOME (‏Nautilus)."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "סוג"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -42,15 +50,15 @@ msgstr[0] "פריט אחד"
 msgstr[1] "%d פריטים"
 msgstr[2] "%d פריטים"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "תיקייה ריקה"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "גודל"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "מועד השינוי"
 
@@ -70,15 +78,15 @@ msgstr "פתיחה באמצעות %s"
 msgid "Open"
 msgstr "פתיחה"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
 msgstr "מאת"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
 msgstr "על ידי"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d מתוך %d"
