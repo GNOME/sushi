@@ -3,22 +3,22 @@
 # This file is distributed under the same license as the sushi package.
 #
 # Wouter Bolsterlee <wbolster@gnome.org>, 2011‒2013.
-# Nathan Follens <nthn@unseen.is>, 2019.
+# Nathan Follens <nthn@unseen.is>, 2019, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-09-22 10:28+0000\n"
-"PO-Revision-Date: 2019-09-25 13:20+0200\n"
+"POT-Creation-Date: 2020-10-23 08:16+0000\n"
+"PO-Revision-Date: 2021-04-01 20:27+0200\n"
 "Last-Translator: Nathan Follens <nthn@unseen.is>\n"
-"Language-Team: Dutch <vertaling@vrijschrift.org>\n"
+"Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
 msgid "Sushi"
@@ -26,28 +26,39 @@ msgstr "Sushi"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr "Biedt de mogelijkheid om verschillende soorten bestanden in een oogopslag te bekijken"
+msgstr ""
+"Biedt de mogelijkheid om verschillende soorten bestanden in een oogopslag te "
+"bekijken"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Sushi is een voorbeeldweergavetoepassing voor de Gnome-bureaubladomgeving. "
+"Het is een onafhankelijk onderdeel dat integreert met Gnome Bestanden "
+"(Nautilus)."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "Type"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d item"
 msgstr[1] "%d items"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "Lege map"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "Grootte"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "Gewijzigd"
 
@@ -67,15 +78,15 @@ msgstr "Openen met %s"
 msgid "Open"
 msgstr "Openen"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
 msgstr "van"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
 msgstr "door"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d van %d"
