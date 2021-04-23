@@ -8,16 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-08-20 19:13+0000\n"
-"PO-Revision-Date: 2019-09-05 19:00+0300\n"
-"Last-Translator: Efstathios Iosifidis <iosifidis@opensuse.org>\n"
+"POT-Creation-Date: 2020-10-22 14:15+0000\n"
+"PO-Revision-Date: 2021-04-23 15:15+0300\n"
+"Last-Translator: Efstathios Iosifidis <eiosifidis@gnome.org>\n"
 "Language-Team: Greek, Modern (1453-) <gnome-el-list@gnome.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.32.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.3\n"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
 msgid "Sushi"
@@ -27,26 +27,35 @@ msgstr "Sushi"
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Μια δυνατότητα γρήγορης προβολής διαφόρων ειδών αρχείων"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Το Sushi είναι ένα πρόγραμμα προεπισκόπησης αρχείων για το περιβάλλον "
+"επιφάνειας εργασίας GNOME. Είναι ένα ανεξάρτητο στοιχείο που ενσωματώνεται "
+"στο πρόγραμμα Αρχεία GNOME (Nautilus)."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "Τύπος"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d αντικείμενο"
 msgstr[1] "%d αντικείμενα"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "Άδειασμα του φακέλου"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "Μέγεθος"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "Τροποποιήθηκε"
 
@@ -57,24 +66,24 @@ msgid "Unable to display %s"
 msgstr "Αδυναμία εμφάνισης %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:327
+#: src/ui/mainWindow.js:342
 #, javascript-format
 msgid "Open With %s"
 msgstr "Άνοιγμα με %s"
 
-#: src/ui/mainWindow.js:333
+#: src/ui/mainWindow.js:348
 msgid "Open"
 msgstr "Άνοιγμα"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
 msgstr "του"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
 msgstr "από"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d από %d"
