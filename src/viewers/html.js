@@ -49,9 +49,6 @@ var Klass = GObject.registerClass({
     _init(file) {
         super._init();
 
-        let webContext = WebKit2.WebContext.get_default();
-        webContext.set_sandbox_enabled(true);
-
         /* disable the default context menu of the web view */
         this.connect('context-menu',
                      function() {return true;});
