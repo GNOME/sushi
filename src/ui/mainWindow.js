@@ -250,8 +250,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         // See https://gitlab.gnome.org/GNOME/gtk/issues/1828
         let versionCheck = Gtk.check_version(3, 24, 9);
         if (!versionCheck) {
-            scaleW = geometry.width / WINDOW_MAX_W_BASE;
-            scaleH = geometry.height / WINDOW_MAX_H_BASE;
+            scaleW = (geometry.width / WINDOW_MAX_W_BASE) / this.get_scale_factor ();
+            scaleH = (geometry.height / WINDOW_MAX_H_BASE) / this.get_scale_factor ();
         }
 
         return [Math.floor(scaleW * WINDOW_MAX_W),
