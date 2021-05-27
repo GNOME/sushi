@@ -1,0 +1,36 @@
+include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
+
+stages:
+- test
+- deploy
+- fedora
+
+flatpak:
+    image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
+    needs: []
+    variables:
+        MANIFEST_PATH: "flatpak/org.gnome.NautilusPreviewer.json"
+        FLATPAK_MODULE: "sushi"
+        RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+        APP_ID: "org.gnome.NautilusPreviewer.Devel"
+        BUNDLE: "sushi.flatpak"
+    extends: .flatpak
+
+nightly:
+  extends: '.publish_nightly'
+  dependencies: ['flatpak']
+  needs: ['flatpak']
+
+fedora:latest:
+    image: fedora:latest
+    stage: fedora
+    needs: []
+    before_script:
+    - dnf update -y --nogpgcheck
+    - dnf install -y meson git gtk3-devel clutter-gst3-devel clutter-gtk-devel
+                     evince-devel gettext gtksourceview4-devel libmusicbrainz5-devel
+                     webkit2gtk3-devel --nogpgcheck
+
+    script:
+        - meson _build .
+        - ninja -C _build
