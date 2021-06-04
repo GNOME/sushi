@@ -1,3 +1,8 @@
+3.38.1
+======
+
+- Account for scaling factor while estimating window size
+
 3.38.0
 ======
 
