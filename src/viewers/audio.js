@@ -47,6 +47,7 @@ function _formatTimeString(timeVal) {
 }
 
 const AMAZON_IMAGE_FORMAT = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg";
+const MUSIC_BRAINZ_ASIN_FORMAT = "https://musicbrainz.org/ws/2/release/?query=release:\"%s\"AND artist:\"%s\"&limit=1&fmt=json&inc=asin";
 const fetchCoverArt = function(_tagList, _callback) {
     function _fetchFromTags() {
         let coverSample = null;
@@ -191,13 +192,28 @@ const fetchCoverArt = function(_tagList, _callback) {
         let artist = _tagList.get_string('artist')[1];
         let album = _tagList.get_string('album')[1];
 
-        Sushi.get_asin_for_track(artist, album, (o, res) => {
-            let asin
-            try {
-                asin = Sushi.get_asin_for_track_finish(res);
-            } catch (e) {
-                done(e, null);
-                return;
+        let uri = MUSIC_BRAINZ_ASIN_FORMAT.format(album, artist);
+        let session = new Soup.SessionAsync();
+
+        let request;
+        try {
+            request = Soup.Message.new('GET', uri);
+            request.request_headers.append('User-Agent', 'gnome-sushi');
+        } catch (e) {
+            done(e, null);
+            return;
+        }
+
+        session.queue_message(request, (r, res) => {
+            let asin = null;
+            if (request.status_code == Soup.Status.OK) {
+                try {
+                    let json_response = JSON.parse(request.response_body.data);
+                    asin = json_response['release'][0]['asin'].toString();
+                } catch (e) {
+                    done(e, null);
+                    return;
+                }
             }
 
             _fetchFromCache(asin, (err, cover) => {
