@@ -39,7 +39,6 @@ libsushi_deps = [
   gstreamer_video_dep,
   gtk_dep,
   harfbuzz_dep,
-  musicbrainz_dep
 ]
 
 libsushi_sources = [

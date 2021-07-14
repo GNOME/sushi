@@ -21,7 +21,6 @@ gtk_x11_dep = dependency('gtk+-x11-3.0', required: get_option('X11'))
 gtk_wayland_dep = dependency('gtk+-wayland-3.0', version: '>= 3.21.5', required: get_option('wayland'))
 gtksourceview_dep = dependency('gtksourceview-4', version: '>=4.0.3')
 harfbuzz_dep = dependency('harfbuzz', version: '>=0.9.9')
-musicbrainz_dep = dependency('libmusicbrainz5')
 webkit_dep = dependency('webkit2gtk-4.0')
 
 bindir = join_paths(get_option('prefix'), get_option('bindir'))
