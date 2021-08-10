@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-02 14:57+0530\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2020-10-22 14:15+0000\n"
 "PO-Revision-Date: 2012-09-02 14:59+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: Tamil <ta@li.org>\n"
@@ -17,53 +17,82 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.1\n"
+"X-Language: ta\n"
+"X-Source-Language: C\n"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:1
-msgid "Client decoration"
-msgstr "சார்ந்தோன் அலங்காரம்"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "சூஷி"
 
-#: ../data/org.gnome.sushi.gschema.xml.in.h:2
-msgid "Whether the window draws WM decorations itself"
-msgstr "டபிள்யூஎம் அலங்காரங்களை சாரளமே செய்து கொள்ளுமா"
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "பல்வேறு வகையான கோப்புகளை விரைவாக காணும் வசதியை வழங்கும்"
 
-#: ../src/js/ui/fallbackRenderer.js:120
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"சூஷி என்பது க்னோம் டெஸ்க்டாப்பிறகான கோப்பு முன்னோட்டம். இது க்னோம் "
+"கோப்புகளுடன் (நாட்டிலஸ்) ஒருங்கிணையும் ஒரு சுயாதீனமான கூறு ஆகும்."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "வகை"
 
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:130
-#: ../src/js/ui/fallbackRenderer.js:136 ../src/js/ui/spinnerBox.js:57
-msgid "Loading…"
-msgstr "ஏற்றுகிறது…"
-
-#: ../src/js/ui/fallbackRenderer.js:129
-msgid "Size"
-msgstr "அளவு"
-
-#: ../src/js/ui/fallbackRenderer.js:135
-msgid "Modified"
-msgstr "மாற்றப்பட்ட"
-
-#: ../src/js/viewers/audio.js:172
-msgid "from"
-msgstr "அனுப்புநர்"
-
-#: ../src/js/viewers/audio.js:174
-msgid "by"
-msgstr "ஆல்"
-
-#: ../src/js/viewers/evince.js:79
-#, c-format
-msgid "%d of %d"
-msgstr "%d  %d இல் "
-
-#: ../src/libsushi/sushi-file-loader.c:639
-#, c-format
+#: src/ui/fallbackRenderer.js:251
+#, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d உருப்படி"
 msgstr[1] "%d உருப்படிகள்"
 
-#: ../src/libsushi/sushi-file-loader.c:651
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "காலி அடைவு"
 
+#: src/ui/fallbackRenderer.js:259
+msgid "Size"
+msgstr "அளவு"
+
+#: src/ui/fallbackRenderer.js:264
+msgid "Modified"
+msgstr "மாற்றப்பட்ட"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "%s ஐ காட்ட முடியவில்லை"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:342
+#, javascript-format
+msgid "Open With %s"
+msgstr "%s வுடன் திறக்கவும்"
+
+#: src/ui/mainWindow.js:348
+msgid "Open"
+msgstr "திற"
+
+#: src/viewers/audio.js:359
+msgid "from"
+msgstr "இல் இருந்து"
+
+#: src/viewers/audio.js:364
+msgid "by"
+msgstr "ஆல்"
+
+#: src/viewers/evince.js:94
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d இன் %d"
+
+#~ msgid "Client decoration"
+#~ msgstr "சார்ந்தோன் அலங்காரம்"
+
+#~ msgid "Whether the window draws WM decorations itself"
+#~ msgstr "டபிள்யூஎம் அலங்காரங்களை சாரளமே செய்து கொள்ளுமா"
+
+#~ msgid "Loading…"
+#~ msgstr "ஏற்றுகிறது…"
