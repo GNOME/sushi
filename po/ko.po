@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the sushi package.
 #
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2011.
-# Changwoo Ryu <cwryu@debian.org>, 2012, 2019.
+# Changwoo Ryu <cwryu@debian.org>, 2012, 2019, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2019-08-20 19:13+0000\n"
-"PO-Revision-Date: 2019-08-26 20:24+0900\n"
+"POT-Creation-Date: 2020-10-22 14:15+0000\n"
+"PO-Revision-Date: 2021-09-13 09:35+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -26,25 +26,31 @@ msgstr "스시"
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "여러가지 종류의 파일을 빠르게 보는 기능을 제공합니다"
 
-#: src/ui/fallbackRenderer.js:233
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr "스시는 그놈 데스크톱 환경을 위한 파일 미리 보기 프로그램입니다. 스시는 그놈 파일(노틸러스)과 연동해 동작하는 독립적인 구성 요소입니다."
+
+#: src/ui/fallbackRenderer.js:241
 msgid "Type"
 msgstr "유형"
 
-#: src/ui/fallbackRenderer.js:243
+#: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "항목 %d개"
 
-#: src/ui/fallbackRenderer.js:248
+#: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
 msgstr "빈 폴더"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:259
 msgid "Size"
 msgstr "크기"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:264
 msgid "Modified"
 msgstr "수정됨"
 
@@ -55,24 +61,24 @@ msgid "Unable to display %s"
 msgstr "%s 파일을 표시할 수 없습니다"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:327
+#: src/ui/mainWindow.js:342
 #, javascript-format
 msgid "Open With %s"
 msgstr "%s 프로그램으로 열기"
 
-#: src/ui/mainWindow.js:333
+#: src/ui/mainWindow.js:348
 msgid "Open"
 msgstr "열기"
 
-#: src/viewers/audio.js:352
+#: src/viewers/audio.js:359
 msgid "from"
 msgstr "앨범"
 
-#: src/viewers/audio.js:357
+#: src/viewers/audio.js:364
 msgid "by"
 msgstr "만든 이"
 
-#: src/viewers/evince.js:86
+#: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d (전체 %d)"
