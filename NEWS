@@ -1,3 +1,12 @@
+41.0
+====
+
+- Drop libmusicbrainz dependency (use libsoup directly)
+- Account for scale-factor when estimating window size
+- Build against webkit2gtk-4.1 (!23, Javier Jardón)
+- Disable webkit sandboxing (!18, Joel Ong)
+- Translation updates
+
 3.38.0
 ======
 
