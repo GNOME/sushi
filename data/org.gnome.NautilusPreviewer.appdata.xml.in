@@ -22,9 +22,9 @@
     <keyword>preview</keyword>
   </keywords>
   <releases>
-    <release version="3.38.0" date="2020-10-02">
+    <release version="41.0" date="2021-09-21">
       <description>
-        <p>Sushi 3.38.0 is the latest stable version of GNOME Sushi, and it contains all
+        <p>Sushi 41.0 is the latest stable version of GNOME Sushi, and it contains all
         features and bugfixes introduced since our last release.</p>
       </description>
     </release>
