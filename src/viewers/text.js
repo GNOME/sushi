@@ -56,14 +56,6 @@ var Klass = GObject.registerClass({
                                           monospace: true,
                                           show_line_numbers: !!buffer.language });
         this._view.set_can_focus(false);
-        this._view.connect('button-press-event', (view, event) => {
-            let [, button] = event.get_button();
-            if (button == Gdk.BUTTON_SECONDARY)
-                return true;
-
-            return false;
-        });
-
         this.add(this._view);
         this.isReady();
     }
