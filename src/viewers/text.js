@@ -55,7 +55,6 @@ var Klass = GObject.registerClass({
                                           cursor_visible: false,
                                           monospace: true,
                                           show_line_numbers: !!buffer.language });
-        this._view.set_can_focus(false);
         this.add(this._view);
         this.isReady();
     }
