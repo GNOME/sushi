@@ -1,7 +1,7 @@
 # Abkhazian translation for sushi.
 # Copyright (C) 2022 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Нанба Наала <naala-nanba@rambler.ru>, 2022.
 #
 msgid ""
 msgstr ""
@@ -9,76 +9,79 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
 "POT-Creation-Date: 2021-09-21 13:26+0000\n"
 "PO-Revision-Date: 2021-09-21 13:26+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
 "Language-Team: Abkhazian <ab@li.org>\n"
 "Language: ab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-DamnedLies-Scope: partial\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
 msgid "Sushi"
-msgstr ""
+msgstr "Sushi"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr ""
+msgstr "Ишәнаҭоит алшара иаарццакны хкы рацәала афаилқәа рыхәаԥшра"
 
 #: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
-msgstr ""
+msgstr "Sushi- ишәнаҭоит алшара иаарццакны аусуратә ишәа шәахәаԥшырц."
+"Уи ихьыԥшым хәҭаҵас афаил иалалоит."
 
 #: src/ui/fallbackRenderer.js:241
 msgid "Type"
-msgstr ""
+msgstr "Ахкы"
 
 #: src/ui/fallbackRenderer.js:251
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d Хәҭак"
+msgstr[1] "%d Ахәҭақәа"
 
 #: src/ui/fallbackRenderer.js:256
 msgid "Empty Folder"
-msgstr ""
+msgstr "Иҭацәу ақьаадҭра "
 
 #: src/ui/fallbackRenderer.js:259
 msgid "Size"
-msgstr ""
+msgstr "Ашәага"
 
 #: src/ui/fallbackRenderer.js:264
 msgid "Modified"
-msgstr ""
+msgstr "Ианыԥсахыз арыцхә"
 
 #. TRANSLATORS: This is a filename, e.g. "image.jpg"
 #: src/ui/mainWindow.js:90
 #, javascript-format
 msgid "Unable to display %s"
-msgstr ""
+msgstr "Арбара залшом %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
 #: src/ui/mainWindow.js:342
 #, javascript-format
 msgid "Open With %s"
-msgstr ""
+msgstr "Аԥшьы %s аҟны аартра"
 
 #: src/ui/mainWindow.js:348
 msgid "Open"
-msgstr ""
+msgstr "Аартра"
 
 #: src/viewers/audio.js:375
 msgid "from"
-msgstr ""
+msgstr "аҟынтә"
 
 #: src/viewers/audio.js:380
 msgid "by"
-msgstr ""
+msgstr "ила"
 
 #: src/viewers/evince.js:94
 #, javascript-format
 msgid "%d of %d"
-msgstr ""
+msgstr "%d аҟынтә %d"
