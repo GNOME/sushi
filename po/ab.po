@@ -1,0 +1,84 @@
+# Abkhazian translation for sushi.
+# Copyright (C) 2022 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2021-09-21 13:26+0000\n"
+"PO-Revision-Date: 2021-09-21 13:26+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Abkhazian <ab@li.org>\n"
+"Language: ab\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+
+#: src/ui/fallbackRenderer.js:241
+msgid "Type"
+msgstr ""
+
+#: src/ui/fallbackRenderer.js:251
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Empty Folder"
+msgstr ""
+
+#: src/ui/fallbackRenderer.js:259
+msgid "Size"
+msgstr ""
+
+#: src/ui/fallbackRenderer.js:264
+msgid "Modified"
+msgstr ""
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr ""
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:342
+#, javascript-format
+msgid "Open With %s"
+msgstr ""
+
+#: src/ui/mainWindow.js:348
+msgid "Open"
+msgstr ""
+
+#: src/viewers/audio.js:375
+msgid "from"
+msgstr ""
+
+#: src/viewers/audio.js:380
+msgid "by"
+msgstr ""
+
+#: src/viewers/evince.js:94
+#, javascript-format
+msgid "%d of %d"
+msgstr ""
