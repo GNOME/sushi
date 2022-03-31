@@ -60,6 +60,10 @@ var Klass = GObject.registerClass({
         this.isReady();
     }
 
+    static {
+        WebKit2.WebContext.get_default().set_sandbox_enabled(true);
+    }
+
     get moveOnClick() {
         return false;
     }
