@@ -85,6 +85,9 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
     vfunc_startup() {
         super.vfunc_startup();
 
+        // Enable web process sandbox
+        WebKit2.WebContext.get_default().set_sandbox_enabled(true);
+
         this._defineStyleAndThemes();
     }
 
