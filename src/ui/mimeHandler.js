@@ -33,8 +33,11 @@ var renderers = [];
 let localPath = GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi']);
 imports.searchPath.push(localPath);
 
-for (let i in imports.viewers)
-    renderers.push(imports.viewers[i]);
+for (let i in imports.viewers) {
+    if (imports.viewers[i].hasOwnProperty('mimeTypes')) {
+        renderers.push(imports.viewers[i]);
+    }
+}
 
 var getKlass = function(mime) {
     let renderer = renderers.find((r) => {
