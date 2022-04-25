@@ -79,7 +79,7 @@ var Klass = GObject.registerClass({
     }
 
     _loadFile(file) {
-        let job = EvinceView.JobLoad.new(file.get_uri());
+        let job = EvinceView.JobLoadGFile.new(file, EvinceDocument.DocumentLoadFlags.NONE);
         job.connect('finished', this._onLoadJobFinished.bind(this));
         job.scheduler_push_job(EvinceView.JobPriority.PRIORITY_NONE);
     }
