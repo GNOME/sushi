@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
+"POT-Creation-Date: 2022-05-06 10:02+0000\n"
+"PO-Revision-Date: 2022-06-30 15:15+0200\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: \n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1\n"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+msgid "Sushi"
+msgstr "Sushi"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "სხვადასხვა ტიპის ფაილების ნახვა"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Sushi არის ფაილის წინასწარი გადამხედველი GNOME სამუშაო გარემოსთვის. "
+"ეს არის დამოუკიდებელი კომპონენტი, რომელიც ინტეგრირდება GNOME "
+"ფაილებთან (Nautilus)."
+
+#: src/ui/fallbackRenderer.js:241
+msgid "Type"
+msgstr "ტიპი"
+
+#: src/ui/fallbackRenderer.js:251
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d ელემენტი"
+msgstr[1] "%d ელემენტი"
+
+#: src/ui/fallbackRenderer.js:256
+msgid "Empty Folder"
+msgstr "ცარიელი საქაღალდე"
+
+#: src/ui/fallbackRenderer.js:259
+msgid "Size"
+msgstr "ზომა"
+
+#: src/ui/fallbackRenderer.js:264
+msgid "Modified"
+msgstr "შეცვლილია"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "%s-ის ჩვენების შეცდომა"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:342
+#, javascript-format
+msgid "Open With %s"
+msgstr "%s-ით გახსნა"
+
+#: src/ui/mainWindow.js:348
+msgid "Open"
+msgstr "გახსნა"
+
+#: src/viewers/audio.js:375
+msgid "from"
+msgstr "-დან"
+
+#: src/viewers/audio.js:380
+msgid "by"
+msgstr "-ის მიერ"
+
+#: src/viewers/evince.js:94
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d-დან %d"
