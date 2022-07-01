@@ -22,9 +22,9 @@
     <keyword>preview</keyword>
   </keywords>
   <releases>
-    <release version="41.0" date="2021-09-21">
+    <release version="42.0" date="2022-07-01">
       <description>
-        <p>Sushi 41.0 is the latest stable version of GNOME Sushi, and it contains all
+        <p>Sushi 42.0 is the latest stable version of GNOME Sushi, and it contains all
         features and bugfixes introduced since our last release.</p>
       </description>
     </release>

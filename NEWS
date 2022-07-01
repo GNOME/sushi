@@ -1,3 +1,12 @@
+42.0
+====
+
+- Enable web process (webkit) sandbox
+- Use EvinceView.JobLoadGFile for loading documents
+- Check for mimeTypes when populating list of viewers
+- Allow right-clicks to show context menu for GtkSourceView
+- Translation updates
+
 41.0
 ====
 
