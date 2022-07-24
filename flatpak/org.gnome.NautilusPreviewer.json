@@ -29,8 +29,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://poppler.freedesktop.org/poppler-data-0.4.10.tar.gz",
-                    "sha256": "6e2fcef66ec8c44625f94292ccf8af9f1d918b410d5aa69c274ce67387967b30"
+                    "url": "https://poppler.freedesktop.org/poppler-data-0.4.11.tar.gz",
+                    "sha256": "2cec05cd1bb03af98a8b06a1e22f6e6e1a65b1e2f3816cb3069bb0874825f08c"
                 }
             ]
         },
@@ -52,8 +52,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://poppler.freedesktop.org/poppler-21.08.0.tar.xz",
-                    "sha256": "e9cf5dc5964bce4bb0264d1c4f8122706c910588b421cfc30abc97d6b23e602d"
+                    "url": "https://poppler.freedesktop.org/poppler-23.01.0.tar.xz",
+                    "sha256": "fae9b88d3d5033117d38477b79220cfd0d8e252c278ec870ab1832501741fd94"
                 }
             ]
         },
@@ -66,6 +66,7 @@
             ],
             "config-opts": [
                 "-Dnautilus=false",
+                "-Dgtk_doc=false",
                 "-Dviewer=false",
                 "-Dpreviewer=false",
                 "-Ddbus=false",
@@ -76,8 +77,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://download.gnome.org/sources/evince/40/evince-40.1.tar.xz",
-                    "sha256": "7a666363c350af2e3bbba7f14b3c1befc5012f9ed3d9d073447f4c59f33dcf2d"
+                    "url": "https://download.gnome.org/sources/evince/43/evince-43.1.tar.xz",
+                    "sha256": "6d75ca62b73bfbb600f718a098103dc6b813f9050b9594be929e29b4589d2335"
                 }
             ]
         },
