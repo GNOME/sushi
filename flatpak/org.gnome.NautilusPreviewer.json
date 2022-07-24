@@ -82,19 +82,6 @@
             ]
         },
         {
-            "name": "gtksourceview",
-            "config-opts": [
-                "--disable-static"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://download.gnome.org/sources/gtksourceview/4.2/gtksourceview-4.2.0.tar.xz",
-                    "sha256": "c431eb234dc83c7819e58f77dd2af973252c7750da1c9d125ddc94268f94f675"
-                }
-            ]
-        },
-        {
             "name": "sushi",
             "buildsystem": "meson",
             "sources": [
