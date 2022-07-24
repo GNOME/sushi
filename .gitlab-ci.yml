@@ -1,0 +1,19 @@
+include: "https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml"
+
+.flatpak-vars:
+  variables:
+    MANIFEST_PATH: "flatpak/org.gnome.NautilusPreviewer.json"
+    FLATPAK_MODULE: "sushi"
+    APP_ID: "org.gnome.NautilusPreviewer"
+    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+    BUNDLE: "sushi-dev.flatpak"
+
+flatpak@x86_64:
+  extends:
+    - ".flatpak@x86_64"
+    - ".flatpak-vars"
+
+flatpak@aarch64:
+  extends:
+    - ".flatpak@aarch64"
+    - ".flatpak-vars"
