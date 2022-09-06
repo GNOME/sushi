@@ -37,7 +37,7 @@ pkg.require({
     Gtk: '3.0',
     GtkSource: '4',
     Pango: '1.0',
-    Soup: '2.4',
+    Soup: '3.0',
     Sushi: '1.0',
     WebKit2: '4.1',
 });
