@@ -22,6 +22,7 @@
     <keyword>preview</keyword>
   </keywords>
   <releases>
+    <release version="43.0" date="2022-09-16"/>
     <release version="43.rc" date="2022-09-05"/>
     <release version="42.0" date="2022-07-01">
       <description>
