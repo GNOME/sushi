@@ -1,5 +1,5 @@
 # Turkish translation for sushi.
-# Copyright (C) 2011-2019 sushi's COPYRIGHT HOLDER
+# Copyright (C) 2011-2022 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
 #
 # Muhammet Kara <muhammet.k@gmail.com>, 2011.
@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:15+0000\n"
+"POT-Creation-Date: 2022-07-24 06:37+0000\n"
 "PO-Revision-Date: 2021-02-22 10:56+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -36,8 +36,8 @@ msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi, GNOME masaüstü ortamı için dosya ön izleyicidir. GNOME "
-"Dosyalar (Nautilus) ile tümleşen bağımsız bileşendir."
+"Sushi, GNOME masaüstü ortamı için dosya ön izleyicidir. GNOME Dosyalar "
+"(Nautilus) ile tümleşen bağımsız bileşendir."
 
 #: src/ui/fallbackRenderer.js:241
 msgid "Type"
@@ -77,11 +77,11 @@ msgstr "%s İle Aç"
 msgid "Open"
 msgstr "Aç"
 
-#: src/viewers/audio.js:359
+#: src/viewers/audio.js:375
 msgid "from"
 msgstr "Albüm:"
 
-#: src/viewers/audio.js:364
+#: src/viewers/audio.js:380
 msgid "by"
 msgstr "Sanatçı:"
 
@@ -89,12 +89,3 @@ msgstr "Sanatçı:"
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d / %d"
-
-#~ msgid "Client decoration"
-#~ msgstr "İstemci dekorasyonu"
-
-#~ msgid "Whether the window draws WM decorations itself"
-#~ msgstr "Pencerenin WM dekorasyonlarını kendisi çizip çizmeyeceği"
-
-#~ msgid "Loading…"
-#~ msgstr "Yükleniyor…"
