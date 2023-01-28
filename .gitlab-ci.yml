@@ -17,3 +17,11 @@ flatpak@aarch64:
   extends:
     - ".flatpak@aarch64"
     - ".flatpak-vars"
+
+nightly@x86_64:
+  extends: ".publish_nightly"
+  needs: ["flatpak@x86_64"]
+
+nightly@aarch64:
+  extends: ".publish_nightly"
+  needs: ["flatpak@aarch64"]
