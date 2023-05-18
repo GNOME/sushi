@@ -23,7 +23,7 @@
  *
  */
 
-const {EvinceDocument, EvinceView, GObject, Gtk, Sushi} = imports.gi;
+const {EvinceDocument, EvinceView, Gio, GObject, Gtk, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
@@ -70,6 +70,8 @@ var Klass = GObject.registerClass({
                 this._loadFile(convertedFile);
             });
         }
+
+        this._defineActions();
 
         this._view = EvinceView.View.new();
         this._view.show();
@@ -118,6 +120,18 @@ var Klass = GObject.registerClass({
         this._updatePageLabel();
 
         this._view.set_model(this._model);
+    }
+
+    _defineActions() {
+        let application = Gio.Application.get_default ();
+        let copyAction = new Gio.SimpleAction({ name: 'copy' });
+        copyAction.connect ('activate', () => {
+          this._view.copy();
+        });
+        application.set_accels_for_action ('evince.copy', ['<control>c']);
+        let actionGroup = new Gio.SimpleActionGroup();
+        actionGroup.add_action(copyAction);
+        this.insert_action_group ('evince', actionGroup);
     }
 
     get moveOnClick() {
