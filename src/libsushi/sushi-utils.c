@@ -51,6 +51,7 @@ sushi_window_set_child_of_external (GtkWindow *window,
   g_object_unref (external_window);
 }
 
+#if 0 && reimplement_ev
 /**
  * sushi_get_evince_document_from_job:
  * @job:
@@ -103,7 +104,7 @@ sushi_query_supported_document_types (void)
 
   return retval;
 }
-
+#endif
 static void load_libreoffice (GTask *task);
 
 typedef struct {

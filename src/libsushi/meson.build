@@ -28,8 +28,8 @@ endif
 
 libsushi_deps = [
   epoxy_dep,
-  evince_document_dep,
-  evince_view_dep,
+  # evince_document_dep,
+  # evince_view_dep,
   freetype_dep,
   gdk_pixbuf_dep,
   glib_dep,
@@ -82,9 +82,9 @@ gnome.generate_gir(
   includes: [
     'GstTag-1.0',
     'GdkPixbuf-2.0',
-    'EvinceDocument-3.0',
-    'EvinceView-3.0',
     'Gtk-4.0',
+    # 'EvinceDocument-3.0',
+    # 'EvinceView-3.0',
   ],
   install: true,
   install_dir_gir: join_paths(pkgdatadir, 'gir-1.0'),

@@ -26,19 +26,22 @@
 #ifndef __SUSHI_UTILS_H__
 #define __SUSHI_UTILS_H__
 
+#if 0 && REIMPLEMENT_EVINCE
 #include <evince-document.h>
 #include <evince-view.h>
+#endif
 #include <gdk/gdk.h>
 #include <gio/gio.h>
 #include <gst/gst.h>
 
 G_BEGIN_DECLS
 
+#if 0 && REIMPLEMENT_EVINCE
 gchar **       sushi_query_supported_document_types (void);
 
 EvDocument *   sushi_get_evince_document_from_job (EvJob   *job,
                                                    GError **error);
-
+#endif
 void           sushi_convert_libreoffice (GFile *file,
                                           GAsyncReadyCallback callback,
                                           gpointer user_data);

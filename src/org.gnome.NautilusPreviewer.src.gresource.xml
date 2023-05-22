@@ -11,7 +11,7 @@
     <file>util/constants.js</file>
     <file>util/totemMimeTypes.js</file>
     <file>viewers/audio.js</file>
-    <file>viewers/evince.js</file>
+    <!-- <file>viewers/evince.js</file> -->
     <file>viewers/font.js</file>
     <file>viewers/gst.js</file>
     <file>viewers/html.js</file>

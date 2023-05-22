@@ -70,5 +70,6 @@ var Klass = GObject.registerClass({
 });
 
 var mimeTypes = [
-    'text/html'
+    'text/html',
+    'application/pdf'
 ];
