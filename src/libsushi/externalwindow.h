@@ -25,30 +25,9 @@
 
 
 #define EXTERNAL_TYPE_WINDOW (external_window_get_type ())
-#define EXTERNAL_WINDOW(object) (G_TYPE_CHECK_INSTANCE_CAST (object, EXTERNAL_TYPE_WINDOW, ExternalWindow))
-#define EXTERNAL_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST (klass, EXTERNAL_TYPE_WINDOW, ExternalWindowClass))
-#define EXTERNAL_WINDOW_GET_CLASS(klass) (G_TYPE_INSTANCE_GET_CLASS (klass, EXTERNAL_TYPE_WINDOW, ExternalWindowClass))
+G_DECLARE_FINAL_TYPE (ExternalWindow, external_window, EXTERNAL, WINDOW, GObject)
 
-typedef struct _ExternalWindow ExternalWindow;
-typedef struct _ExternalWindowClass ExternalWindowClass;
-
-struct _ExternalWindow
-{
-  GObject parent_instance;
-};
-
-struct _ExternalWindowClass
-{
-  GObjectClass parent_class;
-
-  void (*set_parent_of) (ExternalWindow *external_window,
-                         GdkWindow      *child_window);
-};
-
-GType external_window_get_type (void);
 ExternalWindow *create_external_window_from_handle (const char *handle_str);
 
 void external_window_set_parent_of (ExternalWindow *external_window,
-                                    GdkWindow      *child_window);
-
-GdkDisplay *external_window_get_display (ExternalWindow *external_window);
+                                    GtkWindow      *child_window);
