@@ -315,8 +315,7 @@ var Klass = GObject.registerClass({
         });
 
         let frame = new Gtk.Frame({ height_request: COVER_SIZE,
-                                    width_request: COVER_SIZE,
-                                    shadow_type: Gtk.ShadowType.NONE });
+                                    width_request: COVER_SIZE });
         box.append(frame);
 
         this._image = new Gtk.Image({ icon_name: 'media-optical-symbolic',
@@ -371,8 +370,7 @@ var Klass = GObject.registerClass({
 
         let coverArt = cover.scale_simple(targetWidth, targetHeight,
                                           GdkPixbuf.InterpType.BILINEAR);
-        let surface = Gdk.cairo_surface_create_from_pixbuf(coverArt, scaleFactor, this.get_window());
-        this._image.set_from_surface(surface);
+        this._image.set_from_pixbuf(coverArt);
     }
 
     _onCoverArtFetched(err, cover) {
