@@ -71,10 +71,6 @@ var Klass = _isAvailable() ? GObject.registerClass({
         this.isReady();
     }
 
-    static {
-        WebKit.WebContext.get_default().set_sandbox_enabled(true);
-    }
-
     get moveOnClick() {
         return false;
     }
