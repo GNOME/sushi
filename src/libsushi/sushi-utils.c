@@ -49,8 +49,7 @@ sushi_window_set_child_of_external (GtkWindow *window,
   if (!external_window)
     return;
 
-  external_window_set_parent_of (external_window,
-                                 gtk_widget_get_window (GTK_WIDGET (window)));
+  external_window_set_parent_of (external_window, window);
   g_object_unref (external_window);
 }
 

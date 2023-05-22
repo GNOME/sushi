@@ -1,30 +1,7 @@
-config_data = configuration_data()
-if gtk_x11_dep.found()
-  config_data.set('HAVE_GTK_X11', 1)
-endif
-if gtk_wayland_dep.found()
-  config_data.set('HAVE_GTK_WAYLAND', 1)
-endif
-configure_file(output: 'config.h', configuration: config_data)
-
 externalwindow_sources = [
   'externalwindow.c',
   'externalwindow.h',
 ]
-
-if gtk_x11_dep.found()
-  externalwindow_sources += [
-    'externalwindow-x11.c',
-    'externalwindow-x11.h',
-  ]
-endif
-
-if gtk_wayland_dep.found()
-  externalwindow_sources += [
-    'externalwindow-wayland.c',
-    'externalwindow-wayland.h',
-  ]
-endif
 
 libsushi_deps = [
   epoxy_dep,
@@ -39,6 +16,7 @@ libsushi_deps = [
   gstreamer_video_dep,
   gtk_dep,
   harfbuzz_dep,
+  x11_dep,
 ]
 
 libsushi_sources = [

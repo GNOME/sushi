@@ -31,6 +31,7 @@
 #include <gdk/gdk.h>
 #include <gio/gio.h>
 #include <gst/gst.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

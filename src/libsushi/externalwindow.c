@@ -16,64 +16,65 @@
  *
  * Authors:
  *       Jonas Ådahl <jadahl@redhat.com>
+ *       Corey Berla <corey@berla.me>
  */
-
-#include "config.h"
 
 #include <string.h>
 
+#include <gtk/gtk.h>
+
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/wayland/gdkwayland.h>
+#endif
+
+#ifdef GDK_WINDOWING_X11
+#include <gdk/x11/gdkx.h>
+#endif
+
 #include "externalwindow.h"
-#ifdef HAVE_GTK_X11
-#include "externalwindow-x11.h"
-#endif
-#ifdef HAVE_GTK_WAYLAND
-#include "externalwindow-wayland.h"
-#endif
 
-enum
+struct _ExternalWindow
 {
-  PROP_0,
-
-  PROP_DISPLAY,
+  GObject parent_instance;
 };
 
 typedef struct _ExternalWindowPrivate
 {
   GdkDisplay *display;
+  char *wayland_str;
+  Window xid;
 } ExternalWindowPrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (ExternalWindow, external_window, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_CODE (ExternalWindow, external_window, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ExternalWindow));
 
 ExternalWindow *
 create_external_window_from_handle (const char *handle_str)
 {
-#ifdef HAVE_GTK_X11
-    {
-      const char x11_prefix[] = "x11:";
-      if (g_str_has_prefix (handle_str, x11_prefix))
-        {
-          ExternalWindowX11 *external_window_x11;
-          const char *x11_handle_str = handle_str + strlen (x11_prefix);
+    ExternalWindow *external_window;
+    ExternalWindowPrivate *priv;
+    const char x11_prefix[] = "x11:";
+    const char wayland_prefix[] = "wayland:";
 
-          external_window_x11 = external_window_x11_new (x11_handle_str);
-          return EXTERNAL_WINDOW (external_window_x11);
-        }
-    }
-#endif
-#ifdef HAVE_GTK_WAYLAND
-    {
-      const char wayland_prefix[] = "wayland:";
-      if (g_str_has_prefix (handle_str, wayland_prefix))
-        {
-          ExternalWindowWayland *external_window_wayland;
-          const char *wayland_handle_str = handle_str + strlen (wayland_prefix);
+    external_window = g_object_new (EXTERNAL_TYPE_WINDOW, NULL);
+    priv = external_window_get_instance_private (external_window);
 
-          external_window_wayland =
-            external_window_wayland_new (wayland_handle_str);
-          return EXTERNAL_WINDOW (external_window_wayland);
-        }
+  if (g_str_has_prefix (handle_str, x11_prefix))
+    {
+      const char *x11_handle_str = handle_str + strlen (x11_prefix);
+
+      priv->xid = strtol (x11_handle_str, NULL, 16);
+      priv->wayland_str = NULL;
+      return external_window;
     }
-#endif
+  else if (g_str_has_prefix (handle_str, wayland_prefix))
+    {
+      const char *wayland_handle_str = handle_str + strlen (wayland_prefix);
+
+      priv->wayland_str = g_strdup (wayland_handle_str);
+      priv->xid = 0;
+      return external_window;
+    }
 
   g_warning ("Unhandled parent window type %s\n", handle_str);
   return NULL;
@@ -81,61 +82,57 @@ create_external_window_from_handle (const char *handle_str)
 
 void
 external_window_set_parent_of (ExternalWindow *external_window,
-                               GdkWindow      *child_window)
+                               GtkWindow      *child_window)
 {
-  EXTERNAL_WINDOW_GET_CLASS (external_window)->set_parent_of (external_window,
-                                                              child_window);
-}
+    GdkSurface *surface = gtk_native_get_surface (GTK_NATIVE (child_window));
+    ExternalWindowPrivate *priv = external_window_get_instance_private (external_window);
 
-GdkDisplay *
-external_window_get_display (ExternalWindow *external_window)
-{
-  ExternalWindowPrivate *priv =
-    external_window_get_instance_private (external_window);
+#ifdef GDK_WINDOWING_WAYLAND
+    if (GDK_IS_WAYLAND_DISPLAY (gtk_widget_get_display (GTK_WIDGET (child_window))))
+    {
+        if (priv->xid)
+        {
+            g_warning ("Wayland / x11 mismatch");
+            return;
+        }
 
-  return priv->display;
+        if (!gdk_wayland_toplevel_set_transient_for_exported (GDK_TOPLEVEL (surface), priv->wayland_str))
+          g_warning ("Failed to set portal window transient for external parent");
+
+        return;
+    }
+#endif
+
+#ifdef GDK_WINDOWING_X11
+    if (GDK_IS_X11_DISPLAY (gtk_widget_get_display (GTK_WIDGET (child_window))))
+      {
+        GdkDisplay *display = gtk_widget_get_display (GTK_WIDGET (child_window));
+        Display *dpy = gdk_x11_display_get_xdisplay (display);
+        Window parent_xid = gdk_x11_surface_get_xid (surface);
+
+        if (priv->wayland_str)
+        {
+            g_warning ("Wayland / x11 mismatch");
+            return;
+        }
+
+        if (!XSetTransientForHint (dpy, parent_xid, priv->xid))
+          g_warning ("Failed to set portal window transient for external parent");
+
+        return;
+      }
+#endif
 }
 
 static void
-external_window_set_property (GObject      *object,
-                              guint         prop_id,
-                              const GValue *value,
-                              GParamSpec   *pspec)
+external_window_dispose (GObject *object)
 {
-  ExternalWindow *external_window = EXTERNAL_WINDOW (object);
-  ExternalWindowPrivate *priv =
-    external_window_get_instance_private (external_window);
+    ExternalWindow *self = EXTERNAL_WINDOW (object);
+    ExternalWindowPrivate *priv = external_window_get_instance_private (self);
 
-  switch (prop_id)
-    {
-    case PROP_DISPLAY:
-      g_set_object (&priv->display, g_value_get_object (value));
-      break;
+    g_clear_pointer (&priv->wayland_str, g_free);
 
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-    }
-}
-
-static void
-external_window_get_property (GObject    *object,
-                              guint       prop_id,
-                              GValue     *value,
-                              GParamSpec *pspec)
-{
-  ExternalWindow *external_window = EXTERNAL_WINDOW (object);
-  ExternalWindowPrivate *priv =
-    external_window_get_instance_private (external_window);
-
-  switch (prop_id)
-    {
-    case PROP_DISPLAY:
-      g_value_set_object (value, priv->display);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-    }
+    G_OBJECT_CLASS (external_window_parent_class)->dispose (object);
 }
 
 static void
@@ -146,18 +143,7 @@ external_window_init (ExternalWindow *external_window)
 static void
 external_window_class_init (ExternalWindowClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->get_property = external_window_get_property;
-  object_class->set_property = external_window_set_property;
-
-  g_object_class_install_property (object_class,
-                                   PROP_DISPLAY,
-                                   g_param_spec_object ("display",
-                                                        "GdkDisplay",
-                                                        "The GdkDisplay instance",
-                                                        GDK_TYPE_DISPLAY,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT_ONLY |
-                                                        G_PARAM_STATIC_STRINGS));
+    object_class->dispose = external_window_dispose;
 }
