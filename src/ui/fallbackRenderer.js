@@ -23,7 +23,7 @@
  *
  */
 
-const {Gio, GLib, GObject, Gtk, Pango} = imports.gi;
+const {Gdk, Gio, GLib, GObject, Gtk, Pango} = imports.gi;
 const Gettext = imports.gettext;
 
 const Renderer = imports.ui.renderer;
@@ -187,19 +187,22 @@ var FallbackRenderer = GObject.registerClass({
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
 
-        this._image = new Gtk.Image();
+        this._image = new Gtk.Image ({ hexpand: true });
         this._updateIcon(new Gio.ThemedIcon({ name: 'text-x-generic' }));
         this.append(this._image);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
-                                 margin_top: 48,
+                                 margin_top: 12,
                                  margin_start: 12,
-                                 margin_end: 12 });
+                                 margin_end: 12,
+                                 margin_bottom: 12,
+                                 valign: Gtk.Align.CENTER,
+                                 vexpand: true});
         this.append(vbox);
 
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
-                                 spacing: 6 });
+                                 spacing: 6});
         vbox.append(hbox);
 
         this._titleLabel = new Gtk.Label({ max_width_chars: 48,
@@ -212,7 +215,7 @@ var FallbackRenderer = GObject.registerClass({
         this._spinner.start();
         this._spinner.show();
 
-        this._typeLabel = new Gtk.Label({ no_show_all: true });
+        this._typeLabel = new Gtk.Label();
         this._typeLabel.set_halign(Gtk.Align.START);
         vbox.append(this._typeLabel);
 
@@ -227,7 +230,7 @@ var FallbackRenderer = GObject.registerClass({
         this._cancellable = new Gio.Cancellable();
         loadFile(file, fileInfo, this._cancellable, this._onFileInfoUpdated.bind(this));
 
-        this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('unmap', this._onDestroy.bind(this));
         this.isReady();
     }
 
@@ -276,18 +279,10 @@ var FallbackRenderer = GObject.registerClass({
     }
 
     _updateIcon(icon) {
-        let iconTheme = Gtk.IconTheme.get_default();
-        let iconInfo = iconTheme.lookup_by_gicon_for_scale(icon, 256,
-            this._image.scale_factor, 0);
-        if (!iconInfo)
-            return;
-
-        try {
-            let surface = iconInfo.load_surface(this._image.get_window());
-            this._image.surface = surface;
-        } catch (e) {
-            logError(e, `Error loading surface for icon ${icon.to_string()}`);
-        }
+        let iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
+        let paintable = iconTheme.lookup_by_gicon(icon, 256, this._image.scale_factor, 0, 0);
+        if (paintable)
+            this._image.set_from_paintable (paintable);
     }
 
     _onFileInfoUpdated(state) {
