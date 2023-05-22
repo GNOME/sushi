@@ -319,7 +319,7 @@ var Klass = GObject.registerClass({
         this._albumLabel.set_halign(Gtk.Align.START);
         vbox.append(this._albumLabel);
 
-        this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('unmap', this._onDestroy.bind(this));
         this.isReady();
     }
 
@@ -328,6 +328,8 @@ var Klass = GObject.registerClass({
             GLib.source_remove(this._autoplayId);
             this._autoplayId = 0;
         }
+        this._player.stop();
+        this.remove_overlay(this._player);
     }
 
     _setCover(cover) {

@@ -62,14 +62,14 @@ var Klass = GObject.registerClass({
 
     _createBuffer(file, fileInfo) {
         let buffer = new GtkSource.Buffer();
-        let styleManager = GtkSource.StyleSchemeManager.get_default();
-        let stylePath = GLib.build_filenamev([pkg.pkgdatadir,
-                                              'gtksourceview-4',
-                                              'styles']);
-        styleManager.prepend_search_path(stylePath);
+        // let styleManager = GtkSource.StyleSchemeManager.get_default();
+        // let stylePath = GLib.build_filenamev([pkg.pkgdatadir,
+        //                                       'gtksourceview-4',
+        //                                       'styles']);
+        // styleManager.prepend_search_path(stylePath);
 
-        let scheme = styleManager.get_scheme('builder-dark');
-        buffer.set_style_scheme(scheme);
+        // let scheme = styleManager.get_scheme('builder-dark');
+        // buffer.set_style_scheme(scheme);
 
         let langManager = GtkSource.LanguageManager.get_default();
         let language = langManager.guess_language(file.get_basename(),

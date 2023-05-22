@@ -125,7 +125,7 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
 
     _defineStyleAndThemes() {
         let settings = Gtk.Settings.get_default();
-        settings.gtk_application_prefer_dark_theme = true;
+        // settings.gtk_application_prefer_dark_theme = true;
     }
 
     close() {
@@ -149,6 +149,7 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
         } else {
             this._mainWindow.setParent(windowHandle);
             this._mainWindow.setFile(file);
+            this._mainWindow.show();
         }
     }
 });

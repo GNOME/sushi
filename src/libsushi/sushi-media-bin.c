@@ -45,8 +45,6 @@
 
 #define FPS_WINDOW_SIZE          2  /* Window size in seconds to calculate fps */
 
-#define SMB_ICON_SIZE            GTK_ICON_SIZE_BUTTON
-
 #define SMB_ICON_NAME_PLAY       "media-playback-start-symbolic"
 #define SMB_ICON_NAME_PAUSE      "media-playback-pause-symbolic"
 #define SMB_ICON_NAME_FULLSCREEN "view-fullscreen-symbolic"
@@ -235,7 +233,7 @@ sushi_media_bin_reveal_controls (SushiMediaBin *self)
 {
   SushiMediaBinPrivate *priv = SMB_PRIVATE (self);
 
-  gdk_window_set_cursor (gtk_widget_get_window (priv->overlay), NULL);
+  gtk_widget_set_cursor (priv->overlay, NULL);
 
   /* We only show the top bar if there is something in the info labels */
   if (!g_str_equal (gtk_label_get_label (priv->title_label), "") ||
@@ -251,16 +249,16 @@ static gboolean
 revealer_timeout (gpointer data)
 {
   SushiMediaBinPrivate *priv = SMB_PRIVATE (data);
-  GdkWindow *window;
+  /* GdkWindow *window; */
 
   if (++priv->timeout_count < priv->autohide_timeout)
     return G_SOURCE_CONTINUE;
-  
+#if 0 && REIMPLEMENT
   window = gtk_widget_get_window (priv->overlay);
   
   if (window != NULL)
     gdk_window_set_cursor (window, priv->blank_cursor);
-
+#endif
   gtk_revealer_set_reveal_child (priv->top_revealer, FALSE);
   gtk_revealer_set_reveal_child (priv->bottom_revealer, FALSE);
 
@@ -294,12 +292,14 @@ sushi_media_bin_revealer_timeout (SushiMediaBin *self, gboolean activate)
     }
   else
    {
+#if 0 && reimp
       GdkWindow *window = gtk_widget_get_window (priv->overlay);
 
       ensure_no_timeout (priv);
 
       if (window)
         gdk_window_set_cursor (window, NULL);
+#endif
    }
 }
 
@@ -334,7 +334,7 @@ sushi_media_bin_action_seek (SushiMediaBin *self, gint seconds)
                            GST_SEEK_FLAG_ACCURATE,
                            seconds ? CLAMP (position, 0, priv->duration) : 0);
 }
-
+#if 0
 /* Signals handlers */
 static gboolean
 on_overlay_button_press_event (GtkWidget   *widget,
@@ -407,7 +407,7 @@ on_overlay_motion_notify_event (GtkWidget   *widget,
   sushi_media_bin_revealer_timeout (self, TRUE);
   return FALSE;
 }
-
+#endif
 static void
 on_playback_adjustment_value_changed (GtkAdjustment *adjustment,
                                       SushiMediaBin   *self)
@@ -459,7 +459,7 @@ sushi_media_bin_update_state (SushiMediaBin *self)
       gst_element_set_state (priv->play, priv->state);
     }
 }
-
+#if 0
 static GdkPixbuf *
 sushi_media_bin_video_pixbuf_new (SushiMediaBin *self)
 {
@@ -504,6 +504,7 @@ sushi_media_bin_video_pixbuf_new (SushiMediaBin *self)
 
   return pixbuf;
 }
+#endif
 
 static void
 sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
@@ -521,9 +522,6 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
     {
       priv->fullscreen_window = g_object_ref (sushi_media_bin_window_new (self));
 
-      /* Reparent video widget in a fullscreen window */
-      gtk_container_remove (GTK_CONTAINER (priv->stack), priv->overlay);
-
       /* Pack an image with the last frame inside the bin */
       gtk_stack_add_child (priv->stack, priv->tmp_image);
       gtk_widget_show (priv->tmp_image);
@@ -537,22 +535,22 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
 
       /* Hide cursor if controls are hidden */
       if (!gtk_revealer_get_reveal_child (priv->bottom_revealer))
-        gdk_window_set_cursor (gtk_widget_get_window (GTK_WIDGET (priv->fullscreen_window)),
+        gtk_widget_set_cursor (GTK_WIDGET (priv->fullscreen_window),
                                priv->blank_cursor);
 
       gtk_image_set_from_icon_name (priv->fullscreen_image, SMB_ICON_NAME_RESTORE);
     }
   else
     {
-      gtk_container_remove (GTK_CONTAINER (priv->stack), priv->tmp_image);
+      /* gtk_container_remove (GTK_CONTAINER (priv->stack), priv->tmp_image); */
       priv->tmp_image = NULL;
 
       /* Reparent video widget back into ourselves */
-      gtk_container_remove (GTK_CONTAINER (priv->fullscreen_window), priv->overlay);
+      /* gtk_container_remove (GTK_CONTAINER (priv->fullscreen_window), priv->overlay); */
       gtk_stack_add_child (priv->stack, priv->overlay);
       gtk_stack_set_visible_child (GTK_STACK (priv->stack), priv->overlay);
 
-      gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window));
+      /* gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window)); */
       g_clear_object (&priv->fullscreen_window);
 
       gtk_image_set_from_icon_name (priv->fullscreen_image, SMB_ICON_NAME_FULLSCREEN);
@@ -596,11 +594,9 @@ on_sushi_media_bin_realize (GtkWidget *widget, SushiMediaBin *self)
   SushiMediaBinPrivate *priv = SMB_PRIVATE (self);
 
   /* Create a blank_cursor */
-  priv->blank_cursor = gdk_cursor_new_from_name (gtk_widget_get_display (widget),
-                                                 "none");
-
-  if (priv->fullscreen)
-    sushi_media_bin_fullscreen_apply (self, TRUE);
+  /* priv->blank_cursor = gdk_cursor_new_from_name (gtk_widget_get_display (widget), */
+  /*                                                "none"); */
+  priv->blank_cursor = NULL;  //TODO fix me
 
   /* Make playbin show the first video frame if there is an URI */
   sushi_media_bin_update_state (self);
@@ -655,9 +651,9 @@ sushi_media_bin_init_style (SushiMediaBin *self)
       GtkCssProvider *css_provider = gtk_css_provider_new ();
 
       gtk_css_provider_load_from_resource (css_provider, "/org/gnome/Sushi/libsushi/sushi-media-bin.css");
-      gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
-                                                 GTK_STYLE_PROVIDER (css_provider),
-                                                 GTK_STYLE_PROVIDER_PRIORITY_APPLICATION-10);
+      /* gtk_style_context_add_provider_for_screen (gdk_screen_get_default (), */
+      /*                                            GTK_STYLE_PROVIDER (css_provider), */
+      /*                                            GTK_STYLE_PROVIDER_PRIORITY_APPLICATION-10); */
       g_object_unref (css_provider);
 
       g_once_init_leave (&style_initialized, 1);
@@ -676,7 +672,7 @@ sushi_media_bin_init (SushiMediaBin *self)
 
   priv->state = SMB_INITIAL_STATE;
   priv->autohide_timeout = AUTOHIDE_TIMEOUT_DEFAULT;
-  priv->pressed_button_type = GDK_NOTHING;
+  /* priv->pressed_button_type = GDK_NOTHING; */
   priv->dump_dot_file = (g_getenv ("GST_DEBUG_DUMP_DOT_DIR") != NULL);
 
   sushi_media_bin_init_playbin (self);
@@ -715,7 +711,7 @@ sushi_media_bin_dispose (GObject *object)
   /* Destroy fullscreen window */
   if (priv->fullscreen_window)
     {
-      gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window));
+      /* gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window)); */
       g_clear_object (&priv->fullscreen_window);
     }
 
@@ -1009,12 +1005,12 @@ sushi_media_bin_class_init (SushiMediaBinClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_sushi_media_bin_realize);
   gtk_widget_class_bind_template_callback (widget_class, on_sushi_media_bin_unrealize);
 
-  gtk_widget_class_bind_template_callback (widget_class, on_overlay_motion_notify_event);
-  gtk_widget_class_bind_template_callback (widget_class, on_overlay_button_press_event);
-  gtk_widget_class_bind_template_callback (widget_class, on_overlay_button_release_event);
+  /* gtk_widget_class_bind_template_callback (widget_class, on_overlay_motion_notify_event); */
+  /* gtk_widget_class_bind_template_callback (widget_class, on_overlay_button_press_event); */
+  /* gtk_widget_class_bind_template_callback (widget_class, on_overlay_button_release_event); */
 
-  gtk_widget_class_bind_template_callback (widget_class, on_revealer_motion_notify_event);
-  gtk_widget_class_bind_template_callback (widget_class, on_revealer_leave_notify_event);
+  /* gtk_widget_class_bind_template_callback (widget_class, on_revealer_motion_notify_event); */
+  /* gtk_widget_class_bind_template_callback (widget_class, on_revealer_leave_notify_event); */
 
   gtk_widget_class_bind_template_callback (widget_class, on_progress_scale_format_value);
   gtk_widget_class_bind_template_callback (widget_class, on_playback_adjustment_value_changed);
@@ -1105,9 +1101,9 @@ on_widget_style_updated (GtkWidget *widget, gpointer data)
   gboolean visible = GPOINTER_TO_INT (data);
   gdouble opacity;
 
-  gtk_style_context_get (gtk_widget_get_style_context (widget),
-                         gtk_widget_get_state_flags (widget),
-                         "opacity", &opacity, NULL);
+  /* gtk_style_context_get (gtk_widget_get_style_context (widget), */
+  /*                        gtk_widget_get_state_flags (widget), */
+  /*                        "opacity", &opacity, NULL); */
 
   if ((visible && opacity >= 1.0) || (!visible && opacity == 0.0))
     {

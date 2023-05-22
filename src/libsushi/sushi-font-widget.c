@@ -662,6 +662,19 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   return FALSE;
 }
 
+
+static void
+sushi_font_widget_measure (GtkWidget     *widget,
+                           GtkOrientation orientation,
+                           int            for_size,
+                           int           *minimum,
+                           int           *natural,
+                           int           *minimum_baseline,
+                           int           *natural_baseline)
+{
+ //TODO bring in preferred width / height
+}
+
 static void
 font_face_async_ready_cb (GObject *object,
                           GAsyncResult *result,
@@ -707,7 +720,7 @@ sushi_font_widget_init (SushiFontWidget *self)
     g_error ("Unable to initialize FreeType");
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)),
-                               GTK_STYLE_CLASS_VIEW);
+                               "view");
 }
 
 static void
@@ -797,9 +810,9 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
   oclass->get_property = sushi_font_widget_get_property;
   oclass->constructed = sushi_font_widget_constructed;
 
-  wclass->draw = sushi_font_widget_draw;
-  wclass->get_preferred_width = sushi_font_widget_get_preferred_width;
-  wclass->get_preferred_height = sushi_font_widget_get_preferred_height;
+  //TODO reimplement
+  /* wclass->draw = sushi_font_widget_draw; */
+  wclass->measure = sushi_font_widget_measure;
 
   properties[PROP_URI] =
     g_param_spec_string ("uri",

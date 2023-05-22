@@ -59,8 +59,8 @@ function getScaledSize(baseSize, allocSize, upscale) {
 }
 
 function createToolButton(renderer, iconName, callback) {
-    button.set_relief(Gtk.ReliefStyle.NONE);
     let button = Gtk.Button.new_from_icon_name(iconName);
+    // button.set_relief(Gtk.ReliefStyle.NONE);
     button.connect('clicked', () => {
         renderer.toolbar.resetTimeout();
         callback(button);

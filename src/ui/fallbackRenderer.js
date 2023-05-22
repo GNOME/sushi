@@ -230,6 +230,7 @@ var FallbackRenderer = GObject.registerClass({
         this._cancellable = new Gio.Cancellable();
         loadFile(file, fileInfo, this._cancellable, this._onFileInfoUpdated.bind(this));
 
+        this.connect('unmap', this._onDestroy.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
         this.isReady();
     }

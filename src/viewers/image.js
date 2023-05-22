@@ -35,7 +35,13 @@ var Klass = GObject.registerClass({
                                               false),
         ready: GObject.ParamSpec.boolean('ready', '', '',
                                          GObject.ParamFlags.READABLE,
-                                         false)
+                                         false),
+        width: GObject.ParamSpec.int('width', '', '',
+                                         GObject.ParamFlags.READWRITE,
+                                         1, 9999, 1),
+        height: GObject.ParamSpec.int('height', '', '',
+                                         GObject.ParamFlags.READWRITE,
+                                         1, 9999, 1),
     },
 }, class ImageRenderer extends Gtk.Picture {
     get ready() {
@@ -46,8 +52,12 @@ var Klass = GObject.registerClass({
         return !!this._fullscreen;
     }
 
+    get height() {
+      return this._texture ? this._texture.get_intrinsic_height() : 1;
     }
 
+    get width() {
+      return this._texture ? this._texture.get_intrinsic_width() : 1;
     }
 
     _init(file) {
@@ -62,6 +72,11 @@ var Klass = GObject.registerClass({
           logError(e, 'Error loading image');
         }
     }
+
+    get resizePolicy() {
+        return Renderer.ResizePolicy.SCALED;
+    }
+
 });
 
 var mimeTypes = [];

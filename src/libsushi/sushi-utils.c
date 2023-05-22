@@ -29,7 +29,7 @@
 #include <gtk/gtk.h>
 
 #ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
+#include <gdk/x11/gdkx.h>
 #endif
 
 #include "externalwindow.h"
@@ -161,10 +161,10 @@ libreoffice_missing (GTask *task)
   const gchar *libreoffice_path[2];
 
 #ifdef GDK_WINDOWING_X11
-  GdkWindow *gdk_window;
-  gdk_window = gtk_widget_get_window (widget);
-  if (gdk_window != NULL)
-    xid = GDK_WINDOW_XID (gdk_window);
+  /* GdkWindow *gdk_window; */
+  /* gdk_window = gtk_widget_get_window (widget); */
+  /* if (gdk_window != NULL) */
+  /*   xid = GDK_WINDOW_XID (gdk_window); */
 #endif
 
   libreoffice_path[0] = "/usr/bin/libreoffice";
@@ -208,7 +208,7 @@ check_libreoffice_flatpak (GTask       *task,
   const gchar *check_argv[] = { flatpak_path, "info", LIBREOFFICE_FLATPAK, NULL };
   g_autoptr(GError) error = NULL;
   gboolean ret;
-  gint exit_status = -1;
+  gint wait_status = -1;
   TaskData *data = g_task_get_task_data (task);
 
   if (data->checked_libreoffice_flatpak)
@@ -222,16 +222,16 @@ check_libreoffice_flatpak (GTask       *task,
                       G_SPAWN_STDOUT_TO_DEV_NULL,
                       NULL, NULL,
                       NULL, NULL,
-                      &exit_status, &error);
+                      &wait_status, &error);
 
   if (ret) {
     g_autoptr(GError) child_error = NULL;
-    if (g_spawn_check_exit_status (exit_status, &child_error)) {
+    if (g_spawn_check_wait_status (wait_status, &child_error)) {
       g_debug ("Found LibreOffice flatpak!");
       data->have_libreoffice_flatpak = TRUE;
     } else {
       g_debug ("LibreOffice flatpak not found, flatpak info returned %i (%s)",
-               exit_status, child_error->message);
+               wait_status, child_error->message);
     }
   } else {
     g_warning ("Error while checking for LibreOffice flatpak: %s",
