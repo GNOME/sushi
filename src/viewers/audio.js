@@ -296,7 +296,7 @@ var Klass = GObject.registerClass({
 
         let box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                 spacing: 6 });
-        this.add(box);
+        this.set_child(box);
 
         this._player = new AudioPlayer(file);
         this._player.connect('tags-change', (p) => {
@@ -317,30 +317,30 @@ var Klass = GObject.registerClass({
         let frame = new Gtk.Frame({ height_request: COVER_SIZE,
                                     width_request: COVER_SIZE,
                                     shadow_type: Gtk.ShadowType.NONE });
-        box.pack_start(frame, false, false, 0);
+        box.append(frame);
 
         this._image = new Gtk.Image({ icon_name: 'media-optical-symbolic',
                                       pixel_size: COVER_SIZE });
-        frame.add(this._image);
+        frame.set_child(this._image);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
                                  margin_top: 48,
                                  margin_start: 12,
                                  margin_end: 12 });
-        box.pack_start(vbox, false, false, 0);
+        box.append(vbox);
 
         this._titleLabel = new Gtk.Label();
         this._titleLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._titleLabel, false, false, 0);
+        vbox.append(this._titleLabel);
 
         this._authorLabel = new Gtk.Label();
         this._authorLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._authorLabel, false, false, 0);
+        vbox.append(this._authorLabel);
 
         this._albumLabel = new Gtk.Label();
         this._albumLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._albumLabel, false, false, 0);
+        vbox.append(this._albumLabel);
 
         this.connect('destroy', this._onDestroy.bind(this));
         this._cancellable = new Gio.Cancellable();

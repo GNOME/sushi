@@ -188,41 +188,41 @@ var FallbackRenderer = GObject.registerClass({
                       spacing: 6 });
 
         this._image = new Gtk.Image();
-        this.pack_start(this._image, false, false, 0);
         this._updateIcon(new Gio.ThemedIcon({ name: 'text-x-generic' }));
+        this.append(this._image);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 1,
                                  margin_top: 48,
                                  margin_start: 12,
                                  margin_end: 12 });
-        this.pack_start(vbox, false, false, 0);
+        this.append(vbox);
 
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                  spacing: 6 });
-        vbox.pack_start(hbox, false, false, 0);
+        vbox.append(hbox);
 
         this._titleLabel = new Gtk.Label({ max_width_chars: 48,
                                            ellipsize: Pango.EllipsizeMode.MIDDLE });
         this._titleLabel.set_halign(Gtk.Align.START);
-        hbox.pack_start(this._titleLabel, false, false, 0);
+        hbox.append(this._titleLabel);
 
         this._spinner = new Gtk.Spinner();
-        hbox.pack_start(this._spinner, false, false, 0);
+        hbox.append(this._spinner);
         this._spinner.start();
         this._spinner.show();
 
         this._typeLabel = new Gtk.Label({ no_show_all: true });
         this._typeLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._typeLabel, false, false, 0);
+        vbox.append(this._typeLabel);
 
         this._sizeLabel = new Gtk.Label();
         this._sizeLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._sizeLabel, false, false, 0);
+        vbox.append(this._sizeLabel);
 
         this._dateLabel = new Gtk.Label();
         this._dateLabel.set_halign(Gtk.Align.START);
-        vbox.pack_start(this._dateLabel, false, false, 0);
+        vbox.append(this._dateLabel);
 
         this._cancellable = new Gio.Cancellable();
         loadFile(file, fileInfo, this._cancellable, this._onFileInfoUpdated.bind(this));
