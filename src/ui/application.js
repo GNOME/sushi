@@ -121,7 +121,7 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
         this._skeleton2.impl.emit_property_changed(
             'Visible', new GLib.Variant('b', true));
 
-        this._mainWindow.connect('destroy', () => {
+        this._mainWindow.connect('close-request', () => {
             this._mainWindow = null;
             this._skeleton2.impl.emit_property_changed(
                 'Visible', new GLib.Variant('b', false));
@@ -135,7 +135,7 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
 
     close() {
         if (this._mainWindow)
-            this._mainWindow.destroy();
+            this._mainWindow.close();
     }
 
     emitSelectionEvent(direction) {
@@ -155,7 +155,7 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
         if (closeIfAlreadyShown &&
             this._mainWindow.file &&
             this._mainWindow.file.equal(file)) {
-            this._mainWindow.destroy();
+            this._mainWindow.close();
         } else {
             this._mainWindow.setParent(windowHandle);
             this._mainWindow.setFile(file);
