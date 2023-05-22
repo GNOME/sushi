@@ -13,10 +13,10 @@
     <file>viewers/audio.js</file>
     <file>viewers/evince.js</file>
     <file>viewers/font.js</file>
-    <file>viewers/gst.js</file>
     <file>viewers/html.js</file>
     <file>viewers/image.js</file>
     <file>viewers/libreoffice.js</file>
     <file>viewers/text.js</file>
+    <file>viewers/video.js</file>
   </gresource>
 </gresources>

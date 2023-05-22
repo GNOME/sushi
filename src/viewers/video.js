@@ -23,7 +23,7 @@
  *
  */
 
-const {GLib, GObject, Sushi} = imports.gi;
+const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
@@ -38,7 +38,7 @@ var Klass = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class GstRenderer extends Sushi.MediaBin {
+}, class VideoRenderer extends Gtk.Video {
     get ready() {
         return !!this._ready;
     }
@@ -48,23 +48,10 @@ var Klass = GObject.registerClass({
     }
 
     _init(file) {
-        super._init({ uri: file.get_uri() });
+        super._init();
 
-        this._autoplayId = GLib.idle_add(0, () => {
-            this._autoplayId = 0;
-            this.play();
-            return false;
-        });
-
-        this.connect('destroy', this._onDestroy.bind(this));
-        this.connect('size-change', this.isReady.bind(this));
-    }
-
-    _onDestroy() {
-        if (this._autoplayId > 0) {
-            GLib.source_remove(this._autoplayId);
-            this._autoplayId = 0;
-        }
+        this.set_file(file);
+        this.autoplay = true;
     }
 
     get canFullscreen() {
