@@ -25,15 +25,15 @@
 
 const {Gtk, GLib, GObject, Sushi} = imports.gi;
 
-var WebKit2;
+var WebKit;
 try {
-    imports.gi.versions.WebKit2 = '4.1';
-    WebKit2 = imports.gi.WebKit2;
+    imports.gi.versions.WebKit = '6.0';
+    WebKit2 = imports.gi.WebKit;
 } catch(e) {
 }
 
 function _isAvailable() {
-    return WebKit2 !== undefined;
+    return WebKit !== undefined;
 }
 
 const Renderer = imports.ui.renderer;
@@ -48,7 +48,7 @@ var Klass = _isAvailable() ? GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class HTMLRenderer extends WebKit2.WebView {
+}, class HTMLRenderer extends WebKit.WebView {
     get ready() {
         return !!this._ready;
     }
@@ -72,7 +72,7 @@ var Klass = _isAvailable() ? GObject.registerClass({
     }
 
     static {
-        WebKit2.WebContext.get_default().set_sandbox_enabled(true);
+        WebKit.WebContext.get_default().set_sandbox_enabled(true);
     }
 
     get moveOnClick() {
