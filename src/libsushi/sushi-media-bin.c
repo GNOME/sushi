@@ -505,173 +505,6 @@ sushi_media_bin_video_pixbuf_new (SushiMediaBin *self)
   return pixbuf;
 }
 
-static inline gboolean
-sushi_media_bin_gl_check (GtkWidget *widget)
-{
-  static gsize gl_works = 0;
-
-  if (g_once_init_enter (&gl_works))
-    {
-      GError *error = NULL;
-      gsize works = 1;
-      GdkGLContext *context;
-      GdkWindow *window;
-
-      if ((window  = gtk_widget_get_window (widget)) &&
-           (context = gdk_window_create_gl_context (window, &error)))
-        {
-          const gchar *vendor, *renderer;
-
-          gdk_gl_context_make_current (context);
-
-          vendor   = (const gchar *) glGetString (GL_VENDOR);
-          renderer = (const gchar *) glGetString (GL_RENDERER);
-
-          GST_INFO ("GL Vendor: %s, renderer: %s", vendor, renderer);
-
-          if (g_str_equal (vendor, "nouveau"))
-            GST_WARNING ("nouveau is blacklisted, since sharing gl contexts in "
-                         "multiple threads is not supported "
-                         "and will eventually make it crash.");
-          else if (g_strstr_len (renderer, -1, "Gallium") &&
-                   g_strstr_len (renderer, -1, "llvmpipe"))
-            GST_INFO ("Detected software GL rasterizer, falling back to gtksink");
-          else
-            works = 2;
-
-          gdk_gl_context_clear_current ();
-        }
-
-        if (error)
-          {
-            GST_WARNING ("Could not window to create GL context, %s", error->message);
-            g_error_free (error);
-          }
-
-      g_once_init_leave (&gl_works, works);
-    }
-
-  return (gl_works > 1);
-}
-
-static inline void
-sushi_media_bin_init_video_sink (SushiMediaBin *self)
-{
-  SushiMediaBinPrivate *priv = SMB_PRIVATE (self);
-  GtkWidget *video_widget = NULL;
-  GstElement *video_sink = NULL;
-
-  if (priv->video_sink)
-    return;
-
-  if (priv->audio_mode)
-    {
-      video_sink = gst_element_factory_make ("fakesink", "SushiMediaBinNullSink");
-      g_object_set (video_sink, "sync", TRUE, NULL);
-      g_object_set (priv->play, "video-sink", video_sink, NULL);
-      priv->video_sink = gst_object_ref_sink (video_sink);
-      return;
-    }
-
-  if (sushi_media_bin_gl_check (GTK_WIDGET (self)))
-    {
-      video_sink = gst_element_factory_make ("glsinkbin", "SushiMediaBinGLVideoSink");
-
-      if (video_sink)
-        {
-          GstElement *gtkglsink = gst_element_factory_make ("gtkglsink", NULL);
-
-          if (gtkglsink)
-            {
-              GST_INFO ("Using gtkglsink");
-              g_object_set (video_sink, "sink", gtkglsink, NULL);
-              g_object_get (gtkglsink, "widget", &video_widget, NULL);
-            }
-          else
-            {
-              GST_WARNING ("Could not create gtkglsink");
-              gst_object_replace ((GstObject**)&video_sink, NULL);
-            }
-        }
-      else
-        {
-          GST_WARNING ("Could not create glsinkbin");
-        }
-    }
-
-  /* Fallback to gtksink */
-  if (!video_sink)
-    {
-      GST_INFO ("Falling back to gtksink");
-      video_sink = gst_element_factory_make ("gtksink", NULL);
-      g_object_get (video_sink, "widget", &video_widget, NULL);
-    }
-
-  /* We use a null sink as a last resort */
-  if (video_sink && video_widget)
-    {
-      g_object_set (video_widget, "expand", TRUE, NULL);
-
-      /* And pack it where we want the video to show up */
-      gtk_container_add (GTK_CONTAINER (priv->overlay), video_widget);
-      gtk_widget_show (video_widget);
-
-      /* g_object_get() returns a new reference */
-      priv->video_widget = video_widget;
-    }
-  else
-    {
-      GtkWidget *img = gtk_image_new_from_icon_name ("image-missing",
-                                                     GTK_ICON_SIZE_DIALOG);
-
-      GST_WARNING ("Could not get video widget from gtkglsink/gtksink, falling back to fakesink");
-
-      g_object_unref (video_widget);
-      gst_object_unref (video_sink);
-      video_sink = gst_element_factory_make ("fakesink", "SushiMediaBinFakeSink");
-      g_object_set (video_sink, "sync", TRUE, NULL);
-
-      gtk_container_add (GTK_CONTAINER (priv->overlay), img);
-      gtk_widget_show (img);
-
-      /* FIXME: the overlay does not get motion and press events with this code path */
-    }
-
-  /* Setup playbin video sink */
-  if (video_sink)
-    {
-      g_object_set (priv->play, "video-sink", video_sink, NULL);
-      priv->video_sink = gst_object_ref_sink (video_sink);
-    }
-}
-
-static inline void
-sushi_media_bin_deinit_video_sink (SushiMediaBin *self)
-{
-  SushiMediaBinPrivate *priv = SMB_PRIVATE (self);
-
-  /* Stop Playback to give gst a chance to cleanup its mess */
-  if (priv->play)
-    gst_element_set_state (priv->play, GST_STATE_NULL);
-
-  /* Stop bus watch */
-  if (priv->bus)
-    {
-      gst_bus_set_flushing (priv->bus, TRUE);
-      gst_bus_remove_watch (priv->bus);
-      gst_object_replace ((GstObject**)&priv->bus, NULL);
-    }
-
-  /* Unref video sink */
-  gst_object_replace ((GstObject**)&priv->video_sink, NULL);
-
-  /* Destroy video widget */
-  g_clear_pointer (&priv->video_widget, gtk_widget_destroy);
-
-  /* Unref playbin */
-  gst_object_replace ((GstObject**)&priv->play, NULL);
-}
-
 static void
 sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
 {
@@ -681,40 +514,6 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
   if ((fullscreen && priv->fullscreen_window) ||
       (!fullscreen && !priv->fullscreen_window))
     return;
-
-  /*
-   * To avoid flickering, this will make the widget pack an image with the last
-   * frame in the container before reparenting the video widget in the
-   * fullscreen window
-   */
-  if (!priv->tmp_image)
-    {
-      GdkPixbuf *pixbuf = sushi_media_bin_video_pixbuf_new (self);
-      priv->tmp_image = gtk_image_new_from_pixbuf (pixbuf);
-      g_object_set (priv->tmp_image, "expand", TRUE, NULL);
-      g_object_unref (pixbuf);
-    }
-
-  /*
-   * FIXME: GtkGstGLWidget does not support reparenting to a different toplevel
-   * because the gl context is different and the pipeline does not know it
-   * changes, so as a temporary workaround we simply reconstruct the whole
-   * pipeline.
-   *
-   * See bug https://bugzilla.gnome.org/show_bug.cgi?id=775045
-   */
-  if ((priv->state == GST_STATE_PAUSED || priv->state == GST_STATE_PLAYING) &&
-      g_strcmp0 (G_OBJECT_TYPE_NAME (priv->video_sink), "GstGLSinkBin") == 0)
-    {
-      /* NOTE: here we could set tmp_image to the content of the current sample
-       * but it wont be updated until the main window is show at which point
-       * we will see the old frame anyways.
-       */
-      position = sushi_media_bin_get_position (self);
-
-      gtk_container_remove (GTK_CONTAINER (priv->overlay), priv->video_widget);
-      sushi_media_bin_deinit_video_sink (self);
-    }
 
   g_object_ref (priv->overlay);
 
@@ -767,7 +566,6 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
   if (priv->play == NULL)
     {
       sushi_media_bin_init_playbin (self);
-      sushi_media_bin_init_video_sink (self);
 
       g_object_set (priv->play, "uri", priv->uri, NULL);
 
@@ -800,9 +598,6 @@ on_sushi_media_bin_realize (GtkWidget *widget, SushiMediaBin *self)
   /* Create a blank_cursor */
   priv->blank_cursor = gdk_cursor_new_from_name (gtk_widget_get_display (widget),
                                                  "none");
-
-  /* Create video sink */
-  sushi_media_bin_init_video_sink (self);
 
   if (priv->fullscreen)
     sushi_media_bin_fullscreen_apply (self, TRUE);
@@ -916,9 +711,6 @@ sushi_media_bin_dispose (GObject *object)
 
   /* Remove controls timeout */
   ensure_no_timeout (priv);
-
-  /* Finalize gstreamer related objects */
-  sushi_media_bin_deinit_video_sink (self);
 
   /* Destroy fullscreen window */
   if (priv->fullscreen_window)
@@ -1068,45 +860,6 @@ sushi_media_bin_get_request_mode (GtkWidget *self)
   return GTK_SIZE_REQUEST_CONSTANT_SIZE;
 }
 
-
-static void
-sushi_media_bin_get_preferred_width (GtkWidget *self,
-                                     gint      *minimum_width,
-                                     gint      *natural_width)
-{
-  SushiMediaBinPrivate *priv = SMB_PRIVATE (SUSHI_MEDIA_BIN (self));
-
-  if (priv->audio_mode)
-    {
-      GTK_WIDGET_CLASS (sushi_media_bin_parent_class)->get_preferred_width
-        (self, minimum_width, natural_width);
-    }
-  else
-    {
-      *minimum_width = priv->video_width ? 320 : 0;
-      *natural_width = priv->video_width ? priv->video_width : 0;
-    }
-}
-
-static void
-sushi_media_bin_get_preferred_height (GtkWidget *self,
-                                      gint      *minimum_height,
-                                      gint      *natural_height)
-{
-  SushiMediaBinPrivate *priv = SMB_PRIVATE (SUSHI_MEDIA_BIN (self));
-
-  if (priv->audio_mode)
-    {
-      GTK_WIDGET_CLASS (sushi_media_bin_parent_class)->get_preferred_height
-        (self, minimum_height, natural_height);
-    }
-  else
-    {
-      *minimum_height = priv->video_height ? 240 : 0;
-      *natural_height = priv->video_height ? priv->video_height : 0;
-    }
-}
-
 #define SMB_DEFINE_ACTION_SIGNAL(klass, name, handler,...) \
   g_signal_new_class_handler (name, \
                               G_TYPE_FROM_CLASS (klass), \
@@ -1127,8 +880,6 @@ sushi_media_bin_class_init (SushiMediaBinClass *klass)
   object_class->get_property = sushi_media_bin_get_property;
 
   widget_class->get_request_mode = sushi_media_bin_get_request_mode;
-  widget_class->get_preferred_width = sushi_media_bin_get_preferred_width;
-  widget_class->get_preferred_height = sushi_media_bin_get_preferred_height;
 
   /* Properties */
   properties[PROP_URI] =
