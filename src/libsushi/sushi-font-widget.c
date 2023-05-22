@@ -454,7 +454,6 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
   cairo_surface_t *surface;
   FT_Face face = self->face;
   GtkStyleContext *context;
-  GtkStateFlags state;
   GtkBorder padding;
 
   if (face == NULL) {
@@ -475,8 +474,7 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
                                         SURFACE_SIZE, SURFACE_SIZE);
   cr = cairo_create (surface);
   context = gtk_widget_get_style_context (drawing_area);
-  state = gtk_style_context_get_state (context);
-  gtk_style_context_get_padding (context, state, &padding);
+  gtk_style_context_get_padding (context, &padding);
 
   sizes = build_sizes_table (face, &n_sizes, &alpha_size, &title_size);
 
@@ -595,14 +593,12 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   GtkStyleContext *context;
   GdkRGBA color;
   GtkBorder padding;
-  GtkStateFlags state;
   gint allocated_width, allocated_height;
 
   if (face == NULL)
     return FALSE;
 
   context = gtk_widget_get_style_context (drawing_area);
-  state = gtk_style_context_get_state (context);
 
   allocated_width = gtk_widget_get_allocated_width (drawing_area);
   allocated_height = gtk_widget_get_allocated_height (drawing_area);
@@ -610,8 +606,8 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   gtk_render_background (context, cr,
                          0, 0, allocated_width, allocated_height);
 
-  gtk_style_context_get_color (context, state, &color);
-  gtk_style_context_get_padding (context, state, &padding);
+  gtk_style_context_get_color (context, &color);
+  gtk_style_context_get_padding (context, &padding);
 
   gdk_cairo_set_source_rgba (cr, &color);
 
