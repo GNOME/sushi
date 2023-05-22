@@ -81,10 +81,10 @@ var Renderer = GObject.registerClass({
             this.populateToolbar(this._toolbar.box);
 
             if (this.canFullscreen) {
-                if (this._toolbar.box.get_children().length > 0)
-                    this._toolbar.box.add(new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL }));
+                if (this._toolbar.box.get_first_child())
+                    this._toolbar.box.append(new Gtk.Separator({ orientation: Gtk.Orientation.VERTICAL }));
 
-                this._toolbar.box.add(Utils.createFullscreenButton(this));
+                this._toolbar.box.append(Utils.createFullscreenButton(this));
             }
         }
 
@@ -114,7 +114,7 @@ var RendererToolbar = GObject.registerClass(class RendererToolbar extends Gtk.Re
                       transition_type: Gtk.RevealerTransitionType.CROSSFADE });
 
         this.box = new RendererToolbarBox();
-        this.add(this.box);
+        this.set_child(this.box);
 
         this.connect('destroy', this._onDestroy.bind(this));
     }

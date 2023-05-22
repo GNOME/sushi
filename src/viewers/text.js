@@ -58,7 +58,8 @@ var Klass = GObject.registerClass({
                                           monospace: true,
                                           show_line_numbers: !!buffer.language });
 
-        this.add(this._view);
+        this.set_child(this._view);
+
         this.isReady();
 
         this.connect('destroy', this._onDestroy.bind(this));
