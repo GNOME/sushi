@@ -540,7 +540,7 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
         gdk_window_set_cursor (gtk_widget_get_window (GTK_WIDGET (priv->fullscreen_window)),
                                priv->blank_cursor);
 
-      gtk_image_set_from_icon_name (priv->fullscreen_image, SMB_ICON_NAME_RESTORE, SMB_ICON_SIZE);
+      gtk_image_set_from_icon_name (priv->fullscreen_image, SMB_ICON_NAME_RESTORE);
     }
   else
     {
@@ -555,7 +555,7 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
       gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window));
       g_clear_object (&priv->fullscreen_window);
 
-      gtk_image_set_from_icon_name (priv->fullscreen_image, SMB_ICON_NAME_FULLSCREEN, SMB_ICON_SIZE);
+      gtk_image_set_from_icon_name (priv->fullscreen_image, SMB_ICON_NAME_FULLSCREEN);
 
       gtk_widget_grab_focus (GTK_WIDGET (self));
     }
@@ -1370,19 +1370,19 @@ sushi_media_bin_handle_msg_state_changed (SushiMediaBin *self, GstMessage *msg)
   /* Update UI */
   if (old_state == GST_STATE_READY && new_state == GST_STATE_PAUSED)
     {
-      gtk_image_set_from_icon_name (priv->playback_image, SMB_ICON_NAME_PLAY, SMB_ICON_SIZE);
+      gtk_image_set_from_icon_name (priv->playback_image, SMB_ICON_NAME_PLAY);
       widget_set_visible (priv->play_box, FALSE);
       sushi_media_bin_update_duration (self);
     }
   else if (new_state == GST_STATE_PLAYING)
     {
       widget_set_visible (priv->play_box, FALSE);
-      gtk_image_set_from_icon_name (priv->playback_image, SMB_ICON_NAME_PAUSE, SMB_ICON_SIZE);
+      gtk_image_set_from_icon_name (priv->playback_image, SMB_ICON_NAME_PAUSE);
       sushi_media_bin_set_tick_enabled (self, TRUE);
     }
   else
     {
-      gtk_image_set_from_icon_name (priv->playback_image, SMB_ICON_NAME_PLAY, SMB_ICON_SIZE);
+      gtk_image_set_from_icon_name (priv->playback_image, SMB_ICON_NAME_PLAY);
       widget_set_visible (priv->play_box, FALSE);
       priv->position = 0;
       sushi_media_bin_set_tick_enabled (self, FALSE);
