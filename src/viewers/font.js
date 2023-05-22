@@ -48,7 +48,7 @@ var Klass = GObject.registerClass({
 
     _init(file) {
         super._init({ uri: file.get_uri(),
-                      visible: true })
+                      visible: true });
 
         this.isReady();
     }
