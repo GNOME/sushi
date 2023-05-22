@@ -23,7 +23,7 @@
  *
  */
 
-const {Gtk, GLib, GObject, Sushi, WebKit2} = imports.gi;
+const {Gtk, GLib, GObject, Sushi, WebKit} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 
@@ -37,7 +37,7 @@ var Klass = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class HTMLRenderer extends WebKit2.WebView {
+}, class HTMLRenderer extends WebKit.WebView {
     get ready() {
         return !!this._ready;
     }
