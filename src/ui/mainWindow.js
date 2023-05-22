@@ -84,7 +84,7 @@ const ErrorBox = GObject.registerClass({
                                     icon_name: 'face-uncertain-symbolic',
                                     halign: Gtk.Align.CENTER,
                                     valign: Gtk.Align.CENTER });
-        this.add(image);
+        this.append(image);
 
         // TRANSLATORS: This is a filename, e.g. "image.jpg"
         let primary = _("Unable to display %s").format(file.get_basename());
@@ -93,15 +93,15 @@ const ErrorBox = GObject.registerClass({
                                            use_markup: true,
                                            halign: Gtk.Align.CENTER,
                                            valign: Gtk.Align.CENTER });
-        this.add(primaryLabel);
+        this.append(primaryLabel);
 
         let secondaryLabel = new Gtk.Label({ label: error.message,
                                              wrap: true,
                                              halign: Gtk.Align.CENTER,
                                              valign: Gtk.Align.CENTER });
-        this.add(secondaryLabel);
 
         this.show_all();
+        this.append(secondaryLabel);
     }
 });
 

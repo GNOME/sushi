@@ -525,12 +525,12 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
       gtk_container_remove (GTK_CONTAINER (priv->stack), priv->overlay);
 
       /* Pack an image with the last frame inside the bin */
-      gtk_container_add (GTK_CONTAINER (priv->stack), priv->tmp_image);
+      gtk_stack_add_child (priv->stack, priv->tmp_image);
       gtk_widget_show (priv->tmp_image);
       gtk_stack_set_visible_child (GTK_STACK (priv->stack), priv->tmp_image);
 
       /* Pack video in the fullscreen window */
-      gtk_container_add (GTK_CONTAINER (priv->fullscreen_window), priv->overlay);
+      gtk_window_set_child (priv->fullscreen_window, priv->overlay);
 
       gtk_window_fullscreen (priv->fullscreen_window);
       gtk_window_present (priv->fullscreen_window);
@@ -549,7 +549,7 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
 
       /* Reparent video widget back into ourselves */
       gtk_container_remove (GTK_CONTAINER (priv->fullscreen_window), priv->overlay);
-      gtk_container_add (GTK_CONTAINER (priv->stack), priv->overlay);
+      gtk_stack_add_child (priv->stack, priv->overlay);
       gtk_stack_set_visible_child (GTK_STACK (priv->stack), priv->overlay);
 
       gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window));
@@ -686,7 +686,7 @@ sushi_media_bin_init (SushiMediaBin *self)
     {
       GtkWidget *label = gtk_label_new ("");
       priv->info_column_label[i] = GTK_LABEL (label);
-      gtk_container_add (GTK_CONTAINER (priv->info_box), label);
+      gtk_box_append (priv->info_box, label);
       gtk_widget_set_valign (label, GTK_ALIGN_START);
       gtk_widget_show (label);
     }
