@@ -48,7 +48,7 @@ function _formatTimeString(timeVal) {
 
 const AMAZON_IMAGE_FORMAT = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg";
 const MUSIC_BRAINZ_ASIN_FORMAT = "https://musicbrainz.org/ws/2/release/?query=release:\"%s\"AND artist:\"%s\"&limit=1&fmt=json&inc=asin";
-const fetchCoverArt = function(_tagList, _callback) {
+const fetchCoverArt = function(_tagList, _cancellable, _callback) {
     function _fetchFromTags() {
         let coverSample = null;
         let idx = 0;
@@ -159,22 +159,22 @@ const fetchCoverArt = function(_tagList, _callback) {
         });
     }
 
+    function decode(buffer) {
+        let decoder = new TextDecoder('utf8');
+        return decoder.decode(buffer);
+    }
+
     function _fetchFromAmazon(asin, done) {
         let uri = AMAZON_IMAGE_FORMAT.format(asin);
         let session = new Soup.Session();
 
-        let request;
-        try {
-            request = session.request(uri);
-        } catch (e) {
-            done(e, null);
-            return;
-        }
+        let message = Soup.Message.new('GET', uri);
+        message.request_headers.append('User-Agent', 'gnome-sushi');
 
-        request.send_async(null, (r, res) => {
+        session.send_async(message, 0, _cancellable, (r, res) => {
             let stream;
             try {
-                stream = request.send_finish(res);
+                stream = session.send_finish(res);
             } catch (e) {
                 done(e, null);
                 return;
@@ -193,27 +193,26 @@ const fetchCoverArt = function(_tagList, _callback) {
         let album = _tagList.get_string('album')[1];
 
         let uri = MUSIC_BRAINZ_ASIN_FORMAT.format(album, artist);
-        let session = new Soup.SessionAsync();
+        let session = new Soup.Session();
 
-        let request;
-        try {
-            request = Soup.Message.new('GET', uri);
-            request.request_headers.append('User-Agent', 'gnome-sushi');
-        } catch (e) {
-            done(e, null);
-            return;
-        }
+        let message = Soup.Message.new('GET', uri);
+        message.request_headers.append('User-Agent', 'gnome-sushi');
 
-        session.queue_message(request, (r, res) => {
+        session.send_and_read_async(message, 0, _cancellable, (r, res) => {
             let asin = null;
-            if (request.status_code == Soup.Status.OK) {
-                try {
-                    let json_response = JSON.parse(request.response_body.data);
-                    asin = json_response['release'][0]['asin'].toString();
-                } catch (e) {
-                    done(e, null);
+            try {
+                let data = decode(session.send_and_read_finish(res).get_data());
+                if (message.get_status() !== Soup.Status.OK)
                     return;
-                }
+
+                let json_response = JSON.parse(data);
+
+                if (!('releases' in json_response) || json_response['releases'].length === 0)
+                    return;
+
+                asin = json_response['releases'][0]['asin'];
+            } catch (e) {
+              done (e, null);
             }
 
             _fetchFromCache(asin, (err, cover) => {
@@ -321,6 +320,7 @@ var Klass = GObject.registerClass({
         vbox.pack_start(this._albumLabel, false, false, 0);
 
         this.connect('destroy', this._onDestroy.bind(this));
+        this._cancellable = new Gio.Cancellable();
         this.isReady();
     }
 
@@ -329,6 +329,8 @@ var Klass = GObject.registerClass({
             GLib.source_remove(this._autoplayId);
             this._autoplayId = 0;
         }
+
+        this._cancellable.cancel();
     }
 
     _setCover(cover) {
@@ -352,7 +354,8 @@ var Klass = GObject.registerClass({
 
     _onCoverArtFetched(err, cover) {
         if (err) {
-            if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+            if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
+                !err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 logError(err, 'Unable to fetch cover art');
             return;
         }
@@ -384,7 +387,7 @@ var Klass = GObject.registerClass({
         this._titleLabel.set_markup('<b>' + escaped + '</b>');
 
         if (artistName && albumName && !this._coverFetched) {
-            fetchCoverArt(tags, this._onCoverArtFetched.bind(this));
+            fetchCoverArt(tags, this._cancellable, this._onCoverArtFetched.bind(this));
             this._coverFetched = true;
         }
     }
