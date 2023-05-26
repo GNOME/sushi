@@ -2134,7 +2134,7 @@ SMB_DEFINE_SETTER_FULL (gdouble, volume, VOLUME,
  * Returns a #GstTagList with the audio tags for the played media
  */
 SMB_DEFINE_GETTER_FULL (GstTagList *, audio_tags, NULL,
-  return (SMB_PRIVATE (self)->audio_tags);
+  return (gst_tag_list_ref (SMB_PRIVATE (self)->audio_tags));
 )
 
 /**
@@ -2144,7 +2144,7 @@ SMB_DEFINE_GETTER_FULL (GstTagList *, audio_tags, NULL,
  * Returns a #GstTagList with the video tags for the played media
  */
 SMB_DEFINE_GETTER_FULL (GstTagList *, video_tags, NULL,
-  return (SMB_PRIVATE (self)->video_tags);
+  return (gst_tag_list_ref (SMB_PRIVATE (self)->video_tags));
 )
 
 /**
