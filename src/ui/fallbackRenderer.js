@@ -232,12 +232,15 @@ var FallbackRenderer = GObject.registerClass({
     }
 
     _applyLabels(state) {
-        let titleStr = `<b><big>${state.fileInfo.get_display_name()}</big></b>`;
+        let fileName = state.fileInfo.get_display_name();
+        fileName = GLib.markup_escape_text(fileName, -1);
+        let titleStr = `<b><big>${fileName}</big></b>`;
         this._titleLabel.set_markup(titleStr);
 
         if (state.fileInfo.get_file_type() != Gio.FileType.DIRECTORY) {
             let contentType = state.fileInfo.get_content_type();
             let typeDescr = Gio.content_type_get_description(contentType);
+            typeDescr = GLib.markup_escape_text(typeDescr, -1);
             let typeStr = '<small><b>' + _("Type") + '  </b>' + typeDescr + '</small>';
             this._typeLabel.set_markup(typeStr);
             this._typeLabel.show();
@@ -256,11 +259,13 @@ var FallbackRenderer = GObject.registerClass({
             sizeFormatted = _("Empty Folder");
         }
 
+        sizeFormatted = GLib.markup_escape_text(sizeFormatted, -1);
         let sizeStr = '<small><b>' + _("Size") + '  </b>' + sizeFormatted + '</small>';
         this._sizeLabel.set_markup(sizeStr);
 
         let date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
         let dateFormatted = date.format('%x %X');
+        dateFormatted = GLib.markup_escape_text(dateFormatted, -1);
         let dateStr = '<small><b>' + _("Modified") + '  </b>' + dateFormatted + '</small>';
         this._dateLabel.set_markup(dateStr);
     }
