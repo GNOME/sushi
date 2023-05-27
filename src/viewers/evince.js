@@ -77,20 +77,28 @@ var Klass = GObject.registerClass({
         this._view.show();
         this.add(this._view);
 
+        this.connect('destroy', this._onDestroy.bind(this));
+
         this.isReady();
     }
 
+    _onDestroy() {
+        if(this._job)
+            this._job.disconnect(this._jobHandlerId);
+        if(this._model)
+            this._model.disconnect(this._modelHandlerId);
+    }
+
     _loadFile(file) {
-        let job;
         if (file.has_uri_scheme("file")) {
-            job = EvinceView.JobLoad.new(file.get_uri());
+            this._job = EvinceView.JobLoad.new(file.get_uri());
         } else {
-            job = EvinceView.JobLoadGFile.new(
+            this._job = EvinceView.JobLoadGFile.new(
                 file, EvinceDocument.DocumentLoadFlags.NONE);
         }
 
-        job.connect('finished', this._onLoadJobFinished.bind(this));
-        job.scheduler_push_job(EvinceView.JobPriority.PRIORITY_NONE);
+        this._jobHandlerId = this._job.connect('finished', this._onLoadJobFinished.bind(this));
+        this._job.scheduler_push_job(EvinceView.JobPriority.PRIORITY_NONE);
     }
 
     _updatePageLabel() {
@@ -116,7 +124,7 @@ var Klass = GObject.registerClass({
         this._model.set_sizing_mode(EvinceView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);
 
-        this._model.connect('page-changed', this._updatePageLabel.bind(this));
+        this._modelHandlerId = this._model.connect('page-changed', this._updatePageLabel.bind(this));
         this._updatePageLabel();
 
         this._view.set_model(this._model);
