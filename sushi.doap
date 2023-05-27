@@ -29,4 +29,11 @@
       <gnome:userid>felipeborges</gnome:userid>
     </foaf:Person>
   </maintainer>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Corey Berla</foaf:name>
+      <foaf:mbox rdf:resource="mailto:coreyberla@gnome.org" />
+      <gnome:userid>coreyberla</gnome:userid>
+    </foaf:Person>
+  </maintainer>
 </Project>
