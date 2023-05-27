@@ -23,7 +23,7 @@
  *
  */
 
-const {Gdk, GdkPixbuf, GLib, GObject, Gtk} = imports.gi;
+const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gtk} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 
@@ -48,6 +48,8 @@ var Klass = GObject.registerClass({
 
     _init(file) {
         super._init();
+
+        this._cancellable = new Gio.Cancellable();
 
         this._pix = null;
         this._scaledSurface = null;
@@ -88,7 +90,7 @@ var Klass = GObject.registerClass({
     }
 
     _createImageTexture(file) {
-        file.read_async(GLib.PRIORITY_DEFAULT, null, (obj, res) => {
+        file.read_async(GLib.PRIORITY_DEFAULT, this._cancellable, (obj, res) => {
             try {
                 let stream = obj.read_finish(res);
                 this._textureFromStream(stream);
@@ -148,7 +150,7 @@ var Klass = GObject.registerClass({
     }
 
     _textureFromStream(stream) {
-        GdkPixbuf.PixbufAnimation.new_from_stream_async(stream, null, (obj, res) => {
+        GdkPixbuf.PixbufAnimation.new_from_stream_async(stream, this._cancellable, (obj, res) => {
             let anim;
             try {
                 anim = GdkPixbuf.PixbufAnimation.new_from_stream_finish(res);
@@ -160,7 +162,7 @@ var Klass = GObject.registerClass({
             this._iter = anim.get_iter(null);
             this._update();
 
-            stream.close_async(GLib.PRIORITY_DEFAULT, null, (obj, res) => {
+            stream.close_async(GLib.PRIORITY_DEFAULT, this._cancellable, (obj, res) => {
                 try {
                     obj.close_finish(res);
                 } catch (e) {
@@ -194,6 +196,8 @@ var Klass = GObject.registerClass({
             GLib.source_remove(this._timeoutId);
             this._timeoutId = 0;
         }
+
+        this._cancellable.cancel();
     }
 });
 
