@@ -91,7 +91,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
     }
 
     function _fetchFromStream(stream, done) {
-        GdkPixbuf.Pixbuf.new_from_stream_async(stream, null, (o, res) => {
+        GdkPixbuf.Pixbuf.new_from_stream_async(stream, _cancellable, (o, res) => {
             let cover;
             try {
                 cover = GdkPixbuf.Pixbuf.new_from_stream_finish(res);
@@ -106,7 +106,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
 
     function _fetchFromCache(mbid, done) {
         let file = _getCacheFile(mbid);
-        file.query_info_async(Gio.FILE_ATTRIBUTE_STANDARD_TYPE, 0, 0, null, (f, res) => {
+        file.query_info_async(Gio.FILE_ATTRIBUTE_STANDARD_TYPE, 0, 0, _cancellable, (f, res) => {
             try {
                 file.query_info_finish(res);
             } catch (e) {
@@ -114,7 +114,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
                 return;
             }
 
-            file.read_async(0, null, (f, res) => {
+            file.read_async(0, _cancellable, (f, res) => {
                 let stream;
                 try {
                     stream = file.read_finish(res);
@@ -133,7 +133,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
         let cachePath = cacheFile.get_parent().get_path();
         GLib.mkdir_with_parents(cachePath, 448);
 
-        cacheFile.replace_async(null, false, Gio.FileCreateFlags.PRIVATE, 0, null, (f, res) => {
+        cacheFile.replace_async(null, false, Gio.FileCreateFlags.PRIVATE, 0, _cancellable, (f, res) => {
             let outStream;
             try {
                 outStream = cacheFile.replace_finish(res);
@@ -146,7 +146,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
                 stream,
                 Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
                 Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
-                0, null, (s, res) => {
+                0, _cancellable, (s, res) => {
                     try {
                         outStream.splice_finish(res);
                     } catch (e) {
