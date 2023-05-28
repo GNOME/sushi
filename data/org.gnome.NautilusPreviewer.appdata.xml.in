@@ -22,13 +22,7 @@
     <keyword>preview</keyword>
   </keywords>
   <releases>
-    <release version="43.0" date="2022-09-16"/>
-    <release version="42.0" date="2022-07-01">
-      <description>
-        <p>Sushi 42.0 is the latest stable version of GNOME Sushi, and it contains all
-        features and bugfixes introduced since our last release.</p>
-      </description>
-    </release>
+    <release version="44.2" date="2023-05-28"/>
   </releases>
   <translation type="gettext">sushi</translation>
   <url type="translate">https://wiki.gnome.org/TranslationProject</url>
