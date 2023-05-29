@@ -158,17 +158,8 @@ static void
 libreoffice_missing (GTask *task)
 {
   GApplication *app = g_application_get_default ();
-  GtkWidget *widget = GTK_WIDGET (gtk_application_get_active_window (GTK_APPLICATION (app)));
   GDBusConnection *connection = g_application_get_dbus_connection (app);
-  guint xid = 0;
   const gchar *libreoffice_path[2];
-
-#ifdef GDK_WINDOWING_X11
-  GdkWindow *gdk_window;
-  gdk_window = gtk_widget_get_window (widget);
-  if (gdk_window != NULL)
-    xid = GDK_WINDOW_XID (gdk_window);
-#endif
 
   libreoffice_path[0] = "/usr/bin/libreoffice";
   libreoffice_path[1] = NULL;
@@ -176,12 +167,12 @@ libreoffice_missing (GTask *task)
   g_dbus_connection_call (connection,
                           "org.freedesktop.PackageKit",
                           "/org/freedesktop/PackageKit",
-                          "org.freedesktop.PackageKit.Modify",
+                          "org.freedesktop.PackageKit.Modify2",
                           "InstallProvideFiles",
-                          g_variant_new ("(u^ass)",
-                                         xid,
+                          g_variant_new ("(^asssa{sv})",
                                          libreoffice_path,
-                                         "hide-confirm-deps"),
+                                         "hide-confirm-deps",
+                                         "org.gnome.NautilusPreviewer"),
                           NULL, G_DBUS_CALL_FLAGS_NONE,
                           G_MAXINT, NULL,
                           libreoffice_missing_ready_cb,
