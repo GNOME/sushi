@@ -116,7 +116,7 @@ function _getDecorationLayout() {
     let [lhs, rhs] = decorationLayout.split(':');
 
     let leftGroup = lhs.split(',').filter(_isSupported);
-    let rightGroup = rhs.split(',').filter(_isSupported);
+    let rightGroup = rhs ? rhs.split(',').filter(_isSupported) : [];
 
     return [leftGroup.join(','), rightGroup.join(',')].join(':');
 };
