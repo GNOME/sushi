@@ -57,6 +57,7 @@ GdkPixbuf *    sushi_pixbuf_from_gst_sample (GstSample *sample,
 
 void           sushi_window_set_child_of_external (GtkWindow *window,
                                                    const char *handle);
+gboolean       sushi_running_under_wayland (GdkDisplay *display);
 
 G_END_DECLS
 
