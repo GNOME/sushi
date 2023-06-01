@@ -31,6 +31,9 @@
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
 #endif
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/gdkwayland.h>
+#endif
 
 #include "externalwindow.h"
 
@@ -398,4 +401,19 @@ sushi_pixbuf_from_gst_sample (GstSample *sample,
   gst_buffer_unmap (buffer, &info);
 
   return pixbuf;
+}
+
+/**
+ * sushi_running_under_wayland:
+ *
+ * Returns: Whether we are running under Wayland backend.
+ */
+gboolean
+sushi_running_under_wayland (GdkDisplay *display)
+{
+#ifdef GDK_WINDOWING_WAYLAND
+  return GDK_IS_WAYLAND_DISPLAY (display);
+#endif
+
+  return FALSE;
 }

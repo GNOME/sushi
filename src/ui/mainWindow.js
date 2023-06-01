@@ -237,6 +237,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
     _getMaxSize() {
         let gdkWin = this.get_window();
         let display = this.get_display();
+        let underWayland = Sushi.running_under_wayland(display);
         let monitor = display.get_monitor_at_window(gdkWin);
         let geometry = monitor.get_geometry();
 
@@ -250,8 +251,15 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         // See https://gitlab.gnome.org/GNOME/gtk/issues/1828
         let versionCheck = Gtk.check_version(3, 24, 9);
         if (!versionCheck) {
-            scaleW = (geometry.width / WINDOW_MAX_W_BASE) / this.get_scale_factor ();
-            scaleH = (geometry.height / WINDOW_MAX_H_BASE) / this.get_scale_factor ();
+            scaleW = (geometry.width / WINDOW_MAX_W_BASE);
+            scaleH = (geometry.height / WINDOW_MAX_H_BASE);
+        }
+
+        // reduce by scale factor only under Wayland, otherwise
+        // X11 HiDPI windows are shown too small -- Issue #91
+        if (underWayland) {
+            scaleW = scaleW / this.get_scale_factor ();
+            scaleH = scaleH / this.get_scale_factor ();
         }
 
         return [Math.floor(scaleW * WINDOW_MAX_W),
