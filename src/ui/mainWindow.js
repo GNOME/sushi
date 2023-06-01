@@ -152,6 +152,15 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         this._embed = new Embed();
         eventBox.add(this._embed);
 
+        // call show_all() early when there's still no child Renderer, because show_all() later
+        // when the Renderer is a child may have unexpected results, see comments in !49
+        this.show_all();
+
+        // but leave MainWindow not visible, because we want it to be firstly shown/mapped
+        // when it has its final dimemnsions i.e. when the Renderer has emmitted the 'ready'
+        // signal, i.e. on the _onRendererReady() handler.
+        this.hide();
+
         this._defineActions();
     }
 
@@ -228,10 +237,9 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         if (this._renderer.ready) {
             this._resizeWindow();
             this.queue_resize();
+            this.show();
         }
 
-        if (!this.visible)
-            this.show_all();
     }
 
     _getMaxSize() {
