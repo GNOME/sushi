@@ -15,13 +15,13 @@
   <programming-language>JavaScript</programming-language>
   <programming-language>C</programming-language>
 
-  <maintainer>
+  <author>
     <foaf:Person>
       <foaf:name>Cosimo Cecchi</foaf:name>
       <foaf:mbox rdf:resource="mailto:cosimoc@gnome.org" />
       <gnome:userid>cosimoc</gnome:userid>
     </foaf:Person>
-  </maintainer>
+  </author>
   <maintainer>
     <foaf:Person>
       <foaf:name>Felipe Borges</foaf:name>
