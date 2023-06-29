@@ -87,7 +87,8 @@
             "buildsystem": "meson",
             "config-opts": [
                 "-Dinstall_tests=false",
-                "-Dgtk_doc=false"
+                "-Dgtk_doc=false",
+                "-Dvapi=false"
             ],
             "sources": [
                 {
