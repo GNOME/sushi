@@ -143,6 +143,11 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
             'SelectionEvent', new GLib.Variant('(u)', [direction]));
     }
 
+    updateParentHandle(handle) {
+        this._skeleton2.impl.emit_property_changed(
+            'ParentHandle', new GLib.Variant('s', handle));
+    }
+
     showFile(uri, windowHandle, closeIfAlreadyShown) {
         this._ensureMainWindow();
 

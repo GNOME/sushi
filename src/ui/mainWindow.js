@@ -391,6 +391,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
      **************************************************************************/
     setParent(handle) {
         Sushi.window_set_child_of_external(this, handle);
+        this.application.updateParentHandle(handle);
     }
 
     setFile(file) {
