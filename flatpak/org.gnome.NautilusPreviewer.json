@@ -1,5 +1,5 @@
 {
-    "app-id": "org.gnome.NautilusPreviewer",
+    "app-id": "org.gnome.NautilusPreviewerDevel",
     "runtime": "org.gnome.Platform",
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
@@ -101,6 +101,9 @@
         {
             "name": "sushi",
             "buildsystem": "meson",
+            "config-opts": [
+            	"-Dprofile=development"
+            ],
             "sources": [
                 {
                     "type": "dir",

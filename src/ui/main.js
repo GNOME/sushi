@@ -46,10 +46,8 @@ const {Gio, GLib} = imports.gi;
 
 const Application = imports.ui.application;
 
-const SUSHI_DBUS_NAME = 'org.gnome.NautilusPreviewer';
-
 function main(argv) {
-    let application = new Application.Application({ application_id: SUSHI_DBUS_NAME,
+    let application = new Application.Application({ application_id: pkg.name,
                                                     flags: Gio.ApplicationFlags.IS_SERVICE,
                                                     inactivity_timeout: 12000 });
     if (GLib.getenv('SUSHI_PERSIST'))

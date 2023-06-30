@@ -36,6 +36,14 @@ add_project_arguments(
   language: 'c',
 )
 
+if get_option('profile') == 'default'
+  app_id = 'org.gnome.NautilusPreviewer'
+else
+  app_id = 'org.gnome.NautilusPreviewerDevel'
+endif
+
+object_path = '/@0@'.format(app_id.replace('.', '/'))
+
 i18n = import('i18n')
 
 subdir('data')

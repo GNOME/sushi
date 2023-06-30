@@ -6,3 +6,8 @@ option('X11',
 	type: 'feature',
 	value: 'auto',
 	description: 'Build with legacy X11 support.')
+option('profile',
+	type: 'combo',
+	choices: ['default', 'development'],
+	value: 'default',
+	description: 'Build with default or development App Id.')

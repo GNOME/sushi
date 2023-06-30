@@ -31,7 +31,7 @@ if (!file.query_exists(null)) {
 }
 
 try {
-    let dataResource = Gio.Resource.load('@pkgdatadir@/org.gnome.NautilusPreviewer.data.gresource');
+    let dataResource = Gio.Resource.load('@pkgdatadir@/@app_id@.data.gresource');
     dataResource._register();
 } catch(e) {
     logError(e, 'Unable to load data resource');
@@ -45,7 +45,7 @@ let wrapper = Gio.DBusProxy.makeProxyWrapper(ByteArray.toString(bytes.toArray())
 let proxy;
 try {
     proxy = new wrapper(
-        Gio.DBus.session, 'org.gnome.NautilusPreviewer', '/org/gnome/NautilusPreviewer');
+        Gio.DBus.session, '@app_id@', '@object_path@');
 } catch(e) {
     logError(e, 'Unable to create DBus proxy for NautilusPreviewer');
     System.exit(1);

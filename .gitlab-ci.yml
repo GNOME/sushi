@@ -4,7 +4,7 @@ include: "https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_
   variables:
     MANIFEST_PATH: "flatpak/org.gnome.NautilusPreviewer.json"
     FLATPAK_MODULE: "sushi"
-    APP_ID: "org.gnome.NautilusPreviewer"
+    APP_ID: "org.gnome.NautilusPreviewerDevel"
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
     BUNDLE: "sushi-dev.flatpak"
 

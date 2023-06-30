@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/org/gnome/NautilusPreviewer/js">
+  <gresource prefix="@object_path@/js">
     <file>ui/application.js</file>
     <file>ui/fallbackRenderer.js</file>
     <file>ui/main.js</file>

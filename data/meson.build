@@ -1,16 +1,21 @@
-dbus_conf = configuration_data()
+conf = configuration_data()
 
-dbus_conf.set('libexecdir', libexecdir)
+conf.set('libexecdir', libexecdir)
+conf.set('app_id', app_id)
 
 configure_file(
   input: 'org.gnome.NautilusPreviewer.service.in',
-  output: 'org.gnome.NautilusPreviewer.service',
-  configuration: dbus_conf,
+  output: '@0@.service'.format(app_id),
+  configuration: conf,
   install_dir: join_paths(datadir, 'dbus-1', 'services'),
 )
 
 i18n.merge_file(
-  input: 'org.gnome.NautilusPreviewer.appdata.xml.in',
+  input: configure_file(
+    input: 'org.gnome.NautilusPreviewer.appdata.xml.in.in',
+    output: '@BASENAME@',
+    configuration: conf
+  ),
   output: 'org.gnome.NautilusPreviewer.appdata.xml',
   po_dir: '../po',
   install: true,

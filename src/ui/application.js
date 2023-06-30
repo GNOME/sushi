@@ -89,11 +89,13 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
     }
 
     vfunc_dbus_register(connection, path) {
+        let actualPath = `/org/gnome/${pkg.name.split('.').at(-1)}`;
+
         this._skeleton = new NautilusPreviewer1Skeleton(this);
         this._skeleton2 = new NautilusPreviewer2Skeleton(this);
 
-        this._skeleton.export(connection, path);
-        this._skeleton2.export(connection, path);
+        this._skeleton.export(connection, actualPath);
+        this._skeleton2.export(connection, actualPath);
 
         return super.vfunc_dbus_register(connection, path);
     }
@@ -113,6 +115,9 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
             return;
 
         this._mainWindow = new MainWindow.MainWindow(this);
+        if (pkg.name.endsWith('Devel'))
+            this._mainWindow.get_style_context().add_class('devel');
+
         this._skeleton2.impl.emit_property_changed(
             'Visible', new GLib.Variant('b', true));
 
