@@ -16,7 +16,7 @@ i18n.merge_file(
     output: '@BASENAME@',
     configuration: conf
   ),
-  output: 'org.gnome.NautilusPreviewer.appdata.xml',
+  output: '@0@.appdata.xml'.format(app_id),
   po_dir: '../po',
   install: true,
   install_dir: join_paths(datadir, 'metainfo')
