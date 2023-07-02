@@ -1,3 +1,14 @@
+45.alpha
+====
+
+- Fix window size with custom scale factor in x11 (Nelson Ben)
+- Don't show window before renderer is ready (Nelson Ben)
+- Allow keyboard copy shortcuts for evince and text viewers (Corey Berla)
+- Fix crash when switching between audio files (Corey Berla)
+- Fix coverart download (Corey Berla)
+- Add ParentHandle dbus property (Corey Berla)
+- Add development profile (Corey Berla)
+
 44.2
 ====
 
