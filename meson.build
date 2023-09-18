@@ -2,7 +2,7 @@ project(
   'sushi',
   'c',
   version: '46.alpha',
-  meson_version: '>=0.47.0'
+  meson_version: '>=0.58.0'
 )
 
 epoxy_dep = dependency('epoxy')
