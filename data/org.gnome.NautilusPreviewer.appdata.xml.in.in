@@ -22,7 +22,7 @@
     <keyword>preview</keyword>
   </keywords>
   <releases>
-    <release version="45.alpha.2" date="2023-07-02"/>
+    <release version="45.0" date="2023-09-18"/>
   </releases>
   <translation type="gettext">sushi</translation>
   <url type="translate">https://wiki.gnome.org/TranslationProject</url>
