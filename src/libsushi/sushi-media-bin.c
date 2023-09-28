@@ -1554,13 +1554,13 @@ sushi_media_bin_tick_callback (GtkWidget     *widget,
 {
   static GstDebugLevel level;
 
-  sushi_media_bin_update_position ((SushiMediaBin *)widget);
+  sushi_media_bin_update_position ((SushiMediaBin *)user_data);
 
   if (level == 0)
     level = gst_debug_category_get_threshold (sushi_media_bin_debug);
 
   if (level >= GST_LEVEL_INFO)
-    log_fps ((SushiMediaBin *)widget, frame_clock);
+    log_fps ((SushiMediaBin *)user_data, frame_clock);
 
   return G_SOURCE_CONTINUE;
 }
@@ -1577,9 +1577,9 @@ sushi_media_bin_set_tick_enabled (SushiMediaBin *self, gboolean enabled)
     }
 
   if (enabled)
-    priv->tick_id = gtk_widget_add_tick_callback (GTK_WIDGET (self),
+    priv->tick_id = gtk_widget_add_tick_callback (priv->overlay,
                                                   sushi_media_bin_tick_callback,
-                                                  NULL, NULL);
+                                                  self, NULL);
 }
 
 static inline void
