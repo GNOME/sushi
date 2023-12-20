@@ -39,7 +39,6 @@ pkg.require({
     Pango: '1.0',
     Soup: '3.0',
     Sushi: '1.0',
-    WebKit2: '4.1',
 });
 
 const {Gio, GLib} = imports.gi;

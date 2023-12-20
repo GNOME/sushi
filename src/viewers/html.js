@@ -23,11 +23,22 @@
  *
  */
 
-const {Gtk, GLib, GObject, Sushi, WebKit2} = imports.gi;
+const {Gtk, GLib, GObject, Sushi} = imports.gi;
+
+var WebKit2;
+try {
+    imports.gi.versions.WebKit2 = '4.1';
+    WebKit2 = imports.gi.WebKit2;
+} catch(e) {
+}
+
+function _isAvailable() {
+    return WebKit2 !== undefined;
+}
 
 const Renderer = imports.ui.renderer;
 
-var Klass = GObject.registerClass({
+var Klass = _isAvailable() ? GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
@@ -67,8 +78,10 @@ var Klass = GObject.registerClass({
     get moveOnClick() {
         return false;
     }
-});
+}) : undefined;
 
-var mimeTypes = [
-    'text/html'
-];
+var mimeTypes = [];
+if (_isAvailable())
+    mimeTypes = [
+        'text/html'
+    ];
