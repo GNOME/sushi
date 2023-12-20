@@ -27,7 +27,7 @@ sushi_data_resources = gnome.compile_resources(
 )
 
 conf = configuration_data()
-conf.set('GJS', gjs.path())
+conf.set('GJS', gjs.full_path())
 conf.set('PACKAGE_NAME', meson.project_name())
 conf.set('PACKAGE_VERSION', meson.project_version())
 conf.set('prefix', get_option('prefix'))
