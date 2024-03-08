@@ -45,6 +45,8 @@
 
 #define FPS_WINDOW_SIZE          2  /* Window size in seconds to calculate fps */
 
+#define GET_STATE_TIMEOUT        GST_SECOND / G_GINT64_CONSTANT (10)
+
 #define SMB_ICON_SIZE            GTK_ICON_SIZE_BUTTON
 
 #define SMB_ICON_NAME_PLAY       "media-playback-start-symbolic"
@@ -773,7 +775,7 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
 
       /* Init new pipeline */
       gst_element_set_state (priv->play, GST_STATE_PAUSED);
-      gst_element_get_state (priv->play, NULL, NULL, GST_CLOCK_TIME_NONE);
+      gst_element_get_state (priv->play, NULL, NULL, GET_STATE_TIMEOUT);
 
       /* Seek to position */
       gst_element_seek_simple (priv->play, GST_FORMAT_TIME,
@@ -785,7 +787,7 @@ sushi_media_bin_fullscreen_apply (SushiMediaBin *self, gboolean fullscreen)
       if (priv->state == GST_STATE_PLAYING)
         {
           gst_element_set_state (priv->play, GST_STATE_PLAYING);
-          gst_element_get_state (priv->play, NULL, NULL, GST_CLOCK_TIME_NONE);
+          gst_element_get_state (priv->play, NULL, NULL, GET_STATE_TIMEOUT);
         }
     }
 
