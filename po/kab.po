@@ -1,0 +1,91 @@
+# Kabyle translation for sushi.
+# Copyright (C) 2024 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# ButterflyOfFire <ButterflyOfFire@protonmail.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2024-03-08 17:34+0000\n"
+"PO-Revision-Date: 2024-03-23 16:14+0100\n"
+"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"Language-Team: Kabyle <>\n"
+"Language: kab\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1\n"
+"X-DL-Team: kab\n"
+"X-DL-Module: sushi\n"
+"X-DL-Branch: master\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
+"X-Generator: Gtranslator 41.0\n"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:9
+msgid "Sushi"
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+
+#: src/ui/fallbackRenderer.js:244
+msgid "Type"
+msgstr "Anaw"
+
+#: src/ui/fallbackRenderer.js:254
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/ui/fallbackRenderer.js:259
+msgid "Empty Folder"
+msgstr "Akaram d ilem"
+
+#: src/ui/fallbackRenderer.js:263
+msgid "Size"
+msgstr "Teɣzi"
+
+#: src/ui/fallbackRenderer.js:269
+msgid "Modified"
+msgstr "Yettubeddel"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr ""
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:358
+#, javascript-format
+msgid "Open With %s"
+msgstr "Ldi s %s"
+
+#: src/ui/mainWindow.js:364
+msgid "Open"
+msgstr "Ldi"
+
+#: src/viewers/audio.js:401
+msgid "from"
+msgstr "sɣur"
+
+#: src/viewers/audio.js:406
+msgid "by"
+msgstr "s"
+
+#: src/viewers/evince.js:111
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d ɣef %d"
