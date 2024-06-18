@@ -28,5 +28,6 @@
   <url type="translate">https://l10n.gnome.org/module/sushi/</url>
   <url type="homepage">https://gitlab.gnome.org/GNOME/sushi</url>
   <url type="bugtracker">https://gitlab.gnome.org/GNOME/sushi/issues</url>
+  <url type="vcs-browser">https://gitlab.gnome.org/GNOME/sushi</url>
   <update_contact>eischmann_at_redhat.com</update_contact>
 </component>
