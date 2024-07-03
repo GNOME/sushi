@@ -1577,7 +1577,7 @@ sushi_media_bin_set_tick_enabled (SushiMediaBin *self, gboolean enabled)
     }
 
   if (enabled)
-    priv->tick_id = gtk_widget_add_tick_callback (priv->overlay,
+    priv->tick_id = gtk_widget_add_tick_callback (priv->audio_mode ? priv->audio_box : priv->overlay,
                                                   sushi_media_bin_tick_callback,
                                                   self, NULL);
 }
