@@ -68,7 +68,10 @@ var Klass = _isAvailable() ? GObject.registerClass({
         this.connect('load-failed', (view, loadEvent, uri, error) => {
             this.emit('error', error);
         });
-        this.isReady();
+        this.connect('load-changed', (view, event) => {
+          if(event === WebKit2.LoadEvent.FINISHED)
+            this.isReady();
+        });
     }
 
     static {

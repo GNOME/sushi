@@ -46,8 +46,13 @@ var Klass = GObject.registerClass({
         this._view.show();
         this.add(this._view);
 
-        this._view.open_document(file.get_uri(), '{}', null, null);
-        this.isReady();
+        this._view.open_document(file.get_uri(), '{}', null, (obj, res) => {
+          try {
+            this._view.open_document_finish(res);
+            this.isReady();
+          } catch (error) {
+          }
+        });
     }
 
     vfunc_size_allocate(allocation) {

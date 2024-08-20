@@ -233,13 +233,20 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
             this.unfullscreen();
     }
 
-    _onRendererReady() {
-        if (this._renderer.ready) {
-            this._resizeWindow();
-            this.queue_resize();
-            this.show();
-        }
+    _onRendererReady(renderer, fileInfo) {
+        if (!renderer.ready)
+          return;
 
+        this._embedRenderer(renderer);
+
+        renderer.connect('error', (r, err) => { this._reportError(err); });
+        renderer.connect('notify::fullscreen', this._onRendererFullscreen.bind(this));
+
+        this.set_resizable(this._renderer.resizable);
+        this.set_title(fileInfo.get_display_name());
+        this._resizeWindow();
+        this.queue_resize();
+        this.show();
     }
 
     _getMaxSize() {
@@ -340,15 +347,9 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
     _createView(fileInfo) {
         let klass = MimeHandler.getKlass(fileInfo.get_content_type());
         let renderer = new klass(this.file, fileInfo);
-        this._embedRenderer(renderer);
 
-        renderer.connect('error', (r, err) => { this._reportError(err); });
-        renderer.connect('notify::fullscreen', this._onRendererFullscreen.bind(this));
-        renderer.connect('notify::ready', this._onRendererReady.bind(this));
-        this._onRendererReady();
-
-        this.set_resizable(this._renderer.resizable);
-        this.set_title(fileInfo.get_display_name());
+        renderer.connect('notify::ready', this._onRendererReady.bind(this, renderer, fileInfo));
+        this._onRendererReady(renderer, fileInfo);
     }
 
     _updateTitlebar() {

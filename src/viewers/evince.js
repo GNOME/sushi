@@ -78,8 +78,6 @@ var Klass = GObject.registerClass({
         this.add(this._view);
 
         this.connect('destroy', this._onDestroy.bind(this));
-
-        this.isReady();
     }
 
     _onDestroy() {
@@ -119,6 +117,8 @@ var Klass = GObject.registerClass({
             this.emit('error', e);
             return;
         }
+
+        this.isReady();
 
         this._model = EvinceView.DocumentModel.new_with_document(document);
         this._model.set_sizing_mode(EvinceView.SizingMode.FIT_WIDTH);
