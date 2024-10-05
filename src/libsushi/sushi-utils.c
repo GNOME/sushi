@@ -36,6 +36,10 @@
 #endif
 
 #include "externalwindow.h"
+#define I_KNOW_THE_PAPERS_LIBS_ARE_UNSTABLE_AND_HAVE_TALKED_WITH_THE_AUTHORS
+#include <papers-view.h>
+#include <papers-document.h>
+
 
 void
 sushi_window_set_child_of_external (GtkWindow *window,
@@ -51,59 +55,6 @@ sushi_window_set_child_of_external (GtkWindow *window,
 
   external_window_set_parent_of (external_window, window);
   g_object_unref (external_window);
-}
-
-/**
- * sushi_get_evince_document_from_job:
- * @job:
- * @error:
- *
- * Returns: (transfer none):
- */
-EvDocument *
-sushi_get_evince_document_from_job (EvJob   *job,
-                                    GError **error)
-{
-  if (job->failed) {
-    g_propagate_error (error, job->error);
-    return NULL;
-  }
-
-  return job->document;
-}
-
-/**
- * sushi_query_supported_document_types:
- *
- * Returns: (transfer full):
- */
-gchar **
-sushi_query_supported_document_types (void)
-{
-  GList *infos, *l;
-  gchar **retval = NULL;
-  GPtrArray *array;
-  EvTypeInfo *info;
-  gint idx;
-
-  infos = ev_backends_manager_get_all_types_info ();
-
-  if (infos == NULL)
-    return NULL;
-
-  array = g_ptr_array_new ();
-
-  for (l = infos; l != NULL; l = l->next) {
-    info = l->data;
-
-    for (idx = 0; info->mime_types[idx] != NULL; idx++)
-      g_ptr_array_add (array, g_strdup (info->mime_types[idx]));
-  }
-
-  g_ptr_array_add (array, NULL);
-  retval = (gchar **) g_ptr_array_free (array, FALSE);
-
-  return retval;
 }
 
 static void load_libreoffice (GTask *task);
