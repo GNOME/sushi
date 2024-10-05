@@ -6,8 +6,8 @@ project(
 )
 
 epoxy_dep = dependency('epoxy')
-evince_document_dep = dependency('evince-document-3.0')
-evince_view_dep = dependency('evince-view-3.0')
+papers_document_dep = dependency('papers-document-4.0')
+papers_view_dep = dependency('papers-view-4.0')
 freetype_dep = dependency('freetype2')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>=2.23.0')
 gio_unix_dep = dependency('gio-unix-2.0', version: '>=2.29.14')

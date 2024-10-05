@@ -23,7 +23,8 @@
  *
  */
 
-const {EvinceDocument, EvinceView, Gio, GObject, Gtk, Sushi} = imports.gi;
+
+const {PapersDocument, PapersView, Gio, GObject, Gtk, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
@@ -41,7 +42,7 @@ var Klass = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class EvinceRenderer extends Gtk.ScrolledWindow {
+}, class PapersRenderer extends Gtk.ScrolledWindow {
     get ready() {
         return !!this._ready;
     }
@@ -55,7 +56,9 @@ var Klass = GObject.registerClass({
                       min_content_height: Constants.VIEW_MIN,
                       min_content_width: Constants.VIEW_MIN });
 
-        if (evinceTypes.includes(fileInfo.get_content_type())) {
+        this._view = new PapersView.View();
+
+        if (papersTypes.includes(fileInfo.get_content_type())) {
             this._loadFile(file);
         } else {
             Sushi.convert_libreoffice(file, (o, res) => {
@@ -73,8 +76,7 @@ var Klass = GObject.registerClass({
 
         this._defineActions();
 
-        this._view = EvinceView.View.new();
-        this.add(this._view);
+        this.set_child(this._view);
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -89,18 +91,16 @@ var Klass = GObject.registerClass({
     }
 
     _loadFile(file) {
-        if (file.has_uri_scheme("file")) {
-            this._job = EvinceView.JobLoad.new(file.get_uri());
-        } else {
-            this._job = EvinceView.JobLoadGFile.new(
-                file, EvinceDocument.DocumentLoadFlags.NONE);
-        }
+        this._job = PapersView.JobLoad.new();
+        this._job.set_uri(file.get_uri());
 
         this._jobHandlerId = this._job.connect('finished', this._onLoadJobFinished.bind(this));
-        this._job.scheduler_push_job(EvinceView.JobPriority.PRIORITY_NONE);
+        this._job.scheduler_push_job(PapersView.JobPriority.PRIORITY_NONE);
     }
 
     _updatePageLabel() {
+        this.toolbar;  // no op to make sure it's populated
+
         let curPage = this._model.get_page();
         let totPages = this._model.document.get_n_pages();
 
@@ -113,20 +113,19 @@ var Klass = GObject.registerClass({
     _onLoadJobFinished(job) {
         let document;
         try {
-            document = Sushi.get_evince_document_from_job(job);
+            document = job.get_loaded_document();
         } catch (e) {
             this.emit('error', e);
             return;
         }
 
-        this._model = EvinceView.DocumentModel.new_with_document(document);
-        this._model.set_sizing_mode(EvinceView.SizingMode.FIT_WIDTH);
+        this._model = PapersView.DocumentModel.new_with_document(document);
+        this._model.set_sizing_mode(PapersView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);
+        this._view.set_model(this._model);
 
         this._modelHandlerId = this._model.connect('page-changed', this._updatePageLabel.bind(this));
         this._updatePageLabel();
-
-        this._view.set_model(this._model);
     }
 
     _defineActions() {
@@ -145,22 +144,23 @@ var Klass = GObject.registerClass({
         this._toolbarBack = Utils.createToolButton(this, 'go-previous-symbolic', () => {
             this._view.previous_page();
         });
-        toolbar.add(this._toolbarBack);
+        toolbar.append(this._toolbarBack);
 
         this._pageLabel = new Gtk.Label({ hexpand: true,
                                           margin_start: 10,
                                           margin_end: 10 });
-        toolbar.add(this._pageLabel);
+        toolbar.append(this._pageLabel);
 
         this._toolbarForward = Utils.createToolButton(this, 'go-next-symbolic', () => {
             this._view.next_page();
         });
-        toolbar.add(this._toolbarForward);
+        toolbar.append(this._toolbarForward);
     }
 });
 
-EvinceDocument.init();
-var evinceTypes = Sushi.query_supported_document_types();
-var mimeTypes = evinceTypes;
+PapersDocument.init();
+let app_info = Gio.DesktopAppInfo.new('org.gnome.Papers.desktop');
+let papersTypes = app_info.get_supported_types();
+var mimeTypes = papersTypes;
 if (!Libreoffice.isAvailable())
     mimeTypes = mimeTypes.concat(Libreoffice.officeTypes);
