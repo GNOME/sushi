@@ -187,7 +187,8 @@ var FallbackRenderer = GObject.registerClass({
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
 
-        this._image = new Gtk.Image ({ hexpand: true });
+        this._image = new Gtk.Picture ();
+
         this._updateIcon(new Gio.ThemedIcon({ name: 'text-x-generic' }));
         this.append(this._image);
 
@@ -281,7 +282,7 @@ var FallbackRenderer = GObject.registerClass({
         let iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
         let paintable = iconTheme.lookup_by_gicon(icon, 256, this._image.scale_factor, 0, 0);
         if (paintable)
-            this._image.set_from_paintable (paintable);
+            this._image.set_paintable (paintable);
     }
 
     _onFileInfoUpdated(state) {
