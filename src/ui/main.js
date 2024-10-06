@@ -25,6 +25,7 @@
 pkg.initGettext();
 pkg.initFormat();
 pkg.require({
+    Adw: '1',
     PapersDocument: '4.0',
     PapersView: '4.0',
     Gdk: '4.0',
