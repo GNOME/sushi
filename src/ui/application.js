@@ -23,7 +23,7 @@
  *
  */
 
-const {Gio, GLib, GObject, Gtk} = imports.gi;
+const {Adw, Gio, GLib, GObject, Gtk} = imports.gi;
 
 const ByteArray = imports.byteArray;
 
@@ -81,12 +81,7 @@ var NautilusPreviewer2Skeleton = class extends NautilusPreviewerSkeleton {
     }
 }
 
-var Application = GObject.registerClass(class Application extends Gtk.Application {
-    vfunc_startup() {
-        super.vfunc_startup();
-
-        this._defineStyleAndThemes();
-    }
+var Application = GObject.registerClass(class Application extends Adw.Application {
 
     vfunc_dbus_register(connection, path) {
         let actualPath = `/org/gnome/${pkg.name.split('.').at(-1)}`;
@@ -126,11 +121,6 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
             this._skeleton2.impl.emit_property_changed(
                 'Visible', new GLib.Variant('b', false));
         });
-    }
-
-    _defineStyleAndThemes() {
-        let settings = Gtk.Settings.get_default();
-        settings.gtk_application_prefer_dark_theme = true;
     }
 
     close() {

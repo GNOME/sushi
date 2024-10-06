@@ -23,6 +23,7 @@ gtksourceview_dep = dependency('gtksourceview-5')
 harfbuzz_dep = dependency('harfbuzz', version: '>=0.9.9')
 webkit_dep = dependency('webkitgtk-6.0')
 x11_dep = dependency('x11', required: get_option('X11'))
+libadwaita_dep = dependency('libadwaita-1')
 
 bindir = join_paths(get_option('prefix'), get_option('bindir'))
 datadir = join_paths(get_option('prefix'), get_option('datadir'))
