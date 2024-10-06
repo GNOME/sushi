@@ -69,16 +69,24 @@ var Klass = GObject.registerClass({
         this._cancellable.cancel();
     }
 
+    _setStyle(adwStyleManager, buffer) {
+        let sourceStyleManager = GtkSource.StyleSchemeManager.get_default();
+        let scheme;
+        if (adwStyleManager.dark)
+          scheme = sourceStyleManager.get_scheme('Adwaita-dark');
+        else
+          scheme = sourceStyleManager.get_scheme('Adwaita');
+        buffer.set_style_scheme(scheme);
+    }
+
     _createBuffer(file, fileInfo) {
         let buffer = new GtkSource.Buffer();
-        let styleManager = GtkSource.StyleSchemeManager.get_default();
-        let stylePath = GLib.build_filenamev([pkg.pkgdatadir,
-                                              'gtksourceview-4',
-                                              'styles']);
-        styleManager.prepend_search_path(stylePath);
 
-        let scheme = styleManager.get_scheme('builder-dark');
-        buffer.set_style_scheme(scheme);
+        let adwStyleManager = Adw.StyleManager.get_default();
+        adwStyleManager.connect('notify::dark', () => {
+          this._setStyle(adwStyleManager, buffer);
+        });
+        this._setStyle(adwStyleManager, buffer);
 
         let langManager = GtkSource.LanguageManager.get_default();
         let language = langManager.guess_language(file.get_basename(),
