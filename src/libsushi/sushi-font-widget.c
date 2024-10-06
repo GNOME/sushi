@@ -600,8 +600,8 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
 
   context = gtk_widget_get_style_context (drawing_area);
 
-  allocated_width = gtk_widget_get_allocated_width (drawing_area);
-  allocated_height = gtk_widget_get_allocated_height (drawing_area);
+  allocated_width = gtk_widget_get_width (drawing_area);
+  allocated_height = gtk_widget_get_height (drawing_area);
 
   gtk_render_background (context, cr,
                          0, 0, allocated_width, allocated_height);
@@ -660,6 +660,18 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   cairo_font_face_destroy (font);
 
   return FALSE;
+}
+
+static void
+sushi_font_widget_snapshot (GtkWidget   *widget,
+                            GtkSnapshot *snapshot)
+{
+  int width = gtk_widget_get_width (widget);
+  int height = gtk_widget_get_height (widget);
+  cairo_t *cr = gtk_snapshot_append_cairo (snapshot, &GRAPHENE_RECT_INIT (0, 0, width, height));
+  sushi_font_widget_draw (widget, cr);
+
+  cairo_destroy (cr);
 }
 
 static void
@@ -797,8 +809,8 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
   oclass->get_property = sushi_font_widget_get_property;
   oclass->constructed = sushi_font_widget_constructed;
 
-  wclass->draw = sushi_font_widget_draw;
   wclass->measure = sushi_font_widget_measure;
+  wclass->snapshot = sushi_font_widget_snapshot;
 
   properties[PROP_URI] =
     g_param_spec_string ("uri",
