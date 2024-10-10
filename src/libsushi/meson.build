@@ -4,17 +4,14 @@ externalwindow_sources = [
 ]
 
 libsushi_deps = [
-  epoxy_dep,
   papers_document_dep,
   papers_view_dep,
   freetype_dep,
   gdk_pixbuf_dep,
   glib_dep,
   gstreamer_dep,
-  gstreamer_audio_dep,
   gst_pbutils_dep,
   gstreamer_tag_dep,
-  gstreamer_video_dep,
   gtk_dep,
   harfbuzz_dep,
   x11_dep,
@@ -25,17 +22,9 @@ libsushi_sources = [
   'sushi-font-loader.h',
   'sushi-font-widget.c',
   'sushi-font-widget.h',
-  'sushi-media-bin.c',
-  'sushi-media-bin.h',
   'sushi-utils.c',
   'sushi-utils.h',
 ]
-
-libsushi_resource = gnome.compile_resources(
-  'sushi-lib-resources',
-  'org.gnome.Libsushi.gresource.xml',
-  c_name: 'sushi'
-)
 
 libsushi = shared_library(
   'sushi-1.0',
@@ -43,7 +32,6 @@ libsushi = shared_library(
   sources: [
     externalwindow_sources,
     libsushi_sources,
-    libsushi_resource
   ],
   install: true,
   install_dir: pkglibdir
