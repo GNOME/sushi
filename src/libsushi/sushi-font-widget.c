@@ -707,7 +707,7 @@ sushi_font_widget_init (SushiFontWidget *self)
     g_error ("Unable to initialize FreeType");
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)),
-                               GTK_STYLE_CLASS_VIEW);
+                               "view");
 }
 
 static void
