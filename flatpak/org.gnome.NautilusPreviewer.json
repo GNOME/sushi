@@ -3,6 +3,9 @@
     "runtime": "org.gnome.Platform",
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
+    "sdk-extensions": [
+        "org.freedesktop.Sdk.Extension.rust-stable"
+    ],
     "command": "sushi",
     "cleanup": [
         "/include",
@@ -19,6 +22,9 @@
         "--talk-name=org.freedesktop.FileManager1",
         "--filesystem=home:ro"
     ],
+    "build-options": {
+        "append-path": "/usr/lib/sdk/rust-stable/bin:"
+    },
     "modules": [
         {
             "name": "popplerdata",
@@ -29,8 +35,13 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://poppler.freedesktop.org/poppler-data-0.4.11.tar.gz",
-                    "sha256": "2cec05cd1bb03af98a8b06a1e22f6e6e1a65b1e2f3816cb3069bb0874825f08c"
+                    "url": "https://poppler.freedesktop.org/poppler-data-0.4.12.tar.gz",
+                    "sha256": "c835b640a40ce357e1b83666aabd95edffa24ddddd49b8daff63adb851cdab74",
+                    "x-checker-data": {
+                        "type": "anitya",
+                        "project-id": 3687,
+                        "url-template": "https://poppler.freedesktop.org/poppler-data-$version.tar.gz"
+                    }
                 }
             ]
         },
@@ -40,11 +51,14 @@
             "config-opts": [
                 "-DCMAKE_INSTALL_LIBDIR=/app/lib",
                 "-DCMAKE_INSTALL_INCLUDEDIR=/app/include",
-                "-DENABLE_LIBOPENJPEG=none",
-                "-DENABLE_BOOST=OFF",
-                "-DENABLE_CPP=OFF",
                 "-DBUILD_GTK_TESTS=OFF",
-                "-DBUILD_CPP_TESTS=OFF"
+                "-DBUILD_CPP_TESTS=OFF",
+                "-DENABLE_CPP=OFF",
+                "-DENABLE_BOOST=OFF",
+                "-DENABLE_GOBJECT_INTROSPECTION=OFF",
+                "-DENABLE_LIBOPENJPEG=openjpeg2",
+                "-DENABLE_QT5=OFF",
+                "-DENABLE_QT6=OFF"
             ],
             "cleanup": [
                 "/bin"
@@ -52,13 +66,38 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://poppler.freedesktop.org/poppler-23.01.0.tar.xz",
-                    "sha256": "fae9b88d3d5033117d38477b79220cfd0d8e252c278ec870ab1832501741fd94"
+                    "url": "https://poppler.freedesktop.org/poppler-24.07.0.tar.xz",
+                    "sha256": "19eb4f49198e4ae3fd9e5a6cf24d0fc7e674e8802046a7de14baab1e40cc2f1d",
+                    "x-checker-data": {
+                        "type": "anitya",
+                        "project-id": 3686,
+                        "url-template": "https://poppler.freedesktop.org/poppler-$version.tar.xz"
+                    }
+                }
+            ]
+        },
+
+        {
+            "name": "exempi",
+            "config-opts": [
+                "--disable-unittest",
+                "--disable-samples"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.freedesktop.org/libopenraw/exempi.git",
+                    "tag": "2.6.5",
+                    "x-checker-data": {
+                        "type": "git",
+                        "tag-pattern": "^([\\d.]+)$"
+                    },
+                    "commit": "01ed352bbf18c2be2bdbd0125c88901b9db0b9c3"
                 }
             ]
         },
         {
-            "name": "evince",
+            "name": "papers",
             "buildsystem": "meson",
             "cleanup": [
                 "/share/GConf",
@@ -66,35 +105,33 @@
             ],
             "config-opts": [
                 "-Dnautilus=false",
-                "-Dgtk_doc=false",
+                "-Ddocumentation=false",
                 "-Dviewer=false",
                 "-Dpreviewer=false",
-                "-Ddbus=false",
-                "-Dintrospection=true",
-                "-Dcomics=disabled",
-                "-Dgspell=disabled"
+                "-Dintrospection=enabled",
+                "-Dcomics=disabled"
             ],
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "https://download.gnome.org/sources/evince/43/evince-43.1.tar.xz",
-                    "sha256": "6d75ca62b73bfbb600f718a098103dc6b813f9050b9594be929e29b4589d2335"
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/Incubator/papers.git",
+                    "branch": "main"
                 }
             ]
         },
         {
-            "name": "sourceview-4",
+            "name": "sourceview-5",
             "buildsystem": "meson",
             "config-opts": [
-                "-Dinstall_tests=false",
-                "-Dgtk_doc=false",
+                "-Dinstall-tests=false",
+                "-Ddocumentation=false",
                 "-Dvapi=false"
             ],
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "https://download.gnome.org/sources/gtksourceview/4.8/gtksourceview-4.8.4.tar.xz",
-                    "sha256": "7ec9d18fb283d1f84a3a3eff3b7a72b09a10c9c006597b3fbabbb5958420a87d"
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/gtksourceview.git",
+                    "tag": "5.14.1"
                 }
             ]
         },
