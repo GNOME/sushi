@@ -54,10 +54,6 @@ var Renderer = GObject.registerClass({
         return true;
     }
 
-    get moveOnClick() {
-        return true;
-    }
-
     get ready() {
         return !!this._ready;
     }

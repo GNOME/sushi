@@ -90,10 +90,6 @@ var Klass = GObject.registerClass({
         this._view.zoom_level = zoomLevel;
         this._lastAllocWidth = allocWidth;
     }
-
-    get moveOnClick() {
-        return false;
-    }
 });
 
 var officeTypes = [

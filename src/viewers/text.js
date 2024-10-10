@@ -100,10 +100,6 @@ var Klass = GObject.registerClass({
 
         return buffer;
     }
-
-    get moveOnClick() {
-        return false;
-    }
 });
 
 // register for text/plain and let the mime handler call us for child types

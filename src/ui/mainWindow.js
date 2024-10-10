@@ -146,12 +146,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         this.connect('motion-notify-event', this._onMotionNotifyEvent.bind(this));
         this.connect('realize', this._onRealize.bind(this));
 
-        let eventBox = new Gtk.EventBox({ visible_window: false });
-        eventBox.connect('button-press-event', this._onButtonPressEvent.bind(this));
-        this.add(eventBox);
 
         this._embed = new Embed();
-        eventBox.add(this._embed);
 
         // call show_all() early when there's still no child Renderer, because show_all() later
         // when the Renderer is a child may have unexpected results, see comments in !49
@@ -161,6 +157,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         // when it has its final dimemnsions i.e. when the Renderer has emmitted the 'ready'
         // signal, i.e. on the _onRendererReady() handler.
         this.hide();
+        this.set_child(this._embed);
 
         this._defineActions();
     }
@@ -201,19 +198,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         _addSelectAction('select-right', 'Right', Gtk.DirectionType.RIGHT);
         _addSelectAction('select-up', 'Up', Gtk.DirectionType.UP);
         _addSelectAction('select-down', 'Down', Gtk.DirectionType.DOWN);
-    }
-
-    _onButtonPressEvent(window, event) {
-        if (!this._renderer.moveOnClick)
-            return false;
-
-        let [, rootX, rootY] = event.get_root_coords();
-        let [, button] = event.get_button();
-        this.begin_move_drag(button,
-                             rootX, rootY,
-                             event.get_time());
-
-        return false;
     }
 
     _onMotionNotifyEvent() {

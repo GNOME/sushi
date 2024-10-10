@@ -70,10 +70,6 @@ var Klass = _isAvailable() ? GObject.registerClass({
         });
         this.isReady();
     }
-
-    get moveOnClick() {
-        return false;
-    }
 }) : undefined;
 
 var mimeTypes = [];

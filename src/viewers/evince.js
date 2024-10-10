@@ -142,10 +142,6 @@ var Klass = GObject.registerClass({
         this.insert_action_group ('evince', actionGroup);
     }
 
-    get moveOnClick() {
-        return false;
-    }
-
     populateToolbar(toolbar) {
         this._toolbarBack = Utils.createToolButton(this, 'go-previous-symbolic', () => {
             this._view.previous_page();
