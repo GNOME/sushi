@@ -72,7 +72,6 @@ var Renderer = GObject.registerClass({
 
         if (!this._toolbar) {
             this._toolbar = new RendererToolbar();
-            this.connect('destroy', () => { this._toolbar.destroy(); });
 
             this.populateToolbar(this._toolbar.box);
 
@@ -112,7 +111,7 @@ var RendererToolbar = GObject.registerClass(class RendererToolbar extends Gtk.Re
         this.box = new RendererToolbarBox();
         this.set_child(this.box);
 
-        this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('unmap', this._onDestroy.bind(this));
     }
 
     resetTimeout() {

@@ -59,8 +59,8 @@ function getScaledSize(baseSize, allocSize, upscale) {
 }
 
 function createToolButton(renderer, iconName, callback) {
-    let button = Gtk.Button.new_from_icon_name(iconName, Gtk.IconSize.MENU);
-    button.set_relief(Gtk.ReliefStyle.NONE);
+    let button = Gtk.Button.new_from_icon_name(iconName);
+    button.add_css_class('flat');
     button.connect('clicked', () => {
         renderer.toolbar.resetTimeout();
         callback(button);
@@ -73,8 +73,8 @@ function createFullscreenButton(renderer) {
     return createToolButton(renderer, 'view-fullscreen-symbolic', (button) => {
         renderer.toggleFullscreen();
         if (renderer.fullscreen)
-            button.image.icon_name = 'view-restore-symbolic';
+            button.icon_name = 'view-restore-symbolic';
         else
-            button.image.icon_name = 'view-fullscreen-symbolic';
+            button.icon_name = 'view-fullscreen-symbolic';
     });
 }
