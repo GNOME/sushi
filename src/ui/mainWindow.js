@@ -72,10 +72,10 @@ const ErrorBox = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class ErrorBox extends Gtk.Grid {
+}, class ErrorBox extends Gtk.Box {
     _init(file, error) {
         super._init({ orientation: Gtk.Orientation.VERTICAL,
-                      row_spacing: 12,
+                      spacing: 12,
                       hexpand: true,
                       vexpand: true,
                       halign: Gtk.Align.CENTER,
@@ -128,17 +128,16 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
 
         super._init({ application: application });
 
-        this._titlebar = new Gtk.HeaderBar({ show_close_button: true,
-                                             decoration_layout: _getDecorationLayout() });
+        this._titlebar = new Gtk.HeaderBar({ decoration_layout: _getDecorationLayout() });
         this.set_titlebar(this._titlebar);
 
         this._openButton = new Gtk.Button({ label: _("Open") });
         this._openButton.connect('clicked', this._onFileOpenClicked.bind(this));
         this._titlebar.pack_end(this._openButton);
 
-        this.connect('motion-notify-event', this._onMotionNotifyEvent.bind(this));
-        this.connect('realize', this._onRealize.bind(this));
-
+        let motion = new Gtk.EventControllerMotion();
+        this.add_controller(motion);
+        motion.connect('motion', this._onMotionNotifyEvent.bind(this));
 
         this._embed = new Embed();
 
@@ -200,38 +199,19 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         if (this._renderer.ready) {
             this._resizeWindow();
             this.queue_resize();
-            this.show();
         }
 
     }
 
     _getMaxSize() {
-        let gdkWin = this.get_window();
-        let display = this.get_display();
+        let display = Gdk.Display.get_default();
         let underWayland = Sushi.running_under_wayland(display);
-        let monitor = display.get_monitor_at_window(gdkWin);
+        let surface = this.get_surface();
+        let monitor = display.get_monitor_at_surface(surface);
         let geometry = monitor.get_geometry();
 
-        // Scale our maximum with the actual monitor geometry
-        let scaleW = 1.0;
-        let scaleH = 1.0;
-
-        // FIXME: We can only trust GTK >= 3.24.9 to report the right
-        // monitor geometry under Wayland when fractional scaling is enabled.
-        // Disable the scaling logic for older GTK versions.
-        // See https://gitlab.gnome.org/GNOME/gtk/issues/1828
-        let versionCheck = Gtk.check_version(3, 24, 9);
-        if (!versionCheck) {
-            scaleW = (geometry.width / WINDOW_MAX_W_BASE);
-            scaleH = (geometry.height / WINDOW_MAX_H_BASE);
-        }
-
-        // reduce by scale factor only under Wayland, otherwise
-        // X11 HiDPI windows are shown too small -- Issue #91
-        if (underWayland) {
-            scaleW = scaleW / this.get_scale_factor ();
-            scaleH = scaleH / this.get_scale_factor ();
-        }
+        let scaleW = (geometry.width / WINDOW_MAX_W_BASE) / this.get_scale_factor ();
+        let scaleH = (geometry.height / WINDOW_MAX_H_BASE) / this.get_scale_factor ();
 
         return [Math.floor(scaleW * WINDOW_MAX_W),
                 Math.floor(scaleH * WINDOW_MAX_H)];
@@ -262,7 +242,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         if ((windowSize[0] > 0 && windowSize[0] != this._lastWindowSize[0]) ||
             (windowSize[1] > 0 && windowSize[1] != this._lastWindowSize[1])) {
             this._lastWindowSize = windowSize;
-            this.resize(windowSize[0], windowSize[1]);
+            this.default_width = windowSize[0];
+            this.default_height = windowSize[1];
         }
     }
 
@@ -286,11 +267,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
     }
 
     _embedRenderer(renderer) {
-        if (this._renderer) {
-            this._renderer.destroy()
-            this._renderer = null;
-        }
-
         this._renderer = renderer;
         this._renderer.expand = true;
         this._embed.set_child(this._renderer);
@@ -307,6 +283,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         renderer.connect('error', (r, err) => { this._reportError(err); });
         renderer.connect('notify::fullscreen', this._onRendererFullscreen.bind(this));
         renderer.connect('notify::ready', this._onRendererReady.bind(this));
+        this._resizeWindow();
         this._onRendererReady();
 
         this.set_resizable(this._renderer.resizable);
