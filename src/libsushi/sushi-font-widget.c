@@ -558,29 +558,29 @@ sushi_font_widget_size_request (GtkWidget *drawing_area,
 }
 
 static void
-sushi_font_widget_get_preferred_width (GtkWidget *drawing_area,
-                                       gint *minimum_width,
-                                       gint *natural_width)
+sushi_font_widget_measure (GtkWidget      *drawing_area,
+                           GtkOrientation  orientation,
+                           int             for_size,
+                           int            *min,
+                           int            *nat,
+                           int            *min_baseline,
+                           int            *nat_baseline)
 {
   gint width;
+  gint height;
+  gint min_height;
 
-  sushi_font_widget_size_request (drawing_area, &width, NULL, NULL);
-
-  *minimum_width = 0;
-  *natural_width = width;
-}
-
-static void
-sushi_font_widget_get_preferred_height (GtkWidget *drawing_area,
-                                        gint *minimum_height,
-                                        gint *natural_height)
-{
-  gint height, min_height;
-
-  sushi_font_widget_size_request (drawing_area, NULL, &height, &min_height);
-
-  *minimum_height = min_height;
-  *natural_height = height;
+  sushi_font_widget_size_request (drawing_area, &width, &height, &min_height);
+  if (orientation == GTK_ORIENTATION_HORIZONTAL)
+  {
+    *min = 0;
+    *nat = width;
+  }
+  else
+  {
+    *min = min_height;
+    *nat = height;
+  }
 }
 
 static gboolean
@@ -802,8 +802,7 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
   oclass->constructed = sushi_font_widget_constructed;
 
   wclass->draw = sushi_font_widget_draw;
-  wclass->get_preferred_width = sushi_font_widget_get_preferred_width;
-  wclass->get_preferred_height = sushi_font_widget_get_preferred_height;
+  wclass->measure = sushi_font_widget_measure;
 
   properties[PROP_URI] =
     g_param_spec_string ("uri",

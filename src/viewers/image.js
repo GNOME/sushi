@@ -60,12 +60,11 @@ var Klass = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
-    vfunc_get_preferred_width() {
-        return [1, this._pix ? this._pix.get_width() : 1];
-    }
-
-    vfunc_get_preferred_height() {
-        return [1, this._pix ? this._pix.get_height() : 1];
+    vfunc_measure(orientation, for_size) {
+        if (orientation == Gtk.Orientation.VERTICAL)
+          return [1, this._pix ? this._pix.get_height() : 1, -1, -1];
+        else
+          return [1, this._pix ? this._pix.get_width() : 1, -1, -1];
     }
 
     vfunc_size_allocate(allocation) {

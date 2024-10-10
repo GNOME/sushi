@@ -40,24 +40,25 @@ const Embed = GObject.registerClass(class Embed extends Gtk.Overlay {
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
     }
 
-    vfunc_get_preferred_width() {
-        let [min, nat] = super.vfunc_get_preferred_width();
+    vfunc_measure(orientation, for_size) {
+        if (orientation == Gtk.Orientation.VERTICAL) {
+            let [min, nat, min_baseline, nat_baseline] = super.vfunc_measure(orientation, for_size);
 
-        min = Math.max(min, Constants.VIEW_MIN);
-        nat = Math.max(nat, Constants.VIEW_MIN);
-
-        return [min, nat];
-    }
-
-    vfunc_get_preferred_height_for_width(forWidth) {
-        let [min, nat] = super.vfunc_get_preferred_height_for_width(forWidth);
-
-        if (forWidth <= Constants.VIEW_MIN) {
             min = Math.max(min, Constants.VIEW_MIN);
             nat = Math.max(nat, Constants.VIEW_MIN);
-        }
 
-        return [min, nat];
+            return [min, nat, -1, -1];
+        }
+        else {
+            let [min, nat, min_baseline, nat_baseline] = super.vfunc_measure(orientation, for_size);
+
+            if (forWidth <= Constants.VIEW_MIN) {
+                min = Math.max(min, Constants.VIEW_MIN);
+                nat = Math.max(nat, Constants.VIEW_MIN);
+            }
+
+            return [min, nat];
+        }
     }
 });
 
@@ -282,8 +283,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
             return;
 
         let maxSize = this._getMaxSize();
-        let rendererSize = [this._renderer.get_preferred_width(), this._renderer.get_preferred_height()];
-        let natSize = [rendererSize[0][1], rendererSize[1][1]];
+        let rendererSize = this._renderer.get_preferred_size();
+        let natSize = [rendererSize[1].width, rendererSize[1].height];
         let windowSize;
         let resizePolicy = this._renderer.resizePolicy;
 
