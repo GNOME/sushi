@@ -100,8 +100,6 @@ const ErrorBox = GObject.registerClass({
                                              wrap: true,
                                              halign: Gtk.Align.CENTER,
                                              valign: Gtk.Align.CENTER });
-
-        this.show_all();
         this.append(secondaryLabel);
     }
 });
@@ -149,14 +147,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
 
         this._embed = new Embed();
 
-        // call show_all() early when there's still no child Renderer, because show_all() later
-        // when the Renderer is a child may have unexpected results, see comments in !49
-        this.show_all();
-
-        // but leave MainWindow not visible, because we want it to be firstly shown/mapped
-        // when it has its final dimemnsions i.e. when the Renderer has emmitted the 'ready'
-        // signal, i.e. on the _onRendererReady() handler.
-        this.hide();
         this.set_child(this._embed);
 
         this._defineActions();
@@ -314,7 +304,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         }
 
         this._renderer = renderer;
-        this._renderer.show_all();
         this._renderer.expand = true;
         this._embed.set_child(this._renderer);
 
