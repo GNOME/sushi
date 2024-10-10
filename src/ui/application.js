@@ -149,6 +149,7 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
         } else {
             this._mainWindow.setParent(windowHandle);
             this._mainWindow.setFile(file);
+            this._mainWindow.present();
         }
     }
 });
