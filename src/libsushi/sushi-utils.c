@@ -29,10 +29,10 @@
 #include <gtk/gtk.h>
 
 #ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
+#include <gdk/x11/gdkx.h>
 #endif
 #ifdef GDK_WINDOWING_WAYLAND
-#include <gdk/gdkwayland.h>
+#include <gdk/wayland/gdkwayland.h>
 #endif
 
 #include "externalwindow.h"
