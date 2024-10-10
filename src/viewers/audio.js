@@ -29,23 +29,6 @@ const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 
-function _formatTimeString(timeVal) {
-    let hours = Math.floor(timeVal / 3600);
-    timeVal -= hours * 3600;
-
-    let minutes = Math.floor(timeVal / 60);
-    timeVal -= minutes * 60;
-
-    let seconds = Math.floor(timeVal);
-
-    let str = ('%02d:%02d').format(minutes, seconds);
-    if (hours > 0) {
-        str = ('%d').format(hours) + ':' + str;
-    }
-
-    return str;
-}
-
 const COVER_ART_ARCHIVE_URL = "https://coverartarchive.org/release/%s";
 const MUSIC_BRAINZ_ASIN_FORMAT = "https://musicbrainz.org/ws/2/release/?query=release:\"%s\"AND artist:\"%s\"&limit=1&fmt=json";
 const fetchCoverArt = function(_tagList, _cancellable, _callback) {
