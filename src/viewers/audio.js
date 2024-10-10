@@ -256,20 +256,6 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
     _fetchFromMusicBrainz(_callback);
 }
 
-const AudioPlayer = GObject.registerClass({
-    CssName: 'toolbar',
-}, class AudioPlayer extends Sushi.MediaBin {
-    _init(file) {
-        super._init({ audio_mode: true,
-                      uri: file.get_uri(),
-                      margin_bottom: Constants.TOOLBAR_SPACING,
-                      margin_start: Constants.TOOLBAR_SPACING,
-                      margin_end: Constants.TOOLBAR_SPACING,
-                      valign: Gtk.Align.END });
-        this.get_style_context().add_class('osd');
-    }
-});
-
 const COVER_SIZE = 256;
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
@@ -281,7 +267,7 @@ var Klass = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class AudioRenderer extends Gtk.Overlay {
+}, class AudioRenderer extends Gtk.Box {
     get ready() {
         return !!this._ready;
     }
@@ -292,27 +278,18 @@ var Klass = GObject.registerClass({
     _init(file) {
         super._init();
 
+        this._player = new Gtk.Video({ file: file,
+                                       autoplay: true,
+                                       hexpand: true });
+
+        this.set_orientation(Gtk.Orientation.VERTICAL);
+
         this._coverFetched = false;
 
         let box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                 spacing: 6 });
-        this.set_child(box);
-
-        this._player = new AudioPlayer(file);
-        this._player.connect('tags-change', (p) => {
-            this._updateFromTags(this._player.get_audio_tags());
-        });
-        this._player.connect('error', (p, error) => {
-            this.emit('error', error);
-            return false;
-        });
-        this.add_overlay(this._player);
-
-        this._autoplayId = GLib.idle_add(0, () => {
-            this._autoplayId = 0;
-            this._player.play();
-            return false;
-        });
+        this.append(box);
+        this.append(this._player);
 
         let frame = new Gtk.Frame({ height_request: COVER_SIZE,
                                     width_request: COVER_SIZE });
@@ -341,18 +318,15 @@ var Klass = GObject.registerClass({
         this._albumLabel.set_halign(Gtk.Align.START);
         vbox.append(this._albumLabel);
 
-        this.connect('destroy', this._onDestroy.bind(this));
+        let disco = Sushi.Discoverer.new(file.get_uri());
+        disco.connect('tags-changed', () => {
+          let tag_list = disco.get_tag_list();
+          if (tag_list)
+            this._updateFromTags(tag_list);
+        });
+
         this._cancellable = new Gio.Cancellable();
         this.isReady();
-    }
-
-    _onDestroy() {
-        if (this._autoplayId > 0) {
-            GLib.source_remove(this._autoplayId);
-            this._autoplayId = 0;
-        }
-
-        this._cancellable.cancel();
     }
 
     _setCover(cover) {
@@ -414,7 +388,7 @@ var Klass = GObject.registerClass({
     }
 
     get hasToolbar() {
-        // SushiMediaBin uses its own toolbar
+        // GtkVideo uses its own toolbar
         return false;
     }
 
