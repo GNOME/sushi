@@ -43,7 +43,6 @@ var Klass = GObject.registerClass({
 
         this._view = LOKDocView.View.new(null, null);
         this._view.set_edit(false);
-        this._view.show();
         this.add(this._view);
 
         this._view.open_document(file.get_uri(), '{}', null, null);

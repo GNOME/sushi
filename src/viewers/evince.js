@@ -74,7 +74,6 @@ var Klass = GObject.registerClass({
         this._defineActions();
 
         this._view = EvinceView.View.new();
-        this._view.show();
         this.add(this._view);
 
         this.connect('destroy', this._onDestroy.bind(this));
