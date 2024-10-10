@@ -28,10 +28,14 @@
 
 #include <gdk/gdk.h>
 #include <gio/gio.h>
+#include <gobject/gobject.h>
 #include <gst/gst.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
+
+#define SUSHI_TYPE_DISCOVERER (sushi_discoverer_get_type())
+G_DECLARE_FINAL_TYPE (SushiDiscoverer, sushi_discoverer, SUSHI, DISCOVERER, GObject)
 
 void           sushi_convert_libreoffice (GFile *file,
                                           GAsyncReadyCallback callback,
@@ -52,6 +56,9 @@ GdkPixbuf *    sushi_pixbuf_from_gst_sample (GstSample *sample,
 void           sushi_window_set_child_of_external (GtkWindow *window,
                                                    const char *handle);
 gboolean       sushi_running_under_wayland (GdkDisplay *display);
+
+SushiDiscoverer * sushi_discoverer_new (const char *uri);
+const GstTagList * sushi_discoverer_get_tag_list (SushiDiscoverer *self);
 
 G_END_DECLS
 

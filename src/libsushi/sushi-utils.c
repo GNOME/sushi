@@ -35,6 +35,9 @@
 #include <gdk/wayland/gdkwayland.h>
 #endif
 
+#include <gst/tag/tag.h>
+#include <gst/pbutils/pbutils.h>
+
 #include "externalwindow.h"
 #define I_KNOW_THE_PAPERS_LIBS_ARE_UNSTABLE_AND_HAVE_TALKED_WITH_THE_AUTHORS
 #include <papers-view.h>
@@ -357,4 +360,90 @@ sushi_running_under_wayland (GdkDisplay *display)
 #endif
 
   return FALSE;
+}
+
+struct _SushiDiscoverer {
+  GObject parent;
+
+  GstDiscoverer *disco;
+  const GstTagList *tag_list;
+};
+
+G_DEFINE_TYPE(SushiDiscoverer, sushi_discoverer, G_TYPE_OBJECT)
+
+enum {
+  TAGS_CHANGED,
+  LAST_SIGNAL
+};
+
+static guint disco_signals[LAST_SIGNAL] = { 0, };
+
+static void
+discovered_cb (SushiDiscoverer   *self,
+               GstDiscovererInfo *info,
+               GError            *error)
+{
+  self->tag_list = gst_discoverer_info_get_tags (info);
+
+  g_signal_emit (self, disco_signals[TAGS_CHANGED], 0);
+}
+
+static void
+sushi_discoverer_finalize (GObject *object)
+{
+  SushiDiscoverer *self = SUSHI_DISCOVERER (object);
+
+  if (self->disco)
+    gst_discoverer_stop (self->disco);
+
+  g_clear_object (&self->disco);
+}
+
+const GstTagList *
+sushi_discoverer_get_tag_list (SushiDiscoverer *self)
+{
+  return self->tag_list;
+}
+
+static void
+sushi_discoverer_class_init (SushiDiscovererClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = sushi_discoverer_finalize;
+
+  disco_signals[TAGS_CHANGED] = g_signal_new ("tags-changed",
+                                              G_TYPE_FROM_CLASS (object_class),
+                                              G_SIGNAL_RUN_LAST,
+                                              0, NULL, NULL, NULL,
+                                              G_TYPE_NONE, 0);
+}
+
+static void
+sushi_discoverer_init (SushiDiscoverer *self)
+{
+  g_autoptr (GError) error = NULL;
+
+  gst_init_check (NULL, NULL, NULL);
+  self->disco = gst_discoverer_new (GST_SECOND * 60, &error);
+
+  if (error)
+    {
+      g_warning ("Error creating GST discoverer: %s", error->message);
+      return;
+    }
+
+  g_signal_connect_swapped (self->disco, "discovered", G_CALLBACK (discovered_cb), self);
+  gst_discoverer_start (self->disco);
+}
+
+SushiDiscoverer *
+sushi_discoverer_new (const char *uri)
+{
+  SushiDiscoverer *self = g_object_new (SUSHI_TYPE_DISCOVERER, NULL);
+
+  if (self->disco)
+    gst_discoverer_discover_uri_async (self->disco, uri);
+
+  return self;
 }
