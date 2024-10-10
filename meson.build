@@ -5,7 +5,6 @@ project(
   meson_version: '>=0.58.0'
 )
 
-epoxy_dep = dependency('epoxy')
 papers_document_dep = dependency('papers-document-4.0')
 papers_view_dep = dependency('papers-view-4.0')
 freetype_dep = dependency('freetype2')
@@ -13,9 +12,7 @@ gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>=2.23.0')
 gio_unix_dep = dependency('gio-unix-2.0', version: '>=2.29.14')
 glib_dep = dependency('glib-2.0', version: '>=2.29.14')
 gstreamer_dep = dependency('gstreamer-1.0')
-gstreamer_audio_dep = dependency('gstreamer-audio-1.0')
 gstreamer_tag_dep = dependency('gstreamer-tag-1.0')
-gstreamer_video_dep = dependency('gstreamer-video-1.0')
 gst_pbutils_dep = dependency('gstreamer-pbutils-1.0')
 gtk_wayland_dep = dependency('gtk4-wayland', required: get_option('wayland'))
 gtk_x11_dep = dependency('gtk4-x11', required: get_option('X11'))
