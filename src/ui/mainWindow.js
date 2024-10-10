@@ -126,12 +126,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         this._lastWindowSize = [0, 0];
         this.file = null;
 
-        super._init({ type: Gtk.WindowType.TOPLEVEL,
-                      skipPagerHint: true,
-                      skipTaskbarHint: true,
-                      windowPosition: Gtk.WindowPosition.CENTER,
-                      gravity: Gdk.Gravity.CENTER,
-                      application: application });
+        super._init({ application: application });
 
         this._titlebar = new Gtk.HeaderBar({ show_close_button: true,
                                              decoration_layout: _getDecorationLayout() });
@@ -150,13 +145,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         this.set_child(this._embed);
 
         this._defineActions();
-    }
-
-    _onRealize() {
-        // don't support maximize and minimize
-        this.get_window().set_functions(Gdk.WMFunction.MOVE |
-                                        Gdk.WMFunction.RESIZE |
-                                        Gdk.WMFunction.CLOSE);
     }
 
     _defineActions() {
