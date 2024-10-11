@@ -49,7 +49,7 @@ var Klass = GObject.registerClass({
     _init(file, fileInfo) {
         super._init();
 
-        this._cancellable = new Gio.Cancellable();
+        this.cancellable = new Gio.Cancellable();
 
         let buffer = this._createBuffer(file, fileInfo);
         this._view = new GtkSource.View({ buffer: buffer,
@@ -61,12 +61,6 @@ var Klass = GObject.registerClass({
         this.set_child(this._view);
 
         this.isReady();
-
-        this.connect('destroy', this._onDestroy.bind(this));
-    }
-
-    _onDestroy() {
-        this._cancellable.cancel();
     }
 
     _setStyle(adwStyleManager, buffer) {
@@ -97,7 +91,7 @@ var Klass = GObject.registerClass({
         let sourceFile = new GtkSource.File({ location: file });
         let loader = new GtkSource.FileLoader({ buffer: buffer,
                                                 file: sourceFile });
-        loader.load_async(0, this._cancellable, null, (loader, result) => {
+        loader.load_async(0, this.cancellable, null, (loader, result) => {
             try {
                 loader.load_finish(result);
             } catch (e) {

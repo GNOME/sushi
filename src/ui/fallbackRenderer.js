@@ -227,10 +227,9 @@ var FallbackRenderer = GObject.registerClass({
         this._dateLabel.set_halign(Gtk.Align.START);
         vbox.append(this._dateLabel);
 
-        this._cancellable = new Gio.Cancellable();
-        loadFile(file, fileInfo, this._cancellable, this._onFileInfoUpdated.bind(this));
+        this.cancellable = new Gio.Cancellable();
+        loadFile(file, fileInfo, this.cancellable, this._onFileInfoUpdated.bind(this));
 
-        this.connect('unmap', this._onDestroy.bind(this));
         this.isReady();
     }
 
@@ -293,10 +292,6 @@ var FallbackRenderer = GObject.registerClass({
 
         this._applyIcon(state);
         this._applyLabels(state);
-    }
-
-    _onDestroy() {
-        this._cancellable.cancel();
     }
 
     get hasToolbar() {

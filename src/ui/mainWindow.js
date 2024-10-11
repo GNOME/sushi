@@ -184,6 +184,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
     }
 
     _reportError(error) {
+        if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+          return;
         let renderer = new ErrorBox(this.file, error);
         this._embedRenderer(renderer);
     }
@@ -267,6 +269,8 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
     }
 
     _embedRenderer(renderer) {
+        if (this._renderer && this._renderer.cancellable)
+          this._renderer.cancellable.cancel();
         this._renderer = renderer;
         this._renderer.expand = true;
         this._embed.set_child(this._renderer);

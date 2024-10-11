@@ -308,7 +308,7 @@ var Klass = GObject.registerClass({
             this._updateFromTags(tag_list);
         });
 
-        this._cancellable = new Gio.Cancellable();
+        this.cancellable = new Gio.Cancellable();
         this.isReady();
     }
 
@@ -365,7 +365,7 @@ var Klass = GObject.registerClass({
         this._titleLabel.set_markup('<b>' + escaped + '</b>');
 
         if (artistName && albumName && !this._coverFetched) {
-            fetchCoverArt(tags, this._cancellable, this._onCoverArtFetched.bind(this));
+            fetchCoverArt(tags, this.cancellable, this._onCoverArtFetched.bind(this));
             this._coverFetched = true;
         }
     }
