@@ -68,7 +68,6 @@ typedef struct {
 
   gboolean checked_libreoffice_flatpak;
   gboolean have_libreoffice_flatpak;
-  GPid libreoffice_pid;
 } TaskData;
 
 static void
@@ -77,11 +76,6 @@ task_data_free (TaskData *data)
   if (data->pdf_path) {
     g_unlink (data->pdf_path);
     g_free (data->pdf_path);
-  }
-
-  if (data->libreoffice_pid != -1) {
-    kill (data->libreoffice_pid, SIGKILL);
-    data->libreoffice_pid = -1;
   }
 
   g_clear_object (&data->file);
@@ -133,15 +127,22 @@ libreoffice_missing (GTask *task)
 }
 
 static void
-libreoffice_child_watch_cb (GPid pid,
-                            gint status,
-                            gpointer user_data)
+libreoffice_done_cb (GObject      *object,
+                     GAsyncResult *res,
+                     gpointer      user_data)
 {
-  g_autoptr(GTask) task = user_data;
+  GTask *task = user_data;
+  g_autoptr(GError) error = NULL;
   TaskData *data = g_task_get_task_data (task);
+  GSubprocess *subprocess = G_SUBPROCESS (object);
 
-  g_spawn_close_pid (pid);
-  data->libreoffice_pid = -1;
+  if (!g_subprocess_wait_finish (subprocess, res, &error))
+  {
+    if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+      g_subprocess_force_exit (subprocess);
+    else
+      g_warning ("Error converting libreoffice file: %s", error->message);
+  }
 
   g_task_return_pointer (task, g_file_new_for_path (data->pdf_path), g_object_unref);
 }
@@ -197,8 +198,8 @@ load_libreoffice (GTask *task)
   g_auto(GStrv) argv = NULL;
   g_autoptr(GError) error = NULL;
   gboolean use_flatpak = FALSE;
-  gboolean res;
-  GPid pid;
+  g_autoptr(GSubprocess) subprocess = NULL;
+  GCancellable *cancellable = g_task_get_cancellable (task);
   TaskData *data = g_task_get_task_data (task);
 
   flatpak_path = g_find_program_in_path ("flatpak");
@@ -269,28 +270,24 @@ load_libreoffice (GTask *task)
   command = g_strjoinv (" ", (gchar **) argv);
   g_debug ("Executing LibreOffice command: %s", command);
 
-  res = g_spawn_async (NULL, (gchar **) argv, NULL,
-                       G_SPAWN_DO_NOT_REAP_CHILD,
-                       NULL, NULL,
-                       &pid, &error);
+  subprocess = g_subprocess_newv ((const char **) argv, G_SUBPROCESS_FLAGS_NONE, &error);
 
-  if (!res) {
+  if (error) {
     g_warning ("Error while spawning libreoffice: %s", error->message);
     return;
   }
 
-  g_child_watch_add (pid, libreoffice_child_watch_cb, g_object_ref (task));
-  data->libreoffice_pid = pid;
+  g_subprocess_wait_async (subprocess, cancellable, libreoffice_done_cb, task);
 }
 
 void
-sushi_convert_libreoffice (GFile *file,
-                           GAsyncReadyCallback callback,
-                           gpointer user_data)
+sushi_convert_libreoffice (GFile               *file,
+                           GCancellable        *cancellable,
+                           GAsyncReadyCallback  callback,
+                           gpointer             user_data)
 {
-  GTask *task = g_task_new (NULL, NULL, callback, user_data);
+  GTask *task = g_task_new (NULL, cancellable, callback, user_data);
   TaskData *data = g_new0 (TaskData, 1);
-  data->libreoffice_pid = -1;
   data->file = g_object_ref (file);
 
   g_task_set_task_data (task, data, (GDestroyNotify) task_data_free);

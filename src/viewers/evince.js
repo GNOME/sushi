@@ -57,11 +57,12 @@ var Klass = GObject.registerClass({
                       min_content_width: Constants.VIEW_MIN });
 
         this._view = new PapersView.View();
+        this.cancellable = new Gio.Cancellable();
 
         if (papersTypes.includes(fileInfo.get_content_type())) {
             this._loadFile(file);
         } else {
-            Sushi.convert_libreoffice(file, (o, res) => {
+            Sushi.convert_libreoffice(file, this.cancellable, (o, res) => {
                 let convertedFile;
                 try {
                     convertedFile = Sushi.convert_libreoffice_finish(res);
