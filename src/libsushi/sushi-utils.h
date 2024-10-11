@@ -38,6 +38,7 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (SushiDiscoverer, sushi_discoverer, SUSHI, DISCOVERER, GObject)
 
 void           sushi_convert_libreoffice (GFile *file,
+                                          GCancellable *cancellable,
                                           GAsyncReadyCallback callback,
                                           gpointer user_data);
 GFile *        sushi_convert_libreoffice_finish (GAsyncResult *result,
