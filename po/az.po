@@ -1,0 +1,87 @@
+# Azerbaijani translation for sushi.
+# Copyright (C) 2025 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+# Ramal Rəhimov <jhonaluman@gmail.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2025-05-10 22:23+0000\n"
+"PO-Revision-Date: 2025-05-27 16:43+0400\n"
+"Last-Translator: Ramal Rəhimov <jhonaluman@gmail.com>\n"
+"Language-Team: Azerbaijani <az@li.org>\n"
+"Language: az\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 48.0\n"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:9
+msgid "Sushi"
+msgstr "Sushi"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "Müxtəlif növ fayllara sürətli baxış üçün imkan yaradır"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Sushi, GNOME masaüstü mühiti üçün fayl önbaxış vasitəsidir. Bu, GNOME Files "
+"(Nautilus) ilə inteqrasiya olunan müstəqil bir komponentdir."
+
+#: src/ui/fallbackRenderer.js:244
+msgid "Type"
+msgstr "Növ"
+
+#: src/ui/fallbackRenderer.js:254
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d element"
+msgstr[1] "%d elementlər"
+
+#: src/ui/fallbackRenderer.js:259
+msgid "Empty Folder"
+msgstr "Boş Qovluq"
+
+#: src/ui/fallbackRenderer.js:263
+msgid "Size"
+msgstr "Öıçü"
+
+#: src/ui/fallbackRenderer.js:269
+msgid "Modified"
+msgstr "Dəyişdirilib"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "%s Göstərmək mümkün deyil"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:358
+#, javascript-format
+msgid "Open With %s"
+msgstr "İlə Aç %s"
+
+#: src/ui/mainWindow.js:364
+msgid "Open"
+msgstr "Aç"
+
+#: src/viewers/audio.js:401
+msgid "from"
+msgstr "-dən"
+
+#: src/viewers/audio.js:406
+msgid "by"
+msgstr "tərəfindən"
+
+#: src/viewers/evince.js:111
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d / %d"
