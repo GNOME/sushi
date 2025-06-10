@@ -2,26 +2,46 @@
 # Copyright (C) 2011 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
 # Abdalrahim G. Fakhouri <abdilra7eem@yahoo.com>, 2011.
+# Ahmed Najmawi <iramosu@protonmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=sushi&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-02 20:34+0000\n"
-"PO-Revision-Date: 2011-09-03 00:26+0300\n"
-"Last-Translator: Abdalrahim G. Fakhouri <abdilra7eem@yahoo.com>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2024-03-08 17:07+0000\n"
+"PO-Revision-Date: 2025-05-03 22:09+0300\n"
+"Last-Translator: Ahmed Najmawi <iramosu@protonmail.com>\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.7.0\n"
+"X-Generator: Poedit 3.4.4\n"
 "X-Project-Style: gnome\n"
 
-#: ../src/libsushi/sushi-file-loader.c:641
-#, c-format
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:9
+msgid "Sushi"
+msgstr "سوشي"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "توفير وسيلة لعرض الملفات بسرعة"
+
+#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"سوشي هو عارض ملفات لجنوم، وهو مكون مستقل لتطبيق ملفات جنوم (نوتيلوس) وقابل "
+"للدمج معه."
+
+#: src/ui/fallbackRenderer.js:244
+msgid "Type"
+msgstr "النَّوع"
+
+#: src/ui/fallbackRenderer.js:254
+#, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "لا عناصر"
@@ -31,37 +51,47 @@ msgstr[3] "%d عناصر"
 msgstr[4] "%d عنصراً"
 msgstr[5] "%d عنصر"
 
-#: ../src/libsushi/sushi-file-loader.c:653
+#: src/ui/fallbackRenderer.js:259
 msgid "Empty Folder"
 msgstr "مجلد فارغ"
 
-#: ../src/js/ui/fallbackRenderer.js:120
-msgid "Type"
-msgstr "النّوع"
-
-#: ../src/js/ui/fallbackRenderer.js:121 ../src/js/ui/fallbackRenderer.js:126
-#: ../src/js/ui/fallbackRenderer.js:131 ../src/js/ui/spinnerBox.js:54
-#: ../src/js/viewers/folder.js:127 ../src/js/viewers/folder.js:132
-msgid "Loading…"
-msgstr "يُحمّل…"
-
-#: ../src/js/ui/fallbackRenderer.js:125 ../src/js/viewers/folder.js:126
+#: src/ui/fallbackRenderer.js:263
 msgid "Size"
 msgstr "الحجم"
 
-#: ../src/js/ui/fallbackRenderer.js:130 ../src/js/viewers/folder.js:131
+#: src/ui/fallbackRenderer.js:269
 msgid "Modified"
 msgstr "مُعدَّل"
 
-#: ../src/js/viewers/audio.js:163
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "يتعذَّر عرض %s"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:358
+#, javascript-format
+msgid "Open With %s"
+msgstr "افتح باستخدام %s"
+
+#: src/ui/mainWindow.js:364
+msgid "Open"
+msgstr "افتح"
+
+#: src/viewers/audio.js:401
 msgid "from"
 msgstr "مِن"
 
-#: ../src/js/viewers/audio.js:165
+# يستخدم في سياق الملفات الصوتيَّة
+#: src/viewers/audio.js:406
 msgid "by"
 msgstr "أداء"
 
-#: ../src/js/viewers/evince.js:75
-#, c-format
+#: src/viewers/evince.js:111
+#, javascript-format
 msgid "%d of %d"
 msgstr "%d من %d"
+
+#~ msgid "Loading…"
+#~ msgstr "يُحمّل…"
