@@ -12,11 +12,11 @@ configure_file(
 
 i18n.merge_file(
   input: configure_file(
-    input: 'org.gnome.NautilusPreviewer.appdata.xml.in.in',
+    input: 'org.gnome.NautilusPreviewer.metainfo.xml.in.in',
     output: '@BASENAME@',
     configuration: conf
   ),
-  output: '@0@.appdata.xml'.format(app_id),
+  output: '@0@.metainfo.xml'.format(app_id),
   po_dir: '../po',
   install: true,
   install_dir: join_paths(datadir, 'metainfo')

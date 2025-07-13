@@ -1,6 +1,6 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/org.gnome.NautilusPreviewer.appdata.xml.in.in
+data/org.gnome.NautilusPreviewer.metainfo.xml.in.in
 src/ui/fallbackRenderer.js
 src/ui/mainWindow.js
 src/viewers/audio.js
