@@ -4,6 +4,7 @@
       <arg type="s" direction="in" name="uri" />
       <arg type="s" direction="in" name="windowHandle" />
       <arg type="b" direction="in" name="closeIfAlreadyShown" />
+      <arg type="s" direction="in" name="activationToken" />
     </method>
     <method name="Close">
     </method>

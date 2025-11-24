@@ -76,8 +76,9 @@ var NautilusPreviewer2Skeleton = class extends NautilusPreviewerSkeleton {
         super(application, '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer2.xml');
     }
 
-    ShowFile(uri, windowHandle, closeIfAlreadyShown) {
-        this.application.showFile(uri, windowHandle, closeIfAlreadyShown);
+    ShowFile(uri, windowHandle, closeIfAlreadyShown, activationToken) {
+        this.application.showFile(
+            uri, windowHandle, closeIfAlreadyShown, activationToken);
     }
 }
 
@@ -148,8 +149,12 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
             'ParentHandle', new GLib.Variant('s', handle));
     }
 
-    showFile(uri, windowHandle, closeIfAlreadyShown) {
+    showFile(uri, windowHandle, closeIfAlreadyShown, activationToken = "") {
         this._ensureMainWindow();
+
+        if (activationToken) {
+            this._mainWindow.set_startup_id(activationToken);
+        }
 
         let file = Gio.file_new_for_uri(uri);
         if (closeIfAlreadyShown &&
