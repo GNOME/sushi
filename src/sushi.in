@@ -39,7 +39,7 @@ try {
 }
 
 let bytes = Gio.resources_lookup_data(
-    '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer.xml', 0);
+    '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer2.xml', 0);
 let wrapper = Gio.DBusProxy.makeProxyWrapper(ByteArray.toString(bytes.toArray()));
 
 let proxy;
@@ -51,4 +51,8 @@ try {
     System.exit(1);
 }
 
-proxy.ShowFileSync(file.get_uri(), 0, false);
+const activationToken = GLib.getenv("XDG_ACTIVATION_TOKEN") ?? "";
+const windowHandle = "";
+const closeIfAlreadyShown = false;
+proxy.ShowFileSync(
+    file.get_uri(), windowHandle, closeIfAlreadyShown, activationToken);

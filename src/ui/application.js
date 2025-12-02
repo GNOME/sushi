@@ -60,17 +60,6 @@ var NautilusPreviewerSkeleton = class {
     }
 }
 
-var NautilusPreviewer1Skeleton = class extends NautilusPreviewerSkeleton {
-    constructor(application) {
-        super(application, '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer.xml');
-    }
-
-    ShowFile(uri, xid, closeIfAlreadyShown) {
-        let handle = 'x11:%d'.format(xid);
-        this.application.showFile(uri, handle, closeIfAlreadyShown);
-    }
-}
-
 var NautilusPreviewer2Skeleton = class extends NautilusPreviewerSkeleton {
     constructor(application) {
         super(application, '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer2.xml');
@@ -92,17 +81,13 @@ var Application = GObject.registerClass(class Application extends Gtk.Applicatio
     vfunc_dbus_register(connection, path) {
         let actualPath = `/org/gnome/${pkg.name.split('.').at(-1)}`;
 
-        this._skeleton = new NautilusPreviewer1Skeleton(this);
         this._skeleton2 = new NautilusPreviewer2Skeleton(this);
-
-        this._skeleton.export(connection, actualPath);
         this._skeleton2.export(connection, actualPath);
 
         return super.vfunc_dbus_register(connection, path);
     }
 
     vfunc_dbus_unregister(connection, path) {
-        this._skeleton.unexport(connection);
         this._skeleton2.unexport(connection);
 
         return super.vfunc_dbus_unregister(connection, path);

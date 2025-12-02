@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/NautilusPreviewer">
-    <file>org.gnome.NautilusPreviewer.xml</file>
     <file>org.gnome.NautilusPreviewer2.xml</file>
   </gresource>
 </gresources>
