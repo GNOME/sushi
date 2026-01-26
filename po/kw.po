@@ -1,0 +1,95 @@
+# Cornish translation for sushi.
+# Copyright (C) 2026 sushi's COPYRIGHT HOLDER
+# This file is distributed under the same license as the sushi package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Flynn Peck <cirilla@tuta.io>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2025-11-10 10:26+0000\n"
+"PO-Revision-Date: 2026-01-26 14:22+0000\n"
+"Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
+"Language-Team: kw\n"
+"Language: kw\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/sushi/\n"
+"X-DL-Lang: kw\n"
+"X-DL-Module: sushi\n"
+"X-DL-Branch: master\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
+"X-Generator: Gtranslator 49.0\n"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
+msgid "Sushi"
+msgstr "Sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr ""
+"Provia unn komodyta rag ow mires orth yn es eghennow dyffrans restrennow"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+"Sushi yw unn ragwolokyer rag an kerghynnedh desktop GNOME. Yth yw unn darn "
+"anserghek may oberi gans GNOME Restrennow (Nautilus)."
+
+#: src/ui/fallbackRenderer.js:244
+msgid "Type"
+msgstr "Eghen"
+
+#: src/ui/fallbackRenderer.js:254
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d tra"
+msgstr[1] "%d taklow"
+
+#: src/ui/fallbackRenderer.js:259
+msgid "Empty Folder"
+msgstr "Restrenva Gwag"
+
+#: src/ui/fallbackRenderer.js:263
+msgid "Size"
+msgstr "Braster"
+
+#: src/ui/fallbackRenderer.js:269
+msgid "Modified"
+msgstr "Chanjys"
+
+#. TRANSLATORS: This is a filename, e.g. "image.jpg"
+#: src/ui/mainWindow.js:90
+#, javascript-format
+msgid "Unable to display %s"
+msgstr "Anabel diskwedhes %s"
+
+#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
+#: src/ui/mainWindow.js:358
+#, javascript-format
+msgid "Open With %s"
+msgstr "Ygeri Gans %s"
+
+#: src/ui/mainWindow.js:364
+msgid "Open"
+msgstr "Ygeri"
+
+#: src/viewers/audio.js:401
+msgid "from"
+msgstr "dhyworth"
+
+#: src/viewers/audio.js:406
+msgid "by"
+msgstr "gans"
+
+#: src/viewers/evince.js:111
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d a %d"
