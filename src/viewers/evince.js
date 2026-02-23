@@ -31,6 +31,33 @@ const Utils = imports.ui.utils;
 
 const Libreoffice = imports.viewers.libreoffice;
 
+const createDocumentModel = () => {
+    return new PapersView.DocumentModel({
+        annotation_model: new PapersView.AnnotationModel(),
+    });
+};
+
+const createView = (model) => {
+    const view = new PapersView.View();
+    view.set_model(model);
+
+    const undoContext = new PapersView.UndoContext({
+        document_model: model,
+    });
+    const annotationsContext = new PapersView.AnnotationsContext({
+        document_model: model,
+        undo_context: undoContext,
+    });
+    view.set_annotations_context(annotationsContext);
+
+    const searchContext = new PapersView.SearchContext({
+        document_model: model,
+    });
+    view.set_search_context(searchContext);
+
+    return view;
+};
+
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
@@ -54,8 +81,8 @@ var Klass = GObject.registerClass({
         super._init({ visible: true,
                       min_content_height: Constants.VIEW_MIN,
                       min_content_width: Constants.VIEW_MIN });
-
-        this._view = new PapersView.View();
+        this._model = createDocumentModel();
+        this._view = createView(this._model);
         this.cancellable = new Gio.Cancellable();
 
         if (papersTypes.includes(fileInfo.get_content_type())) {
@@ -119,10 +146,9 @@ var Klass = GObject.registerClass({
             return;
         }
 
-        this._model = PapersView.DocumentModel.new_with_document(document);
+        this._model.set_document(document);
         this._model.set_sizing_mode(PapersView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);
-        this._view.set_model(this._model);
 
         this._modelHandlerId = this._model.connect('page-changed', this._updatePageLabel.bind(this));
         this._updatePageLabel();
