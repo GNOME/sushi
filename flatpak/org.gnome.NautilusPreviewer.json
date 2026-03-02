@@ -23,7 +23,10 @@
         "--filesystem=home:ro"
     ],
     "build-options": {
-        "append-path": "/usr/lib/sdk/rust-stable/bin:"
+        "append-path": "/usr/lib/sdk/rust-stable/bin:",
+        "build-args": [
+            "--share=network"
+        ]
     },
     "modules": [
         {
@@ -66,8 +69,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://poppler.freedesktop.org/poppler-24.07.0.tar.xz",
-                    "sha256": "19eb4f49198e4ae3fd9e5a6cf24d0fc7e674e8802046a7de14baab1e40cc2f1d",
+                    "url": "https://poppler.freedesktop.org/poppler-26.02.0.tar.xz",
+                    "sha256": "dded8621f7b2f695c91063aab1558691c8418374cd583501e89ed39487e7ab77",
                     "x-checker-data": {
                         "type": "anitya",
                         "project-id": 3686,
@@ -104,17 +107,21 @@
                 "/share/help"
             ],
             "config-opts": [
+                "-Dshell=true",
                 "-Dnautilus=false",
                 "-Ddocumentation=false",
-                "-Dviewer=false",
                 "-Dpreviewer=false",
+                "-Dthumbnailer=false",
                 "-Dintrospection=enabled",
-                "-Dcomics=disabled"
+                "-Dcomics=disabled",
+                "-Dtests=false",
+                "-Duser_doc=false",
+                "-Ddocumentation=false"
             ],
             "sources": [
                 {
                     "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/Incubator/papers.git",
+                    "url": "https://gitlab.gnome.org/GNOME/papers.git",
                     "branch": "main"
                 }
             ]
@@ -139,7 +146,7 @@
             "name": "sushi",
             "buildsystem": "meson",
             "config-opts": [
-            	"-Dprofile=development"
+                "-Dprofile=development"
             ],
             "sources": [
                 {
