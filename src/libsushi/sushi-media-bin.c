@@ -1172,7 +1172,7 @@ sushi_media_bin_class_init (SushiMediaBinClass *klass)
   properties[PROP_AUDIO_MODE] =
     g_param_spec_boolean ("audio-mode",
                           "Audio Mode",
-                          "Wheter to show controls suitable for audio files only",
+                          "Whether to show controls suitable for audio files only",
                           FALSE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
