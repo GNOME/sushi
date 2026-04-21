@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
 "POT-Creation-Date: 2025-11-10 10:26+0000\n"
-"PO-Revision-Date: 2026-01-26 14:22+0000\n"
+"PO-Revision-Date: 2026-04-21 15:48+0100\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
 "Language-Team: kw\n"
 "Language: kw\n"
@@ -23,7 +23,7 @@ msgstr ""
 "X-DL-Branch: master\n"
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
-"X-Generator: Gtranslator 49.0\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
@@ -31,16 +31,15 @@ msgstr "Sushi"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr ""
-"Provia unn komodyta rag ow mires orth yn es eghennow dyffrans restrennow"
+msgstr "Provia komodyta rag ow mires yn es orth eghennow dyffrans a restrennow"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi yw unn ragwolokyer rag an kerghynnedh desktop GNOME. Yth yw unn darn "
-"anserghek may oberi gans GNOME Restrennow (Nautilus)."
+"Sushi yw ragwolokyell rag an kerghynnedh desktop GNOME. Unsys anserghek yw "
+"owth oberi gans GNOME Restrennow (Nautilus)."
 
 #: src/ui/fallbackRenderer.js:244
 msgid "Type"
@@ -69,7 +68,7 @@ msgstr "Chanjys"
 #: src/ui/mainWindow.js:90
 #, javascript-format
 msgid "Unable to display %s"
-msgstr "Anabel diskwedhes %s"
+msgstr "Ny yllir diskwedhes %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
 #: src/ui/mainWindow.js:358
