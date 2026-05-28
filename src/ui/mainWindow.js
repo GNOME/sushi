@@ -23,7 +23,7 @@
  *
  */
 
-const {Gdk, Gio, GLib, GObject, Gtk, Sushi} = imports.gi;
+const {Adw, Gdk, Gio, GLib, GObject, Gtk, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
@@ -93,7 +93,7 @@ function _getDecorationLayout() {
     return [leftGroup.join(','), rightGroup.join(',')].join(':');
 };
 
-var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationWindow {
+var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationWindow {
     _init(application) {
         this._renderer = null;
         this._lastWindowSize = [0, 0];
@@ -101,8 +101,12 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
 
         super._init({ application: application });
 
-        this._titlebar = new Gtk.HeaderBar({ decoration_layout: _getDecorationLayout() });
-        this.set_titlebar(this._titlebar);
+        this._toolbar_view = new Adw.ToolbarView({ top_bar_style: Adw.ToolbarStyle.RAISED_BORDER});
+        this.bind_property('fullscreened', this._toolbar_view, 'reveal-top-bars', GObject.BindingFlags.INVERT_BOOLEAN);
+        this.set_content(this._toolbar_view)
+
+        this._titlebar = new Adw.HeaderBar({ decoration_layout: _getDecorationLayout() });
+        this._toolbar_view.add_top_bar(this._titlebar);
 
         this._openButton = new Gtk.Button({ label: _("Open") });
         this._openButton.connect('clicked', this._onFileOpenClicked.bind(this));
@@ -114,7 +118,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
 
         this._embed = new Gtk.Overlay();
 
-        this.set_child(this._embed);
+        this._toolbar_view.set_content(this._embed);
 
         this._defineActions();
     }

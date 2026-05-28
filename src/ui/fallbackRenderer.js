@@ -211,9 +211,8 @@ var FallbackRenderer = GObject.registerClass({
         this._titleLabel.set_halign(Gtk.Align.START);
         hbox.append(this._titleLabel);
 
-        this._spinner = new Gtk.Spinner();
+        this._spinner = new Adw.Spinner();
         hbox.append(this._spinner);
-        this._spinner.start();
 
         this._typeLabel = new Gtk.Label();
         this._typeLabel.set_halign(Gtk.Align.START);
@@ -286,7 +285,6 @@ var FallbackRenderer = GObject.registerClass({
 
     _onFileInfoUpdated(state) {
         if (!state.loading) {
-            this._spinner.stop();
             this._spinner.set_visible(false);
         }
 
