@@ -194,7 +194,7 @@ var FallbackRenderer = GObject.registerClass({
         this.append(this._image);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                                 spacing: 1,
+                                 spacing: 6,
                                  margin_top: 12,
                                  margin_start: 12,
                                  margin_end: 12,
@@ -210,12 +210,14 @@ var FallbackRenderer = GObject.registerClass({
         this._titleLabel = new Gtk.Label({ max_width_chars: 48,
                                            ellipsize: Pango.EllipsizeMode.MIDDLE });
         this._titleLabel.set_halign(Gtk.Align.START);
+        this._titleLabel.add_css_class('title-3');
         hbox.append(this._titleLabel);
 
         this._spinner = new Adw.Spinner();
         hbox.append(this._spinner);
 
         this._typeLabel = new Gtk.Label();
+        this._typeLabel.set_visible(false);
         this._typeLabel.set_halign(Gtk.Align.START);
         vbox.append(this._typeLabel);
 
@@ -235,17 +237,15 @@ var FallbackRenderer = GObject.registerClass({
 
     _applyLabels(state) {
         let fileName = state.fileInfo.get_display_name();
-        fileName = GLib.markup_escape_text(fileName, -1);
-        let titleStr = `<b><big>${fileName}</big></b>`;
-        this._titleLabel.set_markup(titleStr);
+        this._titleLabel.set_label(fileName);
 
         if (state.fileInfo.get_file_type() != Gio.FileType.DIRECTORY) {
             let contentType = state.fileInfo.get_content_type();
             let typeDescr = Gio.content_type_get_description(contentType);
             typeDescr = GLib.markup_escape_text(typeDescr, -1);
-            let typeStr = '<small><b>' + _("Type") + '  </b>' + typeDescr + '</small>';
+            let typeStr = '<b>' + _("Type") + '  </b>' + typeDescr;
             this._typeLabel.set_markup(typeStr);
-            this._typeLabel.show();
+            this._typeLabel.set_visible(true);
         }
 
         let sizeFormatted;
@@ -262,13 +262,13 @@ var FallbackRenderer = GObject.registerClass({
         }
 
         sizeFormatted = GLib.markup_escape_text(sizeFormatted, -1);
-        let sizeStr = '<small><b>' + _("Size") + '  </b>' + sizeFormatted + '</small>';
+        let sizeStr = '<b>' + _("Size") + '  </b>' + sizeFormatted;
         this._sizeLabel.set_markup(sizeStr);
 
         let date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
         let dateFormatted = date.format('%x %X');
         dateFormatted = GLib.markup_escape_text(dateFormatted, -1);
-        let dateStr = '<small><b>' + _("Modified") + '  </b>' + dateFormatted + '</small>';
+        let dateStr = '<b>' + _("Modified") + '  </b>' + dateFormatted;
         this._dateLabel.set_markup(dateStr);
     }
 

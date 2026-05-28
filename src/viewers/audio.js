@@ -282,21 +282,27 @@ var Klass = GObject.registerClass({
         frame.set_child(this._image);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                                 spacing: 1,
-                                 margin_top: 48,
+                                 spacing: 6,
+                                 margin_top: 12,
                                  margin_start: 12,
-                                 margin_end: 12 });
+                                 margin_end: 12,
+                                 margin_bottom: 12,
+                                 valign: Gtk.Align.CENTER,
+                                 vexpand: true});
         box.append(vbox);
 
         this._titleLabel = new Gtk.Label();
         this._titleLabel.set_halign(Gtk.Align.START);
+        this._titleLabel.add_css_class('title-3');
         vbox.append(this._titleLabel);
 
         this._authorLabel = new Gtk.Label();
+        this._authorLabel.set_visible(false);
         this._authorLabel.set_halign(Gtk.Align.START);
         vbox.append(this._authorLabel);
 
         this._albumLabel = new Gtk.Label();
+        this._albumLabel.set_visible(false);
         this._albumLabel.set_halign(Gtk.Align.START);
         vbox.append(this._albumLabel);
 
@@ -339,16 +345,17 @@ var Klass = GObject.registerClass({
 
         if (albumName) {
             let escaped = GLib.markup_escape_text(albumName, -1);
-            this._albumLabel.set_markup('<small><i>' + _("from") + '  </i>' + escaped + '</small>');
+            this._albumLabel.set_markup('<i>' + _("from") + '  </i>' + escaped);
+            this._albumLabel.set_visible(true);
         }
 
         if (artistName) {
             let escaped = GLib.markup_escape_text(artistName, -1);
-            this._authorLabel.set_markup('<small><i>' + _("by") + '  </i><b>' + escaped + '</b></small>');
+            this._authorLabel.set_markup('<i>' + _("by") + '  </i><b>' + escaped + '</b>');
+            this._authorLabel.set_visible(true);
         }
 
-        let escaped = GLib.markup_escape_text(titleName, -1);
-        this._titleLabel.set_markup('<b>' + escaped + '</b>');
+        this._titleLabel.set_label(titleName);
 
         if (artistName && albumName && !this._coverFetched) {
             fetchCoverArt(tags, this.cancellable, this._onCoverArtFetched.bind(this));
