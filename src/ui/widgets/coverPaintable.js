@@ -173,7 +173,7 @@ var CoverPaintable = GObject.registerClass({
         const iconWidth = width * iconScale;
         const iconHeight = height * iconScale;
         const icon = iconTheme.lookup_icon(
-            'media-optical-symbolic', null, iconWidth, scaleFactor, 0, 0);
+            'audio-x-generic-symbolic', null, iconWidth, scaleFactor, 0, 0);
 
         const bgColor = new Gdk.RGBA();
         const bgColorString = (this._settings.gtk_interface_color_scheme == Gtk.InterfaceColorScheme.DARK
