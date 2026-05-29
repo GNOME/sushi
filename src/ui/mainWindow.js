@@ -272,8 +272,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
     }
 
     _embedRenderer(renderer) {
-        if (this._renderer && this._renderer.cancellable)
-          this._renderer.cancellable.cancel();
+        this._renderer?.cancellable?.cancel();
         this._renderer = renderer;
         this._renderer.expand = true;
         this._embed.set_child(this._renderer);
