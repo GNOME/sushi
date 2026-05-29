@@ -35,33 +35,6 @@ const WINDOW_MAX_H = 600;
 const WINDOW_MAX_W_BASE = 1368;
 const WINDOW_MAX_H_BASE = 768;
 
-const Embed = GObject.registerClass(class Embed extends Gtk.Overlay {
-    vfunc_get_request_mode() {
-        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
-    }
-
-    vfunc_measure(orientation, for_size) {
-        if (orientation == Gtk.Orientation.VERTICAL) {
-            let [min, nat, min_baseline, nat_baseline] = super.vfunc_measure(orientation, for_size);
-
-            min = Math.max(min, Constants.VIEW_MIN);
-            nat = Math.max(nat, Constants.VIEW_MIN);
-
-            return [min, nat, -1, -1];
-        }
-        else {
-            let [min, nat, min_baseline, nat_baseline] = super.vfunc_measure(orientation, for_size);
-
-            if (forWidth <= Constants.VIEW_MIN) {
-                min = Math.max(min, Constants.VIEW_MIN);
-                nat = Math.max(nat, Constants.VIEW_MIN);
-            }
-
-            return [min, nat];
-        }
-    }
-});
-
 const ErrorBox = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
@@ -139,7 +112,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         this.add_controller(motion);
         motion.connect('motion', this._onMotionNotifyEvent.bind(this));
 
-        this._embed = new Embed();
+        this._embed = new Gtk.Overlay();
 
         this.set_child(this._embed);
 
@@ -232,6 +205,9 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         let maxSize = this._getMaxSize();
         let rendererSize = this._renderer.get_preferred_size();
         let natSize = [rendererSize[1].width, rendererSize[1].height];
+        if (natSize[0] <= Constants.VIEW_MIN) {
+            natSize = natSize.map(size => Math.max(size, Constants.VIEW_MIN));
+        }
         let windowSize;
         let resizePolicy = this._renderer.resizePolicy;
 
