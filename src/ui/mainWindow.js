@@ -220,6 +220,9 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         else if (resizePolicy == Renderer.ResizePolicy.STRETCHED)
             windowSize = Utils.getScaledSize(natSize, maxSize, true);
 
+        const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
+        windowSize[1] += naturalTitlebarSize.height;
+
         if ((windowSize[0] > 0 && windowSize[0] != this._lastWindowSize[0]) ||
             (windowSize[1] > 0 && windowSize[1] != this._lastWindowSize[1])) {
             this._lastWindowSize = windowSize;
