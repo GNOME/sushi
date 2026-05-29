@@ -23,16 +23,19 @@
  *
  */
 
-const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
-
+const {GLib, GObject, Gdk, Gio, Gly, GlyGtk4, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
+const { CoverPaintable } = imports.ui.widgets.coverPaintable;
+
+Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
+Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 
 const COVER_ART_ARCHIVE_URL = "https://coverartarchive.org/release/%s";
 const MUSIC_BRAINZ_ASIN_FORMAT = "https://musicbrainz.org/ws/2/release/?query=release:\"%s\"AND artist:\"%s\"&limit=1&fmt=json";
 const fetchCoverArt = function(_tagList, _cancellable, _callback) {
-    function _fetchFromTags() {
+    async function _fetchFromTags(cancellable) {
         let coverSample = null;
         let idx = 0;
 
@@ -60,7 +63,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
 
         if (coverSample) {
             try {
-                return Sushi.pixbuf_from_gst_sample(coverSample)
+                return await _fetchFromGstSample(coverSample, cancellable)
             } catch (e) {
                 logError(e, 'Unable to fetch cover art from GstSample');
             }
@@ -73,42 +76,30 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
         return Gio.File.new_for_path(GLib.build_filenamev([cachePath, `${mbid}.jpg`]));
     }
 
-    function _fetchFromStream(stream, done) {
-        GdkPixbuf.Pixbuf.new_from_stream_async(stream, _cancellable, (o, res) => {
-            let cover;
-            try {
-                cover = GdkPixbuf.Pixbuf.new_from_stream_finish(res);
-            } catch (e) {
-                done(e, null);
-                return;
-            }
-
-            done(null, cover);
-        });
+    async function _fetchFromFile(file, cancellable) {
+        const loader = Gly.Loader.new(file);
+        const image = await loader.load_async(cancellable);
+        const frame = await image.next_frame_async(cancellable);
+        return GlyGtk4.frame_get_texture(frame);
     }
 
-    function _fetchFromCache(mbid, done) {
+    async function _fetchFromGstSample(sample, cancellable) {
+        const buffer = sample.get_buffer();
+        const [ok, info] = buffer.map(Gst.MapFlags.READ);
+        if (!ok)
+          throw new Error('Failed to map GstBuffer');
+        const bytes = GLib.Bytes.new(info.data);
+        const loader = Gly.Loader.new_for_bytes(bytes);
+        const image = await loader.load_async(cancellable);
+        const frame = await image.next_frame_async(cancellable);
+        return GlyGtk4.frame_get_texture(frame);
+    }
+
+    function _fetchFromCache(mbid, cancellable, done) {
         let file = _getCacheFile(mbid);
-        file.query_info_async(Gio.FILE_ATTRIBUTE_STANDARD_TYPE, 0, 0, _cancellable, (f, res) => {
-            try {
-                file.query_info_finish(res);
-            } catch (e) {
-                done(e, null);
-                return;
-            }
-
-            file.read_async(0, _cancellable, (f, res) => {
-                let stream;
-                try {
-                    stream = file.read_finish(res);
-                } catch (e) {
-                    done(e, null);
-                    return;
-                }
-
-                _fetchFromStream(stream, done);
-            });
-        });
+        _fetchFromFile(file, cancellable)
+          .then(texture => done(null, texture))
+          .catch(error => done(error, null));
     }
 
     function _saveToCache(mbid, stream, done) {
@@ -165,7 +156,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
             _saveToCache(mbid, stream, (err) => {
                 if (err)
                     logError(err, 'Unable to save cover to cache');
-                _fetchFromCache(mbid, done);
+                _fetchFromCache(mbid, _cancellable, done);
             });
         });
     }
@@ -221,7 +212,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
               return;
             }
 
-            _fetchFromCache(mbid, (err, cover) => {
+            _fetchFromCache(mbid, _cancellable, (err, cover) => {
                 if (cover)
                     done(null, cover);
                 else
@@ -230,13 +221,14 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
         });
     }
 
-   let cover = _fetchFromTags();
-   if (cover) {
-       _callback(null, cover);
-       return;
-   }
-
-    _fetchFromMusicBrainz(_callback);
+   _fetchFromTags(_cancellable)
+      .catch(() => null)
+      .then(cover => {
+        if (cover)
+            _callback(null, cover);
+        else
+            _fetchFromMusicBrainz(_callback);
+      });
 }
 
 const COVER_SIZE = 256;
@@ -278,7 +270,14 @@ var Klass = GObject.registerClass({
                                     width_request: COVER_SIZE });
         box.append(frame);
 
-        this._image = new Gtk.Image({ icon_name: 'media-optical-symbolic',
+        this._coverPaintable = new CoverPaintable({ display: this.get_display() });
+        this.bind_property(
+            'scale-factor',
+            this._coverPaintable,
+            'scale-factor',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this._image = new Gtk.Image({ paintable: this._coverPaintable,
                                       pixel_size: COVER_SIZE });
         frame.set_child(this._image);
 
@@ -309,25 +308,12 @@ var Klass = GObject.registerClass({
         });
 
         this.cancellable = new Gio.Cancellable();
+        this.cancellable.connect(() => this._coverPaintable.destroy());
         this.isReady();
     }
 
     _setCover(cover) {
-        let scaleFactor = this.get_scale_factor();
-        let size = COVER_SIZE * scaleFactor;
-        let width = cover.get_width();
-        let height = cover.get_height();
-        let targetWidth = size;
-        let targetHeight = size;
-
-        if (width > height)
-            targetHeight = height * size / width;
-        else
-            targetWidth = width * size / height;
-
-        let coverArt = cover.scale_simple(targetWidth, targetHeight,
-                                          GdkPixbuf.InterpType.BILINEAR);
-        this._image.set_from_pixbuf(coverArt);
+        this._coverPaintable.texture = cover;
     }
 
     _onCoverArtFetched(err, cover) {

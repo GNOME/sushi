@@ -41,6 +41,8 @@ pkg.require({
     Pango: '1.0',
     Soup: '3.0',
     Sushi: '1.0',
+    Gly: '2',
+    GlyGtk4: '2',
 });
 
 const {Gio, GLib} = imports.gi;

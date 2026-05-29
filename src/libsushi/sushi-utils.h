@@ -51,9 +51,6 @@ void           sushi_get_asin_for_track (const gchar *artist,
 gchar *        sushi_get_asin_for_track_finish (GAsyncResult *result,
                                                 GError **error);
 
-GdkPixbuf *    sushi_pixbuf_from_gst_sample (GstSample *sample,
-                                             GError   **error);
-
 void           sushi_window_set_child_of_external (GtkWindow *window,
                                                    const char *handle);
 gboolean       sushi_running_under_wayland (GdkDisplay *display);

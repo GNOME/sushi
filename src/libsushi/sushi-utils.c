@@ -310,42 +310,6 @@ sushi_convert_libreoffice_finish (GAsyncResult *result,
 }
 
 /**
- * sushi_pixbuf_from_gst_sample:
- * @sample:
- * @error:
- *
- * Returns: (transfer full):
- */
-GdkPixbuf *
-sushi_pixbuf_from_gst_sample (GstSample *sample,
-                              GError   **error)
-{
-  g_autoptr(GdkPixbufLoader) loader = NULL;
-  GstBuffer *buffer = gst_sample_get_buffer (sample);
-  GdkPixbuf *pixbuf = NULL;
-  GstMapInfo info;
-
-  if (!gst_buffer_map (buffer, &info, GST_MAP_READ)) {
-    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                         "Failed to map GstBuffer");
-    return NULL;
-  }
-
-  loader = gdk_pixbuf_loader_new ();
-  if (!gdk_pixbuf_loader_write (loader, info.data, info.size, error) ||
-      !gdk_pixbuf_loader_close (loader, error))
-    return NULL;
-
-  pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-  if (pixbuf)
-    g_object_ref (pixbuf);
-
-  gst_buffer_unmap (buffer, &info);
-
-  return pixbuf;
-}
-
-/**
  * sushi_running_under_wayland:
  *
  * Returns: Whether we are running under Wayland backend.

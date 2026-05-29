@@ -23,9 +23,11 @@
  *
  */
 
-const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gtk} = imports.gi;
-
+const {Gdk, Gio, GLib, GObject, Gtk, Gly, GlyGtk4} = imports.gi;
 const Renderer = imports.ui.renderer;
+
+Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
+Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
@@ -48,22 +50,30 @@ var Klass = GObject.registerClass({
 
     _init(file) {
         super._init();
+        this.cancellable = new Gio.Cancellable();
+        this._loadFile(file)
+            .then(() => this.isReady())
+            .catch(error => this.emit('error', error));
+    }
 
-        try {
-          this._texture = Gdk.Texture.new_from_file(file);
-          this.set_paintable(this._texture);
-          this.content_fit = Gtk.ContentFit.SCALE_DOWN;
-        }
-        catch (e) {
-          this.emit('error', e);
-        }
+    async _loadFile(file) {
+        const loader = Gly.Loader.new(file);
+        const image = loader.load();
+        this._imageWidth = image.get_width();
+        this._imageHeight = image.get_height();
+        this.queue_resize();
+        const frame = await image.next_frame_async(this.cancellable);
+        const texture = GlyGtk4.frame_get_texture(frame);
+        this._texture = texture;
+        this.content_fit = Gtk.ContentFit.SCALE_DOWN;
+        this.set_paintable(texture);
     }
 
     vfunc_measure(orientation, for_size) {
         if (orientation == Gtk.Orientation.VERTICAL)
-          return [1, this._texture ? this._texture.get_height() : 1, -1, -1];
+          return [1, this._texture?.get_height() ?? this._imageHeight ?? 1, -1, -1];
         else
-          return [1, this._texture ? this._texture.get_width() : 1, -1, -1];
+          return [1, this._texture?.get_width() ?? this._imageWidth ?? 1, -1, -1];
     }
 
     get resizePolicy() {
@@ -71,7 +81,4 @@ var Klass = GObject.registerClass({
     }
 });
 
-var mimeTypes = [];
-let formats = GdkPixbuf.Pixbuf.get_formats();
-for (let idx in formats)
-    mimeTypes = mimeTypes.concat(formats[idx].get_mime_types());
+var mimeTypes = Gly.Loader.get_mime_types();
