@@ -202,7 +202,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
             this._resizeWindow();
             this.queue_resize();
         }
-
     }
 
     _getMaxSize() {
@@ -244,8 +243,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         if ((windowSize[0] > 0 && windowSize[0] != this._lastWindowSize[0]) ||
             (windowSize[1] > 0 && windowSize[1] != this._lastWindowSize[1])) {
             this._lastWindowSize = windowSize;
-            this.default_width = windowSize[0];
-            this.default_height = windowSize[1];
+            this.set_default_size(...windowSize);
         }
     }
 
