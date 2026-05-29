@@ -211,13 +211,12 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
 
     _getMaxSize() {
         let display = Gdk.Display.get_default();
-        let underWayland = Sushi.running_under_wayland(display);
         let surface = this.get_surface();
         let monitor = display.get_monitor_at_surface(surface);
         let geometry = monitor.get_geometry();
 
-        let scaleW = (geometry.width / WINDOW_MAX_W_BASE) / this.get_scale_factor ();
-        let scaleH = (geometry.height / WINDOW_MAX_H_BASE) / this.get_scale_factor ();
+        let scaleW = geometry.width / WINDOW_MAX_W_BASE;
+        let scaleH = geometry.height / WINDOW_MAX_H_BASE;
 
         return [Math.floor(scaleW * WINDOW_MAX_W),
                 Math.floor(scaleH * WINDOW_MAX_H)];
