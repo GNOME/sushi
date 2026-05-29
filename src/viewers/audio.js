@@ -333,7 +333,7 @@ var Klass = GObject.registerClass({
         let titleName = tags.get_string('title')[1];
 
         if (!titleName) {
-            let file = Gio.file_new_for_uri(this._player.uri);
+            let file = Gio.file_new_for_uri(this._player.file.get_uri());
             titleName = file.get_basename();
         }
 
