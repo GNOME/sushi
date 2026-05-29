@@ -23,7 +23,7 @@
  *
  */
 
-const {PapersDocument, PapersView, Gio, GObject, Gtk, Sushi} = imports.gi;
+const {PapersDocument, PapersView, Gio, GioUnix, GObject, Gtk, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
@@ -185,8 +185,8 @@ var Klass = GObject.registerClass({
 });
 
 PapersDocument.init();
-let app_info = Gio.DesktopAppInfo.new('org.gnome.Papers.desktop');
-let papersTypes = app_info.get_supported_types();
+let appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
+let papersTypes = appInfo.get_supported_types();
 var mimeTypes = papersTypes;
 if (!Libreoffice.isAvailable())
     mimeTypes = mimeTypes.concat(Libreoffice.officeTypes);

@@ -31,6 +31,7 @@ pkg.require({
     Gdk: '4.0',
     GdkPixbuf: '2.0',
     Gio: '2.0',
+    GioUnix: '2.0',
     GLib: '2.0',
     GObject: '2.0',
     Gst: '1.0',
