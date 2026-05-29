@@ -146,6 +146,11 @@ var MainWindow = GObject.registerClass(class MainWindow extends Gtk.ApplicationW
         this._defineActions();
     }
 
+    vfunc_unrealize() {
+        super.vfunc_unrealize();
+        this._renderer?.cancellable?.cancel();
+    }
+
     _defineActions() {
         let quit = new Gio.SimpleAction({ name: 'quit' });
         quit.connect('activate', () => {
