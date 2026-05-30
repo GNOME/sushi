@@ -227,10 +227,23 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
         windowSize[1] += naturalTitlebarSize.height;
 
+        this._setDefaultSize(windowSize);
+    }
+
+    _setDefaultSize(windowSize) {
         if ((windowSize[0] > 0 && windowSize[0] != this._lastWindowSize[0]) ||
             (windowSize[1] > 0 && windowSize[1] != this._lastWindowSize[1])) {
+            if (!this.get_settings().gtk_interface_reduced_motion) {
+                const width_target = Adw.PropertyAnimationTarget.new(this, 'default-width');
+                const height_target = Adw.PropertyAnimationTarget.new(this, 'default-height');
+                const width_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[0], windowSize[0], 150, width_target);
+                const height_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[1], windowSize[1], 150, height_target);
+                width_animation.play()
+                height_animation.play()
+            } else {
+                this.set_default_size(...windowSize);
+            }
             this._lastWindowSize = windowSize;
-            this.set_default_size(...windowSize);
         }
     }
 

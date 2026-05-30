@@ -187,7 +187,8 @@ var FallbackRenderer = GObject.registerClass({
         super._init({ orientation: Gtk.Orientation.HORIZONTAL,
                       spacing: 6 });
 
-        this._image = new Gtk.Picture ();
+        this._image = new Gtk.Picture ({ width_request: 256,
+                                         height_request: 200 });
 
         this._updateIcon(new Gio.ThemedIcon({ name: 'text-x-generic' }));
         this.append(this._image);
