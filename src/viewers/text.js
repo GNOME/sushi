@@ -56,6 +56,10 @@ var Klass = GObject.registerClass({
                                           editable: false,
                                           cursor_visible: false,
                                           monospace: true,
+                                          left_margin: 12,
+                                          right_margin: 12,
+                                          top_margin: 12,
+                                          bottom_margin: 12,
                                           show_line_numbers: !!buffer.language });
 
         this.set_child(this._view);
