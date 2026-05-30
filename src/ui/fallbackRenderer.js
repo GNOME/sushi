@@ -23,7 +23,7 @@
  *
  */
 
-const {Gdk, Gio, GLib, GObject, Gtk, Pango} = imports.gi;
+const {Adw, Gdk, Gio, GLib, GObject, Gtk, Pango} = imports.gi;
 const Gettext = imports.gettext;
 
 const Renderer = imports.ui.renderer;
