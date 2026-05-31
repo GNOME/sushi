@@ -94,23 +94,17 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         super._init({ application: application });
 
         this._toolbar_view = new Adw.ToolbarView({ top_bar_style: Adw.ToolbarStyle.RAISED_BORDER});
-        this.bind_property('fullscreened', this._toolbar_view, 'reveal-top-bars', GObject.BindingFlags.INVERT_BOOLEAN);
         this.set_content(this._toolbar_view)
 
         this._titlebar = new Adw.HeaderBar({ decoration_layout: _getDecorationLayout() });
+        this._fullscreen_button = new Gtk.Button({ icon_name: 'view-fullscreen-symbolic',
+                                                   action_name: 'win.fullscreen'});
+        this._titlebar.pack_start(this._fullscreen_button)
         this._toolbar_view.add_top_bar(this._titlebar);
 
         this._openButton = new Gtk.Button({ label: _("Open") });
         this._openButton.connect('clicked', this._onFileOpenClicked.bind(this));
         this._titlebar.pack_end(this._openButton);
-
-        let motion = new Gtk.EventControllerMotion();
-        this.add_controller(motion);
-        motion.connect('motion', this._onMotionNotifyEvent.bind(this));
-
-        this._embed = new Gtk.Overlay();
-
-        this._toolbar_view.set_content(this._embed);
 
         this._defineActions();
     }
@@ -151,12 +145,6 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         _addSelectAction('select-down', 'Down', Gtk.DirectionType.DOWN);
     }
 
-    _onMotionNotifyEvent() {
-        if (this._renderer.toolbar)
-            this._renderer.toolbar.resetTimeout();
-        return false;
-    }
-
     /** @param {GLib.Error} error
      *  @param {Gio.FileInfo|undefined} fileInfo */
     _reportError(error, fileInfo) {
@@ -172,10 +160,14 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
     }
 
     _onRendererFullscreen() {
-        if (this._renderer.fullscreen)
+        if (this._renderer.fullscreen) {
             this.fullscreen();
-        else
+            this._fullscreen_button.set_icon_name('view-restore-symbolic');
+        }
+        else {
             this.unfullscreen();
+            this._fullscreen_button.set_icon_name('view-fullscreen-symbolic');
+        }
     }
 
     _onRendererReady() {
@@ -271,10 +263,9 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         this._renderer?.cancellable?.cancel();
         this._renderer = renderer;
         this._renderer.expand = true;
-        this._embed.set_child(this._renderer);
+        this._toolbar_view.set_content(this._renderer);
 
-        if (this._renderer.toolbar)
-            this._embed.add_overlay(this._renderer.toolbar);
+        this._fullscreen_button.set_visible(this._renderer.canFullscreen);
     }
 
     _createView(fileInfo) {

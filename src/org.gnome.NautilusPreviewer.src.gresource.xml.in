@@ -9,6 +9,7 @@
     <file>ui/renderer.js</file>
     <file>ui/utils.js</file>
     <file>ui/widgets/coverPaintable.js</file>
+    <file>ui/widgets/toolbarOverlay.js</file>
     <file>util/constants.js</file>
     <file>util/customIcon.js</file>
     <file>util/totemMimeTypes.js</file>
@@ -20,5 +21,8 @@
     <file>viewers/libreoffice.js</file>
     <file>viewers/text.js</file>
     <file>viewers/video.js</file>
+  </gresource>
+  <gresource prefix="@object_path@">
+    <file>style.css</file>
   </gresource>
 </gresources>

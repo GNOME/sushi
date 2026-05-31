@@ -23,11 +23,12 @@
  *
  */
 
-const {PapersDocument, PapersView, Gio, GioUnix, GObject, Gtk, Sushi} = imports.gi;
+const {Adw, PapersDocument, PapersView, Gio, GioUnix, GObject, Gtk, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
+const { ToolbarOverlay } = imports.ui.widgets.toolbarOverlay;
 
 const Libreoffice = imports.viewers.libreoffice;
 
@@ -68,7 +69,7 @@ var Klass = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class PapersRenderer extends Gtk.ScrolledWindow {
+}, class PapersRenderer extends ToolbarOverlay {
     get ready() {
         return !!this._ready;
     }
@@ -78,9 +79,7 @@ var Klass = GObject.registerClass({
     }
 
     _init(file, fileInfo) {
-        super._init({ visible: true,
-                      min_content_height: Constants.VIEW_MIN,
-                      min_content_width: Constants.VIEW_MIN });
+        super._init();
         this._model = createDocumentModel();
         this._view = createView(this._model);
         this.cancellable = new Gio.Cancellable();
@@ -103,7 +102,14 @@ var Klass = GObject.registerClass({
 
         this._defineActions();
 
-        this.set_child(this._view);
+        const scrolledWindow = new Gtk.ScrolledWindow({ visible: true,
+                                                        min_content_height: Constants.VIEW_MIN,
+                                                        min_content_width: Constants.VIEW_MIN,
+                                                        child: this._view});
+        this.set_child(scrolledWindow);
+
+        this._toolbar = new PdfNavigationOverlay(this._view);
+        this.add_overlay(this._toolbar);
 
         this.connect('unmap', this._onDestroy.bind(this));
 
@@ -125,18 +131,6 @@ var Klass = GObject.registerClass({
         this._job.scheduler_push_job(PapersView.JobPriority.PRIORITY_NONE);
     }
 
-    _updatePageLabel() {
-        this.toolbar;  // no op to make sure it's populated
-
-        let curPage = this._model.get_page();
-        let totPages = this._model.document.get_n_pages();
-
-        this._toolbarBack.set_sensitive(curPage > 0);
-        this._toolbarForward.set_sensitive(curPage < totPages - 1);
-
-        this._pageLabel.set_text(_("%d of %d").format(curPage + 1, totPages));
-    }
-
     _onLoadJobFinished(job) {
         let document;
         try {
@@ -150,8 +144,10 @@ var Klass = GObject.registerClass({
         this._model.set_sizing_mode(PapersView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);
 
-        this._modelHandlerId = this._model.connect('page-changed', this._updatePageLabel.bind(this));
-        this._updatePageLabel();
+        this._modelHandlerId = this._model.connect('page-changed', () => {
+            this._toolbar._updatePageLabel(this._model);
+        });
+        this._toolbar._updatePageLabel(this._model);
     }
 
     _defineActions() {
@@ -165,23 +161,6 @@ var Klass = GObject.registerClass({
         actionGroup.add_action(copyAction);
         this.insert_action_group ('evince', actionGroup);
     }
-
-    populateToolbar(toolbar) {
-        this._toolbarBack = Utils.createToolButton(this, 'go-previous-symbolic', () => {
-            this._view.previous_page();
-        });
-        toolbar.append(this._toolbarBack);
-
-        this._pageLabel = new Gtk.Label({ hexpand: true,
-                                          margin_start: 10,
-                                          margin_end: 10 });
-        toolbar.append(this._pageLabel);
-
-        this._toolbarForward = Utils.createToolButton(this, 'go-next-symbolic', () => {
-            this._view.next_page();
-        });
-        toolbar.append(this._toolbarForward);
-    }
 });
 
 PapersDocument.init();
@@ -190,3 +169,51 @@ let papersTypes = appInfo.get_supported_types();
 var mimeTypes = papersTypes;
 if (!Libreoffice.isAvailable())
     mimeTypes = mimeTypes.concat(Libreoffice.officeTypes);
+
+var PdfNavigationOverlay = GObject.registerClass(class PdfNavigationOverlay extends Gtk.Revealer {
+    _init(view) {
+        this._view = view;
+
+        super._init({ valign: Gtk.Align.END,
+                      halign: Gtk.Align.START,
+                      hexpand: false,
+                      reveal_child: true,
+                      margin_bottom: 12,
+                      margin_start: 12,
+                      margin_end: 12,
+                      transition_type: Gtk.RevealerTransitionType.CROSSFADE });
+
+        const box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
+                                  spacing: 6,
+                                  css_classes: ['osd-bin', 'osd'] });
+
+        this._toolbarBack = new Gtk.Button({ icon_name: 'go-previous-symbolic' });
+        this._toolbarBack.connect('clicked', () => {
+            this._view.previous_page();
+        });
+        box.append(this._toolbarBack);
+
+        this._pageLabel = new Gtk.Label({ hexpand: true,
+                                          margin_start: 10,
+                                          margin_end: 10,
+                                          css_classes: ['numeric'] });
+        box.append(this._pageLabel);
+
+        this._toolbarForward = new Gtk.Button({ icon_name: 'go-next-symbolic' });
+        this._toolbarForward.connect('clicked',() => {
+            this._view.next_page();
+        });
+        box.append(this._toolbarForward);
+
+        this.set_child(box);
+    }
+
+    _updatePageLabel(model) {
+        const currentPage = model.get_page();
+        const totalPages = model.document.get_n_pages();
+
+        this._toolbarBack.set_sensitive(currentPage > 0);
+        this._toolbarForward.set_sensitive(currentPage < totalPages - 1);
+        this._pageLabel.set_text(_("%d of %d").format(currentPage + 1, totalPages));
+    }
+});

@@ -59,11 +59,6 @@ var Klass = GObject.registerClass({
         return false;
     }
 
-    get hasToolbar() {
-        // SushiMediaBin uses its own toolbar
-        return false;
-    }
-
     get resizePolicy() {
         return Renderer.ResizePolicy.STRETCHED;
     }

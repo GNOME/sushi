@@ -363,11 +363,6 @@ var Klass = GObject.registerClass({
         }
     }
 
-    get hasToolbar() {
-        // GtkVideo uses its own toolbar
-        return false;
-    }
-
     get resizable() {
         return false;
     }

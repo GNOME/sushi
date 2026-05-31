@@ -296,10 +296,6 @@ var FallbackRenderer = GObject.registerClass({
         this._applyLabels(state);
     }
 
-    get hasToolbar() {
-        return false;
-    }
-
     get resizable() {
         return false;
     }
