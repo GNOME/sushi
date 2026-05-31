@@ -23,7 +23,7 @@
  *
  */
 
-const {GLib, GObject, Gdk, Gio, Gly, GlyGtk4, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
+const {Adw, GLib, GObject, Gdk, Gio, Gly, GlyGtk4, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
 const Constants = imports.util.constants;
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
@@ -368,6 +368,10 @@ var Klass = GObject.registerClass({
 
     get resizePolicy() {
         return Renderer.ResizePolicy.NAT_SIZE;
+    }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.FLAT;
     }
 });
 

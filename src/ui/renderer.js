@@ -1,4 +1,4 @@
-const {GLib, GObject, Gtk} = imports.gi;
+const {Adw, GLib, GObject, Gtk} = imports.gi;
 
 const Constants = imports.util.constants;
 const Utils = imports.ui.utils;
@@ -60,5 +60,9 @@ var Renderer = GObject.registerClass({
 
     get resizePolicy() {
         return ResizePolicy.MAX_SIZE;
+    }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.RAISED_BORDER;
     }
 });

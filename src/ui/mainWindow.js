@@ -266,6 +266,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         this._toolbar_view.set_content(this._renderer);
 
         this._fullscreen_button.set_visible(this._renderer.canFullscreen);
+        this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
     }
 
     _createView(fileInfo) {

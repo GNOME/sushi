@@ -303,4 +303,8 @@ var FallbackRenderer = GObject.registerClass({
     get resizePolicy() {
         return Renderer.ResizePolicy.NAT_SIZE;
     }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.FLAT;
+    }
 });
