@@ -55,6 +55,10 @@ var Klass = GObject.registerClass({
         this._stream.loop = true;
         this._stream.play();
 
+        this._stream.connect('notify::prepared', () => {
+            this.isReady();
+        });
+
         this._picture = Gtk.Picture.new_for_paintable(this._stream);
         this.set_child(this._picture);
 
@@ -77,7 +81,7 @@ var Klass = GObject.registerClass({
     }
 
     get resizePolicy() {
-        return Renderer.ResizePolicy.STRETCHED;
+        return Renderer.ResizePolicy.NAT_SIZE;
     }
 });
 
