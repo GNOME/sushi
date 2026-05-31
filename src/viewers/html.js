@@ -28,7 +28,7 @@ const {Gtk, GLib, GObject, Sushi} = imports.gi;
 var WebKit;
 try {
     imports.gi.versions.WebKit = '6.0';
-    WebKit2 = imports.gi.WebKit;
+    WebKit = imports.gi.WebKit;
 } catch(e) {
 }
 
