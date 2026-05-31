@@ -5,6 +5,8 @@ project(
   meson_version: '>=0.58.0'
 )
 
+gnome = import('gnome')
+
 papers_document_dep = dependency('papers-document-4.0')
 papers_view_dep = dependency('papers-view-4.0')
 freetype_dep = dependency('freetype2')

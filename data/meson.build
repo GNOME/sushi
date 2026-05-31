@@ -21,3 +21,11 @@ i18n.merge_file(
   install: true,
   install_dir: join_paths(datadir, 'metainfo')
 )
+
+sushi_data_resources = gnome.compile_resources(
+    '@0@.data'.format(app_id),
+    'org.gnome.NautilusPreviewer.data.gresource.xml',
+    gresource_bundle: true,
+    install: true,
+    install_dir: pkgdatadir,
+)
