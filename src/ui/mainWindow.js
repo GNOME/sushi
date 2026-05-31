@@ -46,35 +46,26 @@ const ErrorBox = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class ErrorBox extends Gtk.Box {
+}, class ErrorBox extends Adw.Bin {
     _init(file, error) {
-        super._init({ orientation: Gtk.Orientation.VERTICAL,
-                      spacing: 12,
-                      hexpand: true,
-                      vexpand: true,
-                      halign: Gtk.Align.CENTER,
-                      valign: Gtk.Align.CENTER });
+        super._init();
 
-        let image = new Gtk.Image({ pixel_size: 128,
-                                    icon_name: 'face-uncertain-symbolic',
-                                    halign: Gtk.Align.CENTER,
-                                    valign: Gtk.Align.CENTER });
-        this.append(image);
+        this._status_page = new Adw.StatusPage({ css_classes: ['compact'] });
 
         // TRANSLATORS: This is a filename, e.g. "image.jpg"
-        let primary = _("Unable to display %s").format(file.get_basename());
-        let primaryMarkup = '<big><b>%s</b></big>'.format(GLib.markup_escape_text(primary, -1));
-        let primaryLabel = new Gtk.Label({ label: primaryMarkup,
-                                           use_markup: true,
-                                           halign: Gtk.Align.CENTER,
-                                           valign: Gtk.Align.CENTER });
-        this.append(primaryLabel);
+        this._status_page.set_title(_("Unable to display %s").format(file.get_basename()));
+        this._status_page.set_description(error.message);
+        this._status_page.set_icon_name('face-uncertain-symbolic');
 
-        let secondaryLabel = new Gtk.Label({ label: error.message,
-                                             wrap: true,
-                                             halign: Gtk.Align.CENTER,
-                                             valign: Gtk.Align.CENTER });
-        this.append(secondaryLabel);
+        this.set_child(this._status_page);
+    }
+
+    get resizable() {
+        return false;
+    }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.FLAT;
     }
 });
 
@@ -177,6 +168,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
             ?? this.file.get_basename()
             ?? this.file.get_uri());
         this.set_title(title);
+        this.set_resizable(this._renderer.resizable);
     }
 
     _onRendererFullscreen() {
