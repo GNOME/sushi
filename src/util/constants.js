@@ -23,5 +23,5 @@
  *
  */
 
-var VIEW_MIN = 400;
+var VIEW_MIN = 340;
 var TOOLBAR_SPACING = 32;

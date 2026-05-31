@@ -251,24 +251,26 @@ var Klass = GObject.registerClass({
     }
 
     _init(file) {
-        super._init();
+        super._init({ orientation: Gtk.Orientation.VERTICAL,
+                      spacing: 12,
+                      margin_bottom: 12,
+                      margin_start: 12,
+                      margin_end: 12,
+                      margin_top: 12 });
 
-        this._player = new Gtk.Video({ file: file,
-                                       autoplay: true,
-                                       hexpand: true });
+        this._stream = Gtk.MediaFile.new_for_file(file);
+        this._stream.play();
 
-        this.set_orientation(Gtk.Orientation.VERTICAL);
+        this._media_controls = new Gtk.MediaControls({ media_stream: this._stream,
+                                                       valign: Gtk.Align.END,
+                                                       css_classes: ['osd-bin', 'osd'] });
 
         this._coverFetched = false;
 
         let box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
-                                spacing: 6 });
+                                spacing: 24 });
         this.append(box);
-        this.append(this._player);
-
-        let frame = new Gtk.Frame({ height_request: COVER_SIZE,
-                                    width_request: COVER_SIZE });
-        box.append(frame);
+        this.append(this._media_controls);
 
         this._coverPaintable = new CoverPaintable({ display: this.get_display() });
         this.bind_property(
@@ -279,16 +281,11 @@ var Klass = GObject.registerClass({
 
         this._image = new Gtk.Image({ paintable: this._coverPaintable,
                                       pixel_size: COVER_SIZE });
-        frame.set_child(this._image);
+        box.append(this._image);
 
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                                  spacing: 6,
-                                 margin_top: 12,
-                                 margin_start: 12,
-                                 margin_end: 12,
-                                 margin_bottom: 12,
-                                 valign: Gtk.Align.CENTER,
-                                 vexpand: true});
+                                 valign: Gtk.Align.CENTER});
         box.append(vbox);
 
         this._titleLabel = new Gtk.Label();
@@ -316,6 +313,8 @@ var Klass = GObject.registerClass({
         this.cancellable = new Gio.Cancellable();
         this.cancellable.connect(() => this._coverPaintable.destroy());
         this.isReady();
+
+        this.connect('unmap', () => (this._stream.pause()));
     }
 
     _setCover(cover) {
