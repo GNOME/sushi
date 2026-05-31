@@ -27,25 +27,36 @@ conf.set('app_id', app_id)
 conf.set('object_path', object_path)
 
 nautilus_previewer_bin = configure_file(
-  input: 'org.gnome.NautilusPreviewer.in',
-  output: app_id,
-  configuration: conf,
+    input: 'org.gnome.NautilusPreviewer.in',
+    output: app_id,
+    configuration: conf,
 )
 
 install_data(
-  nautilus_previewer_bin,
-  install_mode: 'rwxr-xr-x',
-  install_dir: libexecdir,
+    nautilus_previewer_bin,
+    install_mode: 'rwxr-xr-x',
+    install_dir: libexecdir,
 )
 
 sushi_bin = configure_file(
-  input: 'sushi.in',
-  output: 'sushi',
-  configuration: conf,
+    input: 'sushi.in',
+    output: 'sushi',
+    configuration: conf,
 )
 
 install_data(
-  sushi_bin,
-  install_mode: 'rwxr-xr-x',
-  install_dir: bindir,
+    sushi_bin,
+    install_mode: 'rwxr-xr-x',
+    install_dir: bindir,
+)
+
+devel_env = environment()
+devel_env.append('GI_TYPELIB_PATH', meson.current_build_dir() / 'libsushi')
+devel_env.append('LD_LIBRARY_PATH', meson.current_build_dir() / 'libsushi')
+devel_env.append('SUSHI_PERSIST', '1')
+run_target(
+    'devel',
+    command: [gjs, nautilus_previewer_bin],
+    depends: [sushi_src_resources, sushi_data_resources, libsushi_gir],
+    env: devel_env,
 )
