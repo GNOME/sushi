@@ -10,6 +10,7 @@
     <file>ui/utils.js</file>
     <file>ui/widgets/coverPaintable.js</file>
     <file>util/constants.js</file>
+    <file>util/customIcon.js</file>
     <file>util/totemMimeTypes.js</file>
     <file>viewers/audio.js</file>
     <file>viewers/evince.js</file>

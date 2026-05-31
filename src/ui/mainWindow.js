@@ -29,6 +29,7 @@ const Constants = imports.util.constants;
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
+const {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} = imports.util.customIcon;
 
 const WINDOW_MAX_W = 800;
 const WINDOW_MAX_H = 600;
@@ -254,7 +255,9 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
              Gio.FILE_ATTRIBUTE_STANDARD_ICON,
              Gio.FILE_ATTRIBUTE_STANDARD_SIZE,
              Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-             Gio.FILE_ATTRIBUTE_TIME_MODIFIED].join(','),
+             Gio.FILE_ATTRIBUTE_TIME_MODIFIED,
+             METADATA_KEY_CUSTOM_ICON,
+             METADATA_KEY_CUSTOM_ICON_NAME].join(','),
             Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, null,
             (obj, res) => {
                 try {

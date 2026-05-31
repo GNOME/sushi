@@ -27,6 +27,7 @@ const {Adw, Gdk, Gio, GLib, GObject, Gtk, Pango} = imports.gi;
 const Gettext = imports.gettext;
 
 const Renderer = imports.ui.renderer;
+const {getCustomIcon} = imports.util.customIcon;
 
 function _getDeepCountAttrs() {
     return [
@@ -44,7 +45,8 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
     let _enumerator = null;
     let _file = null;
 
-    let _state = { fileInfo: _fileInfo,
+    let _state = { file: _fileToLoad,
+                   fileInfo: _fileInfo,
                    directoryItems: 0,
                    fileItems: 0,
                    loading: true,
@@ -273,7 +275,8 @@ var FallbackRenderer = GObject.registerClass({
     }
 
     _applyIcon(state) {
-        let icon = state.fileInfo.get_icon();
+        const customIcon = getCustomIcon(state.file, state.fileInfo);
+        const icon = customIcon ?? state.fileInfo.get_icon();
         this._updateIcon(icon);
     }
 
