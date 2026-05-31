@@ -27,6 +27,7 @@ const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
+const { ToolbarOverlay } = imports.ui.widgets.toolbarOverlay;
 
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
@@ -38,7 +39,7 @@ var Klass = GObject.registerClass({
                                          GObject.ParamFlags.READABLE,
                                          false)
     },
-}, class VideoRenderer extends Gtk.Video {
+}, class VideoRenderer extends ToolbarOverlay {
     get ready() {
         return !!this._ready;
     }
@@ -50,13 +51,29 @@ var Klass = GObject.registerClass({
     _init(file) {
         super._init();
 
-        this.set_file(file);
-        this.autoplay = true;
+        this._stream = Gtk.MediaFile.new_for_file(file);
+        this._stream.loop = true;
+        this._stream.play();
+
+        this._picture = Gtk.Picture.new_for_paintable(this._stream);
+        this.set_child(this._picture);
+
+        this._media_controls = new Gtk.MediaControls({ media_stream: this._stream,
+                                                       css_classes: ['osd-bin', 'osd'] });
+
+        const revealer = new Gtk.Revealer({ valign: Gtk.Align.END,
+                                            transition_type: Gtk.RevealerTransitionType.CROSSFADE,
+                                            margin_bottom: 12,
+                                            margin_start: 12,
+                                            margin_end: 12,
+                                            child: this._media_controls});
+        this.add_overlay(revealer);
+
+        this.connect('unmap', () => (this._stream.pause()));
     }
 
     get canFullscreen() {
-        // fullscreen is handled internally by the widget
-        return false;
+        return true;
     }
 
     get resizePolicy() {
