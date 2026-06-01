@@ -166,11 +166,17 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         return false;
     }
 
-    _reportError(error) {
+    /** @param {GLib.Error} error
+     *  @param {Gio.FileInfo|undefined} fileInfo */
+    _reportError(error, fileInfo) {
         if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
           return;
         let renderer = new ErrorBox(this.file, error);
         this._embedRenderer(renderer);
+        const title = (fileInfo?.get_display_name()
+            ?? this.file.get_basename()
+            ?? this.file.get_uri());
+        this.set_title(title);
     }
 
     _onRendererFullscreen() {
@@ -284,7 +290,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         let renderer = new klass(this.file, fileInfo);
         this._embedRenderer(renderer);
 
-        renderer.connect('error', (r, err) => { this._reportError(err); });
+        renderer.connect('error', (r, err) => { this._reportError(err, fileInfo); });
         renderer.connect('notify::fullscreen', this._onRendererFullscreen.bind(this));
         renderer.connect('notify::ready', this._onRendererReady.bind(this));
         this._resizeWindow();
