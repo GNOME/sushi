@@ -25,6 +25,10 @@ flatpak@x86_64:
     - ".flatpak-vars"
 
 flatpak@aarch64:
+  when: manual
+  rules:
+    - if: $CI_PROJECT_NAMESPACE == "GNOME" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
   extends:
     - ".flatpak@aarch64"
     - ".flatpak-vars"
