@@ -20,13 +20,12 @@ const Klass = GObject.registerClass({
                                          false)
     },
 }, class ErrorRenderer extends Adw.Bin {
-    _init(file, error) {
+    _init(error) {
         super._init();
 
         this._status_page = new Adw.StatusPage({ css_classes: ['compact'] });
 
-        // TRANSLATORS: This is a filename, e.g. "image.jpg"
-        this._status_page.set_title(_("Unable to display %s").format(file.get_basename()));
+        this._status_page.set_title(_("Preview Failed"));
         this._status_page.set_description(error.message);
         this._status_page.set_icon_name('image-missing-symbolic');
 

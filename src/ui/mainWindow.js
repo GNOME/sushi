@@ -118,7 +118,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
     _reportError(error, fileInfo) {
         if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
           return;
-        let renderer = new ErrorRenderer(this.file, error);
+        let renderer = new ErrorRenderer(error);
         this._embedRenderer(renderer);
         const title = (fileInfo?.get_display_name()
             ?? this.file.get_basename()
