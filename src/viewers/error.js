@@ -46,7 +46,7 @@ const Klass = GObject.registerClass({
         this.set_child(this._status_page);
     }
 
-    get resizable() {
+    get canFullscreen() {
         return false;
     }
 
