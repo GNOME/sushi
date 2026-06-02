@@ -26,6 +26,7 @@
 const {Adw, Gdk, Gio, GLib, GObject, Gtk, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
+const {ErrorRenderer} = imports.viewers.error;
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
 const Utils = imports.ui.utils;
@@ -35,39 +36,6 @@ const WINDOW_MAX_W = 800;
 const WINDOW_MAX_H = 600;
 const WINDOW_MAX_W_BASE = 1368;
 const WINDOW_MAX_H_BASE = 768;
-
-const ErrorBox = GObject.registerClass({
-    Implements: [Renderer.Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class ErrorBox extends Adw.Bin {
-    _init(file, error) {
-        super._init();
-
-        this._status_page = new Adw.StatusPage({ css_classes: ['compact'] });
-
-        // TRANSLATORS: This is a filename, e.g. "image.jpg"
-        this._status_page.set_title(_("Unable to display %s").format(file.get_basename()));
-        this._status_page.set_description(error.message);
-        this._status_page.set_icon_name('image-missing-symbolic');
-
-        this.set_child(this._status_page);
-    }
-
-    get resizable() {
-        return false;
-    }
-
-    get topBarStyle() {
-        return Adw.ToolbarStyle.FLAT;
-    }
-});
 
 function _getDecorationLayout() {
     function _isSupported(name) {
@@ -150,7 +118,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
     _reportError(error, fileInfo) {
         if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
           return;
-        let renderer = new ErrorBox(this.file, error);
+        let renderer = new ErrorRenderer(this.file, error);
         this._embedRenderer(renderer);
         const title = (fileInfo?.get_display_name()
             ?? this.file.get_basename()
