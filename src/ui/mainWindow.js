@@ -55,7 +55,7 @@ const ErrorBox = GObject.registerClass({
         // TRANSLATORS: This is a filename, e.g. "image.jpg"
         this._status_page.set_title(_("Unable to display %s").format(file.get_basename()));
         this._status_page.set_description(error.message);
-        this._status_page.set_icon_name('face-uncertain-symbolic');
+        this._status_page.set_icon_name('image-missing-symbolic');
 
         this.set_child(this._status_page);
     }
