@@ -23,7 +23,18 @@
  *
  */
 
-const {Adw, GLib, GObject, Gdk, Gio, Gly, GlyGtk4, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
+import Adw from 'gi://Adw';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Gly from 'gi://Gly';
+import GlyGtk4 from 'gi://GlyGtk4';
+import GObject from 'gi://GObject';
+import Gst from 'gi://Gst';
+import GstTag from 'gi://GstTag';
+import Gtk from 'gi://Gtk';
+import Soup from 'gi://Soup';
+import Sushi from 'gi://Sushi';
+
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
 import {CoverPaintable} from '../widgets/coverPaintable.js';
@@ -231,17 +242,21 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
 }
 
 const COVER_SIZE = 256;
-export const Klass = GObject.registerClass({
-    Implements: [Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class AudioRenderer extends Gtk.Box {
+export const Klass = class AudioRenderer extends Gtk.Box {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     get ready() {
         return !!this._ready;
     }
@@ -372,6 +387,6 @@ export const Klass = GObject.registerClass({
     get topBarStyle() {
         return Adw.ToolbarStyle.FLAT;
     }
-});
+};
 
 export const mimeTypes = TotemMimeTypes.audioTypes;
