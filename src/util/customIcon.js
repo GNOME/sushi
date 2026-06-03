@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: GPL-2.0-or-later
-// SPDX-FileCopyrightText: 2026 The Sushi authors
+/* SPDX-License-Identifier: GPL-2.0-or-later WITH GStreamer-exception-2008
+ * SPDX-FileCopyrightText: 2026 The Sushi authors */
 
 const {Gio,GLib} = imports.gi;
 
