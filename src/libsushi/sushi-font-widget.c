@@ -218,7 +218,7 @@ draw_string (SushiFontWidget *self,
   if (text_dir == GTK_TEXT_DIR_LTR)
     pos_x = margin_start;
   else {
-    pos_x = gtk_widget_get_allocated_width (GTK_WIDGET (self)) -
+    pos_x = gtk_widget_get_width (GTK_WIDGET (self)) -
       extents.x_advance - margin_start;
   }
 
@@ -563,8 +563,7 @@ sushi_font_widget_init (SushiFontWidget *self)
   if (err != FT_Err_Ok)
     g_error ("Unable to initialize FreeType");
 
-  gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)),
-                               "view");
+  gtk_widget_add_css_class (GTK_WIDGET (self), "view");
 }
 
 static void
