@@ -20,7 +20,8 @@
         "--share=network",
         "--device=dri",
         "--talk-name=org.freedesktop.FileManager1",
-        "--filesystem=home:ro"
+        "--filesystem=home:ro",
+        "--filesystem=xdg-data/sushi:ro"
     ],
     "build-options": {
         "append-path": "/usr/lib/sdk/rust-stable/bin:",
