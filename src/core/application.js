@@ -28,10 +28,9 @@ import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-
 const ByteArray = imports.byteArray;
 
-const MainWindow = imports.core.mainWindow;
+import {MainWindow} from './mainWindow.js';
 
 class NautilusPreviewerSkeleton {
     constructor(application, resource) {
@@ -102,7 +101,7 @@ export class Application extends Adw.Application {
         if (this._mainWindow)
             return;
 
-        this._mainWindow = new MainWindow.MainWindow(this);
+        this._mainWindow = new MainWindow(this);
         if (pkg.name.endsWith('Devel'))
             this._mainWindow.get_style_context().add_class('devel');
 

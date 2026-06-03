@@ -23,7 +23,13 @@
  *
  */
 
-const {Adw, Gdk, Gio, GLib, GObject, Gtk, Sushi} = imports.gi;
+import Adw from 'gi://Adw';
+import Gdk from 'gi://Gdk';
+import Gtk from 'gi://Gtk';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Sushi from 'gi://Sushi';
 
 const Constants = imports.util.constants;
 const {ErrorRenderer} = imports.viewers.error;
@@ -85,7 +91,11 @@ function _getScaledSize(baseSize, allocSize, upscale) {
     return [ Math.floor(width), Math.floor(height) ];
 }
 
-var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationWindow {
+export class MainWindow extends Adw.ApplicationWindow {
+    static {
+        GObject.registerClass(this);
+    }
+
     _init(application) {
         this._renderer = null;
         this._lastWindowSize = [0, 0];
@@ -304,4 +314,4 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         this.file = file;
         this._createRenderer();
     }
-});
+}
