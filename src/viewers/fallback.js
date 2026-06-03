@@ -23,8 +23,14 @@
  *
  */
 
-const {Adw, Gdk, Gio, GLib, GObject, Gtk, Pango} = imports.gi;
-const Gettext = imports.gettext;
+import Adw from 'gi://Adw';
+import Gdk from 'gi://Gdk';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import Pango from 'gi://Pango';
+import * as Gettext from 'gettext';
 
 const Renderer = imports.core.renderer;
 const {getCustomIcon} = imports.util.customIcon;
@@ -166,19 +172,23 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
     _sendUpdate();
 };
 
-export const FallbackRenderer = GObject.registerClass({
-    Implements: [Renderer.Renderer],
-    Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
-    Children: ['image', 'title_label', 'size_label', 'date_label', 'type_label', 'spinner'],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class FallbackRenderer extends Gtk.Box {
+export class FallbackRenderer extends Gtk.Box {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer.Renderer],
+            Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
+            Children: ['image', 'title_label', 'size_label', 'date_label', 'type_label', 'spinner'],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     get ready() {
         return !!this._ready;
     }
@@ -275,4 +285,4 @@ export const FallbackRenderer = GObject.registerClass({
     get topBarStyle() {
         return Adw.ToolbarStyle.FLAT;
     }
-});
+}
