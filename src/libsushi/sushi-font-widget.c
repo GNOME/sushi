@@ -183,18 +183,6 @@ text_to_glyphs (cairo_t *cr,
   cairo_ft_scaled_font_unlock_face (cr_font);
 }
 
-static void
-text_extents (cairo_t *cr,
-              const char *text,
-              cairo_text_extents_t *extents)
-{
-  g_autofree cairo_glyph_t *glyphs = NULL;
-  gint num_glyphs;
-
-  text_to_glyphs (cr, text, &glyphs, &num_glyphs);
-  cairo_glyph_extents (cr, glyphs, num_glyphs, extents);
-}
-
 /* adapted from gnome-utils:font-viewer/font-view.c
  *
  * Copyright (C) 2002-2003  James Henstridge <james@daa.com.au>
@@ -449,150 +437,6 @@ build_sizes_table (FT_Face face,
   return sizes;
 }
 
-static void
-sushi_font_widget_size_request (GtkWidget *drawing_area,
-                                gint *width,
-                                gint *height,
-                                gint *min_height)
-{
-  SushiFontWidget *self = SUSHI_FONT_WIDGET (drawing_area);
-  gint i, pixmap_width, pixmap_height;
-  cairo_text_extents_t extents;
-  cairo_font_extents_t font_extents;
-  cairo_font_face_t *font;
-  g_autofree gint *sizes = NULL;
-  gint n_sizes, alpha_size, title_size;
-  cairo_t *cr;
-  cairo_surface_t *surface;
-  FT_Face face = self->face;
-  GtkStyleContext *context;
-  GtkBorder padding;
-
-  if (face == NULL) {
-    if (width != NULL)
-      *width = 1;
-    if (height != NULL)
-      *height = 1;
-    if (min_height != NULL)
-      *min_height = 1;
-
-    return;
-  }
-
-  if (min_height != NULL)
-    *min_height = -1;
-
-  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                        SURFACE_SIZE, SURFACE_SIZE);
-  cr = cairo_create (surface);
-  context = gtk_widget_get_style_context (drawing_area);
-  gtk_style_context_get_padding (context, &padding);
-
-  sizes = build_sizes_table (face, &n_sizes, &alpha_size, &title_size);
-
-  /* calculate size of pixmap to use */
-  pixmap_width = padding.left + padding.right;
-  pixmap_height = padding.top + padding.bottom;
-
-  font = cairo_ft_font_face_create_for_ft_face (face, 0);
-
-  if (check_font_contain_text (face, self->font_name))
-    cairo_set_font_face (cr, font);
-  else
-    cairo_set_font_face (cr, NULL);
-
-  cairo_set_font_size (cr, title_size);
-  cairo_font_extents (cr, &font_extents);
-  text_extents (cr, self->font_name, &extents);
-  pixmap_height += font_extents.ascent + font_extents.descent +
-    extents.y_advance + LINE_SPACING;
-  pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
-
-  pixmap_height += SECTION_SPACING / 2;
-
-  cairo_set_font_face (cr, font);
-  cairo_set_font_size (cr, alpha_size);
-  cairo_font_extents (cr, &font_extents);
-
-  if (self->lowercase_text != NULL) {
-    text_extents (cr, self->lowercase_text, &extents);
-    pixmap_height += font_extents.ascent + font_extents.descent + 
-      extents.y_advance + LINE_SPACING;
-    pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
-  }
-
-  if (self->uppercase_text != NULL) {
-    text_extents (cr, self->uppercase_text, &extents);
-    pixmap_height += font_extents.ascent + font_extents.descent +
-      extents.y_advance + LINE_SPACING;
-    pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
-  }
-
-  if (self->punctuation_text != NULL) {
-    text_extents (cr, self->punctuation_text, &extents);
-    pixmap_height += font_extents.ascent + font_extents.descent +
-      extents.y_advance + LINE_SPACING;
-    pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
-  }
-
-  if (self->sample_string != NULL) {
-    pixmap_height += SECTION_SPACING;
-
-    for (i = 0; i < n_sizes; i++) {
-      cairo_set_font_size (cr, sizes[i]);
-      cairo_font_extents (cr, &font_extents);
-      text_extents (cr, self->sample_string, &extents);
-      pixmap_height += font_extents.ascent + font_extents.descent +
-        extents.y_advance + LINE_SPACING;
-      pixmap_width = MAX (pixmap_width, extents.width + padding.left + padding.right);
-
-      if ((i == 7) && (min_height != NULL))
-        *min_height = pixmap_height;
-    }
-  }
-
-  pixmap_height += padding.bottom + SECTION_SPACING;
-
-  if (min_height != NULL && *min_height == -1)
-    *min_height = pixmap_height;
-
-  if (width != NULL)
-    *width = pixmap_width;
-
-  if (height != NULL)
-    *height = pixmap_height;
-
-  cairo_destroy (cr);
-  cairo_font_face_destroy (font);
-  cairo_surface_destroy (surface);
-}
-
-static void
-sushi_font_widget_measure (GtkWidget      *drawing_area,
-                           GtkOrientation  orientation,
-                           int             for_size,
-                           int            *min,
-                           int            *nat,
-                           int            *min_baseline,
-                           int            *nat_baseline)
-{
-  gint width;
-  gint height;
-  gint min_height;
-
-  sushi_font_widget_size_request (drawing_area, &width, &height, &min_height);
-  if (orientation == GTK_ORIENTATION_HORIZONTAL)
-  {
-    *min = 0;
-    *nat = width;
-  }
-  else
-  {
-    *min = min_height;
-    *nat = height;
-  }
-}
-
 static gboolean
 sushi_font_widget_draw (GtkWidget *drawing_area,
                         cairo_t *cr)
@@ -819,7 +663,6 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
   oclass->get_property = sushi_font_widget_get_property;
   oclass->constructed = sushi_font_widget_constructed;
 
-  wclass->measure = sushi_font_widget_measure;
   wclass->snapshot = sushi_font_widget_snapshot;
 
   properties[PROP_URI] =
