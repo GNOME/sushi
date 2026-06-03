@@ -25,12 +25,12 @@
 
 const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
-const Renderer = imports.core.renderer;
+import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
 
 export const Klass = GObject.registerClass({
-    Implements: [Renderer.Renderer],
+    Implements: [Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
                                               GObject.ParamFlags.READABLE,
@@ -81,7 +81,7 @@ export const Klass = GObject.registerClass({
     }
 
     get resizePolicy() {
-        return Renderer.ResizePolicy.NAT_SIZE;
+        return ResizePolicy.NAT_SIZE;
     }
 });
 

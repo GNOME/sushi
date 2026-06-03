@@ -25,7 +25,7 @@
 
 const {Adw, GLib, GObject, Gdk, Gio, Gly, GlyGtk4, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
 const Constants = imports.util.constants;
-const Renderer = imports.core.renderer;
+import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
 import {CoverPaintable} from '../widgets/coverPaintable.js';
 
@@ -233,7 +233,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
 
 const COVER_SIZE = 256;
 export const Klass = GObject.registerClass({
-    Implements: [Renderer.Renderer],
+    Implements: [Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
                                               GObject.ParamFlags.READABLE,
@@ -367,7 +367,7 @@ export const Klass = GObject.registerClass({
     }
 
     get resizePolicy() {
-        return Renderer.ResizePolicy.NAT_SIZE;
+        return ResizePolicy.NAT_SIZE;
     }
 
     get topBarStyle() {

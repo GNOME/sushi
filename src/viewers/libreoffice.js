@@ -11,10 +11,10 @@ export const isAvailable = function() {
 };
 
 const Constants = imports.util.constants;
-const Renderer = imports.core.renderer;
+import {Renderer} from '../core/renderer.js';
 
 export const Klass = GObject.registerClass({
-    Implements: [Renderer.Renderer],
+    Implements: [Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
                                               GObject.ParamFlags.READABLE,

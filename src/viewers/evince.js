@@ -26,7 +26,7 @@
 const {Adw, PapersDocument, PapersView, Gio, GioUnix, GObject, Gtk, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
-const Renderer = imports.core.renderer;
+import {Renderer} from '../core/renderer.js';
 const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
 
 import * as Libreoffice from './libreoffice.js';
@@ -59,7 +59,7 @@ const createView = (model) => {
 };
 
 export const Klass = GObject.registerClass({
-    Implements: [Renderer.Renderer],
+    Implements: [Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
                                               GObject.ParamFlags.READABLE,

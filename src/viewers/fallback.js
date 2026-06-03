@@ -32,7 +32,7 @@ import Gtk from 'gi://Gtk';
 import Pango from 'gi://Pango';
 import * as Gettext from 'gettext';
 
-const Renderer = imports.core.renderer;
+import {Renderer,ResizePolicy} from '../core/renderer.js';
 const {getCustomIcon} = imports.util.customIcon;
 
 function _getDeepCountAttrs() {
@@ -175,7 +175,7 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
 export class FallbackRenderer extends Gtk.Box {
     static {
         GObject.registerClass({
-            Implements: [Renderer.Renderer],
+            Implements: [Renderer],
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
             Children: ['image', 'title_label', 'size_label', 'date_label', 'type_label', 'spinner'],
             Properties: {
@@ -279,7 +279,7 @@ export class FallbackRenderer extends Gtk.Box {
     }
 
     get resizePolicy() {
-        return Renderer.ResizePolicy.NAT_SIZE;
+        return ResizePolicy.NAT_SIZE;
     }
 
     get topBarStyle() {

@@ -34,7 +34,7 @@ import Sushi from 'gi://Sushi';
 const Constants = imports.util.constants;
 import {ErrorRenderer} from '../viewers/error.js';
 import * as MimeHandler from './mimeHandler.js';
-const Renderer = imports.core.renderer;
+import {Renderer,ResizePolicy} from './renderer.js';
 const {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} = imports.util.customIcon;
 
 const WINDOW_MAX_W = 800;
@@ -216,13 +216,13 @@ export class MainWindow extends Adw.ApplicationWindow {
         let windowSize;
         let resizePolicy = this._renderer.resizePolicy;
 
-        if (resizePolicy == Renderer.ResizePolicy.MAX_SIZE)
+        if (resizePolicy == ResizePolicy.MAX_SIZE)
             windowSize = maxSize;
-        else if (resizePolicy == Renderer.ResizePolicy.NAT_SIZE)
+        else if (resizePolicy == ResizePolicy.NAT_SIZE)
             windowSize = natSize;
-        else if (resizePolicy == Renderer.ResizePolicy.SCALED)
+        else if (resizePolicy == ResizePolicy.SCALED)
             windowSize = _getScaledSize(natSize, maxSize, false);
-        else if (resizePolicy == Renderer.ResizePolicy.STRETCHED)
+        else if (resizePolicy == ResizePolicy.STRETCHED)
             windowSize = _getScaledSize(natSize, maxSize, true);
 
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];

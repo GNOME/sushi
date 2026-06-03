@@ -24,13 +24,13 @@
  */
 
 const {Gdk, Gio, GLib, GObject, Gtk, Gly, GlyGtk4} = imports.gi;
-const Renderer = imports.core.renderer;
+import {Renderer, ResizePolicy} from '../core/renderer.js';
 
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 
 export const Klass = GObject.registerClass({
-    Implements: [Renderer.Renderer],
+    Implements: [Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
                                               GObject.ParamFlags.READABLE,
@@ -77,7 +77,7 @@ export const Klass = GObject.registerClass({
     }
 
     get resizePolicy() {
-        return Renderer.ResizePolicy.SCALED;
+        return ResizePolicy.SCALED;
     }
 });
 

@@ -7,10 +7,10 @@
 
 const {Adw, Gdk, GLib, GObject, Gtk, Pango} = imports.gi;
 
-const Renderer = imports.core.renderer;
+import {Renderer,ResizePolicy} from '../core/renderer.js';
 
 const Klass = GObject.registerClass({
-    Implements: [Renderer.Renderer],
+    Implements: [Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
                                               GObject.ParamFlags.READABLE,

@@ -1,31 +1,36 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later WITH GStreamer-exception-2008
  * SPDX-FileCopyrightText: 2026 The Sushi authors */
 
-const {Adw, GLib, GObject, Gtk} = imports.gi;
+import Adw from 'gi://Adw';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
-const Constants = imports.util.constants;
-
-var ResizePolicy = {
+export const ResizePolicy = {
     MAX_SIZE: 0,
     NAT_SIZE: 1,
     SCALED: 2,
     STRETCHED: 3
 };
 
-var Renderer = GObject.registerClass({
-    Requires: [Gtk.Widget],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-    Signals: {
-        'error': { param_types: [GLib.Error.$gtype] }
+export class Renderer extends GObject.Interface {
+    static {
+        GObject.registerClass({
+            Requires: [Gtk.Widget],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+            Signals: {
+                'error': { param_types: [GLib.Error.$gtype] }
+            }
+        }, this);
     }
-}, class Renderer extends GObject.Interface {
+
     isReady() {
         this._ready = true;
         this.notify('ready');
@@ -67,4 +72,4 @@ var Renderer = GObject.registerClass({
     get topBarStyle() {
         return Adw.ToolbarStyle.RAISED_BORDER;
     }
-});
+}
