@@ -306,28 +306,26 @@ random_string_from_available_chars (FT_Face face,
   return g_strdup (retval->str);
 }
 
-static gboolean
+static void
 set_pango_sample_string (SushiFontWidget *self)
 {
-  const gchar *sample_string;
-  gboolean retval = FALSE;
+  const char *sample_string = pango_language_get_sample_string (NULL);
+  gboolean ok = TRUE;
 
-  sample_string = pango_language_get_sample_string (pango_language_from_string (NULL));
-  if (check_font_contain_text (self->face, sample_string))
-    retval = TRUE;
-
-  if (!retval) {
+  if (!check_font_contain_text (self->face, sample_string)) {
+    /* Use fallback sample string */
     sample_string = pango_language_get_sample_string (pango_language_from_string ("C"));
-    if (check_font_contain_text (self->face, sample_string))
-      retval = TRUE;
+
+    if (!check_font_contain_text (self->face, sample_string))
+      ok = FALSE;
   }
 
-  g_clear_pointer (&self->sample_string, g_free);
-
-  if (retval)
-    self->sample_string = g_strdup (sample_string);
-
-  return retval;
+  if (ok)
+    g_set_str (&self->sample_string, sample_string);
+  else {
+    g_free (self->sample_string);
+    self->sample_string = random_string_from_available_chars (self->face, 36);
+  }
 }
 
 static void
@@ -374,8 +372,7 @@ build_strings_for_face (SushiFontWidget *self)
   else
     self->punctuation_text = NULL;
 
-  if (!set_pango_sample_string (self))
-    self->sample_string = random_string_from_available_chars (self->face, 36);
+  set_pango_sample_string (self);
 
   g_free (self->font_name);
   self->font_name = sushi_get_font_name (self->face, FALSE);
