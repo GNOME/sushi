@@ -1,9 +1,11 @@
-#!@GJS@
+#!@ENV@ -S @GJS@ -m
 
-const {Gio, GLib, GObject} = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
 
+import system from 'system';
 const ByteArray = imports.byteArray;
-const System = imports.system;
 
 GLib.set_prgname('sushi');
 
@@ -15,19 +17,19 @@ function help() {
 
 if (ARGV.includes('-h') || ARGV.includes('--help')) {
     help();
-    System.exit(0);
+    system.exit(0);
 }
 
 if (ARGV.length != 1) {
     printerr('The launcher takes exactly one argument\n');
     help();
-    System.exit(1);
+    system.exit(1);
 }
 
 let file = Gio.File.new_for_commandline_arg(ARGV[0]);
 if (!file.query_exists(null)) {
     printerr(`The file at ${file.get_uri()} does not exist.`);
-    System.exit(1);
+    system.exit(1);
 }
 
 try {
@@ -35,7 +37,7 @@ try {
     dataResource._register();
 } catch(e) {
     logError(e, 'Unable to load data resource');
-    System.exit(1);
+    system.exit(1);
 }
 
 let bytes = Gio.resources_lookup_data(
@@ -48,7 +50,7 @@ try {
         Gio.DBus.session, '@app_id@', '@relative_object_path@');
 } catch(e) {
     logError(e, 'Unable to create DBus proxy for NautilusPreviewer');
-    System.exit(1);
+    system.exit(1);
 }
 
 const activationToken = GLib.getenv("XDG_ACTIVATION_TOKEN") ?? "";
