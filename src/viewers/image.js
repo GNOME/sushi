@@ -23,23 +23,32 @@
  *
  */
 
-const {Gdk, Gio, GLib, GObject, Gtk, Gly, GlyGtk4} = imports.gi;
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import Gly from 'gi://Gly';
+import GlyGtk4 from 'gi://GlyGtk4';
+
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 
-export const Klass = GObject.registerClass({
-    Implements: [Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class ImageRenderer extends Gtk.Picture {
+export const Klass = class ImageRenderer extends Gtk.Picture {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     get ready() {
         return !!this._ready;
     }
@@ -79,6 +88,6 @@ export const Klass = GObject.registerClass({
     get resizePolicy() {
         return ResizePolicy.SCALED;
     }
-});
+};
 
 export const mimeTypes = Gly.Loader.get_mime_types();
