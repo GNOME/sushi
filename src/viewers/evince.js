@@ -23,7 +23,13 @@
  *
  */
 
-const {Adw, PapersDocument, PapersView, Gio, GioUnix, GObject, Gtk, Sushi} = imports.gi;
+import Gio from 'gi://Gio';
+import GioUnix from 'gi://GioUnix';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import PapersDocument from 'gi://PapersDocument';
+import PapersView from 'gi://PapersView';
+import Sushi from 'gi://Sushi';
 
 import {VIEW_MIN} from '../util/constants.js';
 import {Renderer} from '../core/renderer.js';
@@ -58,17 +64,21 @@ const createView = (model) => {
     return view;
 };
 
-export const Klass = GObject.registerClass({
-    Implements: [Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class PapersRenderer extends ToolbarOverlay {
+export const Klass = class PapersRenderer extends ToolbarOverlay {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     get ready() {
         return !!this._ready;
     }
@@ -160,7 +170,7 @@ export const Klass = GObject.registerClass({
         actionGroup.add_action(copyAction);
         this.insert_action_group ('evince', actionGroup);
     }
-});
+};
 
 PapersDocument.init();
 const appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
@@ -169,7 +179,11 @@ export const mimeTypes = papersTypes;
 if (!Libreoffice.isAvailable())
     mimeTypes.push(...Libreoffice.officeTypes);
 
-const PdfNavigationOverlay = GObject.registerClass(class PdfNavigationOverlay extends Gtk.Revealer {
+class PdfNavigationOverlay extends Gtk.Revealer {
+    static {
+        GObject.registerClass(this);
+    }
+
     _init(view) {
         this._view = view;
 
@@ -215,4 +229,4 @@ const PdfNavigationOverlay = GObject.registerClass(class PdfNavigationOverlay ex
         this._toolbarForward.set_sensitive(currentPage < totalPages - 1);
         this._pageLabel.set_text(_("%d of %d").format(currentPage + 1, totalPages));
     }
-});
+}
