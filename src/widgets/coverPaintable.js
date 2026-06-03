@@ -23,40 +23,50 @@
  *
  */
 
-const {Adw, GLib, GObject, Gdk, Graphene, Gsk, Gtk} = imports.gi;
+import Adw from 'gi://Adw';
+import Gdk from 'gi://Gdk';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Gsk from 'gi://Gsk';
+import Gtk from 'gi://Gtk';
 
 // This file is a port of GNOME Music's CoverPaintable
 
 const RADIUS = 9;
 
-var CoverPaintable = GObject.registerClass({
-    Properties: {
-        'texture': GObject.ParamSpec.object(
-            'texture',
-            'Texture',
-            null,
-            GObject.ParamFlags.READWRITE,
-            Gdk.Texture,
-        ),
-        'scale-factor': GObject.ParamSpec.int(
-            'scale-factor',
-            'Scale Factor',
-            'The scale factor of the paintable',
-            GObject.ParamFlags.READWRITE,
-            1, /* minimum */
-            GLib.MAXINT32, /* maximum */
-            1, /* default */
-        ),
-        'display': GObject.ParamSpec.object(
-            'display',
-            'Display',
-            null,
-            GObject.ParamFlags.READWRITE,
-            Gdk.Display,
-        ),
-    },
-    Implements: [Gdk.Paintable],
-}, class CoverPaintable extends GObject.Object {
+export class CoverPaintable extends GObject.Object {
+    static {
+        GObject.registerClass({
+            Properties: {
+                'texture': GObject.ParamSpec.object(
+                    'texture',
+                    'Texture',
+                    null,
+                    GObject.ParamFlags.READWRITE,
+                    Gdk.Texture,
+                ),
+                'scale-factor': GObject.ParamSpec.int(
+                    'scale-factor',
+                    'Scale Factor',
+                    'The scale factor of the paintable',
+                    GObject.ParamFlags.READWRITE,
+                    1, /* minimum */
+                    GLib.MAXINT32, /* maximum */
+                    1, /* default */
+                ),
+                'display': GObject.ParamSpec.object(
+                    'display',
+                    'Display',
+                    null,
+                    GObject.ParamFlags.READWRITE,
+                    Gdk.Display,
+                ),
+            },
+            Implements: [Gdk.Paintable],
+        }, this);
+    }
+
     constructor(constructProperties = {}) {
         super(constructProperties);
         if (!this._settings)
@@ -212,4 +222,4 @@ var CoverPaintable = GObject.registerClass({
             false);
         return signalGroup;
     }
-});
+}

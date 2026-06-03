@@ -27,7 +27,7 @@ const {Adw, GLib, GObject, Gdk, Gio, Gly, GlyGtk4, Gst, GstTag, Gtk, Soup, Sushi
 const Constants = imports.util.constants;
 const Renderer = imports.core.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
-const { CoverPaintable } = imports.widgets.coverPaintable;
+import {CoverPaintable} from '../widgets/coverPaintable.js';
 
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
