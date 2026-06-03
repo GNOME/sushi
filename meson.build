@@ -7,6 +7,7 @@ project(
 
 gnome = import('gnome')
 
+fribidi_dep = dependency('fribidi', version: '>= 1.0.6', default_options: ['docs=false'])
 papers_document_dep = dependency('papers-document-4.0')
 papers_view_dep = dependency('papers-view-4.0')
 freetype_dep = dependency('freetype2')

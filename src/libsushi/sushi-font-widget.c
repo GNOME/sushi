@@ -27,6 +27,7 @@
 #include "sushi-font-widget.h"
 #include "sushi-font-loader.h"
 
+#include <fribidi.h>
 #include <hb-glib.h>
 #include <math.h>
 
@@ -74,6 +75,20 @@ static const gchar lowercase_text_stock[] = "abcdefghijklmnopqrstuvwxyz";
 static const gchar uppercase_text_stock[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static const gchar punctuation_text_stock[] = "0123456789.:,;(*!?')";
 
+static PangoDirection
+get_base_direction (const char *text)
+{
+  /* Uses FriBidi to determine RTL/LTR string direction */
+  glong text_len = g_utf8_strlen (text, -1);
+  g_autofree FriBidiCharType *bidi_types = g_new (FriBidiCharType, text_len);
+
+  fribidi_get_bidi_types ((const FriBidiChar *) text, text_len, bidi_types);
+
+  return (fribidi_get_par_direction (bidi_types, text_len) == FRIBIDI_PAR_RTL)
+         ? PANGO_DIRECTION_RTL
+         : PANGO_DIRECTION_LTR;
+}
+
 static void
 text_to_glyphs (cairo_t *cr,
                 const gchar *text,
@@ -95,7 +110,7 @@ text_to_glyphs (cairo_t *cr,
   *num_glyphs = 0;
   *glyphs = NULL;
 
-  base_dir = pango_find_base_dir (text, -1);
+  base_dir = get_base_direction (text);
 
   cairo_scaled_font_t *cr_font = cairo_get_scaled_font (cr);
   ft_face = cairo_ft_scaled_font_lock_face (cr_font);

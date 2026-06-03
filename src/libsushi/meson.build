@@ -7,6 +7,7 @@ libsushi_deps = [
   papers_document_dep,
   papers_view_dep,
   freetype_dep,
+  fribidi_dep,
   glib_dep,
   gstreamer_dep,
   gst_pbutils_dep,
