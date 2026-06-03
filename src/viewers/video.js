@@ -23,23 +23,28 @@
  *
  */
 
-const {GLib, GObject, Gtk, Sushi} = imports.gi;
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
 
-export const Klass = GObject.registerClass({
-    Implements: [Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class VideoRenderer extends ToolbarOverlay {
+export const Klass = class VideoRenderer extends ToolbarOverlay {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     get ready() {
         return !!this._ready;
     }
@@ -83,6 +88,6 @@ export const Klass = GObject.registerClass({
     get resizePolicy() {
         return ResizePolicy.NAT_SIZE;
     }
-});
+};
 
 export const mimeTypes = TotemMimeTypes.videoTypes;
