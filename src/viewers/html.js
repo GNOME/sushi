@@ -23,12 +23,14 @@
  *
  */
 
-const {Gtk, GLib, GObject, Sushi} = imports.gi;
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import Sushi from 'gi://Sushi';
 
-var WebKit;
+let WebKit = undefined;
 try {
-    imports.gi.versions.WebKit = '6.0';
-    WebKit = imports.gi.WebKit;
+    WebKit = (await import('gi://WebKit?version=6.0')).default;
 } catch(e) {
 }
 
@@ -38,17 +40,21 @@ function _isAvailable() {
 
 import {Renderer} from '../core/renderer.js';
 
-export const Klass = _isAvailable() ? GObject.registerClass({
-    Implements: [Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class HTMLRenderer extends WebKit.WebView {
+export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     get ready() {
         return !!this._ready;
     }
@@ -70,10 +76,6 @@ export const Klass = _isAvailable() ? GObject.registerClass({
         });
         this.isReady();
     }
-}) : undefined;
+} : undefined;
 
-export let mimeTypes = [];
-if (_isAvailable())
-    mimeTypes = [
-        'text/html'
-    ];
+export const mimeTypes = _isAvailable() ? ['text/html'] : [];
