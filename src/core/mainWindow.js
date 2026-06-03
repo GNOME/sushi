@@ -35,7 +35,7 @@ import {VIEW_MIN} from '../util/constants.js';
 import {ErrorRenderer} from '../viewers/error.js';
 import * as MimeHandler from './mimeHandler.js';
 import {Renderer,ResizePolicy} from './renderer.js';
-const {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} = imports.util.customIcon;
+import {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 
 const WINDOW_MAX_W = 800;
 const WINDOW_MAX_H = 600;

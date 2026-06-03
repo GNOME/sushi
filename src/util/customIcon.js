@@ -1,20 +1,21 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later WITH GStreamer-exception-2008
  * SPDX-FileCopyrightText: 2026 The Sushi authors */
 
-const {Gio,GLib} = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
 // Ported from Nautilus (Files):
 // <https://gitlab.gnome.org/GNOME/nautilus/-/blob/5d4a9f37d9efe2b8a3912ab0bb29aa22ac5c6daf/src/nautilus-file.c>
 
-var METADATA_KEY_CUSTOM_ICON = 'metadata::custom-icon';
-var METADATA_KEY_CUSTOM_ICON_NAME = 'metadata::custom-icon-name';
+export const METADATA_KEY_CUSTOM_ICON = 'metadata::custom-icon';
+export const METADATA_KEY_CUSTOM_ICON_NAME = 'metadata::custom-icon-name';
 
 /**
  * @param {Gio.File} file
  * @param {Gio.FileInfo} fileInfo
  * @returns {Gio.Icon|undefined|null}
  */
-var getCustomIcon = (file, fileInfo) => {
+export const getCustomIcon = (file, fileInfo) => {
     // Metadata takes precedence; first we look at the custom
     // icon URI, then at the custom icon name.
 

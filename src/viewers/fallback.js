@@ -33,7 +33,7 @@ import Pango from 'gi://Pango';
 import * as Gettext from 'gettext';
 
 import {Renderer,ResizePolicy} from '../core/renderer.js';
-const {getCustomIcon} = imports.util.customIcon;
+import {getCustomIcon} from '../util/customIcon.js';
 
 function _getDeepCountAttrs() {
     return [
