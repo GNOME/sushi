@@ -23,13 +23,17 @@
  *
  */
 
-const {Adw, Gio, GLib, GObject, Gtk} = imports.gi;
+import Adw from 'gi://Adw';
+import Gtk from 'gi://Gtk';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
 
 const ByteArray = imports.byteArray;
 
 const MainWindow = imports.core.mainWindow;
 
-var NautilusPreviewerSkeleton = class {
+class NautilusPreviewerSkeleton {
     constructor(application, resource) {
         this.application = application;
 
@@ -60,7 +64,7 @@ var NautilusPreviewerSkeleton = class {
     }
 }
 
-var NautilusPreviewer2Skeleton = class extends NautilusPreviewerSkeleton {
+class NautilusPreviewer2Skeleton extends NautilusPreviewerSkeleton {
     constructor(application) {
         super(application, '/org/gnome/NautilusPreviewer/org.gnome.NautilusPreviewer2.xml');
     }
@@ -71,7 +75,10 @@ var NautilusPreviewer2Skeleton = class extends NautilusPreviewerSkeleton {
     }
 }
 
-var Application = GObject.registerClass(class Application extends Adw.Application {
+export class Application extends Adw.Application {
+    static {
+        GObject.registerClass(this);
+    }
 
     vfunc_dbus_register(connection, path) {
         let actualPath = `/org/gnome/${pkg.name.split('.').at(-1)}`;
@@ -142,4 +149,4 @@ var Application = GObject.registerClass(class Application extends Adw.Applicatio
             this._mainWindow.present();
         }
     }
-});
+}

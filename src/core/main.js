@@ -43,16 +43,15 @@ import 'gi://Sushi?version=1.0';
 
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import {Application} from './application.js';
 
 pkg.initGettext();
 pkg.initFormat();
 
-const Application = imports.core.application;
-
 export async function main(argv) {
-    let application = new Application.Application({ application_id: pkg.name,
-                                                    flags: Gio.ApplicationFlags.IS_SERVICE,
-                                                    inactivity_timeout: 12000 });
+    let application = new Application({ application_id: pkg.name,
+                                        flags: Gio.ApplicationFlags.IS_SERVICE,
+                                        inactivity_timeout: 12000 });
     if (GLib.getenv('SUSHI_PERSIST'))
         application.hold();
     await application.runAsync(argv);
