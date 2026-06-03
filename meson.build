@@ -36,6 +36,7 @@ libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
 pkgdatadir = join_paths(datadir, meson.project_name())
 pkglibdir = join_paths(libdir, meson.project_name())
 gjs = find_program('gjs', 'gjs-console')
+env = find_program('env')
 
 add_project_arguments(
   '-DGETTEXT_PACKAGE="' + meson.project_name() + '"',

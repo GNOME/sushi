@@ -1,4 +1,5 @@
-#!@GJS@
+#!@ENV@ -S @GJS@ -m
+import {programInvocationName, programArgs} from 'system';
 
 imports.package.init({
     name: '@PACKAGE_NAME@',
@@ -6,4 +7,5 @@ imports.package.init({
     prefix: '@prefix@',
     libdir: '@libdir@',
 });
-imports.package.run(imports.core.main);
+const {main} = await import('resource://@relative_object_path@/js/core/main.js');
+await main([programInvocationName, ...programArgs]);

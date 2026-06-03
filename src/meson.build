@@ -28,6 +28,7 @@ sushi_src_resources = gnome.compile_resources(
 
 conf = configuration_data()
 conf.set('GJS', gjs.full_path())
+conf.set('ENV', env.full_path())
 conf.set('PACKAGE_NAME', meson.project_name())
 conf.set('PACKAGE_VERSION', meson.project_version())
 conf.set('prefix', get_option('prefix'))
@@ -66,7 +67,7 @@ devel_env.append('LD_LIBRARY_PATH', meson.current_build_dir() / 'libsushi')
 devel_env.append('SUSHI_PERSIST', '1')
 run_target(
     'devel',
-    command: [gjs, nautilus_previewer_bin],
+    command: [gjs, '-m', nautilus_previewer_bin],
     depends: [sushi_src_resources, sushi_data_resources, libsushi_gir],
     env: devel_env,
 )
