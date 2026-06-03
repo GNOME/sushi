@@ -446,23 +446,14 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   gint n_sizes, alpha_size, title_size, pos_y = 0, i;
   cairo_font_face_t *font = NULL;
   FT_Face face = self->face;
-  GtkStyleContext *context;
   GdkRGBA color;
-  gint allocated_width, allocated_height;
 
   if (face == NULL)
     return FALSE;
 
-  context = gtk_widget_get_style_context (drawing_area);
+  int allocated_height = gtk_widget_get_height (drawing_area);
 
-  allocated_width = gtk_widget_get_width (drawing_area);
-  allocated_height = gtk_widget_get_height (drawing_area);
-
-  gtk_render_background (context, cr,
-                         0, 0, allocated_width, allocated_height);
-
-  gtk_style_context_get_color (context, &color);
-
+  gtk_widget_get_color (drawing_area, &color);
   gdk_cairo_set_source_rgba (cr, &color);
 
   sizes = build_sizes_table (face, &n_sizes, &alpha_size, &title_size);
