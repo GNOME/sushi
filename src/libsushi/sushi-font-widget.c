@@ -205,15 +205,15 @@ text_extents (cairo_t *cr,
 static void
 draw_string (SushiFontWidget *self,
              cairo_t *cr,
-             GtkBorder padding,
 	     const gchar *text,
 	     gint *pos_y)
 {
+  size_t margin_start = 6;
   g_autofree cairo_glyph_t *glyphs = NULL;
   cairo_font_extents_t font_extents;
   cairo_text_extents_t extents;
   GtkTextDirection text_dir;
-  gint pos_x;
+  gint pos_x = 0;
   gint num_glyphs;
   gint i;
 
@@ -228,10 +228,10 @@ draw_string (SushiFontWidget *self,
     *pos_y += font_extents.ascent + font_extents.descent +
       extents.y_advance + LINE_SPACING / 2;
   if (text_dir == GTK_TEXT_DIR_LTR)
-    pos_x = padding.left;
+    pos_x = margin_start;
   else {
     pos_x = gtk_widget_get_allocated_width (GTK_WIDGET (self)) -
-      extents.x_advance - padding.right;
+      extents.x_advance - margin_start;
   }
 
   for (i = 0; i < num_glyphs; i++) {
@@ -604,7 +604,6 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   FT_Face face = self->face;
   GtkStyleContext *context;
   GdkRGBA color;
-  GtkBorder padding;
   gint allocated_width, allocated_height;
 
   if (face == NULL)
@@ -619,7 +618,6 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
                          0, 0, allocated_width, allocated_height);
 
   gtk_style_context_get_color (context, &color);
-  gtk_style_context_get_padding (context, &padding);
 
   gdk_cairo_set_source_rgba (cr, &color);
 
@@ -634,7 +632,7 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
     cairo_set_font_face (cr, NULL);
 
   cairo_set_font_size (cr, title_size);
-  draw_string (self, cr, padding, self->font_name, &pos_y);
+  draw_string (self, cr, self->font_name, &pos_y);
 
   if (pos_y > allocated_height)
     goto end;
@@ -644,17 +642,17 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   cairo_set_font_size (cr, alpha_size);
 
   if (self->lowercase_text != NULL)
-    draw_string (self, cr, padding, self->lowercase_text, &pos_y);
+    draw_string (self, cr, self->lowercase_text, &pos_y);
   if (pos_y > allocated_height)
     goto end;
 
   if (self->uppercase_text != NULL)
-    draw_string (self, cr, padding, self->uppercase_text, &pos_y);
+    draw_string (self, cr, self->uppercase_text, &pos_y);
   if (pos_y > allocated_height)
     goto end;
 
   if (self->punctuation_text != NULL)
-    draw_string (self, cr, padding, self->punctuation_text, &pos_y);
+    draw_string (self, cr, self->punctuation_text, &pos_y);
   if (pos_y > allocated_height)
     goto end;
 
@@ -663,7 +661,7 @@ sushi_font_widget_draw (GtkWidget *drawing_area,
   for (i = 0; i < n_sizes; i++) {
     cairo_set_font_size (cr, sizes[i]);
     if (self->sample_string !=  NULL)
-      draw_string (self, cr, padding, self->sample_string, &pos_y);
+      draw_string (self, cr, self->sample_string, &pos_y);
     if (pos_y > allocated_height)
       break;
   }
