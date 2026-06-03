@@ -23,21 +23,28 @@
  *
  */
 
-const {GLib, GObject, Gtk, Sushi} = imports.gi;
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import Sushi from 'gi://Sushi';
 
 import {Renderer} from '../core/renderer.js';
 
-export const Klass = GObject.registerClass({
-    Implements: [Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class FontRenderer extends Sushi.FontWidget {
+export const Klass = class FontRenderer extends Sushi.FontWidget {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     get ready() {
         return !!this._ready;
     }
@@ -52,7 +59,7 @@ export const Klass = GObject.registerClass({
 
         this.isReady();
     }
-});
+};
 
 export const mimeTypes = [
     'application/x-font-ttf',
