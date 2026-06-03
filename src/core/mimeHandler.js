@@ -23,7 +23,8 @@
  *
  */
 
-const {Gio, GLib} = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
 const FallbackRenderer = imports.viewers.fallback;
 
@@ -39,7 +40,7 @@ for (let i in imports.viewers) {
     }
 }
 
-var getKlass = function(mime) {
+export function getKlass(mime) {
     let renderer = renderers.find((r) => {
         // first, try a direct match with the mimetype itself
         if (r.mimeTypes.includes(mime))

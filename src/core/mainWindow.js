@@ -33,7 +33,7 @@ import Sushi from 'gi://Sushi';
 
 const Constants = imports.util.constants;
 const {ErrorRenderer} = imports.viewers.error;
-const MimeHandler = imports.core.mimeHandler;
+import * as MimeHandler from './mimeHandler.js';
 const Renderer = imports.core.renderer;
 const {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} = imports.util.customIcon;
 
