@@ -23,21 +23,31 @@
  *
  */
 
-const {Adw, Gdk, Gio, GLib, GObject, Gtk, GtkSource} = imports.gi;
+import Adw from 'gi://Adw';
+import Gdk from 'gi://Gdk';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import GtkSource from 'gi://GtkSource';
 
 import {Renderer} from '../core/renderer.js';
 
-export const Klass = GObject.registerClass({
-    Implements: [Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class TextRenderer extends Gtk.ScrolledWindow {
+export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     get ready() {
         return !!this._ready;
     }
@@ -106,7 +116,7 @@ export const Klass = GObject.registerClass({
 
         return buffer;
     }
-});
+};
 
 // register for text/plain and let the mime handler call us for child types
 export const mimeTypes = [
