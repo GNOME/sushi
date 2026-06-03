@@ -25,7 +25,7 @@
 
 const {Adw, PapersDocument, PapersView, Gio, GioUnix, GObject, Gtk, Sushi} = imports.gi;
 
-const Constants = imports.util.constants;
+import {VIEW_MIN} from '../util/constants.js';
 import {Renderer} from '../core/renderer.js';
 const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
 
@@ -102,8 +102,8 @@ export const Klass = GObject.registerClass({
         this._defineActions();
 
         const scrolledWindow = new Gtk.ScrolledWindow({ visible: true,
-                                                        min_content_height: Constants.VIEW_MIN,
-                                                        min_content_width: Constants.VIEW_MIN,
+                                                        min_content_height: VIEW_MIN,
+                                                        min_content_width: VIEW_MIN,
                                                         child: this._view});
         this.set_child(scrolledWindow);
 

@@ -10,7 +10,7 @@ export const isAvailable = function() {
     return LOKDocView !== undefined;
 };
 
-const Constants = imports.util.constants;
+import {VIEW_MIN} from '../util/constants.js';
 import {Renderer} from '../core/renderer.js';
 
 export const Klass = GObject.registerClass({
@@ -35,8 +35,8 @@ export const Klass = GObject.registerClass({
     _init(file) {
         super._init({ hexpand: true,
                       visible: true,
-                      min_content_height: Constants.VIEW_MIN,
-                      min_content_width: Constants.VIEW_MIN });
+                      min_content_height: VIEW_MIN,
+                      min_content_width: VIEW_MIN });
 
         this._lastAllocWidth = 0;
         this._tickCallbackId = 0;

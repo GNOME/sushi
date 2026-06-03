@@ -23,5 +23,5 @@
  *
  */
 
-var VIEW_MIN = 340;
-var TOOLBAR_SPACING = 32;
+export const VIEW_MIN = 340;
+export const TOOLBAR_SPACING = 32;

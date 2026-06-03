@@ -31,7 +31,7 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Sushi from 'gi://Sushi';
 
-const Constants = imports.util.constants;
+import {VIEW_MIN} from '../util/constants.js';
 import {ErrorRenderer} from '../viewers/error.js';
 import * as MimeHandler from './mimeHandler.js';
 import {Renderer,ResizePolicy} from './renderer.js';
@@ -210,8 +210,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         let maxSize = this._getMaxSize();
         let rendererSize = this._renderer.get_preferred_size();
         let natSize = [rendererSize[1].width, rendererSize[1].height];
-        if (natSize[0] <= Constants.VIEW_MIN) {
-            natSize = natSize.map(size => Math.max(size, Constants.VIEW_MIN));
+        if (natSize[0] <= VIEW_MIN) {
+            natSize = natSize.map(size => Math.max(size, VIEW_MIN));
         }
         let windowSize;
         let resizePolicy = this._renderer.resizePolicy;
