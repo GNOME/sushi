@@ -68,27 +68,14 @@ const localPath = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data
 const builtinPath = Gio.File.new_for_uri(import.meta.url).get_parent().get_parent().get_child('viewers');
 const renderers = await loadRenderers([localPath, builtinPath]);
 
-export function getKlass(mime) {
-    let renderer = renderers.find((r) => {
+/** @param {string} mime */
+export const getKlass = (mime) => {
+    const renderer = (
         // first, try a direct match with the mimetype itself
-        if (r.mimeTypes.includes(mime))
-            return true;
-        return false;
-    });
-
-    if (!renderer) {
-        renderer = renderers.find((r) => {
-            // if this fails, try to see if we have any handlers
-            // registered for a parent type
-            if (r.mimeTypes.some((rm) => Gio.content_type_is_a(mime, rm)))
-                return true;
-            return false;
-        });
-    }
-
-    if (renderer)
-        return renderer.Klass;
-
-    // finally, resort to the fallback renderer
-    return FallbackRenderer;
-}
+        renderers.find(r => r.mimeTypes.includes(mime)) ??
+        // if this fails, try to see if we have any handlers
+        // registered for a parent type
+        renderers.find(r => r.mimeTypes.some(rm => Gio.content_type_is_a(mime, rm)))
+    );
+    return renderer ? renderer.Klass : FallbackRenderer;
+};
