@@ -232,7 +232,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
 }
 
 const COVER_SIZE = 256;
-var Klass = GObject.registerClass({
+export const Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
@@ -375,4 +375,4 @@ var Klass = GObject.registerClass({
     }
 });
 
-var mimeTypes = TotemMimeTypes.audioTypes;
+export const mimeTypes = TotemMimeTypes.audioTypes;

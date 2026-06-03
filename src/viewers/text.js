@@ -27,7 +27,7 @@ const {Adw, Gdk, Gio, GLib, GObject, Gtk, GtkSource} = imports.gi;
 
 const Renderer = imports.core.renderer;
 
-var Klass = GObject.registerClass({
+export const Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
@@ -109,6 +109,6 @@ var Klass = GObject.registerClass({
 });
 
 // register for text/plain and let the mime handler call us for child types
-var mimeTypes = [
+export const mimeTypes = [
     'text/plain'
 ];

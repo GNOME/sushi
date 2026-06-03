@@ -29,7 +29,7 @@ const Renderer = imports.core.renderer;
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 
-var Klass = GObject.registerClass({
+export const Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
@@ -81,4 +81,4 @@ var Klass = GObject.registerClass({
     }
 });
 
-var mimeTypes = Gly.Loader.get_mime_types();
+export const mimeTypes = Gly.Loader.get_mime_types();

@@ -166,7 +166,7 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
     _sendUpdate();
 };
 
-var FallbackRenderer = GObject.registerClass({
+export const FallbackRenderer = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
     Children: ['image', 'title_label', 'size_label', 'date_label', 'type_label', 'spinner'],

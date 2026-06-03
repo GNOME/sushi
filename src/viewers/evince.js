@@ -29,7 +29,7 @@ const Constants = imports.util.constants;
 const Renderer = imports.core.renderer;
 const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
 
-const Libreoffice = imports.viewers.libreoffice;
+import * as Libreoffice from './libreoffice.js';
 
 const createDocumentModel = () => {
     return new PapersView.DocumentModel({
@@ -58,7 +58,7 @@ const createView = (model) => {
     return view;
 };
 
-var Klass = GObject.registerClass({
+export const Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
@@ -163,13 +163,13 @@ var Klass = GObject.registerClass({
 });
 
 PapersDocument.init();
-let appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
-let papersTypes = appInfo.get_supported_types();
-var mimeTypes = papersTypes;
+const appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
+const papersTypes = appInfo.get_supported_types();
+export const mimeTypes = papersTypes;
 if (!Libreoffice.isAvailable())
-    mimeTypes = mimeTypes.concat(Libreoffice.officeTypes);
+    mimeTypes.push(...Libreoffice.officeTypes);
 
-var PdfNavigationOverlay = GObject.registerClass(class PdfNavigationOverlay extends Gtk.Revealer {
+const PdfNavigationOverlay = GObject.registerClass(class PdfNavigationOverlay extends Gtk.Revealer {
     _init(view) {
         this._view = view;
 

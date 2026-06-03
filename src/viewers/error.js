@@ -59,4 +59,4 @@ const Klass = GObject.registerClass({
     }
 });
 
-var ErrorRenderer = Klass;
+export const ErrorRenderer = Klass;

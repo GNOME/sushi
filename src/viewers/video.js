@@ -29,7 +29,7 @@ const Renderer = imports.core.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
 
-var Klass = GObject.registerClass({
+export const Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
@@ -85,4 +85,4 @@ var Klass = GObject.registerClass({
     }
 });
 
-var mimeTypes = TotemMimeTypes.videoTypes;
+export const mimeTypes = TotemMimeTypes.videoTypes;

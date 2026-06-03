@@ -38,7 +38,7 @@ function _isAvailable() {
 
 const Renderer = imports.core.renderer;
 
-var Klass = _isAvailable() ? GObject.registerClass({
+export const Klass = _isAvailable() ? GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
@@ -72,7 +72,7 @@ var Klass = _isAvailable() ? GObject.registerClass({
     }
 }) : undefined;
 
-var mimeTypes = [];
+export let mimeTypes = [];
 if (_isAvailable())
     mimeTypes = [
         'text/html'

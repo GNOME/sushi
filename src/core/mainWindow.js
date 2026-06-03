@@ -32,7 +32,7 @@ import GObject from 'gi://GObject';
 import Sushi from 'gi://Sushi';
 
 const Constants = imports.util.constants;
-const {ErrorRenderer} = imports.viewers.error;
+import {ErrorRenderer} from '../viewers/error.js';
 import * as MimeHandler from './mimeHandler.js';
 const Renderer = imports.core.renderer;
 const {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} = imports.util.customIcon;

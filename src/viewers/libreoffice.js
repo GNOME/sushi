@@ -6,14 +6,14 @@ try {
 } catch(e) {
 }
 
-var isAvailable = function() {
+export const isAvailable = function() {
     return LOKDocView !== undefined;
 };
 
 const Constants = imports.util.constants;
 const Renderer = imports.core.renderer;
 
-var Klass = GObject.registerClass({
+export const Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
@@ -91,7 +91,7 @@ var Klass = GObject.registerClass({
     }
 });
 
-var officeTypes = [
+export const officeTypes = [
     'application/vnd.oasis.opendocument.text',
     'application/vnd.oasis.opendocument.presentation',
     'application/vnd.oasis.opendocument.spreadsheet',
@@ -104,6 +104,6 @@ var officeTypes = [
     'application/rtf'
 ];
 
-var mimeTypes = [];
+export let mimeTypes = [];
 if (isAvailable())
     mimeTypes = officeTypes;

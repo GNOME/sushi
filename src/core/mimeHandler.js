@@ -26,19 +26,47 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
-const FallbackRenderer = imports.viewers.fallback;
+import {FallbackRenderer} from '../viewers/fallback.js';
 
-var renderers = [];
+/** @param {Gio.File[]} sources */
+const loadRenderers = async (sources) => {
+    const fileNames = new Set(sources.flatMap(enumerateRenderers).map(fileInfo => fileInfo.get_name()));
+    const renderers = await Promise.all([...fileNames].map(fileName => loadRendererModule(fileName, sources)));
+    return renderers.filter(renderer => Object.hasOwn(renderer, 'mimeTypes'));
+};
 
-//Patch import path
-let localPath = GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi']);
-imports.searchPath.push(localPath);
-
-for (let i in imports.viewers) {
-    if (imports.viewers[i].hasOwnProperty('mimeTypes')) {
-        renderers.push(imports.viewers[i]);
+/** @param {Gio.File} source
+ *  @returns {Gio.FileInfo[]} */
+const enumerateRenderers = (source) => {
+    try {
+        return [...source.enumerate_children("standard::*", Gio.FileQueryInfoFlags.NONE, null)];
+    } catch (error) {
+        if (error instanceof GLib.Error && error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+            return [];
+        else
+            throw error;
     }
-}
+};
+
+/** @param {string} fileName
+ *  @param {Gio.File[]} sources */
+const loadRendererModule = async (fileName, sources) => {
+    const errors = [];
+    for (const source of sources) {
+        try {
+            const uri = source.get_child(fileName).get_uri();
+            return await import(uri);
+        } catch (error) {
+            errors.push(error);
+        }
+    }
+    throw new AggregateError(errors, `failed to load renderer '${fileName}':\n${errors.map(e => `* ${e}`).join('\n')}`);
+};
+
+// Patch import path
+const localPath = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi', 'viewers']));
+const builtinPath = Gio.File.new_for_uri(import.meta.url).get_parent().get_parent().get_child('viewers');
+const renderers = await loadRenderers([localPath, builtinPath]);
 
 export function getKlass(mime) {
     let renderer = renderers.find((r) => {
@@ -62,5 +90,5 @@ export function getKlass(mime) {
         return renderer.Klass;
 
     // finally, resort to the fallback renderer
-    return FallbackRenderer.FallbackRenderer;
+    return FallbackRenderer;
 }

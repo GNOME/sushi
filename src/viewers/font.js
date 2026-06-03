@@ -27,7 +27,7 @@ const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
 const Renderer = imports.core.renderer;
 
-var Klass = GObject.registerClass({
+export const Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
@@ -54,7 +54,7 @@ var Klass = GObject.registerClass({
     }
 });
 
-var mimeTypes = [
+export const mimeTypes = [
     'application/x-font-ttf',
     'application/x-font-otf',
     'application/x-font-pcf',
