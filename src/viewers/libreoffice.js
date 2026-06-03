@@ -1,8 +1,10 @@
-const {GLib, GObject, Gtk} = imports.gi;
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
-var LOKDocView;
+let LOKDocView;
 try {
-    LOKDocView = imports.gi.LOKDocView;
+    LOKDocView = (await import('gi://LOKDocView')).default;
 } catch(e) {
 }
 
@@ -13,17 +15,21 @@ export const isAvailable = function() {
 import {VIEW_MIN} from '../util/constants.js';
 import {Renderer} from '../core/renderer.js';
 
-export const Klass = GObject.registerClass({
-    Implements: [Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class LibreofficeRenderer extends Gtk.ScrolledWindow {
+export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     get ready() {
         return !!this._ready;
     }
@@ -89,7 +95,7 @@ export const Klass = GObject.registerClass({
         this._view.zoom_level = zoomLevel;
         this._lastAllocWidth = allocWidth;
     }
-});
+};
 
 export const officeTypes = [
     'application/vnd.oasis.opendocument.text',
@@ -104,6 +110,4 @@ export const officeTypes = [
     'application/rtf'
 ];
 
-export let mimeTypes = [];
-if (isAvailable())
-    mimeTypes = officeTypes;
+export const mimeTypes = isAvailable() ? officeTypes : [];
