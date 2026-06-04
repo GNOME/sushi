@@ -25,7 +25,7 @@
 
 const {Adw, Gdk, Gio, GLib, GObject, Gtk, GtkSource} = imports.gi;
 
-const Renderer = imports.ui.renderer;
+const Renderer = imports.core.renderer;
 
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],

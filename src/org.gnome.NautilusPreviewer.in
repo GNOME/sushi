@@ -6,4 +6,4 @@ imports.package.init({
     prefix: '@prefix@',
     libdir: '@libdir@',
 });
-imports.package.run(imports.ui.main);
+imports.package.run(imports.core.main);

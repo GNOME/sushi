@@ -26,7 +26,7 @@
 const {Adw, Gdk, Gio, GLib, GObject, Gtk, Pango} = imports.gi;
 const Gettext = imports.gettext;
 
-const Renderer = imports.ui.renderer;
+const Renderer = imports.core.renderer;
 const {getCustomIcon} = imports.util.customIcon;
 
 function _getDeepCountAttrs() {

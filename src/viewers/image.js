@@ -24,7 +24,7 @@
  */
 
 const {Gdk, Gio, GLib, GObject, Gtk, Gly, GlyGtk4} = imports.gi;
-const Renderer = imports.ui.renderer;
+const Renderer = imports.core.renderer;
 
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');

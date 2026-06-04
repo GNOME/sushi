@@ -11,7 +11,7 @@ var isAvailable = function() {
 };
 
 const Constants = imports.util.constants;
-const Renderer = imports.ui.renderer;
+const Renderer = imports.core.renderer;
 
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],

@@ -36,7 +36,7 @@ function _isAvailable() {
     return WebKit !== undefined;
 }
 
-const Renderer = imports.ui.renderer;
+const Renderer = imports.core.renderer;
 
 var Klass = _isAvailable() ? GObject.registerClass({
     Implements: [Renderer.Renderer],

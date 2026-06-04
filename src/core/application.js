@@ -27,7 +27,7 @@ const {Adw, Gio, GLib, GObject, Gtk} = imports.gi;
 
 const ByteArray = imports.byteArray;
 
-const MainWindow = imports.ui.mainWindow;
+const MainWindow = imports.core.mainWindow;
 
 var NautilusPreviewerSkeleton = class {
     constructor(application, resource) {

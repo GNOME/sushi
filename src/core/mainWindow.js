@@ -27,8 +27,8 @@ const {Adw, Gdk, Gio, GLib, GObject, Gtk, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
 const {ErrorRenderer} = imports.viewers.error;
-const MimeHandler = imports.ui.mimeHandler;
-const Renderer = imports.ui.renderer;
+const MimeHandler = imports.core.mimeHandler;
+const Renderer = imports.core.renderer;
 const {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} = imports.util.customIcon;
 
 const WINDOW_MAX_W = 800;

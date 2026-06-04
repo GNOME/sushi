@@ -47,7 +47,7 @@ pkg.require({
 
 const {Gio, GLib} = imports.gi;
 
-const Application = imports.ui.application;
+const Application = imports.core.application;
 
 function main(argv) {
     let application = new Application.Application({ application_id: pkg.name,

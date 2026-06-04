@@ -25,7 +25,7 @@
 
 const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
-const Renderer = imports.ui.renderer;
+const Renderer = imports.core.renderer;
 
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],

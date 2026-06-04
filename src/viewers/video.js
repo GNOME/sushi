@@ -25,7 +25,7 @@
 
 const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
-const Renderer = imports.ui.renderer;
+const Renderer = imports.core.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
 

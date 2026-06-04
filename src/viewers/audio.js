@@ -25,7 +25,7 @@
 
 const {Adw, GLib, GObject, Gdk, Gio, Gly, GlyGtk4, Gst, GstTag, Gtk, Soup, Sushi} = imports.gi;
 const Constants = imports.util.constants;
-const Renderer = imports.ui.renderer;
+const Renderer = imports.core.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
 const { CoverPaintable } = imports.widgets.coverPaintable;
 

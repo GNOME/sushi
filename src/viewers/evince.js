@@ -26,7 +26,7 @@
 const {Adw, PapersDocument, PapersView, Gio, GioUnix, GObject, Gtk, Sushi} = imports.gi;
 
 const Constants = imports.util.constants;
-const Renderer = imports.ui.renderer;
+const Renderer = imports.core.renderer;
 const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
 
 const Libreoffice = imports.viewers.libreoffice;
