@@ -27,7 +27,7 @@ const {GLib, GObject, Gtk, Sushi} = imports.gi;
 
 const Renderer = imports.ui.renderer;
 const TotemMimeTypes = imports.util.totemMimeTypes;
-const { ToolbarOverlay } = imports.ui.widgets.toolbarOverlay;
+const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
 
 var Klass = GObject.registerClass({
     Implements: [Renderer.Renderer],
