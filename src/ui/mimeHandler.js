@@ -25,7 +25,7 @@
 
 const {Gio, GLib} = imports.gi;
 
-const FallbackRenderer = imports.ui.fallbackRenderer;
+const FallbackRenderer = imports.viewers.fallback;
 
 var renderers = [];
 

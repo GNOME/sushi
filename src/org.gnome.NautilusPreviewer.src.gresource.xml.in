@@ -2,7 +2,6 @@
 <gresources>
   <gresource prefix="@object_path@/js">
     <file>ui/application.js</file>
-    <file>ui/fallbackRenderer.js</file>
     <file>ui/main.js</file>
     <file>ui/mainWindow.js</file>
     <file>ui/mimeHandler.js</file>
@@ -15,6 +14,7 @@
     <file>viewers/audio.js</file>
     <file>viewers/error.js</file>
     <file>viewers/evince.js</file>
+    <file>viewers/fallback.js</file>
     <file>viewers/font.js</file>
     <file>viewers/html.js</file>
     <file>viewers/image.js</file>
