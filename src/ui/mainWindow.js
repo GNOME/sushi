@@ -29,7 +29,6 @@ const Constants = imports.util.constants;
 const {ErrorRenderer} = imports.viewers.error;
 const MimeHandler = imports.ui.mimeHandler;
 const Renderer = imports.ui.renderer;
-const Utils = imports.ui.utils;
 const {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} = imports.util.customIcon;
 
 const WINDOW_MAX_W = 800;
@@ -52,6 +51,39 @@ function _getDecorationLayout() {
 
     return [leftGroup.join(','), rightGroup.join(',')].join(':');
 };
+
+function _getScaledSize(baseSize, allocSize, upscale) {
+    let allocW = allocSize[0];
+    let allocH = allocSize[1];
+    let width = baseSize[0];
+    let height = baseSize[1];
+    let scale = 1.0;
+
+    if (((width <= allocW && height <= allocH) && upscale) ||
+        (width > allocW && height > allocH)) {
+        /* up/downscale both directions */
+        let allocRatio = allocW / allocH;
+        let baseRatio = width / height;
+
+        if (baseRatio > allocRatio)
+            scale = allocW / width;
+        else
+            scale = allocH / height;
+    } else if (width > allocW &&
+            height <= allocH) {
+        /* downscale x */
+        scale = allocW / width;
+    } else if (width <= allocW &&
+            height > allocH) {
+        /* downscale y */
+        scale = allocH / height;
+    }
+
+    width *= scale;
+    height *= scale;
+
+    return [ Math.floor(width), Math.floor(height) ];
+}
 
 var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationWindow {
     _init(application) {
@@ -179,9 +211,9 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         else if (resizePolicy == Renderer.ResizePolicy.NAT_SIZE)
             windowSize = natSize;
         else if (resizePolicy == Renderer.ResizePolicy.SCALED)
-            windowSize = Utils.getScaledSize(natSize, maxSize, false);
+            windowSize = _getScaledSize(natSize, maxSize, false);
         else if (resizePolicy == Renderer.ResizePolicy.STRETCHED)
-            windowSize = Utils.getScaledSize(natSize, maxSize, true);
+            windowSize = _getScaledSize(natSize, maxSize, true);
 
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
         windowSize[1] += naturalTitlebarSize.height;

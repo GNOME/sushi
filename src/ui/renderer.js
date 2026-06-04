@@ -1,7 +1,6 @@
 const {Adw, GLib, GObject, Gtk} = imports.gi;
 
 const Constants = imports.util.constants;
-const Utils = imports.ui.utils;
 
 var ResizePolicy = {
     MAX_SIZE: 0,
