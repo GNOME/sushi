@@ -45,7 +45,7 @@ let wrapper = Gio.DBusProxy.makeProxyWrapper(ByteArray.toString(bytes.toArray())
 let proxy;
 try {
     proxy = new wrapper(
-        Gio.DBus.session, '@app_id@', '@object_path@');
+        Gio.DBus.session, '@app_id@', '@relative_object_path@');
 } catch(e) {
     logError(e, 'Unable to create DBus proxy for NautilusPreviewer');
     System.exit(1);

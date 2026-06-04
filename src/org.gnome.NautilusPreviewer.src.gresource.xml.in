@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="@object_path@/js">
+  <gresource prefix="@relative_object_path@/js">
     <file>core/application.js</file>
     <file>core/main.js</file>
     <file>core/mainWindow.js</file>
@@ -22,7 +22,7 @@
     <file>widgets/coverPaintable.js</file>
     <file>widgets/toolbarOverlay.js</file>
   </gresource>
-  <gresource prefix="@object_path@">
+  <gresource prefix="@relative_object_path@">
     <file>style.css</file>
   </gresource>
 </gresources>

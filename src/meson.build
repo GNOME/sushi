@@ -2,7 +2,7 @@
 subdir('libsushi')
 
 conf_src = configuration_data()
-conf_src.set('object_path', object_path)
+conf_src.set('relative_object_path', relative_object_path)
 
 sushi_src_resources = gnome.compile_resources(
     '@0@.src'.format(app_id),
@@ -24,7 +24,7 @@ conf.set('prefix', get_option('prefix'))
 conf.set('libdir', libdir)
 conf.set('pkgdatadir', pkgdatadir)
 conf.set('app_id', app_id)
-conf.set('object_path', object_path)
+conf.set('relative_object_path', relative_object_path)
 
 nautilus_previewer_bin = configure_file(
     input: 'org.gnome.NautilusPreviewer.in',
