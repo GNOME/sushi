@@ -1,8 +1,17 @@
 # Compile libsushi and its introspection data
 subdir('libsushi')
 
+blueprints = custom_target('blueprints',
+  input: files(
+    'ui/fallback.blp',
+  ),
+  output: '.',
+  command: [blueprint_cmd, 'batch-compile', '--minify', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
+)
+
 conf_src = configuration_data()
 conf_src.set('relative_object_path', relative_object_path)
+conf_src.set('fixed_object_path', fixed_object_path)
 
 sushi_src_resources = gnome.compile_resources(
     '@0@.src'.format(app_id),
@@ -11,6 +20,7 @@ sushi_src_resources = gnome.compile_resources(
       output: '@BASENAME@',
       configuration: conf_src
     ),
+    dependencies: [blueprints],
     gresource_bundle: true,
     install: true,
     install_dir: pkgdatadir,

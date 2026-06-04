@@ -168,6 +168,8 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
 
 var FallbackRenderer = GObject.registerClass({
     Implements: [Renderer.Renderer],
+    Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
+    Children: ['image', 'title_label', 'size_label', 'date_label', 'type_label', 'spinner'],
     Properties: {
         fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
                                               GObject.ParamFlags.READABLE,
@@ -186,50 +188,16 @@ var FallbackRenderer = GObject.registerClass({
     }
 
     _init(file, fileInfo) {
-        super._init({ orientation: Gtk.Orientation.HORIZONTAL,
-                      spacing: 6 });
+        super._init();
 
-        this._image = new Gtk.Picture ({ width_request: 256,
-                                         height_request: 200 });
+        this._image = this.image;
+        this._titleLabel = this.title_label;
+        this._sizeLabel = this.size_label;
+        this._dateLabel = this.date_label;
+        this._typeLabel = this.type_label;
+        this._spinner = this.spinner;
 
         this._updateIcon(new Gio.ThemedIcon({ name: 'text-x-generic' }));
-        this.append(this._image);
-
-        let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                                 spacing: 6,
-                                 margin_top: 12,
-                                 margin_start: 12,
-                                 margin_end: 12,
-                                 margin_bottom: 12,
-                                 valign: Gtk.Align.CENTER,
-                                 vexpand: true});
-        this.append(vbox);
-
-        let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
-                                 spacing: 6});
-        vbox.append(hbox);
-
-        this._titleLabel = new Gtk.Label({ max_width_chars: 48,
-                                           ellipsize: Pango.EllipsizeMode.MIDDLE });
-        this._titleLabel.set_halign(Gtk.Align.START);
-        this._titleLabel.add_css_class('title-3');
-        hbox.append(this._titleLabel);
-
-        this._spinner = new Adw.Spinner();
-        hbox.append(this._spinner);
-
-        this._typeLabel = new Gtk.Label();
-        this._typeLabel.set_visible(false);
-        this._typeLabel.set_halign(Gtk.Align.START);
-        vbox.append(this._typeLabel);
-
-        this._sizeLabel = new Gtk.Label();
-        this._sizeLabel.set_halign(Gtk.Align.START);
-        vbox.append(this._sizeLabel);
-
-        this._dateLabel = new Gtk.Label();
-        this._dateLabel.set_halign(Gtk.Align.START);
-        vbox.append(this._dateLabel);
 
         this.cancellable = new Gio.Cancellable();
         loadFile(file, fileInfo, this.cancellable, this._onFileInfoUpdated.bind(this));

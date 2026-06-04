@@ -1,0 +1,50 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $Gjs_FallbackRenderer: Gtk.Box {
+    orientation: horizontal;
+    spacing: 6;
+
+    Gtk.Picture image {
+        width-request: 256;
+        height-request: 200;
+    }
+
+    Gtk.Box {
+        orientation: vertical;
+        spacing: 6;
+        margin-top: 12;
+        margin-start: 12;
+        margin-end: 12;
+        margin-bottom: 12;
+        valign: center;
+        vexpand: true;
+
+        Gtk.Box {
+            orientation: horizontal;
+            spacing: 6;
+
+            Gtk.Label title_label {
+                max-width-chars: 48;
+                ellipsize: middle;
+                halign: start;
+                styles ["title-3"]
+            }
+
+            Adw.Spinner spinner {}
+        }
+
+        Gtk.Label type_label {
+            halign: start;
+            visible: false;
+        }
+
+        Gtk.Label size_label {
+            halign: start;
+        }
+
+        Gtk.Label date_label {
+            halign: start;
+        }
+    }
+}

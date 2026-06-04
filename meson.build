@@ -27,6 +27,8 @@ libadwaita_dep = dependency('libadwaita-1')
 glycin_dep = dependency('glycin-2')
 glycin_gtk_dep = dependency('glycin-gtk4-2')
 
+blueprint_cmd = find_program('blueprint-compiler', required : true, version : '>= 0.19.0')
+
 bindir = join_paths(get_option('prefix'), get_option('bindir'))
 datadir = join_paths(get_option('prefix'), get_option('datadir'))
 libdir = join_paths(get_option('prefix'), get_option('libdir'))
@@ -47,6 +49,7 @@ else
   app_id = base_name + 'Devel'
 endif
 relative_object_path = '/@0@'.format(app_id.replace('.', '/'))
+fixed_object_path = '/@0@'.format(base_name.replace('.', '/'))
 
 i18n = import('i18n')
 

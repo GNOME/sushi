@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
+  <!-- Code -->
   <gresource prefix="@relative_object_path@/js">
     <file>core/application.js</file>
     <file>core/main.js</file>
@@ -21,6 +22,10 @@
     <file>viewers/video.js</file>
     <file>widgets/coverPaintable.js</file>
     <file>widgets/toolbarOverlay.js</file>
+  </gresource>
+  <gresource prefix="@fixed_object_path@">
+    <!-- UI -->
+    <file>ui/fallback.ui</file>
   </gresource>
   <gresource prefix="@relative_object_path@">
     <file>style.css</file>
