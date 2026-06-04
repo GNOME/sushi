@@ -104,7 +104,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
 
         this._openButton = new Gtk.Button({ label: _("Open") });
         this._openButton.connect('clicked', this._onFileOpenClicked.bind(this));
-        this._titlebar.pack_end(this._openButton);
+        this._titlebar.pack_start(this._openButton);
 
         this._defineActions();
     }
@@ -265,7 +265,7 @@ var MainWindow = GObject.registerClass(class MainWindow extends Adw.ApplicationW
         this._renderer.expand = true;
         this._toolbar_view.set_content(this._renderer);
 
-        this._fullscreen_button.set_visible(this._renderer.canFullscreen);
+        this._fullscreen_button.set_sensitive(this._renderer.canFullscreen);
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
     }
 
