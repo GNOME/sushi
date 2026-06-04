@@ -44,7 +44,7 @@ const getCustomIconMetadataUri = (file, fileInfo) => {
     const uri = fileInfo.get_attribute_string(METADATA_KEY_CUSTOM_ICON);
     if (uri != null && isUriRelative(uri)) {
         const directoryUri = file.get_uri();
-        return GLib.build_filename(directoryUri, uri);
+        return GLib.build_filenamev([directoryUri, uri]);
     }
     return uri;
 };
