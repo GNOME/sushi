@@ -1,10 +1,13 @@
 include:
   - project: 'gnome/citemplates'
     file: 'templates/default-rules.yml'
+  - project: "Infrastructure/freedesktop-ci-templates"
+    file: "templates/fedora.yml"
   - project: "gnome/citemplates"
     file: "flatpak/flatpak_ci_initiative.yml"
   - component: "gitlab.gnome.org/GNOME/citemplates/release-service@master"
     inputs:
+      job-stage: release
       dist-job-name: "flatpak@x86_64"
       tarball-artifact-path: "${TARBALL_ARTIFACT_PATH}"
 
@@ -18,6 +21,47 @@ variables:
     APP_ID: "org.gnome.NautilusPreviewerDevel"
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
     BUNDLE: "sushi-dev.flatpak"
+
+stages:
+  - image
+  - review
+  - test
+  - deploy
+  - release
+
+.fedora:
+  variables:
+    FDO_DISTRIBUTION_VERSION: rawhide
+    BASE_TAG: '2026-06-05.0'
+    FDO_DISTRIBUTION_COMPRESSION_FORMAT: zstd:chunked
+    FDO_DISTRIBUTION_PACKAGES:
+      blueprint-compiler
+      meson
+
+.fedora-x86_64:
+  extends:
+    - .fedora
+  variables:
+    FDO_DISTRIBUTION_TAG: "x86_64-$BASE_TAG"
+    FDO_UPSTREAM_REPO: gnome/sushi
+  needs:
+    - job: "update-fedora-image@x86_64"
+      optional: true
+
+update-fedora-image@x86_64:
+    extends:
+      - .fdo.container-build@fedora
+      - .fedora-x86_64
+    stage: image
+    needs: []
+    variables:
+      GIT_STRATEGY: none
+    rules:
+      - changes:
+        - .gitlab-ci.yml
+        - .gitlab/**/*
+      - if: $CI_PROJECT_NAMESPACE != "GNOME"
+        when: never
 
 flatpak@x86_64:
   extends:
