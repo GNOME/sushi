@@ -5,21 +5,28 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
-const {Adw, Gdk, GLib, GObject, Gtk, Pango} = imports.gi;
+import Adw from 'gi://Adw';
+import Gdk from 'gi://Gdk';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
 import {Renderer,ResizePolicy} from '../core/renderer.js';
 
-const Klass = GObject.registerClass({
-    Implements: [Renderer],
-    Properties: {
-        fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                              GObject.ParamFlags.READABLE,
-                                              false),
-        ready: GObject.ParamSpec.boolean('ready', '', '',
-                                         GObject.ParamFlags.READABLE,
-                                         false)
-    },
-}, class ErrorRenderer extends Adw.Bin {
+export class ErrorRenderer extends Adw.Bin {
+    static {
+        GObject.registerClass({
+            Implements: [Renderer],
+            Properties: {
+                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
+                                                      GObject.ParamFlags.READABLE,
+                                                      false),
+                ready: GObject.ParamSpec.boolean('ready', '', '',
+                                                 GObject.ParamFlags.READABLE,
+                                                 false)
+            },
+        }, this);
+    }
+
     _init(error) {
         super._init();
 
@@ -57,6 +64,4 @@ const Klass = GObject.registerClass({
     get resizePolicy() {
         return ResizePolicy.NAT_SIZE;
     }
-});
-
-export const ErrorRenderer = Klass;
+}
