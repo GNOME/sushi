@@ -63,6 +63,14 @@ update-fedora-image@x86_64:
       - if: $CI_PROJECT_NAMESPACE != "GNOME"
         when: never
 
+potfile:
+  extends:
+    - .fdo.distribution-image@fedora
+    - .fedora-x86_64
+  stage: review
+  script:
+    - build-aux/check-potfiles.sh
+
 flatpak@x86_64:
   extends:
     - ".flatpak@x86_64"
