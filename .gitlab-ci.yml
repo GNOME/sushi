@@ -71,6 +71,14 @@ potfile:
   script:
     - build-aux/check-potfiles.sh
 
+blueprint-format:
+  extends:
+    - .fdo.distribution-image@fedora
+    - .fedora-x86_64
+  stage: review
+  script:
+    - build-aux/check-blueprint-format.sh
+
 flatpak@x86_64:
   extends:
     - ".flatpak@x86_64"
