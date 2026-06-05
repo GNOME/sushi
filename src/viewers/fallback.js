@@ -153,12 +153,12 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
     _sendUpdate();
 };
 
-export class FallbackRenderer extends Gtk.Box {
+export class FallbackRenderer extends Adw.Bin {
     static {
         GObject.registerClass({
             Implements: [Renderer],
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
-            Children: ['image', 'title_label', 'size_label', 'date_label', 'type_label', 'spinner'],
+            InternalChildren: ['statusPage', 'spinner', 'sizeLabel', 'dateLabel'],
             Properties: {
                 fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
                                                       GObject.ParamFlags.READABLE,
@@ -181,15 +181,6 @@ export class FallbackRenderer extends Gtk.Box {
     _init(file, fileInfo) {
         super._init();
 
-        this._image = this.image;
-        this._titleLabel = this.title_label;
-        this._sizeLabel = this.size_label;
-        this._dateLabel = this.date_label;
-        this._typeLabel = this.type_label;
-        this._spinner = this.spinner;
-
-        this._updateIcon(new Gio.ThemedIcon({ name: 'text-x-generic' }));
-
         this.cancellable = new Gio.Cancellable();
         loadFile(file, fileInfo, this.cancellable, this._onFileInfoUpdated.bind(this));
 
@@ -198,15 +189,12 @@ export class FallbackRenderer extends Gtk.Box {
 
     _applyLabels(state) {
         let fileName = state.fileInfo.get_display_name();
-        this._titleLabel.set_label(fileName);
+        this._statusPage.set_title(fileName);
 
         if (state.fileInfo.get_file_type() != Gio.FileType.DIRECTORY) {
             let contentType = state.fileInfo.get_content_type();
             let typeDescr = Gio.content_type_get_description(contentType);
-            typeDescr = GLib.markup_escape_text(typeDescr, -1);
-            let typeStr = '<b>' + _("Type") + '  </b>' + typeDescr;
-            this._typeLabel.set_markup(typeStr);
-            this._typeLabel.set_visible(true);
+            this._statusPage.set_description(typeDescr);
         }
 
         let sizeFormatted;
@@ -218,49 +206,41 @@ export class FallbackRenderer extends Gtk.Box {
                 state.fileItems + state.directoryItems).
                 format(state.fileItems + state.directoryItems);
             sizeFormatted = `${GLib.format_size(state.totalSize)}, ${itemsStr}`;
-        } else {
-            sizeFormatted = _("Empty Folder");
+        } else if (!state.loading) {
+            sizeFormatted = _("Empty");
         }
 
-        sizeFormatted = GLib.markup_escape_text(sizeFormatted, -1);
-        let sizeStr = '<b>' + _("Size") + '  </b>' + sizeFormatted;
-        this._sizeLabel.set_markup(sizeStr);
+        if (sizeFormatted)
+        {
+            this._sizeLabel.set_label(sizeFormatted);
+        }
 
         let date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
-        let dateFormatted = date.format('%x %X');
-        dateFormatted = GLib.markup_escape_text(dateFormatted, -1);
-        let dateStr = '<b>' + _("Modified") + '  </b>' + dateFormatted;
-        this._dateLabel.set_markup(dateStr);
+        this._dateLabel.set_label(date.format('%x %X'));
     }
 
     _applyIcon(state) {
         const customIcon = getCustomIcon(state.file, state.fileInfo);
         const icon = customIcon ?? state.fileInfo.get_icon();
-        this._updateIcon(icon);
-    }
-
-    _updateIcon(icon) {
-        let iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
-        let paintable = iconTheme.lookup_by_gicon(icon, 256, this._image.scale_factor, 0, 0);
+        const iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
+        const paintable = iconTheme.lookup_by_gicon(icon, 256, this.scale_factor, 0, 0);
         if (paintable)
-            this._image.set_paintable (paintable);
+            this._statusPage.set_paintable (paintable);
+        else
+            this._statusPage.set_icon_name('image-missing-symbolic');
     }
 
     _onFileInfoUpdated(state) {
         if (!state.loading) {
-            this._spinner.set_visible(false);
+            this._spinner.set_visible(false)
         }
 
         this._applyIcon(state);
         this._applyLabels(state);
     }
 
-    get resizable() {
-        return false;
-    }
-
     get resizePolicy() {
-        return ResizePolicy.NAT_SIZE;
+        return ResizePolicy.STATUS_PAGE;
     }
 
     get topBarStyle() {
