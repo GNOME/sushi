@@ -41,9 +41,9 @@ export class ErrorRenderer extends Adw.Bin {
         this._status_page.set_icon_name('image-missing-symbolic');
         this._status_page.set_description(first_line + (this._error_msg ? "…" : ""));
 
-        var copy_error_button = new Gtk.Button({ label: _("Copy Full Error Message"),
-                                                  halign: Gtk.Align.CENTER,
-                                                  css_classes: ["pill"] })
+        const copy_error_button = new Gtk.Button({ label: _("Copy Full Error Message"),
+                                                   halign: Gtk.Align.CENTER,
+                                                   css_classes: ["pill"] })
         copy_error_button.connect('clicked', () => {
             const clipboard = Gdk.Display.get_default()?.get_clipboard();
             clipboard?.set(this._error_msg);
