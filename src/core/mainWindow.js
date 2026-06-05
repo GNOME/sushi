@@ -139,7 +139,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.application.set_accels_for_action('win.fullscreen', ['f', 'F11']);
         this.add_action(fullscreen);
 
-        var _addSelectAction = ((name, accel, direction) => {
+        const addSelectAction = ((name, accel, direction) => {
             let action = new Gio.SimpleAction({ name: name });
             action.connect('activate', () => {
                 this.application.emitSelectionEvent(direction);
@@ -149,10 +149,10 @@ export class MainWindow extends Adw.ApplicationWindow {
             this.add_action(action);
         });
 
-        _addSelectAction('select-left', 'Left', Gtk.DirectionType.LEFT);
-        _addSelectAction('select-right', 'Right', Gtk.DirectionType.RIGHT);
-        _addSelectAction('select-up', 'Up', Gtk.DirectionType.UP);
-        _addSelectAction('select-down', 'Down', Gtk.DirectionType.DOWN);
+        addSelectAction('select-left', 'Left', Gtk.DirectionType.LEFT);
+        addSelectAction('select-right', 'Right', Gtk.DirectionType.RIGHT);
+        addSelectAction('select-up', 'Up', Gtk.DirectionType.UP);
+        addSelectAction('select-down', 'Down', Gtk.DirectionType.DOWN);
     }
 
     /** @param {GLib.Error} error
