@@ -1,53 +1,78 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $Gjs_FallbackRenderer: Gtk.Box {
-  orientation: horizontal;
-  spacing: 6;
+template $Gjs_FallbackRenderer: Adw.Bin {
+  Adw.StatusPage statusPage {
+    paintable: Adw.SpinnerPaintable {};
 
-  Gtk.Picture image {
-    width-request: 256;
-    height-request: 200;
-  }
+    styles [
+      "compact",
+    ]
 
-  Gtk.Box {
-    orientation: vertical;
-    spacing: 6;
-    margin-top: 12;
-    margin-start: 12;
-    margin-end: 12;
-    margin-bottom: 12;
-    valign: center;
-    vexpand: true;
-
-    Gtk.Box {
-      orientation: horizontal;
+    child: Box {
+      orientation: vertical;
       spacing: 6;
+      halign: center;
 
-      Gtk.Label title_label {
-        max-width-chars: 48;
-        ellipsize: middle;
-        halign: start;
+      Grid {
+        column-spacing: 6;
+        row-spacing: 6;
 
-        styles [
-          "title-3",
-        ]
+        Label {
+          layout {
+            column: 0;
+            row: 0;
+          }
+
+          halign: start;
+          label: _("Size");
+
+          styles [
+            "dimmed",
+          ]
+        }
+
+        Box {
+          layout {
+            column: 1;
+            row: 0;
+          }
+
+          spacing: 6;
+
+          Adw.Spinner spinner {}
+
+          Label sizeLabel {
+            xalign: 0.0;
+          }
+        }
+
+        Label {
+          layout {
+            column: 0;
+            row: 1;
+          }
+
+          halign: start;
+          label: _("Modified");
+
+          styles [
+            "dimmed",
+          ]
+        }
+
+        Label dateLabel {
+          layout {
+            column: 1;
+            row: 1;
+          }
+
+          /* Reserve more space than needed to prevent resizing
+           * of parent box by changing size label */
+          width-chars: 25;
+          xalign: 0.0;
+        }
       }
-
-      Adw.Spinner spinner {}
-    }
-
-    Gtk.Label type_label {
-      halign: start;
-      visible: false;
-    }
-
-    Gtk.Label size_label {
-      halign: start;
-    }
-
-    Gtk.Label date_label {
-      halign: start;
-    }
+    };
   }
 }
