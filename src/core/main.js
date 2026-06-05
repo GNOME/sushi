@@ -29,7 +29,6 @@ pkg.require({
     PapersDocument: '4.0',
     PapersView: '4.0',
     Gdk: '4.0',
-    GdkPixbuf: '2.0',
     Gio: '2.0',
     GioUnix: '2.0',
     GLib: '2.0',

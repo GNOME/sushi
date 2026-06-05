@@ -48,7 +48,6 @@ libsushi_gir = gnome.generate_gir(
   identifier_prefix: 'Sushi',
   includes: [
     'GstTag-1.0',
-    'GdkPixbuf-2.0',
     'Gtk-4.0',
     'PapersDocument-4.0',
     'PapersView-4.0',
