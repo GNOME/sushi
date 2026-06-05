@@ -8,27 +8,27 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:15+0000\n"
-"PO-Revision-Date: 2020-10-26 19:33+0200\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-06-04 09:39+0000\n"
+"PO-Revision-Date: 2026-06-05 14:36+0200\n"
+"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Poskytuje příslušenství pro rychlé náhledy různých druhů souborů"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -37,11 +37,11 @@ msgstr ""
 "Jedná se o nezávislou komponentu, která se začleňuje do aplikace Soubory "
 "GNOME (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
+#: src/ui/fallbackRenderer.js:248
 msgid "Type"
 msgstr "Typ"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:258
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -49,43 +49,47 @@ msgstr[0] "%d položka"
 msgstr[1] "%d položky"
 msgstr[2] "%d položek"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:263
 msgid "Empty Folder"
 msgstr "Prázdná složka"
 
-#: src/ui/fallbackRenderer.js:259
+#: src/ui/fallbackRenderer.js:267
 msgid "Size"
 msgstr "Velikost"
 
-#: src/ui/fallbackRenderer.js:264
+#: src/ui/fallbackRenderer.js:273
 msgid "Modified"
 msgstr "Změněno"
 
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Nelze zobrazit %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Otevřít pomocí %s"
-
-#: src/ui/mainWindow.js:348
+#: src/ui/mainWindow.js:73
 msgid "Open"
 msgstr "Otevřít"
 
-#: src/viewers/audio.js:359
+#: src/viewers/audio.js:347
 msgid "from"
 msgstr "z"
 
-#: src/viewers/audio.js:364
+#: src/viewers/audio.js:353
 msgid "by"
 msgstr "od"
 
-#: src/viewers/evince.js:94
+#: src/viewers/error.js:33
+msgid "Preview Failed"
+msgstr "Náhled selhal"
+
+#: src/viewers/error.js:37
+msgid "Copy Full Error Message"
+msgstr "Kopírovat celou chybovou zprávu"
+
+#: src/viewers/evince.js:217
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d z %d"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Nelze zobrazit %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Otevřít pomocí %s"
