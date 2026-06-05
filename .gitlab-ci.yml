@@ -79,6 +79,14 @@ blueprint-format:
   script:
     - build-aux/check-blueprint-format.sh
 
+meson-format:
+  extends:
+    - .fdo.distribution-image@fedora
+    - .fedora-x86_64
+  stage: review
+  script:
+    - build-aux/check-meson-format.sh
+
 flatpak@x86_64:
   extends:
     - ".flatpak@x86_64"

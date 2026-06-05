@@ -34,7 +34,7 @@ libsushi = shared_library(
     libsushi_sources,
   ],
   install: true,
-  install_dir: pkglibdir
+  install_dir: pkglibdir,
 )
 
 libsushi_gir = gnome.generate_gir(

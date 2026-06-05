@@ -1,13 +1,12 @@
-project(
-  'sushi',
-  'c',
-  version: '51.alpha',
-  meson_version: '>=0.58.0'
-)
+project('sushi', 'c', version: '51.alpha', meson_version: '>=0.58.0')
 
 gnome = import('gnome')
 
-fribidi_dep = dependency('fribidi', version: '>= 1.0.6', default_options: ['docs=false'])
+fribidi_dep = dependency(
+  'fribidi',
+  version: '>= 1.0.6',
+  default_options: ['docs=false'],
+)
 papers_document_dep = dependency('papers-document-4.0')
 papers_view_dep = dependency('papers-view-4.0')
 freetype_dep = dependency('freetype2')
@@ -27,7 +26,11 @@ libadwaita_dep = dependency('libadwaita-1')
 glycin_dep = dependency('glycin-2')
 glycin_gtk_dep = dependency('glycin-gtk4-2')
 
-blueprint_cmd = find_program('blueprint-compiler', required : true, version : '>= 0.19.0')
+blueprint_cmd = find_program(
+  'blueprint-compiler',
+  required: true,
+  version: '>= 0.19.0',
+)
 
 bindir = join_paths(get_option('prefix'), get_option('bindir'))
 datadir = join_paths(get_option('prefix'), get_option('datadir'))
