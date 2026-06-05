@@ -191,11 +191,9 @@ export class FallbackRenderer extends Adw.Bin {
         let fileName = state.fileInfo.get_display_name();
         this._statusPage.set_title(fileName);
 
-        if (state.fileInfo.get_file_type() != Gio.FileType.DIRECTORY) {
-            let contentType = state.fileInfo.get_content_type();
-            let typeDescr = Gio.content_type_get_description(contentType);
-            this._statusPage.set_description(typeDescr);
-        }
+        let contentType = state.fileInfo.get_content_type();
+        let typeDescr = Gio.content_type_get_description(contentType);
+        this._statusPage.set_description(typeDescr);
 
         let sizeFormatted;
         if (state.fileInfo.get_file_type() != Gio.FileType.DIRECTORY) {
