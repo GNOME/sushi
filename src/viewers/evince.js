@@ -33,7 +33,7 @@ import Sushi from 'gi://Sushi';
 
 import {VIEW_MIN} from '../util/constants.js';
 import {Renderer} from '../core/renderer.js';
-const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
+import {ToolbarOverlay} from '../widgets/toolbarOverlay.js';
 
 import * as Libreoffice from './libreoffice.js';
 

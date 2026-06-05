@@ -4,9 +4,16 @@
  * Authors: Nokse <nokse@posteo.com>
  */
 
-const { Adw, GLib, GObject, Gtk } = imports.gi;
+import Adw from 'gi://Adw';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
-var ToolbarOverlay = GObject.registerClass(class ToolbarOverlay extends Gtk.Overlay {
+export class ToolbarOverlay extends Gtk.Overlay {
+    static {
+        GObject.registerClass(this);
+    }
+
     _init() {
         super._init();
 
@@ -87,4 +94,4 @@ var ToolbarOverlay = GObject.registerClass(class ToolbarOverlay extends Gtk.Over
             this._revealTimeoutId = 0;
         }
     }
-});
+}

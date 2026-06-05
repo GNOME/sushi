@@ -28,7 +28,7 @@ import Gtk from 'gi://Gtk';
 
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
-const { ToolbarOverlay } = imports.widgets.toolbarOverlay;
+import {ToolbarOverlay} from '../widgets/toolbarOverlay.js';
 
 export const Klass = class VideoRenderer extends ToolbarOverlay {
     static {
