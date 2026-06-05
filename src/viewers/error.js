@@ -30,10 +30,11 @@ export class ErrorRenderer extends Adw.Bin {
     _init(error) {
         super._init();
 
-        this._error_msg = error.message;
+        this._error_msg = error.message.trim();
         const index = this._error_msg.indexOf('\n')
-        const first_line = this._error_msg.substring(0, index)
-        const long_error = (this._error_msg[index + 1] != undefined)
+        const first_line = (index >= 0)
+                           ? this._error_msg.substring(0, index)
+                           : this._error_msg;
 
         this._status_page = new Adw.StatusPage({ css_classes: ['compact'] });
 
