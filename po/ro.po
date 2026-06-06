@@ -3,46 +3,72 @@
 # This file is distributed under the same license as the sushi package.
 # Adriannho <raziel_theripper@yahoo.com>, 2015.
 # Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>, 2015.
+# Antonio Marin <gnmer.6qxyg@slmail.me>, 2026.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:15+0000\n"
-"PO-Revision-Date: 2020-12-12 20:47+0200\n"
-"Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
-"Language-Team: Gnome Romanian Translation Team\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-06-05 17:18+0000\n"
+"PO-Revision-Date: 2026-06-06 16:04+0200\n"
+"Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
+"Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Gtranslator 48.0\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr "Oferă o facilitate de a vizualiza rapid tipuri diferite de fișiere"
+msgstr "Oferă posibilitatea de a vedea rapid diferite tipuri de fișiere"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi este un previzualizator de fișiere pentru mediul de desktop GNOME. "
-"Este o componentă independentă care se integrează cu Fișiere GNOME "
-"(Nautilus)."
+"Sushi este o aplicație de previzualizat fișiere pentru interfața GNOME. Este "
+"o componentă independentă care se integrează cu Fișiere GNOME (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
+#: src/core/mainWindow.js:115
+msgid "Open"
+msgstr "Deschide"
+
+#: src/viewers/audio.js:361
+msgid "from"
+msgstr "din"
+
+#: src/viewers/audio.js:367
+msgid "by"
+msgstr "de"
+
+#: src/viewers/error.js:41
+msgid "Preview Failed"
+msgstr "Previzualizare nereușită"
+
+#: src/viewers/error.js:45
+msgid "Copy Full Error Message"
+msgstr "Copiază mesajul de eroare complet"
+
+#: src/viewers/evince.js:230
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d din %d"
+
+#: src/viewers/fallback.js:226
 msgid "Type"
-msgstr "Tip"
+msgstr "Tipul"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/viewers/fallback.js:236
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -50,46 +76,14 @@ msgstr[0] "%d element"
 msgstr[1] "%d elemente"
 msgstr[2] "%d de elemente"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/viewers/fallback.js:241
 msgid "Empty Folder"
 msgstr "Dosar gol"
 
-#: src/ui/fallbackRenderer.js:259
+#: src/viewers/fallback.js:245
 msgid "Size"
 msgstr "Mărime"
 
-#: src/ui/fallbackRenderer.js:264
+#: src/viewers/fallback.js:251
 msgid "Modified"
 msgstr "Modificat"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Nu s-a putut afișa %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Deschide cu %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Deschide"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "din"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "de către"
-
-#: src/viewers/evince.js:94
-#, javascript-format
-msgid "%d of %d"
-msgstr "%d din %d"
-
-#~ msgid "Loading…"
-#~ msgstr "Se încarcă…"
