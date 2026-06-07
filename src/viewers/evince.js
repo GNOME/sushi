@@ -156,9 +156,9 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
 PapersDocument.init();
 const appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
 const papersTypes = appInfo.get_supported_types();
-export const mimeTypes = papersTypes;
-if (!Libreoffice.isAvailable())
-    mimeTypes.push(...Libreoffice.officeTypes);
+export const mimeTypes = Libreoffice.isAvailable()
+    ? papersTypes
+    : [...papersTypes, ...Libreoffice.officeTypes];
 
 class PdfNavigationOverlay extends Gtk.Revealer {
     static {
