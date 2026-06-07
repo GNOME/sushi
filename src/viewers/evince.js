@@ -122,9 +122,11 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
     }
 
     _onLoadJobFinished(job) {
-        let document;
+        const document = job.get_loaded_document();
         try {
-            document = job.get_loaded_document();
+            // the original C function has an out param for the error
+            // which gets converted to an exception by GJS.
+            job.is_succeeded();
         } catch (e) {
             this.emit('error', e);
             return;
