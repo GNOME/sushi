@@ -107,9 +107,9 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
     }
 
     _onDestroy() {
-        if(this._job)
+        if (this._job && this._jobHandlerId > 0)
             this._job.disconnect(this._jobHandlerId);
-        if(this._model)
+        if (this._model && this._modelHandlerId > 0)
             this._model.disconnect(this._modelHandlerId);
     }
 
