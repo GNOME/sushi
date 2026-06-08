@@ -7,40 +7,65 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-23 08:16+0000\n"
-"PO-Revision-Date: 2021-01-06 15:57+0200\n"
-"Last-Translator: Alexey Rubtsov <rushills@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-06-06 12:36+0000\n"
+"PO-Revision-Date: 2026-06-07 18:28+0300\n"
+"Last-Translator: Artur S0 <arturios2005@mail.ru>\n"
 "Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4.2\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Предоставляет возможность быстрого просмотра различных типов файлов"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi - программа быстрого просмотра для рабочего стола GNOME. Она "
-"является независимым компонентом и интегрируется в Файлы (Nautilus)"
+"Sushi - программа быстрого просмотра для рабочего стола GNOME. Она является "
+"независимым компонентом и интегрируется в Файлы (Nautilus)"
 
-#: src/ui/fallbackRenderer.js:241
+#: src/core/mainWindow.js:96
+msgid "Open"
+msgstr "Открыть"
+
+#: src/viewers/audio.js:342
+msgid "from"
+msgstr "из"
+
+#: src/viewers/audio.js:348
+msgid "by"
+msgstr "в исполнении"
+
+#: src/viewers/error.js:41
+msgid "Preview Failed"
+msgstr "Ошибка предпросмотра"
+
+#: src/viewers/error.js:45
+msgid "Copy Full Error Message"
+msgstr "Копировать сообщение об ошибке"
+
+#: src/viewers/evince.js:211
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d из %d"
+
+#: src/viewers/fallback.js:207
 msgid "Type"
 msgstr "Тип"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/viewers/fallback.js:217
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -48,46 +73,25 @@ msgstr[0] "%d элемент"
 msgstr[1] "%d элемента"
 msgstr[2] "%d элементов"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/viewers/fallback.js:222
 msgid "Empty Folder"
 msgstr "Пустая папка"
 
-#: src/ui/fallbackRenderer.js:259
+#: src/viewers/fallback.js:226
 msgid "Size"
 msgstr "Размер"
 
-#: src/ui/fallbackRenderer.js:264
+#: src/viewers/fallback.js:232
 msgid "Modified"
-msgstr "Дата изменения"
+msgstr "Изменено"
 
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
 #, javascript-format
-msgid "Unable to display %s"
-msgstr "Невозможно отобразить %s"
+#~ msgid "Unable to display %s"
+#~ msgstr "Невозможно отобразить %s"
 
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
 #, javascript-format
-msgid "Open With %s"
-msgstr "Открыть в приложении %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Открыть"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "из"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "в исполнении"
-
-#: src/viewers/evince.js:94
-#, javascript-format
-msgid "%d of %d"
-msgstr "%d из %d"
+#~ msgid "Open With %s"
+#~ msgstr "Открыть с помощью «%s»"
 
 #~ msgid "Client decoration"
 #~ msgstr "Декорация клиента"
