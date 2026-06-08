@@ -32,7 +32,8 @@ export class ErrorRenderer extends Adw.Bin {
 
         this._error_msg = error.message.trim();
         const index = this._error_msg.indexOf('\n')
-        const first_line = (index >= 0)
+        const hasMultipleLines = index >= 0;
+        const first_line = hasMultipleLines
                            ? this._error_msg.substring(0, index)
                            : this._error_msg;
 
@@ -40,7 +41,7 @@ export class ErrorRenderer extends Adw.Bin {
 
         this._status_page.set_title(_("Preview Failed"));
         this._status_page.set_icon_name('image-missing-symbolic');
-        this._status_page.set_description(first_line + (this._error_msg ? "…" : ""));
+        this._status_page.set_description(first_line + (hasMultipleLines ? "…" : ""));
 
         const copy_error_button = new Gtk.Button({ label: _("Copy Full Error Message"),
                                                    halign: Gtk.Align.CENTER,
