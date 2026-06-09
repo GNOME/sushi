@@ -1,0 +1,17 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $Gjs_AudioRenderer: Adw.Bin {
+  Adw.StatusPage statusPage {
+    paintable: Adw.SpinnerPaintable {};
+
+    child: MediaControls mediaControls {
+      valign: end;
+
+      styles [
+        "osd-bin",
+        "osd",
+      ]
+    };
+  }
+}
