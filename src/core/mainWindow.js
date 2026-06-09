@@ -18,10 +18,8 @@ import * as MimeHandler from './mimeHandler.js';
 import {Renderer,ResizePolicy} from './renderer.js';
 import {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 
-const WINDOW_MAX_W = 800;
-const WINDOW_MAX_H = 600;
-const WINDOW_MAX_W_BASE = 1368;
-const WINDOW_MAX_H_BASE = 768;
+const WINDOW_MAX_PERCENT_H = 0.5;
+const WINDOW_MAX_PERCENT_W = 0.5;
 
 function _getDecorationLayout() {
     function _isSupported(name) {
@@ -174,11 +172,14 @@ export class MainWindow extends Adw.ApplicationWindow {
         let monitor = display.get_monitor_at_surface(surface);
         let geometry = monitor.get_geometry();
 
-        let scaleW = geometry.width / WINDOW_MAX_W_BASE;
-        let scaleH = geometry.height / WINDOW_MAX_H_BASE;
+        // Sanitize unexpected values
+        if (geometry.width > 100_000)
+            geometry.width = 800;
+        if (geometry.height > 100_000)
+            geometry.height = 800;
 
-        return [Math.floor(scaleW * WINDOW_MAX_W),
-                Math.floor(scaleH * WINDOW_MAX_H)];
+        return [Math.floor(geometry.width * WINDOW_MAX_PERCENT_W),
+                Math.floor(geometry.height * WINDOW_MAX_PERCENT_H)];
     }
 
     _resizeWindow() {
