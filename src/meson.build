@@ -4,6 +4,7 @@ subdir('libsushi')
 blueprints = custom_target(
   'blueprints',
   input: files(
+    'ui/audio.blp',
     'ui/fallback.blp',
   ),
   output: '.',
