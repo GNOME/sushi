@@ -222,11 +222,12 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
       });
 }
 
-const COVER_SIZE = 256;
-export const Klass = class AudioRenderer extends Gtk.Box {
+export const Klass = class AudioRenderer extends Adw.Bin {
     static {
         GObject.registerClass({
             Implements: [Renderer],
+            Template: 'resource:///org/gnome/NautilusPreviewer/ui/audio.ui',
+            InternalChildren: ['statusPage', 'mediaControls'],
             Properties: {
                 fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
                                                       GObject.ParamFlags.READABLE,
@@ -246,26 +247,13 @@ export const Klass = class AudioRenderer extends Gtk.Box {
     }
 
     _init(file) {
-        super._init({ orientation: Gtk.Orientation.VERTICAL,
-                      spacing: 12,
-                      margin_bottom: 12,
-                      margin_start: 12,
-                      margin_end: 12,
-                      margin_top: 12 });
+        super._init();
 
         this._stream = Gtk.MediaFile.new_for_file(file);
         this._stream.play();
-
-        this._media_controls = new Gtk.MediaControls({ media_stream: this._stream,
-                                                       valign: Gtk.Align.END,
-                                                       css_classes: ['osd-bin', 'osd'] });
+        this._mediaControls.set_media_stream(this._stream);
 
         this._coverFetched = false;
-
-        let box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
-                                spacing: 24 });
-        this.append(box);
-        this.append(this._media_controls);
 
         this._coverPaintable = new CoverPaintable({ display: this.get_display() });
         this.bind_property(
@@ -274,29 +262,7 @@ export const Klass = class AudioRenderer extends Gtk.Box {
             'scale-factor',
             GObject.BindingFlags.SYNC_CREATE);
 
-        this._image = new Gtk.Image({ paintable: this._coverPaintable,
-                                      pixel_size: COVER_SIZE });
-        box.append(this._image);
-
-        let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                                 spacing: 6,
-                                 valign: Gtk.Align.CENTER});
-        box.append(vbox);
-
-        this._titleLabel = new Gtk.Label();
-        this._titleLabel.set_halign(Gtk.Align.START);
-        this._titleLabel.add_css_class('title-3');
-        vbox.append(this._titleLabel);
-
-        this._authorLabel = new Gtk.Label();
-        this._authorLabel.set_visible(false);
-        this._authorLabel.set_halign(Gtk.Align.START);
-        vbox.append(this._authorLabel);
-
-        this._albumLabel = new Gtk.Label();
-        this._albumLabel.set_visible(false);
-        this._albumLabel.set_halign(Gtk.Align.START);
-        vbox.append(this._albumLabel);
+        this._statusPage.set_paintable(this._coverPaintable);
 
         let disco = Sushi.Discoverer.new(file.get_uri());
         disco.connect('tags-changed', () => {
@@ -337,19 +303,20 @@ export const Klass = class AudioRenderer extends Gtk.Box {
             titleName = file.get_basename();
         }
 
-        if (albumName) {
-            let escaped = GLib.markup_escape_text(albumName, -1);
-            this._albumLabel.set_markup('<i>' + _("from") + '  </i>' + escaped);
-            this._albumLabel.set_visible(true);
-        }
+        var description = ''
 
         if (artistName) {
             let escaped = GLib.markup_escape_text(artistName, -1);
-            this._authorLabel.set_markup('<i>' + _("by") + '  </i><b>' + escaped + '</b>');
-            this._authorLabel.set_visible(true);
+            description += '<i>' + _("by") + '  </i><b>' + escaped + '</b>\n';
         }
 
-        this._titleLabel.set_label(titleName);
+        if (albumName) {
+            let escaped = GLib.markup_escape_text(albumName, -1);
+            description +='<i>' + _("from") + '  </i>' + escaped;
+        }
+
+        this._statusPage.set_title(titleName);
+        this._statusPage.set_description(description);
 
         if (artistName && albumName && !this._coverFetched) {
             fetchCoverArt(tags, this.cancellable, this._onCoverArtFetched.bind(this));
@@ -357,12 +324,8 @@ export const Klass = class AudioRenderer extends Gtk.Box {
         }
     }
 
-    get resizable() {
-        return false;
-    }
-
     get resizePolicy() {
-        return ResizePolicy.NAT_SIZE;
+        return ResizePolicy.STATUS_PAGE;
     }
 
     get topBarStyle() {

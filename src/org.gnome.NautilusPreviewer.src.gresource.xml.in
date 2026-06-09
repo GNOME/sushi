@@ -24,6 +24,7 @@
   </gresource>
   <gresource prefix="@fixed_object_path@">
     <!-- UI -->
+    <file>ui/audio.ui</file>
     <file>ui/fallback.ui</file>
   </gresource>
   <gresource prefix="@relative_object_path@">
