@@ -10,7 +10,6 @@ export const ResizePolicy = {
     MAX_SIZE: 0,
     NAT_SIZE: 1,
     SCALED: 2,
-    STRETCHED: 3
 };
 
 export class Renderer extends GObject.Interface {

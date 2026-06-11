@@ -203,8 +203,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             windowSize = natSize;
         else if (resizePolicy == ResizePolicy.SCALED)
             windowSize = _getScaledSize(natSize, maxSize, false);
-        else if (resizePolicy == ResizePolicy.STRETCHED)
-            windowSize = _getScaledSize(natSize, maxSize, true);
 
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
         windowSize[1] += naturalTitlebarSize.height;
