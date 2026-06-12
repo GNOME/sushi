@@ -64,6 +64,6 @@ export class ErrorRenderer extends Adw.Bin {
     }
 
     get resizePolicy() {
-        return ResizePolicy.NAT_SIZE;
+        return ResizePolicy.STATUS_PAGE;
     }
 }
