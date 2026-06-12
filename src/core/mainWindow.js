@@ -191,6 +191,25 @@ export class MainWindow extends Adw.ApplicationWindow {
                 Math.floor(geometry.height * WINDOW_MAX_PERCENT_H)];
     }
 
+    _getContentSize() {
+        const maxSize = this._getMaxSize();
+        const rendererSize = this._renderer.get_preferred_size();
+        const natSize = [rendererSize[1].width, rendererSize[1].height];
+
+        switch (this._renderer.resizePolicy) {
+            case ResizePolicy.MAX_SIZE:
+                return maxSize;
+            case ResizePolicy.NAT_SIZE:
+                return [ Math.min(natSize[0], maxSize[0]),
+                         Math.min(natSize[1], maxSize[1]) ];
+            case ResizePolicy.SCALED:
+                return _getScaledSize(natSize, maxSize, false);
+            default:
+                print('Renderer uses unknown resize policy')
+                return maxSize;
+        }
+    }
+
     _resizeWindow() {
         if (!this._renderer || this._scaled_by_user)
             return;
@@ -198,22 +217,10 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (this._renderer.fullscreen)
             return;
 
-        let maxSize = this._getMaxSize();
-        let rendererSize = this._renderer.get_preferred_size();
-        let natSize = [rendererSize[1].width, rendererSize[1].height];
-        let windowSize;
-        let resizePolicy = this._renderer.resizePolicy;
-
-        if (resizePolicy == ResizePolicy.MAX_SIZE)
-            windowSize = maxSize;
-        else if (resizePolicy == ResizePolicy.NAT_SIZE)
-            windowSize = [ Math.min(natSize[0], maxSize[0]),
-                           Math.min(natSize[1], maxSize[1]) ];
-        else if (resizePolicy == ResizePolicy.SCALED)
-            windowSize = _getScaledSize(natSize, maxSize, false);
-
+        const contentSize = this._getContentSize()
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
-        windowSize[1] += naturalTitlebarSize.height;
+        const windowSize = [ contentSize[0],
+                             contentSize[1] + naturalTitlebarSize.height ];
 
         this._skip_next_size_adjustment = true;
         GObject.signal_handlers_block_by_func(this, this._checkScaledByUser);
