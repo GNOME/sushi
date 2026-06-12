@@ -178,6 +178,9 @@ export class MainWindow extends Adw.ApplicationWindow {
                     const ratio = Math.min(maxSize[0] / natSize[0], maxSize[1] / natSize[1]);
                     return natSize.map(size => Math.floor(size * ratio));
                 }
+            case ResizePolicy.STATUS_PAGE:
+                return [ Math.min(400, maxSize[0]),
+                         Math.min(420, maxSize[1]) ];
             default:
                 print('Renderer uses unknown resize policy')
                 return maxSize;
