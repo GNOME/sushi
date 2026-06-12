@@ -12,7 +12,6 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Sushi from 'gi://Sushi';
 
-import {VIEW_MIN} from '../util/constants.js';
 import {ErrorRenderer} from '../viewers/error.js';
 import * as MimeHandler from './mimeHandler.js';
 import {Renderer,ResizePolicy} from './renderer.js';
@@ -84,7 +83,11 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._skip_next_size_adjustment = false;
         this._scaled_by_user = false;
 
-        super._init({ application: application });
+        super._init({
+            application: application,
+            height_request: 294,
+            width_request: 340,
+        });
 
         this._toolbar_view = new Adw.ToolbarView({ top_bar_style: Adw.ToolbarStyle.RAISED_BORDER});
         this.set_content(this._toolbar_view)
@@ -198,9 +201,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         let maxSize = this._getMaxSize();
         let rendererSize = this._renderer.get_preferred_size();
         let natSize = [rendererSize[1].width, rendererSize[1].height];
-        if (natSize[0] <= VIEW_MIN) {
-            natSize = natSize.map(size => Math.max(size, VIEW_MIN));
-        }
         let windowSize;
         let resizePolicy = this._renderer.resizePolicy;
 
