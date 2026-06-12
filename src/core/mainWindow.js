@@ -80,6 +80,10 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._lastWindowSize = [0, 0];
         this.file = null;
 
+        this._animating = 0;
+        this._skip_next_size_adjustment = false;
+        this._scaled_by_user = false;
+
         super._init({ application: application });
 
         this._toolbar_view = new Adw.ToolbarView({ top_bar_style: Adw.ToolbarStyle.RAISED_BORDER});
@@ -96,6 +100,9 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._titlebar.pack_start(this._openButton);
 
         this._defineActions();
+
+        this._checkScaledByUser = this._checkScaledByUser.bind(this)
+        this.connect('notify::default-width', this._checkScaledByUser);
     }
 
     vfunc_unrealize() {
@@ -183,7 +190,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _resizeWindow() {
-        if (!this._renderer)
+        if (!this._renderer || this._scaled_by_user)
             return;
 
         if (this._renderer.fullscreen)
@@ -208,7 +215,24 @@ export class MainWindow extends Adw.ApplicationWindow {
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
         windowSize[1] += naturalTitlebarSize.height;
 
+        GObject.signal_handlers_block_by_func(this, this._checkScaledByUser);
         this._setDefaultSize(windowSize);
+        GObject.signal_handlers_unblock_by_func(this, this._checkScaledByUser);
+    }
+
+    _checkScaledByUser() {
+        if (this._skip_next_size_adjustment)
+            this._skip_next_size_adjustment = false;
+        else if (this._animating === 0) {
+            console.debug('Window scaled by user, keeping size');
+            this._scaled_by_user = true;
+        }
+    }
+
+    _animationDone() {
+        this._animating -= 1;
+        // last size update arrives after animation is done
+        this._skip_next_size_adjustment = true;
     }
 
     _setDefaultSize(windowSize) {
@@ -219,6 +243,9 @@ export class MainWindow extends Adw.ApplicationWindow {
                 const height_target = Adw.PropertyAnimationTarget.new(this, 'default-height');
                 const width_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[0], windowSize[0], 150, width_target);
                 const height_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[1], windowSize[1], 150, height_target);
+                this._animating += 2;
+                width_animation.connect("done", this._animationDone.bind(this));
+                height_animation.connect("done", this._animationDone.bind(this));
                 width_animation.play()
                 height_animation.play()
             } else {
