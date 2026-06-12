@@ -213,7 +213,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (resizePolicy == ResizePolicy.MAX_SIZE)
             windowSize = maxSize;
         else if (resizePolicy == ResizePolicy.NAT_SIZE)
-            windowSize = natSize;
+            windowSize = [ Math.min(natSize[0], maxSize[0]),
+                           Math.min(natSize[1], maxSize[1]) ];
         else if (resizePolicy == ResizePolicy.SCALED)
             windowSize = _getScaledSize(natSize, maxSize, false);
 
