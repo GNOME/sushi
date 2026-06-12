@@ -121,7 +121,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             ?? this.file.get_basename()
             ?? this.file.get_uri());
         this.set_title(title);
-        this.set_resizable(renderer.resizable);
         renderer.connect('notify::ready', this._onRendererReady.bind(this));
         this._onRendererReady();
     }
@@ -266,8 +265,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._renderer = renderer;
         this._renderer.expand = true;
         this._toolbar_view.set_content(this._renderer);
-
-        this._fullscreen_button.set_sensitive(this._renderer.canFullscreen);
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
     }
 
@@ -281,7 +278,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         renderer.connect('notify::ready', this._onRendererReady.bind(this));
         this._onRendererReady();
 
-        this.set_resizable(this._renderer.resizable);
         this.set_title(fileInfo.get_display_name());
     }
 
