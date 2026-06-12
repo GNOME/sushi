@@ -67,7 +67,7 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
     }
 
     get resizePolicy() {
-        return ResizePolicy.NAT_SIZE;
+        return ResizePolicy.SCALED;
     }
 };
 
