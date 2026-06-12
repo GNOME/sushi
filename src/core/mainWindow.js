@@ -36,39 +36,6 @@ function _getDecorationLayout() {
     return [leftGroup.join(','), rightGroup.join(',')].join(':');
 };
 
-function _getScaledSize(baseSize, allocSize, upscale) {
-    let allocW = allocSize[0];
-    let allocH = allocSize[1];
-    let width = baseSize[0];
-    let height = baseSize[1];
-    let scale = 1.0;
-
-    if (((width <= allocW && height <= allocH) && upscale) ||
-        (width > allocW && height > allocH)) {
-        /* up/downscale both directions */
-        let allocRatio = allocW / allocH;
-        let baseRatio = width / height;
-
-        if (baseRatio > allocRatio)
-            scale = allocW / width;
-        else
-            scale = allocH / height;
-    } else if (width > allocW &&
-            height <= allocH) {
-        /* downscale x */
-        scale = allocW / width;
-    } else if (width <= allocW &&
-            height > allocH) {
-        /* downscale y */
-        scale = allocH / height;
-    }
-
-    width *= scale;
-    height *= scale;
-
-    return [ Math.floor(width), Math.floor(height) ];
-}
-
 export class MainWindow extends Adw.ApplicationWindow {
     static {
         GObject.registerClass(this);
@@ -203,7 +170,14 @@ export class MainWindow extends Adw.ApplicationWindow {
                 return [ Math.min(natSize[0], maxSize[0]),
                          Math.min(natSize[1], maxSize[1]) ];
             case ResizePolicy.SCALED:
-                return _getScaledSize(natSize, maxSize, false);
+                if (natSize[0] <= maxSize[0] && natSize[1] <= maxSize[1])
+                    // no scaling needed
+                    return natSize;
+                else {
+                    // scale by smaller ratio of width or height
+                    const ratio = Math.min(maxSize[0] / natSize[0], maxSize[1] / natSize[1]);
+                    return natSize.map(size => Math.floor(size * ratio));
+                }
             default:
                 print('Renderer uses unknown resize policy')
                 return maxSize;
