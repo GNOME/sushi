@@ -41,16 +41,8 @@ export class Renderer extends GObject.Interface {
     }
 
     toggleFullscreen() {
-        if (!this.canFullscreen)
-            return;
-
         this._fullscreen = !this.fullscreen;
         this.notify('fullscreen');
-    }
-
-    get canFullscreen() {
-        // by default, we can fullscreen if we're resizable
-        return this.resizable;
     }
 
     get fullscreen() {
@@ -59,10 +51,6 @@ export class Renderer extends GObject.Interface {
 
     get ready() {
         return !!this._ready;
-    }
-
-    get resizable() {
-        return true;
     }
 
     get resizePolicy() {
