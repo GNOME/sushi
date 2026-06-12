@@ -127,7 +127,9 @@ export class MainWindow extends Adw.ApplicationWindow {
             ?? this.file.get_basename()
             ?? this.file.get_uri());
         this.set_title(title);
-        this.set_resizable(this._renderer.resizable);
+        this.set_resizable(renderer.resizable);
+        renderer.connect('notify::ready', this._onRendererReady.bind(this));
+        this._onRendererReady();
     }
 
     _onRendererFullscreen() {
