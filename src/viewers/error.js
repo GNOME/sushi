@@ -27,6 +27,10 @@ export class ErrorRenderer extends Adw.Bin {
         }, this);
     }
 
+    get ready() {
+        return !!this._ready;
+    }
+
     _init(error) {
         super._init();
 
