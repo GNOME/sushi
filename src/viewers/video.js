@@ -62,10 +62,6 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         this.connect('unmap', () => (this._stream.pause()));
     }
 
-    get canFullscreen() {
-        return true;
-    }
-
     get resizePolicy() {
         return ResizePolicy.SCALED;
     }
