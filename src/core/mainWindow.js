@@ -76,7 +76,6 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     _init(application) {
         this._renderer = null;
-        this._lastWindowSize = [0, 0];
         this.file = null;
 
         this._animating = 0;

@@ -12,7 +12,6 @@ export const isAvailable = function() {
     return LOKDocView !== undefined;
 };
 
-import {VIEW_MIN} from '../util/constants.js';
 import {Renderer} from '../core/renderer.js';
 
 export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
@@ -40,9 +39,10 @@ export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
 
     _init(file) {
         super._init({ hexpand: true,
+                      propagate_natural_height: true,
+                      propagate_natural_width: true,
                       visible: true,
-                      min_content_height: VIEW_MIN,
-                      min_content_width: VIEW_MIN });
+        });
 
         this._lastAllocWidth = 0;
         this._tickCallbackId = 0;

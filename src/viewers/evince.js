@@ -12,7 +12,6 @@ import PapersDocument from 'gi://PapersDocument';
 import PapersView from 'gi://PapersView';
 import Sushi from 'gi://Sushi';
 
-import {VIEW_MIN} from '../util/constants.js';
 import {Renderer} from '../core/renderer.js';
 import {ToolbarOverlay} from '../widgets/toolbarOverlay.js';
 
@@ -93,8 +92,8 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
         this._defineActions();
 
         const scrolledWindow = new Gtk.ScrolledWindow({ visible: true,
-                                                        min_content_height: VIEW_MIN,
-                                                        min_content_width: VIEW_MIN,
+                                                        propagate_natural_height: true,
+                                                        propagate_natural_width: true,
                                                         child: this._view});
         this.set_child(scrolledWindow);
 
