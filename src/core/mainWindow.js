@@ -277,7 +277,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         renderer.connect('error', (r, err) => { this._reportError(err, fileInfo); });
         renderer.connect('notify::fullscreen', this._onRendererFullscreen.bind(this));
         renderer.connect('notify::ready', this._onRendererReady.bind(this));
-        this._resizeWindow();
         this._onRendererReady();
 
         this.set_resizable(this._renderer.resizable);
