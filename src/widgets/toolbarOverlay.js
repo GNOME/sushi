@@ -9,13 +9,31 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-export class ToolbarOverlay extends Gtk.Overlay {
+export class ToolbarOverlay extends Adw.Bin {
     static {
-        GObject.registerClass(this);
+        GObject.registerClass({
+            Properties: {
+                child: GObject.ParamSpec.object(
+                    'child',
+                    null,
+                    null,
+                    GObject.ParamFlags.READWRITE,
+                    Gtk.Widget,
+                ),
+            },
+        }, this);
     }
 
     constructor(constructProperties = {}) {
         super(constructProperties = {});
+
+        this._overlay = new Gtk.Overlay();
+        this.bind_property(
+            'child',
+            this._overlay,
+            'child',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.set_child(this._overlay);
 
         this._lastX = 0.0;
         this._lastY = 0.0;
@@ -40,7 +58,7 @@ export class ToolbarOverlay extends Gtk.Overlay {
         });
         widget.add_controller(_motion);
 
-        super.add_overlay(widget);
+        this._overlay.add_overlay(widget);
     }
 
     _onMotion(_motion, x, y) {
@@ -67,7 +85,7 @@ export class ToolbarOverlay extends Gtk.Overlay {
 
     _getRevealers() {
         const revealers = [];
-        let child = this.get_first_child();
+        let child = this._overlay.get_first_child();
         while (child) {
             if (child instanceof Gtk.Revealer)
                 revealers.push(child);
