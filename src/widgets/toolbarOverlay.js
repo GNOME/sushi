@@ -12,6 +12,7 @@ import Gtk from 'gi://Gtk';
 export class ToolbarOverlay extends Adw.Bin {
     static {
         GObject.registerClass({
+            Implements: [Gtk.Buildable],
             Properties: {
                 child: GObject.ParamSpec.object(
                     'child',
@@ -35,6 +36,10 @@ export class ToolbarOverlay extends Adw.Bin {
             GObject.BindingFlags.SYNC_CREATE);
         this.set_child(this._overlay);
 
+        for (const overlay of this._overlays)
+            this.add_overlay(overlay);
+        this._overlays = null;
+
         this._lastX = 0.0;
         this._lastY = 0.0;
         this._revealTimeoutId = 0;
@@ -43,6 +48,13 @@ export class ToolbarOverlay extends Adw.Bin {
         this._motion = new Gtk.EventControllerMotion();
         this._motion.connect('motion', this._onMotion.bind(this));
         this.add_controller(this._motion);
+    }
+
+    vfunc_add_child(builder, child, type) {
+        if (child instanceof Gtk.Widget && type === "overlay")
+            this._overlays = [...(this._overlays ?? []), child];
+        else
+            super.vfunc_add_child(builder, child, type);
     }
 
     add_overlay(widget) {
