@@ -14,8 +14,8 @@ export class ToolbarOverlay extends Gtk.Overlay {
         GObject.registerClass(this);
     }
 
-    _init() {
-        super._init();
+    constructor(constructProperties = {}) {
+        super(constructProperties = {});
 
         this._lastX = 0.0;
         this._lastY = 0.0;
