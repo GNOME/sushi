@@ -18,8 +18,8 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         }, this);
     }
 
-    _init(file) {
-        super._init();
+    constructor(file, _fileInfo, constructProperties = {}) {
+        super(constructProperties);
 
         this._stream = Gtk.MediaFile.new_for_file(file);
         this._stream.loop = true;
