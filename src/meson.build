@@ -7,6 +7,7 @@ blueprints = custom_target(
     'ui/audio.blp',
     'ui/fallback.blp',
     'ui/mainWindow.blp',
+    'ui/video.blp',
   ),
   output: '.',
   command: [

@@ -15,7 +15,21 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
     static {
         GObject.registerClass({
             Implements: [Renderer],
+            Template: 'resource:///org/gnome/NautilusPreviewer/ui/video.ui',
+            Properties: {
+                stream: GObject.ParamSpec.object(
+                    'stream',
+                    'Stream',
+                    null,
+                    GObject.ParamFlags.READABLE,
+                    Gtk.MediaStream,
+                ),
+            },
         }, this);
+    }
+
+    get stream() {
+        return this._stream ?? null;
     }
 
     constructor(file, _fileInfo, constructProperties = {}) {
@@ -24,24 +38,11 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         this._stream = Gtk.MediaFile.new_for_file(file);
         this._stream.loop = true;
         this._stream.play();
+        this.notify('stream');
 
         this._stream.connect('notify::prepared', () => {
             this.isReady();
         });
-
-        this._picture = Gtk.Picture.new_for_paintable(this._stream);
-        this.set_child(this._picture);
-
-        this._media_controls = new Gtk.MediaControls({ media_stream: this._stream,
-                                                       css_classes: ['osd-bin', 'osd'] });
-
-        const revealer = new Gtk.Revealer({ valign: Gtk.Align.END,
-                                            transition_type: Gtk.RevealerTransitionType.CROSSFADE,
-                                            margin_bottom: 12,
-                                            margin_start: 12,
-                                            margin_end: 12,
-                                            child: this._media_controls});
-        this.add_overlay(revealer);
 
         this.connect('unmap', () => (this._stream.pause()));
     }
