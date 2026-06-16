@@ -22,7 +22,10 @@ const WINDOW_MAX_PERCENT_W = 0.5;
 
 export class MainWindow extends Adw.ApplicationWindow {
     static {
-        GObject.registerClass(this);
+        GObject.registerClass({
+            Template: 'resource:///org/gnome/NautilusPreviewer/ui/mainWindow.ui',
+            InternalChildren: ['toolbar_view', 'titlebar', 'fullscreen_button'],
+        }, this);
     }
 
     _init(application) {
@@ -44,19 +47,6 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         this._lastWindowSize = [min_width, min_height];
         this.set_default_size(min_width, min_height);
-
-        this._toolbar_view = new Adw.ToolbarView({ top_bar_style: Adw.ToolbarStyle.RAISED_BORDER});
-        this.set_content(this._toolbar_view)
-
-        this._titlebar = new Adw.HeaderBar({ decoration_layout: this._getDecorationLayout() });
-        this._fullscreen_button = new Gtk.Button({ icon_name: 'view-fullscreen-symbolic',
-                                                   action_name: 'win.fullscreen'});
-        this._titlebar.pack_start(this._fullscreen_button)
-        this._toolbar_view.add_top_bar(this._titlebar);
-
-        this._openButton = new Gtk.Button({ label: _("Open") });
-        this._openButton.connect('clicked', this._onFileOpenClicked.bind(this));
-        this._titlebar.pack_start(this._openButton);
 
         this._defineActions();
 

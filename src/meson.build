@@ -6,6 +6,7 @@ blueprints = custom_target(
   input: files(
     'ui/audio.blp',
     'ui/fallback.blp',
+    'ui/mainWindow.blp',
   ),
   output: '.',
   command: [

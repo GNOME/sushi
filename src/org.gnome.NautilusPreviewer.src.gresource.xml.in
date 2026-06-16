@@ -26,6 +26,7 @@
     <!-- UI -->
     <file>ui/audio.ui</file>
     <file>ui/fallback.ui</file>
+    <file>ui/mainWindow.ui</file>
   </gresource>
   <gresource prefix="@relative_object_path@">
     <file>style.css</file>
