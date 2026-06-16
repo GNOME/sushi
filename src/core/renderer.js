@@ -36,10 +36,6 @@ export class Renderer extends GObject.Interface {
         this.notify('ready');
     }
 
-    populateToolbar() {
-        // do nothing, this is optional
-    }
-
     toggleFullscreen() {
         this._fullscreen = !this.fullscreen;
         this.notify('fullscreen');
