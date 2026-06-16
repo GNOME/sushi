@@ -1,0 +1,25 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $Gjs_MainWindow: Adw.ApplicationWindow {
+  content: Adw.ToolbarView toolbar_view {
+    top-bar-style: raised_border;
+
+    [top]
+    Adw.HeaderBar titlebar {
+      decoration-layout: bind $_getDecorationLayout() as <string>;
+
+      [start]
+      Button fullscreen_button {
+        icon-name: "view-fullscreen-symbolic";
+        action-name: "win.fullscreen";
+      }
+
+      [start]
+      Button {
+        label: _("Open");
+        clicked => $_onFileOpenClicked();
+      }
+    }
+  };
+}
