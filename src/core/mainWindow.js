@@ -20,22 +20,6 @@ import {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} from '../util/cu
 const WINDOW_MAX_PERCENT_H = 0.5;
 const WINDOW_MAX_PERCENT_W = 0.5;
 
-function _getDecorationLayout() {
-    function _isSupported(name) {
-        // We don't support maximize and minimize
-        return ['menu', 'close'].includes(name);
-    }
-
-    let settings = Gtk.Settings.get_default();
-    let decorationLayout = settings.gtk_decoration_layout;
-    let [lhs, rhs] = decorationLayout.split(':');
-
-    let leftGroup = lhs.split(',').filter(_isSupported);
-    let rightGroup = rhs ? rhs.split(',').filter(_isSupported) : [];
-
-    return [leftGroup.join(','), rightGroup.join(',')].join(':');
-};
-
 export class MainWindow extends Adw.ApplicationWindow {
     static {
         GObject.registerClass(this);
@@ -64,7 +48,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._toolbar_view = new Adw.ToolbarView({ top_bar_style: Adw.ToolbarStyle.RAISED_BORDER});
         this.set_content(this._toolbar_view)
 
-        this._titlebar = new Adw.HeaderBar({ decoration_layout: _getDecorationLayout() });
+        this._titlebar = new Adw.HeaderBar({ decoration_layout: this._getDecorationLayout() });
         this._fullscreen_button = new Gtk.Button({ icon_name: 'view-fullscreen-symbolic',
                                                    action_name: 'win.fullscreen'});
         this._titlebar.pack_start(this._fullscreen_button)
@@ -83,6 +67,19 @@ export class MainWindow extends Adw.ApplicationWindow {
     vfunc_unrealize() {
         super.vfunc_unrealize();
         this._renderer?.cancellable?.cancel();
+    }
+
+    _getDecorationLayout() {
+        const layout_groups = Gtk.Settings.get_default().gtk_decoration_layout.split(':');
+        const has_close = layout_groups.map(group => group.split(',').includes('close'));
+
+        // We only support a close button
+        if (has_close[0])
+            return "close:";
+        else if (has_close[1])
+            return ":close";
+        else
+            return "";
     }
 
     _defineActions() {
