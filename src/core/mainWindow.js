@@ -106,14 +106,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     _reportError(error, fileInfo) {
         if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
           return;
-        let renderer = new ErrorRenderer(error);
-        this._embedRenderer(renderer);
-        const title = (fileInfo?.get_display_name()
-            ?? this.file.get_basename()
-            ?? this.file.get_uri());
-        this.set_title(title);
-        renderer.connect('notify::ready', this._onRendererReady.bind(this));
-        this._onRendererReady();
+        this._embedRenderer(new ErrorRenderer(error), fileInfo);
     }
 
     toggleFullscreen() {
@@ -252,24 +245,29 @@ export class MainWindow extends Adw.ApplicationWindow {
             });
     }
 
-    _embedRenderer(renderer) {
+    _embedRenderer(renderer, fileInfo) {
         this._renderer?.cancellable?.cancel();
         this._renderer = renderer;
+
+        const title = (fileInfo?.get_display_name()
+            ?? this.file.get_basename()
+            ?? this.file.get_uri());
+        this.set_title(title);
+
         this._toolbar_view.set_content(this._renderer);
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
+
+        renderer.connect('notify::ready', this._onRendererReady.bind(this));
+        this._resizeWindow();
+        this._onRendererReady();
     }
 
     _createView(fileInfo) {
         let klass = MimeHandler.getKlass(fileInfo.get_content_type());
         let renderer = new klass(this.file, fileInfo);
-        this._embedRenderer(renderer);
+        this._embedRenderer(renderer, fileInfo);
 
         renderer.connect('error', (r, err) => { this._reportError(err, fileInfo); });
-        renderer.connect('notify::ready', this._onRendererReady.bind(this));
-        this._resizeWindow();
-        this._onRendererReady();
-
-        this.set_title(fileInfo.get_display_name());
     }
 
     _onFileOpenClicked() {
