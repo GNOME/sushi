@@ -17,20 +17,16 @@ export class Renderer extends GObject.Interface {
     static {
         GObject.registerClass({
             Requires: [Gtk.Widget],
-            Properties: {
-                ready: GObject.ParamSpec.boolean('ready', '', '',
-                                                 GObject.ParamFlags.READABLE,
-                                                 false)
-            },
             Signals: {
-                'error': { param_types: [GLib.Error.$gtype] }
+                'error': { param_types: [GLib.Error.$gtype] },
+                'ready': { param_types: []},
             }
         }, this);
     }
 
     isReady() {
         this._ready = true;
-        this.notify('ready');
+        this.emit('ready');
     }
 
     get ready() {

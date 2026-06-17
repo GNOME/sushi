@@ -257,9 +257,12 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._toolbar_view.set_content(this._renderer);
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
 
-        renderer.connect('notify::ready', this._onRendererReady.bind(this));
-        this._resizeWindow();
-        this._onRendererReady();
+        if (renderer.ready)
+            this._onRendererReady();
+        else {
+            renderer.connect('ready', this._onRendererReady.bind(this));
+            this._resizeWindow();
+        }
     }
 
     _createView(fileInfo) {

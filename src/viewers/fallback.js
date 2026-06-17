@@ -159,16 +159,7 @@ export class FallbackRenderer extends Adw.Bin {
             Implements: [Renderer],
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
             InternalChildren: ['statusPage', 'spinner', 'sizeLabel', 'dateLabel'],
-            Properties: {
-                ready: GObject.ParamSpec.boolean('ready', '', '',
-                                                 GObject.ParamFlags.READABLE,
-                                                 false)
-            },
         }, this);
-    }
-
-    get ready() {
-        return !!this._ready;
     }
 
     _init(file, fileInfo) {
