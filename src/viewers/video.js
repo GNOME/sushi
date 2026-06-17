@@ -16,9 +16,6 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         GObject.registerClass({
             Implements: [Renderer],
             Properties: {
-                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                                      GObject.ParamFlags.READABLE,
-                                                      false),
                 ready: GObject.ParamSpec.boolean('ready', '', '',
                                                  GObject.ParamFlags.READABLE,
                                                  false)
@@ -28,10 +25,6 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
 
     get ready() {
         return !!this._ready;
-    }
-
-    get fullscreen() {
-        return !!this._fullscreen;
     }
 
     _init(file) {
@@ -60,6 +53,10 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         this.add_overlay(revealer);
 
         this.connect('unmap', () => (this._stream.pause()));
+    }
+
+    get overlay() {
+        return ResizePolicy.SCALED;
     }
 
     get resizePolicy() {

@@ -17,9 +17,6 @@ export class ErrorRenderer extends Adw.Bin {
         GObject.registerClass({
             Implements: [Renderer],
             Properties: {
-                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                                      GObject.ParamFlags.READABLE,
-                                                      false),
                 ready: GObject.ParamSpec.boolean('ready', '', '',
                                                  GObject.ParamFlags.READABLE,
                                                  false)

@@ -81,9 +81,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.add_action(quit);
 
         let fullscreen = new Gio.SimpleAction({ name: 'fullscreen' });
-        fullscreen.connect('activate', () => {
-            this._renderer.toggleFullscreen();
-        });
+        fullscreen.connect('activate', this.toggleFullscreen.bind(this));
         this.application.set_accels_for_action('win.fullscreen', ['f', 'F11']);
         this.add_action(fullscreen);
 
@@ -118,8 +116,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._onRendererReady();
     }
 
-    _onRendererFullscreen() {
-        if (this._renderer.fullscreen) {
+    toggleFullscreen() {
+        if (!this.is_fullscreen()) {
             this.fullscreen();
             this._fullscreen_button.set_icon_name('view-restore-symbolic');
         }
@@ -268,7 +266,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._embedRenderer(renderer);
 
         renderer.connect('error', (r, err) => { this._reportError(err, fileInfo); });
-        renderer.connect('notify::fullscreen', this._onRendererFullscreen.bind(this));
         renderer.connect('notify::ready', this._onRendererReady.bind(this));
         this._resizeWindow();
         this._onRendererReady();

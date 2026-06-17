@@ -49,9 +49,6 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
         GObject.registerClass({
             Implements: [Renderer],
             Properties: {
-                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                                      GObject.ParamFlags.READABLE,
-                                                      false),
                 ready: GObject.ParamSpec.boolean('ready', '', '',
                                                  GObject.ParamFlags.READABLE,
                                                  false)
@@ -61,10 +58,6 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
 
     get ready() {
         return !!this._ready;
-    }
-
-    get fullscreen() {
-        return !!this._fullscreen;
     }
 
     _init(file, fileInfo) {

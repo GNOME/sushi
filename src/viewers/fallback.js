@@ -160,9 +160,6 @@ export class FallbackRenderer extends Adw.Bin {
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
             InternalChildren: ['statusPage', 'spinner', 'sizeLabel', 'dateLabel'],
             Properties: {
-                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                                      GObject.ParamFlags.READABLE,
-                                                      false),
                 ready: GObject.ParamSpec.boolean('ready', '', '',
                                                  GObject.ParamFlags.READABLE,
                                                  false)
@@ -172,10 +169,6 @@ export class FallbackRenderer extends Adw.Bin {
 
     get ready() {
         return !!this._ready;
-    }
-
-    get fullscreen() {
-        return !!this._fullscreen;
     }
 
     _init(file, fileInfo) {
