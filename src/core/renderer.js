@@ -18,9 +18,6 @@ export class Renderer extends GObject.Interface {
         GObject.registerClass({
             Requires: [Gtk.Widget],
             Properties: {
-                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                                      GObject.ParamFlags.READABLE,
-                                                      false),
                 ready: GObject.ParamSpec.boolean('ready', '', '',
                                                  GObject.ParamFlags.READABLE,
                                                  false)
@@ -34,15 +31,6 @@ export class Renderer extends GObject.Interface {
     isReady() {
         this._ready = true;
         this.notify('ready');
-    }
-
-    toggleFullscreen() {
-        this._fullscreen = !this.fullscreen;
-        this.notify('fullscreen');
-    }
-
-    get fullscreen() {
-        return !!this._fullscreen;
     }
 
     get ready() {

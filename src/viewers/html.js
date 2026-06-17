@@ -26,9 +26,6 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView 
         GObject.registerClass({
             Implements: [Renderer],
             Properties: {
-                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                                      GObject.ParamFlags.READABLE,
-                                                      false),
                 ready: GObject.ParamSpec.boolean('ready', '', '',
                                                  GObject.ParamFlags.READABLE,
                                                  false)
@@ -38,10 +35,6 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView 
 
     get ready() {
         return !!this._ready;
-    }
-
-    get fullscreen() {
-        return !!this._fullscreen;
     }
 
     _init(file) {

@@ -16,9 +16,6 @@ export const Klass = class FontRenderer extends Sushi.FontWidget {
         GObject.registerClass({
             Implements: [Renderer],
             Properties: {
-                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                                      GObject.ParamFlags.READABLE,
-                                                      false),
                 ready: GObject.ParamSpec.boolean('ready', '', '',
                                                  GObject.ParamFlags.READABLE,
                                                  false)
@@ -28,10 +25,6 @@ export const Klass = class FontRenderer extends Sushi.FontWidget {
 
     get ready() {
         return !!this._ready;
-    }
-
-    get fullscreen() {
-        return !!this._fullscreen;
     }
 
     _init(file) {

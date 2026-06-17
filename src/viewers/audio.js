@@ -229,9 +229,6 @@ export const Klass = class AudioRenderer extends Adw.Bin {
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/audio.ui',
             InternalChildren: ['statusPage', 'mediaControls'],
             Properties: {
-                fullscreen: GObject.ParamSpec.boolean('fullscreen', '', '',
-                                                      GObject.ParamFlags.READABLE,
-                                                      false),
                 ready: GObject.ParamSpec.boolean('ready', '', '',
                                                  GObject.ParamFlags.READABLE,
                                                  false)
@@ -241,9 +238,6 @@ export const Klass = class AudioRenderer extends Adw.Bin {
 
     get ready() {
         return !!this._ready;
-    }
-    get fullscreen() {
-        return !!this._fullscreen;
     }
 
     _init(file) {
