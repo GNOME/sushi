@@ -228,16 +228,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
             Implements: [Renderer],
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/audio.ui',
             InternalChildren: ['statusPage', 'mediaControls'],
-            Properties: {
-                ready: GObject.ParamSpec.boolean('ready', '', '',
-                                                 GObject.ParamFlags.READABLE,
-                                                 false)
-            },
         }, this);
-    }
-
-    get ready() {
-        return !!this._ready;
     }
 
     _init(file) {

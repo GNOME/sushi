@@ -15,16 +15,7 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
     static {
         GObject.registerClass({
             Implements: [Renderer],
-            Properties: {
-                ready: GObject.ParamSpec.boolean('ready', '', '',
-                                                 GObject.ParamFlags.READABLE,
-                                                 false)
-            },
         }, this);
-    }
-
-    get ready() {
-        return !!this._ready;
     }
 
     _init(file) {
