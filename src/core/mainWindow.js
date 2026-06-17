@@ -255,7 +255,6 @@ export class MainWindow extends Adw.ApplicationWindow {
     _embedRenderer(renderer) {
         this._renderer?.cancellable?.cancel();
         this._renderer = renderer;
-        this._renderer.expand = true;
         this._toolbar_view.set_content(this._renderer);
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
     }
