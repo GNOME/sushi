@@ -30,6 +30,8 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView 
         super(constructProperties);
 
         this.connect('context-menu', this._onContextMenu.bind(this));
+        if (pkg.name.endsWith('Devel'))
+            this._enableDeveloperExtras();
 
         this.load_uri(file.get_uri());
         this.connect('load-failed', (view, loadEvent, uri, error) => {
@@ -47,6 +49,11 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView 
                 contextMenu.remove(item);
         }
         return false; /* propagate the event further */
+    }
+
+    _enableDeveloperExtras() {
+        const settings = this.get_settings();
+        settings.set_enable_developer_extras(true);
     }
 } : undefined;
 
