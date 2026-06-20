@@ -29,11 +29,7 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView 
     constructor(file, _fileInfo, constructProperties = {}) {
         super(constructProperties);
 
-        /* disable the default context menu of the web view */
-        this.connect('context-menu',
-            function () {
-                return true;
-            });
+        this.connect('context-menu', this._onContextMenu.bind(this));
 
         this.load_uri(file.get_uri());
         this.connect('load-failed', (view, loadEvent, uri, error) => {
@@ -41,6 +37,63 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView 
         });
         this.isReady();
     }
+
+    /** @param {WebKit.WebView} _webView
+     *  @param {WebKit.ContextMenu} contextMenu
+     *  @returns {boolean} */
+    _onContextMenu(_webView, contextMenu) {
+        for (const item of contextMenu.get_items()) {
+            if (!isAllowedStockAction(item))
+                contextMenu.remove(item);
+        }
+        return false; /* propagate the event further */
+    }
 } : undefined;
 
 export const mimeTypes = _isAvailable() ? ['text/html'] : [];
+
+const ALLOWED_STOCK_ACTIONS = new Set([
+    WebKit.ContextMenuAction.NO_ACTION,
+    WebKit.ContextMenuAction.OPEN_LINK_IN_NEW_WINDOW,
+    WebKit.ContextMenuAction.COPY_LINK_TO_CLIPBOARD,
+    WebKit.ContextMenuAction.OPEN_IMAGE_IN_NEW_WINDOW,
+    WebKit.ContextMenuAction.COPY_IMAGE_TO_CLIPBOARD,
+    WebKit.ContextMenuAction.COPY_IMAGE_URL_TO_CLIPBOARD,
+    WebKit.ContextMenuAction.OPEN_FRAME_IN_NEW_WINDOW,
+    WebKit.ContextMenuAction.COPY,
+    WebKit.ContextMenuAction.CUT,
+    WebKit.ContextMenuAction.PASTE,
+    WebKit.ContextMenuAction.DELETE,
+    WebKit.ContextMenuAction.SELECT_ALL,
+    WebKit.ContextMenuAction.INPUT_METHODS,
+    WebKit.ContextMenuAction.UNICODE,
+    WebKit.ContextMenuAction.SPELLING_GUESS,
+    WebKit.ContextMenuAction.NO_GUESSES_FOUND,
+    WebKit.ContextMenuAction.IGNORE_SPELLING,
+    WebKit.ContextMenuAction.LEARN_SPELLING,
+    WebKit.ContextMenuAction.IGNORE_GRAMMAR,
+    WebKit.ContextMenuAction.FONT_MENU,
+    WebKit.ContextMenuAction.BOLD,
+    WebKit.ContextMenuAction.ITALIC,
+    WebKit.ContextMenuAction.UNDERLINE,
+    WebKit.ContextMenuAction.OUTLINE,
+    WebKit.ContextMenuAction.INSPECT_ELEMENT,
+    WebKit.ContextMenuAction.OPEN_VIDEO_IN_NEW_WINDOW,
+    WebKit.ContextMenuAction.COPY_VIDEO_LINK_TO_CLIPBOARD,
+    WebKit.ContextMenuAction.COPY_AUDIO_LINK_TO_CLIPBOARD,
+    WebKit.ContextMenuAction.TOGGLE_MEDIA_CONTROLS,
+    WebKit.ContextMenuAction.TOGGLE_MEDIA_LOOP,
+    WebKit.ContextMenuAction.ENTER_VIDEO_FULLSCREEN,
+    WebKit.ContextMenuAction.MEDIA_PLAY,
+    WebKit.ContextMenuAction.MEDIA_PAUSE,
+    WebKit.ContextMenuAction.MEDIA_MUTE,
+    WebKit.ContextMenuAction.INSERT_EMOJI,
+    WebKit.ContextMenuAction.PASTE_AS_PLAIN_TEXT,
+]);
+
+/** @param {WebKit.ContextMenuItem} item
+ *  @returns {boolean} */
+const isAllowedStockAction = item => {
+    const action = item.get_stock_action();
+    return ALLOWED_STOCK_ACTIONS.has(action);
+};
