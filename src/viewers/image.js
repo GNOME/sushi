@@ -60,14 +60,25 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
     }
 
     vfunc_measure(orientation, for_size) {
-        if (orientation == Gtk.Orientation.VERTICAL)
-          return [1, this._texture?.get_height() ?? this._imageHeight ?? 1, -1, -1];
-        else
-          return [1, this._texture?.get_width() ?? this._imageWidth ?? 1, -1, -1];
+        const scaleFactor = this._getFractionalScaleFactor();
+        const size = (orientation === Gtk.Orientation.VERTICAL)
+            ? (this._texture?.get_height() ?? this._imageHeight)
+            : (this._texture?.get_width() ?? this._imageWidth);
+        return [1, (size ?? scaleFactor) / scaleFactor, -1, -1];
     }
 
     get resizePolicy() {
         return ResizePolicy.SCALED;
+    }
+
+    /**
+     * Similar to {@link Gtk.Widget.get_scale_factor} but returns
+     * a fraction instead rounding up to the nearest integer.
+     *
+     * @returns {number} */
+    _getFractionalScaleFactor() {
+        const surface = this.get_native()?.get_surface();
+        return surface?.get_scale() ?? 1;
     }
 };
 
