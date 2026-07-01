@@ -51,8 +51,9 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
         }, this);
     }
 
-    _init(file, fileInfo) {
-        super._init();
+    constructor(file, fileInfo, constructProperties = {}) {
+        super(constructProperties);
+
         this._model = createDocumentModel();
         this._view = createView(this._model);
         this.cancellable = new Gio.Cancellable();
