@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-06-04 09:39+0000\n"
-"PO-Revision-Date: 2026-06-05 00:58+0200\n"
+"POT-Creation-Date: 2026-06-23 06:23+0000\n"
+"PO-Revision-Date: 2026-07-01 02:11+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -38,11 +38,40 @@ msgstr ""
 "Sushi je program za predogled datotek za namizje GNOME. Program je neodvisen "
 "od sistemskih knjižnic in razširja zmožnosti Datotek GNOME (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:248
-msgid "Type"
-msgstr "Vrsta"
+#: src/core/mainWindow.js:73
+msgid "Open"
+msgstr "Odpri"
 
-#: src/ui/fallbackRenderer.js:258
+#: src/ui/fallback.blp:28
+msgid "Size"
+msgstr "Velikost"
+
+#: src/ui/fallback.blp:57
+msgid "Modified"
+msgstr "Spremenjeno"
+
+#: src/viewers/audio.js:342
+msgid "from"
+msgstr "od"
+
+#: src/viewers/audio.js:348
+msgid "by"
+msgstr "od"
+
+#: src/viewers/error.js:46
+msgid "Preview Failed"
+msgstr "Predogleda je spodletel"
+
+#: src/viewers/error.js:50
+msgid "Copy Full Error Message"
+msgstr "Kopiraj celotno sporočilo o napaki"
+
+#: src/viewers/evince.js:212
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d od %d"
+
+#: src/viewers/fallback.js:203
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -51,39 +80,6 @@ msgstr[1] "%d predmet"
 msgstr[2] "%d predmeta"
 msgstr[3] "%d predmeti"
 
-#: src/ui/fallbackRenderer.js:263
-msgid "Empty Folder"
-msgstr "Prazna mapa"
-
-#: src/ui/fallbackRenderer.js:267
-msgid "Size"
-msgstr "Velikost"
-
-#: src/ui/fallbackRenderer.js:273
-msgid "Modified"
-msgstr "Spremenjeno"
-
-#: src/ui/mainWindow.js:73
-msgid "Open"
-msgstr "Odpri"
-
-#: src/viewers/audio.js:347
-msgid "from"
-msgstr "od"
-
-#: src/viewers/audio.js:353
-msgid "by"
-msgstr "od"
-
-#: src/viewers/error.js:33
-msgid "Preview Failed"
-msgstr "Predogleda je spodletel"
-
-#: src/viewers/error.js:37
-msgid "Copy Full Error Message"
-msgstr "Kopiraj celotno sporočilo o napaki"
-
-#: src/viewers/evince.js:217
-#, javascript-format
-msgid "%d of %d"
-msgstr "%d od %d"
+#: src/viewers/fallback.js:208
+msgid "Empty"
+msgstr "Prazno"
