@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-06-04 09:39+0000\n"
-"PO-Revision-Date: 2026-06-05 14:36+0200\n"
+"POT-Creation-Date: 2026-07-01 07:37+0000\n"
+"PO-Revision-Date: 2026-07-01 11:02+0200\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -37,11 +37,40 @@ msgstr ""
 "Jedná se o nezávislou komponentu, která se začleňuje do aplikace Soubory "
 "GNOME (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:248
-msgid "Type"
-msgstr "Typ"
+#: src/ui/fallback.blp:28
+msgid "Size"
+msgstr "Velikost"
 
-#: src/ui/fallbackRenderer.js:258
+#: src/ui/fallback.blp:57
+msgid "Modified"
+msgstr "Změněno"
+
+#: src/ui/mainWindow.blp:20
+msgid "Open"
+msgstr "Otevřít"
+
+#: src/viewers/audio.js:295
+msgid "by"
+msgstr "od"
+
+#: src/viewers/audio.js:300
+msgid "from"
+msgstr "z"
+
+#: src/viewers/error.js:34
+msgid "Preview Failed"
+msgstr "Náhled selhal"
+
+#: src/viewers/error.js:38
+msgid "Copy Full Error Message"
+msgstr "Kopírovat celou chybovou zprávu"
+
+#: src/viewers/evince.js:196
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d z %d"
+
+#: src/viewers/fallback.js:187
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -49,42 +78,15 @@ msgstr[0] "%d položka"
 msgstr[1] "%d položky"
 msgstr[2] "%d položek"
 
-#: src/ui/fallbackRenderer.js:263
-msgid "Empty Folder"
-msgstr "Prázdná složka"
+#: src/viewers/fallback.js:192
+msgid "Empty"
+msgstr "Prázdné"
 
-#: src/ui/fallbackRenderer.js:267
-msgid "Size"
-msgstr "Velikost"
+#~ msgid "Type"
+#~ msgstr "Typ"
 
-#: src/ui/fallbackRenderer.js:273
-msgid "Modified"
-msgstr "Změněno"
-
-#: src/ui/mainWindow.js:73
-msgid "Open"
-msgstr "Otevřít"
-
-#: src/viewers/audio.js:347
-msgid "from"
-msgstr "z"
-
-#: src/viewers/audio.js:353
-msgid "by"
-msgstr "od"
-
-#: src/viewers/error.js:33
-msgid "Preview Failed"
-msgstr "Náhled selhal"
-
-#: src/viewers/error.js:37
-msgid "Copy Full Error Message"
-msgstr "Kopírovat celou chybovou zprávu"
-
-#: src/viewers/evince.js:217
-#, javascript-format
-msgid "%d of %d"
-msgstr "%d z %d"
+#~ msgid "Empty Folder"
+#~ msgstr "Prázdná složka"
 
 #, javascript-format
 #~ msgid "Unable to display %s"
