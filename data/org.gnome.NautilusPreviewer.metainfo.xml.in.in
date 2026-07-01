@@ -22,7 +22,8 @@
     <keyword>preview</keyword>
   </keywords>
   <releases>
-    <release version="@release-version@" type="snapshot"/>
+    <!--NEXT_RELEASE_PLACEHOLDER-->
+    <release version="51~alpha" type="development" date="2026-07-02"/>
     <release version="50.0" date="2026-04-26"/>
     <release version="46.0" date="2024-04-04"/>
   </releases>

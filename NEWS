@@ -1,3 +1,46 @@
+51.alpha
+========
+
+Epic:
+- Port to GTK 4 (Corey Berla)
+
+UI changes:
+- Support auto dark theme for text (Corey Berla)
+- Improve audio, error and fallback renderers (Peter Eisenmann, Tau Gärtli, Nokse)
+- Allow to fullscreen independent of file type (Peter Eisenmann)
+- Animate window size changes (Nokse)
+- Keep window size unchanged once scaled by user (Peter Eisenmann)
+- Use at most a quarter of the current screen (Peter Eisenmann)
+- Show images at their real size (Tau Gärtli)
+- Use flat headerbars for some file types (Nokse)
+- Rework toolbar overlays (Nokse)
+- Modernize media controls with Gtk.MediaControls (Nokse)
+- Support custom icons (Tau Gärtli)
+- Balance headerbar buttons (Peter Eisenmann)
+- Correct window sizing (Tau Gärtli, Peter Eisenmann)
+
+Known regressions:
+- LibreOffice documents are rendered into PDFs, as the previous method is not compatible with GTK4
+
+Backend changes:
+- Adopt GtkPicture and GtkVideo (Corey Berla)
+- Port Evince to Papers (Corey Berla, Tau Gärtli)
+- Use libadwaita (Nokse, Corey Berla)
+- Replace GdkPixbuf with Glycin (Tau Gärtli)
+- Add metadata discoverer (Corey Berla)
+- Port to ES Modules (Tau Gärtli)
+- Use Blueprint (Peter Eisenmann, Tau Gärtli)
+- Add CI checks for meson, Blueprint and potfiles (Tau Gärtli)
+- Add editorconfig (Tau Gärtli)
+- Use fribidi for text direction (Peter Eisenmann)
+- Document how to run Sushi (Tau Gärtli)
+- Various code cleanups and simplifications (Corey Berla, Peter Eisenmann, Tau Gärtli)
+- Stop renderer when window is closed (Tau Gärtli)
+
+Translations:
+- Add Lao translation (Saikeo Kavhanxay)
+- Translation updates (GNOME Translation Project contributors)
+
 50.0
 ====
 
