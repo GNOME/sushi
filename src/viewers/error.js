@@ -47,10 +47,6 @@ export class ErrorRenderer extends Adw.Bin {
         this.set_child(this._status_page);
     }
 
-    get canFullscreen() {
-        return false;
-    }
-
     get topBarStyle() {
         return Adw.ToolbarStyle.FLAT;
     }
