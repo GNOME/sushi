@@ -36,8 +36,9 @@ export class ToolbarOverlay extends Adw.Bin {
             GObject.BindingFlags.SYNC_CREATE);
         this.set_child(this._overlay);
 
-        for (const overlay of this._overlays)
-            this.add_overlay(overlay);
+        if (this._overlays)
+            for (const overlay of this._overlays)
+                this.add_overlay(overlay);
         this._overlays = null;
 
         this._lastX = 0.0;
