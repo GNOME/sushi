@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-06-05 17:18+0000\n"
-"PO-Revision-Date: 2026-06-06 16:04+0200\n"
+"POT-Creation-Date: 2026-06-23 06:23+0000\n"
+"PO-Revision-Date: 2026-07-01 10:00+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);\n"
-"X-Generator: Gtranslator 48.0\n"
+"X-Generator: Gtranslator 50.0\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -39,36 +39,40 @@ msgstr ""
 "Sushi este o aplicație de previzualizat fișiere pentru interfața GNOME. Este "
 "o componentă independentă care se integrează cu Fișiere GNOME (Nautilus)."
 
-#: src/core/mainWindow.js:115
+#: src/core/mainWindow.js:73
 msgid "Open"
 msgstr "Deschide"
 
-#: src/viewers/audio.js:361
+#: src/ui/fallback.blp:28
+msgid "Size"
+msgstr "Mărime"
+
+#: src/ui/fallback.blp:57
+msgid "Modified"
+msgstr "Modificat"
+
+#: src/viewers/audio.js:342
 msgid "from"
 msgstr "din"
 
-#: src/viewers/audio.js:367
+#: src/viewers/audio.js:348
 msgid "by"
 msgstr "de"
 
-#: src/viewers/error.js:41
+#: src/viewers/error.js:46
 msgid "Preview Failed"
 msgstr "Previzualizare nereușită"
 
-#: src/viewers/error.js:45
+#: src/viewers/error.js:50
 msgid "Copy Full Error Message"
 msgstr "Copiază mesajul de eroare complet"
 
-#: src/viewers/evince.js:230
+#: src/viewers/evince.js:212
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d din %d"
 
-#: src/viewers/fallback.js:226
-msgid "Type"
-msgstr "Tipul"
-
-#: src/viewers/fallback.js:236
+#: src/viewers/fallback.js:203
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -76,14 +80,6 @@ msgstr[0] "%d element"
 msgstr[1] "%d elemente"
 msgstr[2] "%d de elemente"
 
-#: src/viewers/fallback.js:241
-msgid "Empty Folder"
-msgstr "Dosar gol"
-
-#: src/viewers/fallback.js:245
-msgid "Size"
-msgstr "Mărime"
-
-#: src/viewers/fallback.js:251
-msgid "Modified"
-msgstr "Modificat"
+#: src/viewers/fallback.js:208
+msgid "Empty"
+msgstr "Gol"
