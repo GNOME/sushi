@@ -1,4 +1,10 @@
-project('sushi', 'c', version: '51.alpha', meson_version: '>=0.58.0')
+project(
+  'sushi',
+  'c',
+  version: '51.alpha',
+  meson_version: '>=0.58.0',
+  license: 'GPL-2.0-or-later',
+)
 
 gnome = import('gnome')
 
