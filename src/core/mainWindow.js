@@ -236,11 +236,12 @@ export class MainWindow extends Adw.ApplicationWindow {
              METADATA_KEY_CUSTOM_ICON_NAME].join(','),
             Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, null,
             (obj, res) => {
+                let fileInfo = undefined;
                 try {
-                    let fileInfo = obj.query_info_finish(res);
+                    fileInfo = obj.query_info_finish(res);
                     this._createView(fileInfo);
                 } catch(e) {
-                    this._reportError(e);
+                    this._reportError(e, fileInfo);
                 }
             });
     }
