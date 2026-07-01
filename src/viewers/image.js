@@ -26,7 +26,6 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         super._init();
         this.cancellable = new Gio.Cancellable();
         this._loadFile(file)
-            .then(() => this.isReady())
             .catch(error => this.emit('error', error));
     }
 
@@ -35,6 +34,8 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         const image = loader.load();
         this._imageWidth = image.get_width();
         this._imageHeight = image.get_height();
+        this.isReady();
+
         this.queue_resize();
         const frame = await image.next_frame_async(this.cancellable);
         const texture = GlyGtk4.frame_get_texture(frame);
@@ -51,8 +52,12 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         return [1, (size ?? scaleFactor) / scaleFactor, -1, -1];
     }
 
+    get customSize() {
+        return [this._imageWidth, this._imageHeight];
+    }
+
     get resizePolicy() {
-        return ResizePolicy.SCALED;
+        return ResizePolicy.CUSTOM;
     }
 
     /**

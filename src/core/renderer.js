@@ -11,6 +11,7 @@ export const ResizePolicy = {
     NAT_SIZE: 1,
     SCALED: 2,
     STATUS_PAGE: 3,
+    CUSTOM: 4,
 };
 
 export class Renderer extends GObject.Interface {
@@ -27,6 +28,12 @@ export class Renderer extends GObject.Interface {
     isReady() {
         this._ready = true;
         this.emit('ready');
+    }
+
+    get customSize() {
+        // customSize needs to be overwritten for ResizePolicy.CUSTOM
+        console.error('ResizePolicy programming error')
+        return [1, 1];
     }
 
     get ready() {
