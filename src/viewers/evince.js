@@ -4,6 +4,7 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
+import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GioUnix from 'gi://GioUnix';
 import GObject from 'gi://GObject';
@@ -140,6 +141,10 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
         const actionGroup = new Gio.SimpleActionGroup();
         actionGroup.add_action(copyAction);
         this.insert_action_group('evince', actionGroup);
+    }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.FLAT;
     }
 };
 
