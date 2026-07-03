@@ -59,7 +59,7 @@ export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
         if (this._lastAllocWidth === allocWidth)
             return;
 
-        // Match the Evince renderer behavior and resize the document upon
+        // Match the pdf renderer behavior and resize the document upon
         // receiving a new allocation.
         // We rely on the fact that LOKDocView always sets its size using
         // gtk_widget_set_size_request(), so we can know how much it will

@@ -14,12 +14,12 @@
     <file>util/webProcessExtensions.js</file>
     <file>viewers/audio.js</file>
     <file>viewers/error.js</file>
-    <file>viewers/evince.js</file>
     <file>viewers/fallback.js</file>
     <file>viewers/font.js</file>
     <file>viewers/html.js</file>
     <file>viewers/image.js</file>
     <file>viewers/libreoffice.js</file>
+    <file>viewers/pdf.js</file>
     <file>viewers/text.js</file>
     <file>viewers/video.js</file>
     <file>widgets/coverPaintable.js</file>

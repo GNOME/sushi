@@ -47,7 +47,7 @@ const createView = model => {
     return view;
 };
 
-export const Klass = class PapersRenderer extends ToolbarOverlay {
+export const Klass = class PdfRenderer extends ToolbarOverlay {
     static {
         GObject.registerClass({
             Implements: [Renderer],
@@ -137,10 +137,10 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
         copyAction.connect('activate', () => {
             this._view.copy();
         });
-        application.set_accels_for_action('evince.copy', ['<control>c']);
+        application.set_accels_for_action('pdf.copy', ['<control>c']);
         const actionGroup = new Gio.SimpleActionGroup();
         actionGroup.add_action(copyAction);
-        this.insert_action_group('evince', actionGroup);
+        this.insert_action_group('pdf', actionGroup);
     }
 
     get topBarStyle() {
