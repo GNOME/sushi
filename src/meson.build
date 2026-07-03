@@ -9,6 +9,7 @@ blueprints = custom_target(
     'ui/fallback.blp',
     'ui/html.blp',
     'ui/mainWindow.blp',
+    'ui/pdf.blp',
     'ui/video.blp',
   ),
   output: '.',

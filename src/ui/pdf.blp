@@ -1,0 +1,68 @@
+using Gtk 4.0;
+using PapersView 4.0;
+
+template $Gjs_PdfRenderer: $Gjs_ToolbarOverlay {
+  child: ScrolledWindow {
+    propagate-natural-height: true;
+    propagate-natural-width: true;
+
+    child: PapersView.View view {
+      model: PapersView.DocumentModel model {
+        annotation-model: PapersView.AnnotationModel {};
+      };
+
+      annotations-context: PapersView.AnnotationsContext {
+        document-model: model;
+
+        undo-context: PapersView.UndoContext {
+          document-model: model;
+        };
+      };
+
+      search-context: PapersView.SearchContext {
+        document-model: model;
+      };
+    };
+  };
+
+  [overlay]
+  Revealer {
+    halign: start;
+    valign: end;
+    hexpand: false;
+    reveal-child: true;
+    margin-bottom: 12;
+    margin-start: 12;
+    margin-end: 12;
+    transition-type: crossfade;
+
+    child: Box {
+      spacing: 6;
+
+      styles [
+        "osd-bin",
+        "osd",
+      ]
+
+      Button toolbarBack {
+        icon-name: "go-previous-symbolic";
+        clicked => $_goPreviousPage();
+      }
+
+      Label pageLabel {
+        hexpand: true;
+        margin-start: 10;
+        margin-end: 10;
+
+        styles [
+          "numeric",
+        ]
+      }
+
+      Button toolbarForward {
+        icon-name: "go-next-symbolic";
+        clicked => $_goNextPage();
+      }
+    };
+  }
+}
