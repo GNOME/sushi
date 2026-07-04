@@ -26,7 +26,7 @@ export class ToolbarOverlay extends Adw.Bin {
     }
 
     constructor(constructProperties = {}) {
-        super(constructProperties = {});
+        super(constructProperties);
 
         this._overlay = new Gtk.Overlay();
         this.bind_property(
