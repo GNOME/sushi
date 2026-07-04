@@ -4,10 +4,7 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
-import Sushi from 'gi://Sushi';
 
 let WebKit = undefined;
 try {

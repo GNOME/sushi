@@ -10,7 +10,6 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
-import Pango from 'gi://Pango';
 import * as Gettext from 'gettext';
 
 import {Renderer,ResizePolicy} from '../core/renderer.js';

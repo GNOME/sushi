@@ -14,7 +14,7 @@ import Sushi from 'gi://Sushi';
 
 import {ErrorRenderer} from '../viewers/error.js';
 import * as MimeHandler from './mimeHandler.js';
-import {Renderer,ResizePolicy} from './renderer.js';
+import {ResizePolicy} from './renderer.js';
 import {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 
 const WINDOW_MAX_PERCENT_H = 0.5;

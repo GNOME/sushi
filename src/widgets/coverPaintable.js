@@ -4,7 +4,6 @@
  * Authors: Tau Gärtli <git@tau.garden>
  */
 
-import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
