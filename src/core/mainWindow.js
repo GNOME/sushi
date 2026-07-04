@@ -28,22 +28,22 @@ export class MainWindow extends Adw.ApplicationWindow {
         }, this);
     }
 
-    _init(application) {
+    constructor(application) {
+        const min_width = 340;
+        const min_height = 294;
+
+        super({
+            application: application,
+            height_request: min_height,
+            width_request: min_width,
+        });
+
         this._renderer = null;
         this.file = null;
 
         this._animating = 0;
         this._skip_next_size_adjustment = false;
         this._scaled_by_user = false;
-
-        const min_width = 340;
-        const min_height = 294;
-
-        super._init({
-            application: application,
-            height_request: min_height,
-            width_request: min_width,
-        });
 
         this._lastWindowSize = [min_width, min_height];
         this.set_default_size(min_width, min_height);

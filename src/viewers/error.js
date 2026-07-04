@@ -19,8 +19,8 @@ export class ErrorRenderer extends Adw.Bin {
         }, this);
     }
 
-    _init(error) {
-        super._init();
+    constructor(error, constructProperties = {}) {
+        super(constructProperties);
 
         this._error_msg = error.message.trim();
         const index = this._error_msg.indexOf('\n')

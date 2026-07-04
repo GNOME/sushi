@@ -22,8 +22,9 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         }, this);
     }
 
-    _init(file) {
-        super._init();
+    constructor(file, _fileInfo, constructProperties = {}) {
+        super(constructProperties);
+
         this.cancellable = new Gio.Cancellable();
         this._loadFile(file)
             .catch(error => this.emit('error', error));

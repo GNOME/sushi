@@ -18,9 +18,10 @@ export const Klass = class FontRenderer extends Sushi.FontWidget {
         }, this);
     }
 
-    _init(file) {
-        super._init({ uri: file.get_uri(),
-                      visible: true });
+    constructor(file, _fileInfo, constructProperties = {}) {
+        super({ ...constructProperties,
+                uri: file.get_uri(),
+                visible: true });
 
         this.isReady();
     }

@@ -151,17 +151,18 @@ class PdfNavigationOverlay extends Gtk.Revealer {
         GObject.registerClass(this);
     }
 
-    _init(view) {
-        this._view = view;
+    constructor(view, constructProperties = {}) {
+        super({ ...constructProperties,
+                valign: Gtk.Align.END,
+                halign: Gtk.Align.START,
+                hexpand: false,
+                reveal_child: true,
+                margin_bottom: 12,
+                margin_start: 12,
+                margin_end: 12,
+                transition_type: Gtk.RevealerTransitionType.CROSSFADE });
 
-        super._init({ valign: Gtk.Align.END,
-                      halign: Gtk.Align.START,
-                      hexpand: false,
-                      reveal_child: true,
-                      margin_bottom: 12,
-                      margin_start: 12,
-                      margin_end: 12,
-                      transition_type: Gtk.RevealerTransitionType.CROSSFADE });
+        this._view = view;
 
         const box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                   spacing: 6,

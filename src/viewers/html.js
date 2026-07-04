@@ -28,8 +28,8 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView 
         }, this);
     }
 
-    _init(file) {
-        super._init();
+    constructor(file, _fileInfo, constructProperties = {}) {
+        super(constructProperties);
 
         /* disable the default context menu of the web view */
         this.connect('context-menu',

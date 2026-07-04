@@ -21,8 +21,8 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
         }, this);
     }
 
-    _init(file, fileInfo) {
-        super._init();
+    constructor(file, fileInfo, constructProperties = {}) {
+        super(constructProperties);
 
         this.cancellable = new Gio.Cancellable();
 
