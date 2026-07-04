@@ -56,7 +56,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
             try {
                 return await _fetchFromGstSample(coverSample, cancellable)
             } catch (e) {
-                logError(e, 'Unable to fetch cover art from GstSample');
+                console.warn(e, 'Unable to fetch cover art from GstSample');
             }
         }
         return null;
@@ -146,7 +146,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
 
             _saveToCache(mbid, stream, (err) => {
                 if (err)
-                    logError(err, 'Unable to save cover to cache');
+                    console.warn(err, 'Unable to save cover to cache');
                 _fetchFromCache(mbid, _cancellable, done);
             });
         });
@@ -271,7 +271,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
         if (err) {
             if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
                 !err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                logError(err, 'Unable to fetch cover art');
+                console.warn(err, 'Unable to fetch cover art');
             return;
         }
 

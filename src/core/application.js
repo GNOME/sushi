@@ -30,7 +30,7 @@ class NautilusPreviewerSkeleton {
         try {
             this._skeleton.export(connection, path);
         } catch (e) {
-            logError(e, 'Failed to export NautilusPreviewer DBus interface');
+            console.error(e, 'Failed to export NautilusPreviewer DBus interface');
         }
     }
 
