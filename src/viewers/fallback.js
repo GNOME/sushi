@@ -11,6 +11,8 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import * as Gettext from 'gettext';
+// eslint-disable-next-line no-restricted-properties
+const Format = imports.format;
 
 import {Renderer,ResizePolicy} from '../core/renderer.js';
 import {getCustomIcon} from '../util/customIcon.js';
@@ -182,10 +184,10 @@ export class FallbackRenderer extends Adw.Bin {
         if (state.fileInfo.get_file_type() != Gio.FileType.DIRECTORY) {
             sizeFormatted = GLib.format_size(state.fileInfo.get_size());
         } else if (state.totalSize > 0) {
-            let itemsStr = Gettext.ngettext(
+            let itemsStr = Format.vprintf(Gettext.ngettext(
                 "%d item", "%d items",
-                state.fileItems + state.directoryItems).
-                format(state.fileItems + state.directoryItems);
+                state.fileItems + state.directoryItems),
+                [state.fileItems + state.directoryItems]);
             sizeFormatted = `${GLib.format_size(state.totalSize)}, ${itemsStr}`;
         } else if (!state.loading) {
             sizeFormatted = _("Empty");

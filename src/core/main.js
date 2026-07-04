@@ -27,7 +27,6 @@ import GLib from 'gi://GLib';
 import {Application} from './application.js';
 
 pkg.initGettext();
-pkg.initFormat();
 
 export async function main(argv) {
     let application = new Application({ application_id: pkg.name,

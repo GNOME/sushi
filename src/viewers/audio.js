@@ -15,6 +15,8 @@ import GstTag from 'gi://GstTag';
 import Gtk from 'gi://Gtk';
 import Soup from 'gi://Soup';
 import Sushi from 'gi://Sushi';
+// eslint-disable-next-line no-restricted-properties
+const Format = imports.format;
 
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
@@ -153,7 +155,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
     }
 
     function _fetchCoverArtArchiveMetadata(mbid, done) {
-        let uri = COVER_ART_ARCHIVE_URL.format(mbid);
+        let uri = Format.vprintf(COVER_ART_ARCHIVE_URL, [mbid]);
         let session = new Soup.Session();
 
         let message = Soup.Message.new('GET', uri);
@@ -179,7 +181,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
         let artist = _tagList.get_string('artist')[1];
         let album = _tagList.get_string('album')[1];
 
-        let uri = MUSIC_BRAINZ_ASIN_FORMAT.format(album, artist);
+        let uri = Format.vprintf(MUSIC_BRAINZ_ASIN_FORMAT, [album, artist]);
         let session = new Soup.Session();
 
         let message = Soup.Message.new('GET', uri);

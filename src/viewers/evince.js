@@ -11,6 +11,8 @@ import Gtk from 'gi://Gtk';
 import PapersDocument from 'gi://PapersDocument';
 import PapersView from 'gi://PapersView';
 import Sushi from 'gi://Sushi';
+// eslint-disable-next-line no-restricted-properties
+const Format = imports.format;
 
 import {Renderer} from '../core/renderer.js';
 import {ToolbarOverlay} from '../widgets/toolbarOverlay.js';
@@ -195,6 +197,6 @@ class PdfNavigationOverlay extends Gtk.Revealer {
 
         this._toolbarBack.set_sensitive(currentPage > 0);
         this._toolbarForward.set_sensitive(currentPage < totalPages - 1);
-        this._pageLabel.set_text(_("%d of %d").format(currentPage + 1, totalPages));
+        this._pageLabel.set_text(Format.vprintf(_("%d of %d"), [currentPage + 1, totalPages]));
     }
 }
