@@ -3,10 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "eslint"
+    "lint": "eslint",
+    "ci:lint": "ci-run-eslint"
   },
   "devDependencies": {
+    "ci-run-eslint": "git+https://gitlab.gnome.org/World/javascript/ci-run-eslint.git",
     "eslint": "^9.39.4",
-    "eslint-config-gnome": "git+https://gitlab.gnome.org/World/javascript/eslint-config-gnome.git"
+    "eslint-config-gnome": "git+https://gitlab.gnome.org/World/javascript/eslint-config-gnome.git",
+    "eslint-formatter-junit": "^9.0.1"
   }
 }

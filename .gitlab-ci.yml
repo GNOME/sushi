@@ -32,11 +32,13 @@ stages:
 .fedora:
   variables:
     FDO_DISTRIBUTION_VERSION: rawhide
-    BASE_TAG: '2026-06-05.0'
+    BASE_TAG: '2026-07-05.0'
     FDO_DISTRIBUTION_COMPRESSION_FORMAT: zstd:chunked
     FDO_DISTRIBUTION_PACKAGES:
       blueprint-compiler
+      git
       meson
+      npm
 
 .fedora-x86_64:
   extends:
@@ -86,6 +88,20 @@ meson-format:
   stage: review
   script:
     - build-aux/check-meson-format.sh
+
+eslint:
+  extends:
+    - .fdo.distribution-image@fedora
+    - .fedora-x86_64
+  stage: review
+  variables:
+    LINT_REPORT: eslint-report.xml
+  script:
+    - build-aux/run-eslint.sh --output-file $LINT_REPORT --format junit --stdout
+  artifacts:
+    reports:
+      junit: $LINT_REPORT
+    when: always
 
 flatpak@x86_64:
   extends:
