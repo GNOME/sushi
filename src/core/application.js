@@ -16,7 +16,7 @@ class NautilusPreviewerSkeleton {
     constructor(application, resource) {
         this.application = application;
 
-        let bytes = Gio.resources_lookup_data(resource, 0);
+        const bytes = Gio.resources_lookup_data(resource, 0);
         this._skeleton = Gio.DBusExportedObject.wrapJSObject(
             ByteArray.toString(bytes.toArray()), this);
     }
@@ -60,7 +60,7 @@ export class Application extends Adw.Application {
     }
 
     vfunc_dbus_register(connection, path) {
-        let actualPath = `/org/gnome/${pkg.name.split('.').at(-1)}`;
+        const actualPath = `/org/gnome/${pkg.name.split('.').at(-1)}`;
 
         this._skeleton2 = new NautilusPreviewer2Skeleton(this);
         this._skeleton2.export(connection, actualPath);
@@ -117,7 +117,7 @@ export class Application extends Adw.Application {
             this._mainWindow.set_startup_id(activationToken);
 
 
-        let file = Gio.file_new_for_uri(uri);
+        const file = Gio.file_new_for_uri(uri);
         if (closeIfAlreadyShown &&
             this._mainWindow.file &&
             this._mainWindow.file.equal(file)) {

@@ -29,7 +29,7 @@ import {Application} from './application.js';
 pkg.initGettext();
 
 export async function main(argv) {
-    let application = new Application({
+    const application = new Application({
         application_id: pkg.name,
         flags: Gio.ApplicationFlags.IS_SERVICE,
         inactivity_timeout: 12000,

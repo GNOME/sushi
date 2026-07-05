@@ -131,13 +131,13 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
     }
 
     _defineActions() {
-        let application = Gio.Application.get_default();
-        let copyAction = new Gio.SimpleAction({name: 'copy'});
+        const application = Gio.Application.get_default();
+        const copyAction = new Gio.SimpleAction({name: 'copy'});
         copyAction.connect('activate', () => {
             this._view.copy();
         });
         application.set_accels_for_action('evince.copy', ['<control>c']);
-        let actionGroup = new Gio.SimpleActionGroup();
+        const actionGroup = new Gio.SimpleActionGroup();
         actionGroup.add_action(copyAction);
         this.insert_action_group('evince', actionGroup);
     }

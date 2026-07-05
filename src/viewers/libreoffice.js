@@ -55,7 +55,7 @@ export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
     _resizeView() {
         this._tickCallbackId = 0;
 
-        let allocWidth = this.get_allocated_width();
+        const allocWidth = this.get_allocated_width();
         if (this._lastAllocWidth === allocWidth)
             return;
 

@@ -73,20 +73,20 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _defineActions() {
-        let quit = new Gio.SimpleAction({name: 'quit'});
+        const quit = new Gio.SimpleAction({name: 'quit'});
         quit.connect('activate', () => {
             this.close();
         });
         this.application.set_accels_for_action('win.quit', ['q', 'Escape', 'space']);
         this.add_action(quit);
 
-        let fullscreen = new Gio.SimpleAction({name: 'fullscreen'});
+        const fullscreen = new Gio.SimpleAction({name: 'fullscreen'});
         fullscreen.connect('activate', this.toggleFullscreen.bind(this));
         this.application.set_accels_for_action('win.fullscreen', ['f', 'F11']);
         this.add_action(fullscreen);
 
         const addSelectAction = (name, accel, direction) => {
-            let action = new Gio.SimpleAction({name});
+            const action = new Gio.SimpleAction({name});
             action.connect('activate', () => {
                 this.application.emitSelectionEvent(direction);
             });
@@ -127,10 +127,10 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _getMaxSize() {
-        let display = Gdk.Display.get_default();
-        let surface = this.get_surface();
-        let monitor = display.get_monitor_at_surface(surface);
-        let geometry = monitor.get_geometry();
+        const display = Gdk.Display.get_default();
+        const surface = this.get_surface();
+        const monitor = display.get_monitor_at_surface(surface);
+        const geometry = monitor.get_geometry();
 
         // Sanitize unexpected values
         if (geometry.width > 100_000)
@@ -269,8 +269,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _createView(fileInfo) {
-        let klass = MimeHandler.getKlass(fileInfo.get_content_type());
-        let renderer = new klass(this.file, fileInfo);
+        const klass = MimeHandler.getKlass(fileInfo.get_content_type());
+        const renderer = new klass(this.file, fileInfo);
         this._embedRenderer(renderer, fileInfo);
 
         renderer.connect('error', (r, err) => {
@@ -279,7 +279,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _onFileOpenClicked() {
-        let fileLauncher = new Gtk.FileLauncher({file: this.file});
+        const fileLauncher = new Gtk.FileLauncher({file: this.file});
         fileLauncher.launch(null, null, (obj, result) => {
             obj.launch_finish(result);
             this.close();

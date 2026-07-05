@@ -28,12 +28,12 @@ function _getDeepCountAttrs() {
 }
 
 const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
-    let _seenInodes = new Set();
-    let _subDirectories = [];
+    const _seenInodes = new Set();
+    const _subDirectories = [];
     let _enumerator = null;
     let _file = null;
 
-    let _state = {
+    const _state = {
         file: _fileToLoad,
         fileInfo: _fileInfo,
         directoryItems: 0,
@@ -104,7 +104,7 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
     }
 
     function _deepCountOne(info) {
-        let inode = info.get_attribute_uint64(Gio.FILE_ATTRIBUTE_UNIX_INODE);
+        const inode = info.get_attribute_uint64(Gio.FILE_ATTRIBUTE_UNIX_INODE);
         let isSeen = false;
         if (inode) {
             isSeen = _seenInodes.has(inode);
@@ -112,7 +112,7 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
                 _seenInodes.add(inode);
         }
 
-        let fileType = info.get_file_type();
+        const fileType = info.get_file_type();
         if (fileType === Gio.FileType.DIRECTORY) {
             _state.directoryItems++;
             _subDirectories.unshift(_file.get_child(info.get_name()));
@@ -147,7 +147,7 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
     _cancellable.connect(_unqueueUpdate);
 
     _file = _fileToLoad;
-    let fileType = _fileInfo.get_file_type();
+    const fileType = _fileInfo.get_file_type();
     if (fileType === Gio.FileType.DIRECTORY)
         _deepCountLoad();
     else
@@ -175,18 +175,18 @@ export class FallbackRenderer extends Adw.Bin {
     }
 
     _applyLabels(state) {
-        let fileName = state.fileInfo.get_display_name();
+        const fileName = state.fileInfo.get_display_name();
         this._statusPage.set_title(fileName);
 
-        let contentType = state.fileInfo.get_content_type();
-        let typeDescr = Gio.content_type_get_description(contentType);
+        const contentType = state.fileInfo.get_content_type();
+        const typeDescr = Gio.content_type_get_description(contentType);
         this._statusPage.set_description(typeDescr);
 
         let sizeFormatted;
         if (state.fileInfo.get_file_type() !== Gio.FileType.DIRECTORY) {
             sizeFormatted = GLib.format_size(state.fileInfo.get_size());
         } else if (state.totalSize > 0) {
-            let itemsStr = Format.vprintf(Gettext.ngettext(
+            const itemsStr = Format.vprintf(Gettext.ngettext(
                 '%d item', '%d items',
                 state.fileItems + state.directoryItems),
             [state.fileItems + state.directoryItems]);
@@ -199,7 +199,7 @@ export class FallbackRenderer extends Adw.Bin {
             this._sizeLabel.set_label(sizeFormatted);
 
 
-        let date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
+        const date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
         this._dateLabel.set_label(date.format('%x %X'));
     }
 

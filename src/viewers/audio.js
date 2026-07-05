@@ -33,15 +33,15 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
         let idx = 0;
 
         while (true) {
-            let [res, sample] = _tagList.get_sample_index(Gst.TAG_IMAGE, idx);
+            const [res, sample] = _tagList.get_sample_index(Gst.TAG_IMAGE, idx);
             if (!res)
                 break;
 
             idx++;
 
-            let caps = sample.get_caps();
-            let capsStruct = caps.get_structure(0);
-            let [, type] = capsStruct.get_enum('image-type', GstTag.TagImageType.$gtype);
+            const caps = sample.get_caps();
+            const capsStruct = caps.get_structure(0);
+            const [, type] = capsStruct.get_enum('image-type', GstTag.TagImageType.$gtype);
             if (type === GstTag.TagImageType.UNDEFINED) {
                 coverSample = sample;
             } else if (type === GstTag.TagImageType.FRONT_COVER) {
@@ -65,7 +65,7 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
     }
 
     function _getCacheFile(mbid) {
-        let cachePath = GLib.build_filenamev([GLib.get_user_cache_dir(), 'sushi']);
+        const cachePath = GLib.build_filenamev([GLib.get_user_cache_dir(), 'sushi']);
         return Gio.File.new_for_path(GLib.build_filenamev([cachePath, `${mbid}.jpg`]));
     }
 
@@ -89,15 +89,15 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
     }
 
     function _fetchFromCache(mbid, cancellable, done) {
-        let file = _getCacheFile(mbid);
+        const file = _getCacheFile(mbid);
         _fetchFromFile(file, cancellable)
           .then(texture => done(null, texture))
           .catch(error => done(error, null));
     }
 
     function _saveToCache(mbid, stream, done) {
-        let cacheFile = _getCacheFile(mbid);
-        let cachePath = cacheFile.get_parent().get_path();
+        const cacheFile = _getCacheFile(mbid);
+        const cachePath = cacheFile.get_parent().get_path();
         GLib.mkdir_with_parents(cachePath, 448);
 
         cacheFile.replace_async(null, false, Gio.FileCreateFlags.PRIVATE, 0, _cancellable, (f, res) => {
@@ -127,14 +127,14 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
     }
 
     function decode(buffer) {
-        let decoder = new TextDecoder('utf8');
+        const decoder = new TextDecoder('utf8');
         return decoder.decode(buffer);
     }
 
     function _fetchCoverArtArchiveImage(uri, mbid, done) {
-        let session = new Soup.Session();
+        const session = new Soup.Session();
 
-        let message = Soup.Message.new('GET', uri);
+        const message = Soup.Message.new('GET', uri);
         message.request_headers.append('User-Agent', 'gnome-sushi');
 
         session.send_async(message, 0, _cancellable, (r, res) => {
@@ -155,20 +155,20 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
     }
 
     function _fetchCoverArtArchiveMetadata(mbid, done) {
-        let uri = Format.vprintf(COVER_ART_ARCHIVE_URL, [mbid]);
-        let session = new Soup.Session();
+        const uri = Format.vprintf(COVER_ART_ARCHIVE_URL, [mbid]);
+        const session = new Soup.Session();
 
-        let message = Soup.Message.new('GET', uri);
+        const message = Soup.Message.new('GET', uri);
         message.request_headers.append('User-Agent', 'gnome-sushi');
         session.send_and_read_async(message, 0, _cancellable, (r, res) => {
             try {
-                let data = decode(session.send_and_read_finish(res).get_data());
+                const data = decode(session.send_and_read_finish(res).get_data());
                 if (message.get_status() !== Soup.Status.OK)
                     return;
 
-                let json_data = JSON.parse(data);
+                const json_data = JSON.parse(data);
 
-                let uri = json_data['images'][0]['thumbnails']['small'];
+                const uri = json_data['images'][0]['thumbnails']['small'];
                 _fetchCoverArtArchiveImage(uri, mbid, done);
             } catch (e) {
                 done(e, null);
@@ -177,23 +177,23 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
     }
 
     function _fetchFromMusicBrainz(done) {
-        let artist = _tagList.get_string('artist')[1];
-        let album = _tagList.get_string('album')[1];
+        const artist = _tagList.get_string('artist')[1];
+        const album = _tagList.get_string('album')[1];
 
-        let uri = Format.vprintf(MUSIC_BRAINZ_ASIN_FORMAT, [album, artist]);
-        let session = new Soup.Session();
+        const uri = Format.vprintf(MUSIC_BRAINZ_ASIN_FORMAT, [album, artist]);
+        const session = new Soup.Session();
 
-        let message = Soup.Message.new('GET', uri);
+        const message = Soup.Message.new('GET', uri);
         message.request_headers.append('User-Agent', 'gnome-sushi');
 
         session.send_and_read_async(message, 0, _cancellable, (r, res) => {
             let mbid = null;
             try {
-                let data = decode(session.send_and_read_finish(res).get_data());
+                const data = decode(session.send_and_read_finish(res).get_data());
                 if (message.get_status() !== Soup.Status.OK)
                     return;
 
-                let json_response = JSON.parse(data);
+                const json_response = JSON.parse(data);
 
                 if (!('releases' in json_response) || json_response['releases'].length === 0)
                     return;
@@ -250,9 +250,9 @@ export const Klass = class AudioRenderer extends Adw.Bin {
 
         this._statusPage.set_paintable(this._coverPaintable);
 
-        let disco = Sushi.Discoverer.new(file.get_uri());
+        const disco = Sushi.Discoverer.new(file.get_uri());
         disco.connect('tags-changed', () => {
-            let tag_list = disco.get_tag_list();
+            const tag_list = disco.get_tag_list();
             if (tag_list)
                 this._updateFromTags(tag_list);
         });
@@ -280,24 +280,24 @@ export const Klass = class AudioRenderer extends Adw.Bin {
     }
 
     _updateFromTags(tags) {
-        let albumName = tags.get_string('album')[1];
-        let artistName = tags.get_string('artist')[1];
+        const albumName = tags.get_string('album')[1];
+        const artistName = tags.get_string('artist')[1];
         let titleName = tags.get_string('title')[1];
 
         if (!titleName) {
-            let file = Gio.file_new_for_uri(this._player.file.get_uri());
+            const file = Gio.file_new_for_uri(this._player.file.get_uri());
             titleName = file.get_basename();
         }
 
         let description = '';
 
         if (artistName) {
-            let escaped = GLib.markup_escape_text(artistName, -1);
+            const escaped = GLib.markup_escape_text(artistName, -1);
             description += `<i>${_('by')}  </i><b>${escaped}</b>\n`;
         }
 
         if (albumName) {
-            let escaped = GLib.markup_escape_text(albumName, -1);
+            const escaped = GLib.markup_escape_text(albumName, -1);
             description += `<i>${_('from')}  </i>${escaped}`;
         }
 

@@ -79,6 +79,7 @@ export default defineConfig([
                     message: 'Use constructor() and super()',
                 },
             ],
+            'prefer-const': 'error',
         },
         languageOptions: {
             globals: {
