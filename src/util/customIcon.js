@@ -23,12 +23,14 @@ export const getCustomIcon = (file, fileInfo) => {
         const customIconUri = getCustomIconMetadataUri(file, fileInfo);
         if (customIconUri != null)
            return Gio.FileIcon.new(Gio.File.new_for_uri(customIconUri));
+        return null;
     };
 
     const getFromName = () => {
         const customIconName = getCustomIconMetadataName(fileInfo);
         if (customIconName != null)
             return Gio.ThemedIcon.new_with_default_fallbacks(customIconName);
+        return null;
     };
 
     return (fileInfo.get_file_type() === Gio.FileType.DIRECTORY
