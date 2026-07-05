@@ -4,7 +4,8 @@ import Gtk from 'gi://Gtk';
 let LOKDocView;
 try {
     LOKDocView = (await import('gi://LOKDocView')).default;
-} catch(e) {
+} catch {
+    /* ignored */
 }
 
 export const isAvailable = function() {

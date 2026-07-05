@@ -9,7 +9,8 @@ import GObject from 'gi://GObject';
 let WebKit = undefined;
 try {
     WebKit = (await import('gi://WebKit?version=6.0')).default;
-} catch(e) {
+} catch {
+    /* ignored */
 }
 
 function _isAvailable() {

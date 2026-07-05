@@ -45,7 +45,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         this.set_paintable(texture);
     }
 
-    vfunc_measure(orientation, for_size) {
+    vfunc_measure(orientation, _for_size) {
         const scaleFactor = this._getFractionalScaleFactor();
         const size = (orientation === Gtk.Orientation.VERTICAL)
             ? (this._texture?.get_height() ?? this._imageHeight)
