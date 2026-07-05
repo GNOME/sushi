@@ -19,7 +19,7 @@ export class ToolbarOverlay extends Adw.Bin {
                     null,
                     null,
                     GObject.ParamFlags.READWRITE,
-                    Gtk.Widget,
+                    Gtk.Widget
                 ),
             },
         }, this);
@@ -36,9 +36,10 @@ export class ToolbarOverlay extends Adw.Bin {
             GObject.BindingFlags.SYNC_CREATE);
         this.set_child(this._overlay);
 
-        if (this._overlays)
+        if (this._overlays) {
             for (const overlay of this._overlays)
                 this.add_overlay(overlay);
+        }
         this._overlays = null;
 
         this._lastX = 0.0;
@@ -52,8 +53,8 @@ export class ToolbarOverlay extends Adw.Bin {
     }
 
     vfunc_add_child(builder, child, type) {
-        if (child instanceof Gtk.Widget && type === "overlay")
-            this._overlays = [...(this._overlays ?? []), child];
+        if (child instanceof Gtk.Widget && type === 'overlay')
+            this._overlays = [...this._overlays ?? [], child];
         else
             super.vfunc_add_child(builder, child, type);
     }

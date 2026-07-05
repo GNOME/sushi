@@ -29,9 +29,11 @@ import {Application} from './application.js';
 pkg.initGettext();
 
 export async function main(argv) {
-    let application = new Application({ application_id: pkg.name,
-                                        flags: Gio.ApplicationFlags.IS_SERVICE,
-                                        inactivity_timeout: 12000 });
+    let application = new Application({
+        application_id: pkg.name,
+        flags: Gio.ApplicationFlags.IS_SERVICE,
+        inactivity_timeout: 12000,
+    });
     if (GLib.getenv('SUSHI_PERSIST'))
         application.hold();
     await application.runAsync(argv);

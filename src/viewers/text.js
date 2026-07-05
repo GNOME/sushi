@@ -25,15 +25,17 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
         this.cancellable = new Gio.Cancellable();
 
         let buffer = this._createBuffer(file, fileInfo);
-        this._view = new GtkSource.View({ buffer: buffer,
-                                          editable: false,
-                                          cursor_visible: false,
-                                          monospace: true,
-                                          left_margin: 12,
-                                          right_margin: 12,
-                                          top_margin: 12,
-                                          bottom_margin: 12,
-                                          show_line_numbers: !!buffer.language });
+        this._view = new GtkSource.View({
+            buffer,
+            editable: false,
+            cursor_visible: false,
+            monospace: true,
+            left_margin: 12,
+            right_margin: 12,
+            top_margin: 12,
+            bottom_margin: 12,
+            show_line_numbers: !!buffer.language,
+        });
 
         this.set_child(this._view);
 
@@ -44,9 +46,9 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
         let sourceStyleManager = GtkSource.StyleSchemeManager.get_default();
         let scheme;
         if (adwStyleManager.dark)
-          scheme = sourceStyleManager.get_scheme('Adwaita-dark');
+            scheme = sourceStyleManager.get_scheme('Adwaita-dark');
         else
-          scheme = sourceStyleManager.get_scheme('Adwaita');
+            scheme = sourceStyleManager.get_scheme('Adwaita');
         buffer.set_style_scheme(scheme);
     }
 
@@ -55,24 +57,26 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
 
         let adwStyleManager = Adw.StyleManager.get_default();
         adwStyleManager.connect('notify::dark', () => {
-          this._setStyle(adwStyleManager, buffer);
+            this._setStyle(adwStyleManager, buffer);
         });
         this._setStyle(adwStyleManager, buffer);
 
         let langManager = GtkSource.LanguageManager.get_default();
         let language = langManager.guess_language(file.get_basename(),
-                                                  fileInfo.get_content_type());
+            fileInfo.get_content_type());
         if (language)
             buffer.set_language(language);
 
-        let sourceFile = new GtkSource.File({ location: file });
-        let loader = new GtkSource.FileLoader({ buffer: buffer,
-                                                file: sourceFile });
+        let sourceFile = new GtkSource.File({location: file});
+        let loader = new GtkSource.FileLoader({
+            buffer,
+            file: sourceFile,
+        });
         loader.load_async(0, this.cancellable, null, (loader, result) => {
             try {
                 loader.load_finish(result);
             } catch (e) {
-                if(!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                     this.emit('error', e);
             }
         });
@@ -83,5 +87,5 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
 
 // register for text/plain and let the mime handler call us for child types
 export const mimeTypes = [
-    'text/plain'
+    'text/plain',
 ];

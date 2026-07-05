@@ -22,7 +22,7 @@ export const getCustomIcon = (file, fileInfo) => {
     const getFromUri = () => {
         const customIconUri = getCustomIconMetadataUri(file, fileInfo);
         if (customIconUri != null)
-           return Gio.FileIcon.new(Gio.File.new_for_uri(customIconUri));
+            return Gio.FileIcon.new(Gio.File.new_for_uri(customIconUri));
         return null;
     };
 
@@ -33,12 +33,12 @@ export const getCustomIcon = (file, fileInfo) => {
         return null;
     };
 
-    return (fileInfo.get_file_type() === Gio.FileType.DIRECTORY
+    return fileInfo.get_file_type() === Gio.FileType.DIRECTORY
         ? getFromUri() ?? getFromName()
-        : null);
+        : null;
 };
 
-const isUriRelative = (uri) => {
+const isUriRelative = uri => {
     const scheme = GLib.Uri.parse_scheme(uri);
     return scheme == null;
 };
@@ -52,6 +52,6 @@ const getCustomIconMetadataUri = (file, fileInfo) => {
     return uri;
 };
 
-const getCustomIconMetadataName = (fileInfo) => {
+const getCustomIconMetadataName = fileInfo => {
     return fileInfo.get_attribute_string(METADATA_KEY_CUSTOM_ICON_NAME);
 };

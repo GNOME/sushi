@@ -19,9 +19,9 @@ export class Renderer extends GObject.Interface {
         GObject.registerClass({
             Requires: [Gtk.Widget],
             Signals: {
-                'error': { param_types: [GLib.Error.$gtype] },
-                'ready': { param_types: []},
-            }
+                'error': {param_types: [GLib.Error.$gtype]},
+                'ready': {param_types: []},
+            },
         }, this);
     }
 
@@ -32,7 +32,7 @@ export class Renderer extends GObject.Interface {
 
     get customSize() {
         // customSize needs to be overwritten for ResizePolicy.CUSTOM
-        console.error('ResizePolicy programming error')
+        console.error('ResizePolicy programming error');
         return [1, 1];
     }
 

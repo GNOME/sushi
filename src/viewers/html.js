@@ -6,7 +6,7 @@
 
 import GObject from 'gi://GObject';
 
-let WebKit = undefined;
+let WebKit;
 try {
     WebKit = (await import('gi://WebKit?version=6.0')).default;
 } catch {
@@ -31,7 +31,9 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView 
 
         /* disable the default context menu of the web view */
         this.connect('context-menu',
-                     function() {return true;});
+            function () {
+                return true;
+            });
 
         this.load_uri(file.get_uri());
         this.connect('load-failed', (view, loadEvent, uri, error) => {

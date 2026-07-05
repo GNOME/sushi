@@ -110,12 +110,12 @@ export class Application extends Adw.Application {
             'ParentHandle', new GLib.Variant('s', handle));
     }
 
-    showFile(uri, windowHandle, closeIfAlreadyShown, activationToken = "") {
+    showFile(uri, windowHandle, closeIfAlreadyShown, activationToken = '') {
         this._ensureMainWindow();
 
-        if (activationToken) {
+        if (activationToken)
             this._mainWindow.set_startup_id(activationToken);
-        }
+
 
         let file = Gio.file_new_for_uri(uri);
         if (closeIfAlreadyShown &&

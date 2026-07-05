@@ -17,8 +17,10 @@ export const Klass = class FontRenderer extends Sushi.FontWidget {
     }
 
     constructor(file, _fileInfo, constructProperties = {}) {
-        super({ ...constructProperties,
-                uri: file.get_uri() });
+        super({
+            ...constructProperties,
+            uri: file.get_uri(),
+        });
 
         this.isReady();
     }
@@ -28,5 +30,5 @@ export const mimeTypes = [
     'application/x-font-ttf',
     'application/x-font-otf',
     'application/x-font-pcf',
-    'application/x-font-type1'
+    'application/x-font-type1',
 ];

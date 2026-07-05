@@ -15,7 +15,7 @@ import Sushi from 'gi://Sushi';
 import {ErrorRenderer} from '../viewers/error.js';
 import * as MimeHandler from './mimeHandler.js';
 import {ResizePolicy} from './renderer.js';
-import {METADATA_KEY_CUSTOM_ICON,METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
+import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 
 const WINDOW_MAX_PERCENT_H = 0.5;
 const WINDOW_MAX_PERCENT_W = 0.5;
@@ -33,7 +33,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         const min_height = 294;
 
         super({
-            application: application,
+            application,
             height_request: min_height,
             width_request: min_width,
         });
@@ -50,7 +50,7 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         this._defineActions();
 
-        this._checkScaledByUser = this._checkScaledByUser.bind(this)
+        this._checkScaledByUser = this._checkScaledByUser.bind(this);
         this.connect('notify::default-width', this._checkScaledByUser);
     }
 
@@ -65,35 +65,35 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         // We only support a close button
         if (has_close[0])
-            return "close:";
+            return 'close:';
         else if (has_close[1])
-            return ":close";
+            return ':close';
         else
-            return "";
+            return '';
     }
 
     _defineActions() {
-        let quit = new Gio.SimpleAction({ name: 'quit' });
+        let quit = new Gio.SimpleAction({name: 'quit'});
         quit.connect('activate', () => {
             this.close();
         });
         this.application.set_accels_for_action('win.quit', ['q', 'Escape', 'space']);
         this.add_action(quit);
 
-        let fullscreen = new Gio.SimpleAction({ name: 'fullscreen' });
+        let fullscreen = new Gio.SimpleAction({name: 'fullscreen'});
         fullscreen.connect('activate', this.toggleFullscreen.bind(this));
         this.application.set_accels_for_action('win.fullscreen', ['f', 'F11']);
         this.add_action(fullscreen);
 
-        const addSelectAction = ((name, accel, direction) => {
-            let action = new Gio.SimpleAction({ name: name });
+        const addSelectAction = (name, accel, direction) => {
+            let action = new Gio.SimpleAction({name});
             action.connect('activate', () => {
                 this.application.emitSelectionEvent(direction);
             });
 
             this.application.set_accels_for_action(`win.${name}`, [accel]);
             this.add_action(action);
-        });
+        };
 
         addSelectAction('select-left', 'Left', Gtk.DirectionType.LEFT);
         addSelectAction('select-right', 'Right', Gtk.DirectionType.RIGHT);
@@ -105,7 +105,7 @@ export class MainWindow extends Adw.ApplicationWindow {
      *  @param {Gio.FileInfo|undefined} fileInfo */
     _reportError(error, fileInfo) {
         if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-          return;
+            return;
         this._embedRenderer(new ErrorRenderer(error), fileInfo);
     }
 
@@ -113,8 +113,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (!this.is_fullscreen()) {
             this.fullscreen();
             this._fullscreen_button.set_icon_name('view-restore-symbolic');
-        }
-        else {
+        } else {
             this.unfullscreen();
             this._fullscreen_button.set_icon_name('view-fullscreen-symbolic');
         }
@@ -140,7 +139,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             geometry.height = 800;
 
         return [Math.floor(geometry.width * WINDOW_MAX_PERCENT_W),
-                Math.floor(geometry.height * WINDOW_MAX_PERCENT_H)];
+            Math.floor(geometry.height * WINDOW_MAX_PERCENT_H)];
     }
 
     _getContentSize() {
@@ -149,31 +148,31 @@ export class MainWindow extends Adw.ApplicationWindow {
         const natSize = [rendererSize[1].width, rendererSize[1].height];
 
         switch (this._renderer.resizePolicy) {
-            case ResizePolicy.CUSTOM: {
-                const customSize = this._renderer.customSize;
-                return [ Math.min(customSize[0], maxSize[0]),
-                         Math.min(customSize[1], maxSize[1]) ];
+        case ResizePolicy.CUSTOM: {
+            const customSize = this._renderer.customSize;
+            return [Math.min(customSize[0], maxSize[0]),
+                Math.min(customSize[1], maxSize[1])];
+        }
+        case ResizePolicy.MAX_SIZE:
+            return maxSize;
+        case ResizePolicy.NAT_SIZE:
+            return [Math.min(natSize[0], maxSize[0]),
+                Math.min(natSize[1], maxSize[1])];
+        case ResizePolicy.SCALED:
+            if (natSize[0] <= maxSize[0] && natSize[1] <= maxSize[1]) {
+                // no scaling needed
+                return natSize;
+            } else {
+                // scale by smaller ratio of width or height
+                const ratio = Math.min(maxSize[0] / natSize[0], maxSize[1] / natSize[1]);
+                return natSize.map(size => Math.floor(size * ratio));
             }
-            case ResizePolicy.MAX_SIZE:
-                return maxSize;
-            case ResizePolicy.NAT_SIZE:
-                return [ Math.min(natSize[0], maxSize[0]),
-                         Math.min(natSize[1], maxSize[1]) ];
-            case ResizePolicy.SCALED:
-                if (natSize[0] <= maxSize[0] && natSize[1] <= maxSize[1])
-                    // no scaling needed
-                    return natSize;
-                else {
-                    // scale by smaller ratio of width or height
-                    const ratio = Math.min(maxSize[0] / natSize[0], maxSize[1] / natSize[1]);
-                    return natSize.map(size => Math.floor(size * ratio));
-                }
-            case ResizePolicy.STATUS_PAGE:
-                return [ Math.min(400, maxSize[0]),
-                         Math.min(420, maxSize[1]) ];
-            default:
-                console.warn(`Renderer uses unknown resize policy '${this._renderer.resizePolicy}'`)
-                return maxSize;
+        case ResizePolicy.STATUS_PAGE:
+            return [Math.min(400, maxSize[0]),
+                Math.min(420, maxSize[1])];
+        default:
+            console.warn(`Renderer uses unknown resize policy '${this._renderer.resizePolicy}'`);
+            return maxSize;
         }
     }
 
@@ -184,10 +183,10 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (this._renderer.fullscreen)
             return;
 
-        const contentSize = this._getContentSize()
+        const contentSize = this._getContentSize();
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
-        const windowSize = [ contentSize[0],
-                             contentSize[1] + naturalTitlebarSize.height ];
+        const windowSize = [contentSize[0],
+            contentSize[1] + naturalTitlebarSize.height];
 
         GObject.signal_handlers_block_by_func(this, this._checkScaledByUser);
         this._setDefaultSize(windowSize);
@@ -195,9 +194,9 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _checkScaledByUser() {
-        if (this._skip_next_size_adjustment)
+        if (this._skip_next_size_adjustment) {
             this._skip_next_size_adjustment = false;
-        else if (this._animating === 0) {
+        } else if (this._animating === 0) {
             console.debug('Window scaled by user, keeping size');
             this._scaled_by_user = true;
         }
@@ -218,10 +217,10 @@ export class MainWindow extends Adw.ApplicationWindow {
                 const width_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[0], windowSize[0], 150, width_target);
                 const height_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[1], windowSize[1], 150, height_target);
                 this._animating += 2;
-                width_animation.connect("done", this._animationDone.bind(this));
-                height_animation.connect("done", this._animationDone.bind(this));
-                width_animation.play()
-                height_animation.play()
+                width_animation.connect('done', this._animationDone.bind(this));
+                height_animation.connect('done', this._animationDone.bind(this));
+                width_animation.play();
+                height_animation.play();
             } else {
                 this.set_default_size(...windowSize);
             }
@@ -232,20 +231,20 @@ export class MainWindow extends Adw.ApplicationWindow {
     _createRenderer() {
         this.file.query_info_async(
             [Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-             Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
-             Gio.FILE_ATTRIBUTE_STANDARD_ICON,
-             Gio.FILE_ATTRIBUTE_STANDARD_SIZE,
-             Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-             Gio.FILE_ATTRIBUTE_TIME_MODIFIED,
-             METADATA_KEY_CUSTOM_ICON,
-             METADATA_KEY_CUSTOM_ICON_NAME].join(','),
+                Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+                Gio.FILE_ATTRIBUTE_STANDARD_ICON,
+                Gio.FILE_ATTRIBUTE_STANDARD_SIZE,
+                Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
+                Gio.FILE_ATTRIBUTE_TIME_MODIFIED,
+                METADATA_KEY_CUSTOM_ICON,
+                METADATA_KEY_CUSTOM_ICON_NAME].join(','),
             Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, null,
             (obj, res) => {
-                let fileInfo = undefined;
+                let fileInfo;
                 try {
                     fileInfo = obj.query_info_finish(res);
                     this._createView(fileInfo);
-                } catch(e) {
+                } catch (e) {
                     this._reportError(e, fileInfo);
                 }
             });
@@ -255,9 +254,9 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._renderer?.cancellable?.cancel();
         this._renderer = renderer;
 
-        const title = (fileInfo?.get_display_name()
-            ?? this.file.get_basename()
-            ?? this.file.get_uri());
+        const title = fileInfo?.get_display_name() ??
+            this.file.get_basename() ??
+            this.file.get_uri();
         this.set_title(title);
 
         this._toolbar_view.set_content(this._renderer);
@@ -265,9 +264,8 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         if (renderer.ready)
             this._onRendererReady();
-        else {
+        else
             renderer.connect('ready', this._onRendererReady.bind(this));
-        }
     }
 
     _createView(fileInfo) {
@@ -275,18 +273,20 @@ export class MainWindow extends Adw.ApplicationWindow {
         let renderer = new klass(this.file, fileInfo);
         this._embedRenderer(renderer, fileInfo);
 
-        renderer.connect('error', (r, err) => { this._reportError(err, fileInfo); });
-    }
-
-    _onFileOpenClicked() {
-        let fileLauncher = new Gtk.FileLauncher({ file: this.file });
-        fileLauncher.launch(null, null, (obj, result) => {
-          obj.launch_finish(result);
-          this.close();
+        renderer.connect('error', (r, err) => {
+            this._reportError(err, fileInfo);
         });
     }
 
-    /**************************************************************************
+    _onFileOpenClicked() {
+        let fileLauncher = new Gtk.FileLauncher({file: this.file});
+        fileLauncher.launch(null, null, (obj, result) => {
+            obj.launch_finish(result);
+            this.close();
+        });
+    }
+
+    /** ************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
     setParent(handle) {

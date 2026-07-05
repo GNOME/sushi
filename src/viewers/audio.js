@@ -25,9 +25,9 @@ import {CoverPaintable} from '../widgets/coverPaintable.js';
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 
-const COVER_ART_ARCHIVE_URL = "https://coverartarchive.org/release/%s";
-const MUSIC_BRAINZ_ASIN_FORMAT = "https://musicbrainz.org/ws/2/release/?query=release:\"%s\"AND artist:\"%s\"&limit=1&fmt=json";
-const fetchCoverArt = function(_tagList, _cancellable, _callback) {
+const COVER_ART_ARCHIVE_URL = 'https://coverartarchive.org/release/%s';
+const MUSIC_BRAINZ_ASIN_FORMAT = 'https://musicbrainz.org/ws/2/release/?query=release:"%s"AND artist:"%s"&limit=1&fmt=json';
+const fetchCoverArt = function (_tagList, _cancellable, _callback) {
     async function _fetchFromTags(cancellable) {
         let coverSample = null;
         let idx = 0;
@@ -56,7 +56,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
 
         if (coverSample) {
             try {
-                return await _fetchFromGstSample(coverSample, cancellable)
+                return await _fetchFromGstSample(coverSample, cancellable);
             } catch (e) {
                 console.warn(e, 'Unable to fetch cover art from GstSample');
             }
@@ -80,7 +80,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
         const buffer = sample.get_buffer();
         const [ok, info] = buffer.map(Gst.MapFlags.READ);
         if (!ok)
-          throw new Error('Failed to map GstBuffer');
+            throw new Error('Failed to map GstBuffer');
         const bytes = GLib.Bytes.new(info.data);
         const loader = Gly.Loader.new_for_bytes(bytes);
         const image = await loader.load_async(cancellable);
@@ -146,7 +146,7 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
                 return;
             }
 
-            _saveToCache(mbid, stream, (err) => {
+            _saveToCache(mbid, stream, err => {
                 if (err)
                     console.warn(err, 'Unable to save cover to cache');
                 _fetchFromCache(mbid, _cancellable, done);
@@ -164,13 +164,12 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
             try {
                 let data = decode(session.send_and_read_finish(res).get_data());
                 if (message.get_status() !== Soup.Status.OK)
-                  return;
+                    return;
 
-                let json_data = JSON.parse (data);
+                let json_data = JSON.parse(data);
 
                 let uri = json_data['images'][0]['thumbnails']['small'];
                 _fetchCoverArtArchiveImage(uri, mbid, done);
-                return;
             } catch (e) {
                 done(e, null);
             }
@@ -201,8 +200,8 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
 
                 mbid = json_response['releases'][0]['id'];
             } catch (e) {
-              done (e, null);
-              return;
+                done(e, null);
+                return;
             }
 
             _fetchFromCache(mbid, _cancellable, (err, cover) => {
@@ -214,15 +213,15 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
         });
     }
 
-   _fetchFromTags(_cancellable)
+    _fetchFromTags(_cancellable)
       .catch(() => null)
       .then(cover => {
-        if (cover)
-            _callback(null, cover);
-        else
-            _fetchFromMusicBrainz(_callback);
+          if (cover)
+              _callback(null, cover);
+          else
+              _fetchFromMusicBrainz(_callback);
       });
-}
+};
 
 export const Klass = class AudioRenderer extends Adw.Bin {
     static {
@@ -242,7 +241,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
 
         this._coverFetched = false;
 
-        this._coverPaintable = new CoverPaintable({ display: this.get_display() });
+        this._coverPaintable = new CoverPaintable({display: this.get_display()});
         this.bind_property(
             'scale-factor',
             this._coverPaintable,
@@ -253,16 +252,16 @@ export const Klass = class AudioRenderer extends Adw.Bin {
 
         let disco = Sushi.Discoverer.new(file.get_uri());
         disco.connect('tags-changed', () => {
-          let tag_list = disco.get_tag_list();
-          if (tag_list)
-            this._updateFromTags(tag_list);
+            let tag_list = disco.get_tag_list();
+            if (tag_list)
+                this._updateFromTags(tag_list);
         });
 
         this.cancellable = new Gio.Cancellable();
         this.cancellable.connect(() => this._coverPaintable.destroy());
         this.isReady();
 
-        this.connect('unmap', () => (this._stream.pause()));
+        this.connect('unmap', () => this._stream.pause());
     }
 
     _setCover(cover) {
@@ -290,16 +289,16 @@ export const Klass = class AudioRenderer extends Adw.Bin {
             titleName = file.get_basename();
         }
 
-        let description = ''
+        let description = '';
 
         if (artistName) {
             let escaped = GLib.markup_escape_text(artistName, -1);
-            description += '<i>' + _("by") + '  </i><b>' + escaped + '</b>\n';
+            description += `<i>${_('by')}  </i><b>${escaped}</b>\n`;
         }
 
         if (albumName) {
             let escaped = GLib.markup_escape_text(albumName, -1);
-            description += '<i>' + _("from") + '  </i>' + escaped;
+            description += `<i>${_('from')}  </i>${escaped}`;
         }
 
         this._statusPage.set_title(titleName);

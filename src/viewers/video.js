@@ -22,7 +22,7 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
                     'Stream',
                     null,
                     GObject.ParamFlags.READABLE,
-                    Gtk.MediaStream,
+                    Gtk.MediaStream
                 ),
             },
         }, this);
@@ -44,7 +44,7 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
             this.isReady();
         });
 
-        this.connect('unmap', () => (this._stream.pause()));
+        this.connect('unmap', () => this._stream.pause());
     }
 
     get overlay() {

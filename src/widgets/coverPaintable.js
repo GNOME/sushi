@@ -24,7 +24,7 @@ export class CoverPaintable extends GObject.Object {
                     'Texture',
                     null,
                     GObject.ParamFlags.READWRITE,
-                    Gdk.Texture,
+                    Gdk.Texture
                 ),
                 'scale-factor': GObject.ParamSpec.int(
                     'scale-factor',
@@ -33,14 +33,14 @@ export class CoverPaintable extends GObject.Object {
                     GObject.ParamFlags.READWRITE,
                     1, /* minimum */
                     GLib.MAXINT32, /* maximum */
-                    1, /* default */
+                    1 /* default */
                 ),
                 'display': GObject.ParamSpec.object(
                     'display',
                     'Display',
                     null,
                     GObject.ParamFlags.READWRITE,
-                    Gdk.Display,
+                    Gdk.Display
                 ),
             },
             Implements: [Gdk.Paintable],
@@ -93,9 +93,9 @@ export class CoverPaintable extends GObject.Object {
             return;
 
         this._display = display;
-        this._iconTheme = (display
+        this._iconTheme = display
             ? Gtk.IconTheme.get_for_display(display)
-            : null);
+            : null;
         this._setSettings(display
             ? Gtk.Settings.get_for_display(display)
             : Gtk.Settings.get_default());
@@ -124,11 +124,11 @@ export class CoverPaintable extends GObject.Object {
         const original_height = height;
         const ratio = texture.get_height() / texture.get_width();
         // Scale down the image according to the biggest axis
-        if (ratio > 1) {
-            width = width / ratio;
-        } else {
-            height = height * ratio;
-        }
+        if (ratio > 1)
+            width /= ratio;
+        else
+            height *= ratio;
+
         const scaleFactor = this._scaleFactor;
         const scaleFactorInverse = 1 / scaleFactor;
 
@@ -166,9 +166,9 @@ export class CoverPaintable extends GObject.Object {
             'audio-x-generic-symbolic', null, iconWidth, scaleFactor, 0, 0);
 
         const bgColor = new Gdk.RGBA();
-        const bgColorString = (this._settings.gtk_interface_color_scheme === Gtk.InterfaceColorScheme.DARK
-            ? "rgba(30%, 30%, 30%, 1)"
-            : "rgba(95%, 95%, 95%, 1)");
+        const bgColorString = this._settings.gtk_interface_color_scheme === Gtk.InterfaceColorScheme.DARK
+            ? 'rgba(30%, 30%, 30%, 1)'
+            : 'rgba(95%, 95%, 95%, 1)';
         bgColor.parse(bgColorString);
 
         snapshot.append_color(bgColor, new Graphene.Rect().init(0, 0, width, height));
@@ -197,7 +197,7 @@ export class CoverPaintable extends GObject.Object {
     _createSettingsSignalGroup() {
         const signalGroup = new GObject.SignalGroup();
         signalGroup.connect_closure(
-            "notify::gtk-interface-color-scheme",
+            'notify::gtk-interface-color-scheme',
             this._onInterfaceColorSchemeChanged.bind(this),
             false);
         return signalGroup;

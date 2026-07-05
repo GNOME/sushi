@@ -8,7 +8,7 @@ try {
     /* ignored */
 }
 
-export const isAvailable = function() {
+export const isAvailable = function () {
     return LOKDocView !== undefined;
 };
 
@@ -23,10 +23,11 @@ export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
 
     _init(file) {
         // eslint-disable-next-line no-restricted-syntax
-        super._init({ hexpand: true,
-                      propagate_natural_height: true,
-                      propagate_natural_width: true,
-                      visible: true,
+        super._init({
+            hexpand: true,
+            propagate_natural_height: true,
+            propagate_natural_width: true,
+            visible: true,
         });
 
         this._lastAllocWidth = 0;
@@ -92,7 +93,7 @@ export const officeTypes = [
     'application/msword',
     'application/vnd.ms-excel',
     'application/vnd.ms-powerpoint',
-    'application/rtf'
+    'application/rtf',
 ];
 
 export const mimeTypes = isAvailable() ? officeTypes : [];

@@ -47,9 +47,9 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
 
     vfunc_measure(orientation, _for_size) {
         const scaleFactor = this._getFractionalScaleFactor();
-        const size = (orientation === Gtk.Orientation.VERTICAL)
-            ? (this._texture?.get_height() ?? this._imageHeight)
-            : (this._texture?.get_width() ?? this._imageWidth);
+        const size = orientation === Gtk.Orientation.VERTICAL
+            ? this._texture?.get_height() ?? this._imageHeight
+            : this._texture?.get_width() ?? this._imageWidth;
         return [1, (size ?? scaleFactor) / scaleFactor, -1, -1];
     }
 

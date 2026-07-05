@@ -25,7 +25,7 @@ const createDocumentModel = () => {
     });
 };
 
-const createView = (model) => {
+const createView = model => {
     const view = new PapersView.View();
     view.set_model(model);
 
@@ -78,10 +78,12 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
 
         this._defineActions();
 
-        const scrolledWindow = new Gtk.ScrolledWindow({ visible: true,
-                                                        propagate_natural_height: true,
-                                                        propagate_natural_width: true,
-                                                        child: this._view});
+        const scrolledWindow = new Gtk.ScrolledWindow({
+            visible: true,
+            propagate_natural_height: true,
+            propagate_natural_width: true,
+            child: this._view,
+        });
         this.set_child(scrolledWindow);
 
         this._toolbar = new PdfNavigationOverlay(this._view);
@@ -129,15 +131,15 @@ export const Klass = class PapersRenderer extends ToolbarOverlay {
     }
 
     _defineActions() {
-        let application = Gio.Application.get_default ();
-        let copyAction = new Gio.SimpleAction({ name: 'copy' });
-        copyAction.connect ('activate', () => {
-          this._view.copy();
+        let application = Gio.Application.get_default();
+        let copyAction = new Gio.SimpleAction({name: 'copy'});
+        copyAction.connect('activate', () => {
+            this._view.copy();
         });
-        application.set_accels_for_action ('evince.copy', ['<control>c']);
+        application.set_accels_for_action('evince.copy', ['<control>c']);
         let actionGroup = new Gio.SimpleActionGroup();
         actionGroup.add_action(copyAction);
-        this.insert_action_group ('evince', actionGroup);
+        this.insert_action_group('evince', actionGroup);
     }
 };
 
@@ -154,36 +156,42 @@ class PdfNavigationOverlay extends Gtk.Revealer {
     }
 
     constructor(view, constructProperties = {}) {
-        super({ ...constructProperties,
-                valign: Gtk.Align.END,
-                halign: Gtk.Align.START,
-                hexpand: false,
-                reveal_child: true,
-                margin_bottom: 12,
-                margin_start: 12,
-                margin_end: 12,
-                transition_type: Gtk.RevealerTransitionType.CROSSFADE });
+        super({
+            ...constructProperties,
+            valign: Gtk.Align.END,
+            halign: Gtk.Align.START,
+            hexpand: false,
+            reveal_child: true,
+            margin_bottom: 12,
+            margin_start: 12,
+            margin_end: 12,
+            transition_type: Gtk.RevealerTransitionType.CROSSFADE,
+        });
 
         this._view = view;
 
-        const box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
-                                  spacing: 6,
-                                  css_classes: ['osd-bin', 'osd'] });
+        const box = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL,
+            spacing: 6,
+            css_classes: ['osd-bin', 'osd'],
+        });
 
-        this._toolbarBack = new Gtk.Button({ icon_name: 'go-previous-symbolic' });
+        this._toolbarBack = new Gtk.Button({icon_name: 'go-previous-symbolic'});
         this._toolbarBack.connect('clicked', () => {
             this._view.previous_page();
         });
         box.append(this._toolbarBack);
 
-        this._pageLabel = new Gtk.Label({ hexpand: true,
-                                          margin_start: 10,
-                                          margin_end: 10,
-                                          css_classes: ['numeric'] });
+        this._pageLabel = new Gtk.Label({
+            hexpand: true,
+            margin_start: 10,
+            margin_end: 10,
+            css_classes: ['numeric'],
+        });
         box.append(this._pageLabel);
 
-        this._toolbarForward = new Gtk.Button({ icon_name: 'go-next-symbolic' });
-        this._toolbarForward.connect('clicked',() => {
+        this._toolbarForward = new Gtk.Button({icon_name: 'go-next-symbolic'});
+        this._toolbarForward.connect('clicked', () => {
             this._view.next_page();
         });
         box.append(this._toolbarForward);
@@ -197,6 +205,6 @@ class PdfNavigationOverlay extends Gtk.Revealer {
 
         this._toolbarBack.set_sensitive(currentPage > 0);
         this._toolbarForward.set_sensitive(currentPage < totalPages - 1);
-        this._pageLabel.set_text(Format.vprintf(_("%d of %d"), [currentPage + 1, totalPages]));
+        this._pageLabel.set_text(Format.vprintf(_('%d of %d'), [currentPage + 1, totalPages]));
     }
 }

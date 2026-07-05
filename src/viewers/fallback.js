@@ -14,7 +14,7 @@ import * as Gettext from 'gettext';
 // eslint-disable-next-line no-restricted-properties
 const Format = imports.format;
 
-import {Renderer,ResizePolicy} from '../core/renderer.js';
+import {Renderer, ResizePolicy} from '../core/renderer.js';
 import {getCustomIcon} from '../util/customIcon.js';
 
 function _getDeepCountAttrs() {
@@ -23,24 +23,26 @@ function _getDeepCountAttrs() {
         Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
         Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
         Gio.FILE_ATTRIBUTE_STANDARD_NAME,
-        Gio.FILE_ATTRIBUTE_UNIX_INODE
+        Gio.FILE_ATTRIBUTE_UNIX_INODE,
     ].join(',');
 }
 
-const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback) {
+const loadFile = function (_fileToLoad, _fileInfo, _cancellable, _updateCallback) {
     let _seenInodes = new Set();
     let _subDirectories = [];
     let _enumerator = null;
     let _file = null;
 
-    let _state = { file: _fileToLoad,
-                   fileInfo: _fileInfo,
-                   directoryItems: 0,
-                   fileItems: 0,
-                   loading: true,
-                   totalItems: 0,
-                   totalSize: 0,
-                   unreadableItems: 0 }
+    let _state = {
+        file: _fileToLoad,
+        fileInfo: _fileInfo,
+        directoryItems: 0,
+        fileItems: 0,
+        loading: true,
+        totalItems: 0,
+        totalSize: 0,
+        unreadableItems: 0,
+    };
     let _timeoutId = 0;
 
     function _cleanup() {
@@ -55,7 +57,7 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
             (f, res) => {
                 try {
                     _enumerator = _file.enumerate_children_finish(res);
-                } catch(e) {
+                } catch (e) {
                     _state.unreadableItems++;
                     if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                         _deepCountNext();
@@ -185,18 +187,17 @@ export class FallbackRenderer extends Adw.Bin {
             sizeFormatted = GLib.format_size(state.fileInfo.get_size());
         } else if (state.totalSize > 0) {
             let itemsStr = Format.vprintf(Gettext.ngettext(
-                "%d item", "%d items",
+                '%d item', '%d items',
                 state.fileItems + state.directoryItems),
-                [state.fileItems + state.directoryItems]);
+            [state.fileItems + state.directoryItems]);
             sizeFormatted = `${GLib.format_size(state.totalSize)}, ${itemsStr}`;
         } else if (!state.loading) {
-            sizeFormatted = _("Empty");
+            sizeFormatted = _('Empty');
         }
 
         if (sizeFormatted)
-        {
             this._sizeLabel.set_label(sizeFormatted);
-        }
+
 
         let date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
         this._dateLabel.set_label(date.format('%x %X'));
@@ -208,15 +209,15 @@ export class FallbackRenderer extends Adw.Bin {
         const iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
         const paintable = iconTheme.lookup_by_gicon(icon, 256, this.scale_factor, 0, 0);
         if (paintable)
-            this._statusPage.set_paintable (paintable);
+            this._statusPage.set_paintable(paintable);
         else
             this._statusPage.set_icon_name('image-missing-symbolic');
     }
 
     _onFileInfoUpdated(state) {
-        if (!state.loading) {
-            this._spinner.set_visible(false)
-        }
+        if (!state.loading)
+            this._spinner.set_visible(false);
+
 
         this._applyIcon(state);
         this._applyLabels(state);
