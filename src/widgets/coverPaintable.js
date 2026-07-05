@@ -166,7 +166,7 @@ export class CoverPaintable extends GObject.Object {
             'audio-x-generic-symbolic', null, iconWidth, scaleFactor, 0, 0);
 
         const bgColor = new Gdk.RGBA();
-        const bgColorString = (this._settings.gtk_interface_color_scheme == Gtk.InterfaceColorScheme.DARK
+        const bgColorString = (this._settings.gtk_interface_color_scheme === Gtk.InterfaceColorScheme.DARK
             ? "rgba(30%, 30%, 30%, 1)"
             : "rgba(95%, 95%, 95%, 1)");
         bgColor.parse(bgColorString);

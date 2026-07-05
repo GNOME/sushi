@@ -209,9 +209,9 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _setDefaultSize(windowSize) {
-        if ((windowSize[0] > 0 && windowSize[0] != this._lastWindowSize[0]) ||
-            (windowSize[1] > 0 && windowSize[1] != this._lastWindowSize[1])) {
-            if (!this.get_settings().gtk_interface_reduced_motion && this._lastWindowSize[0] != 0) {
+        if ((windowSize[0] > 0 && windowSize[0] !== this._lastWindowSize[0]) ||
+            (windowSize[1] > 0 && windowSize[1] !== this._lastWindowSize[1])) {
+            if (!this.get_settings().gtk_interface_reduced_motion && this._lastWindowSize[0] !== 0) {
                 const width_target = Adw.PropertyAnimationTarget.new(this, 'default-width');
                 const height_target = Adw.PropertyAnimationTarget.new(this, 'default-height');
                 const width_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[0], windowSize[0], 150, width_target);

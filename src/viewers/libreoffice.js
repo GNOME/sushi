@@ -41,10 +41,10 @@ export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
     vfunc_size_allocate(allocation) {
         super.vfunc_size_allocate(allocation);
 
-        if (this._view.width_request == -1)
+        if (this._view.width_request === -1)
             return;
 
-        if (this._tickCallbackId != 0)
+        if (this._tickCallbackId !== 0)
             this.remove_tick_callback(this._tickCallbackId);
         this._tickCallbackId = this.add_tick_callback(this._resizeView.bind(this));
     }
@@ -53,7 +53,7 @@ export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
         this._tickCallbackId = 0;
 
         let allocWidth = this.get_allocated_width();
-        if (this._lastAllocWidth == allocWidth)
+        if (this._lastAllocWidth === allocWidth)
             return;
 
         // Match the Evince renderer behavior and resize the document upon

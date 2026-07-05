@@ -42,9 +42,9 @@ const fetchCoverArt = function(_tagList, _cancellable, _callback) {
             let caps = sample.get_caps();
             let capsStruct = caps.get_structure(0);
             let [r, type] = capsStruct.get_enum('image-type', GstTag.TagImageType.$gtype);
-            if (type == GstTag.TagImageType.UNDEFINED) {
+            if (type === GstTag.TagImageType.UNDEFINED) {
                 coverSample = sample;
-            } else if (type == GstTag.TagImageType.FRONT_COVER) {
+            } else if (type === GstTag.TagImageType.FRONT_COVER) {
                 coverSample = sample;
                 break;
             }

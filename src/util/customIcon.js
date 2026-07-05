@@ -31,7 +31,7 @@ export const getCustomIcon = (file, fileInfo) => {
             return Gio.ThemedIcon.new_with_default_fallbacks(customIconName);
     };
 
-    return (fileInfo.get_file_type() == Gio.FileType.DIRECTORY
+    return (fileInfo.get_file_type() === Gio.FileType.DIRECTORY
         ? getFromUri() ?? getFromName()
         : null);
 };

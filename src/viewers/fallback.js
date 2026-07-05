@@ -111,7 +111,7 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
         }
 
         let fileType = info.get_file_type();
-        if (fileType == Gio.FileType.DIRECTORY) {
+        if (fileType === Gio.FileType.DIRECTORY) {
             _state.directoryItems++;
             _subDirectories.unshift(_file.get_child(info.get_name()));
         } else {
@@ -123,7 +123,7 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
     }
 
     function _queueUpdate() {
-        if (_timeoutId != 0)
+        if (_timeoutId !== 0)
             return;
 
         _timeoutId = GLib.timeout_add(0, 300, () => {
@@ -134,7 +134,7 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
     }
 
     function _unqueueUpdate() {
-        if (_timeoutId != 0)
+        if (_timeoutId !== 0)
             GLib.source_remove(_timeoutId);
     }
 
@@ -146,7 +146,7 @@ const loadFile = function(_fileToLoad, _fileInfo, _cancellable, _updateCallback)
 
     _file = _fileToLoad;
     let fileType = _fileInfo.get_file_type();
-    if (fileType == Gio.FileType.DIRECTORY)
+    if (fileType === Gio.FileType.DIRECTORY)
         _deepCountLoad();
     else
         _state.loading = false;
@@ -181,7 +181,7 @@ export class FallbackRenderer extends Adw.Bin {
         this._statusPage.set_description(typeDescr);
 
         let sizeFormatted;
-        if (state.fileInfo.get_file_type() != Gio.FileType.DIRECTORY) {
+        if (state.fileInfo.get_file_type() !== Gio.FileType.DIRECTORY) {
             sizeFormatted = GLib.format_size(state.fileInfo.get_size());
         } else if (state.totalSize > 0) {
             let itemsStr = Format.vprintf(Gettext.ngettext(
