@@ -27,7 +27,7 @@ Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 
 const COVER_ART_ARCHIVE_URL = 'https://coverartarchive.org/release/%s';
 const MUSIC_BRAINZ_ASIN_FORMAT = 'https://musicbrainz.org/ws/2/release/?query=release:"%s"AND artist:"%s"&limit=1&fmt=json';
-const fetchCoverArt = function (_tagList, _cancellable, _callback) {
+const fetchCoverArt = (_tagList, _cancellable, _callback) => {
     async function _fetchFromTags(cancellable) {
         let coverSample = null;
         let idx = 0;
@@ -41,7 +41,7 @@ const fetchCoverArt = function (_tagList, _cancellable, _callback) {
 
             let caps = sample.get_caps();
             let capsStruct = caps.get_structure(0);
-            let [_, type] = capsStruct.get_enum('image-type', GstTag.TagImageType.$gtype);
+            let [, type] = capsStruct.get_enum('image-type', GstTag.TagImageType.$gtype);
             if (type === GstTag.TagImageType.UNDEFINED) {
                 coverSample = sample;
             } else if (type === GstTag.TagImageType.FRONT_COVER) {

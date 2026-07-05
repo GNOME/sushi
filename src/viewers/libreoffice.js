@@ -8,7 +8,7 @@ try {
     /* ignored */
 }
 
-export const isAvailable = function () {
+export const isAvailable = () => {
     return LOKDocView !== undefined;
 };
 

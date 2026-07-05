@@ -27,7 +27,7 @@ function _getDeepCountAttrs() {
     ].join(',');
 }
 
-const loadFile = function (_fileToLoad, _fileInfo, _cancellable, _updateCallback) {
+const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
     let _seenInodes = new Set();
     let _subDirectories = [];
     let _enumerator = null;
