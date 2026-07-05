@@ -149,10 +149,11 @@ export class MainWindow extends Adw.ApplicationWindow {
         const natSize = [rendererSize[1].width, rendererSize[1].height];
 
         switch (this._renderer.resizePolicy) {
-            case ResizePolicy.CUSTOM:
+            case ResizePolicy.CUSTOM: {
                 const customSize = this._renderer.customSize;
                 return [ Math.min(customSize[0], maxSize[0]),
                          Math.min(customSize[1], maxSize[1]) ];
+            }
             case ResizePolicy.MAX_SIZE:
                 return maxSize;
             case ResizePolicy.NAT_SIZE:

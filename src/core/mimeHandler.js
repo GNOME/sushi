@@ -36,6 +36,7 @@ const loadRendererModule = async (fileName, sources) => {
     for (const source of sources) {
         try {
             const uri = source.get_child(fileName).get_uri();
+            // eslint-disable-next-line no-await-in-loop
             return await import(uri);
         } catch (error) {
             errors.push(error);

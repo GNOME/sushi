@@ -22,6 +22,7 @@ export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
     }
 
     _init(file) {
+        // eslint-disable-next-line no-restricted-syntax
         super._init({ hexpand: true,
                       propagate_natural_height: true,
                       propagate_natural_width: true,
