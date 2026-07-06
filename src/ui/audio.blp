@@ -5,13 +5,15 @@ template $Gjs_AudioRenderer: Adw.Bin {
   Adw.StatusPage statusPage {
     paintable: Adw.SpinnerPaintable {};
 
-    child: MediaControls mediaControls {
-      valign: end;
+    child: Adw.Clamp {
+      MediaControls mediaControls {
+        valign: end;
 
-      styles [
-        "osd-bin",
-        "osd",
-      ]
+        styles [
+          "osd-bin",
+          "osd",
+        ]
+      }
     };
   }
 }
