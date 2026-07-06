@@ -178,7 +178,9 @@ export class FallbackRenderer extends Adw.Bin {
         const fileName = state.fileInfo.get_display_name();
         this._statusPage.set_title(fileName);
 
-        const contentType = state.fileInfo.get_content_type();
+        const contentType = state.fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
+            ? state.fileInfo.get_content_type()
+            : state.fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
         const typeDescr = Gio.content_type_get_description(contentType);
         this._statusPage.set_description(typeDescr);
 

@@ -13,6 +13,7 @@ import GObject from 'gi://GObject';
 import Sushi from 'gi://Sushi';
 
 import {ErrorRenderer} from '../viewers/error.js';
+import {FallbackRenderer} from '../viewers/fallback.js';
 import * as MimeHandler from './mimeHandler.js';
 import {ResizePolicy} from './renderer.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
@@ -231,6 +232,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     _createRenderer() {
         this.file.query_info_async(
             [Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE,
                 Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
                 Gio.FILE_ATTRIBUTE_STANDARD_ICON,
                 Gio.FILE_ATTRIBUTE_STANDARD_SIZE,
@@ -269,8 +271,12 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _createView(fileInfo) {
-        const klass = MimeHandler.getKlass(fileInfo.get_content_type());
-        const renderer = new klass(this.file, fileInfo);
+        const content_type = fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
+            ? fileInfo.get_content_type()
+            : fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
+        const renderer = content_type
+            ? new (MimeHandler.getKlass(content_type))(this.file, fileInfo)
+            : new FallbackRenderer(this.file, fileInfo);
         this._embedRenderer(renderer, fileInfo);
 
         renderer.connect('error', (r, err) => {
