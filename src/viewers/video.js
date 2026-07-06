@@ -56,10 +56,10 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
 
     _handleMediaClick(_, numClicks) {
         if (numClicks === 1) {
-            this.togglePlay();
+            this._togglePlay();
         } else if (numClicks === 2) {
             // reset play state from click === 1
-            this.togglePlay();
+            this._togglePlay();
             this.activate_action('win.fullscreen', null);
         }
     }
