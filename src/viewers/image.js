@@ -28,6 +28,13 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         this.cancellable = new Gio.Cancellable();
         this._loadFile(file)
             .catch(error => this.emit('error', error));
+
+        const click_handler = new Gtk.GestureClick();
+        click_handler.connect('pressed', (_, numClicks) => {
+            if (numClicks === 2)
+                this.activate_action('win.fullscreen', null);
+        });
+        this.add_controller(click_handler);
     }
 
     async _loadFile(file) {
