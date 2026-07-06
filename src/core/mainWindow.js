@@ -40,6 +40,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         });
 
         this._renderer = null;
+        this._fileQueryCancellable = null;
         this.file = null;
 
         this._animating = 0;
@@ -230,6 +231,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _createRenderer() {
+        this._fileQueryCancellable?.cancel();
+        this._fileQueryCancellable = new Gio.Cancellable();
         this.file.query_info_async(
             [Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                 Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE,
@@ -240,7 +243,8 @@ export class MainWindow extends Adw.ApplicationWindow {
                 Gio.FILE_ATTRIBUTE_TIME_MODIFIED,
                 METADATA_KEY_CUSTOM_ICON,
                 METADATA_KEY_CUSTOM_ICON_NAME].join(','),
-            Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, null,
+            Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT,
+            this._fileQueryCancellable,
             (obj, res) => {
                 let fileInfo;
                 try {
