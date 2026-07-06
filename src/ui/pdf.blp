@@ -29,7 +29,6 @@ template $Gjs_PdfRenderer: $Gjs_ToolbarOverlay {
   Revealer {
     halign: start;
     valign: end;
-    hexpand: false;
     reveal-child: true;
     margin-bottom: 12;
     margin-start: 12;
@@ -37,23 +36,24 @@ template $Gjs_PdfRenderer: $Gjs_ToolbarOverlay {
     transition-type: crossfade;
 
     child: Box {
-      spacing: 6;
+      spacing: 18;
 
       styles [
-        "osd-bin",
         "osd",
+        "pill-osd",
       ]
 
       Button toolbarBack {
         icon-name: "go-previous-symbolic";
         clicked => $_goPreviousPage();
+
+        styles [
+          "circular",
+          "flat",
+        ]
       }
 
       Label pageLabel {
-        hexpand: true;
-        margin-start: 10;
-        margin-end: 10;
-
         styles [
           "numeric",
         ]
@@ -62,6 +62,11 @@ template $Gjs_PdfRenderer: $Gjs_ToolbarOverlay {
       Button toolbarForward {
         icon-name: "go-next-symbolic";
         clicked => $_goNextPage();
+
+        styles [
+          "circular",
+          "flat",
+        ]
       }
     };
   }
