@@ -12,8 +12,11 @@ import {SYSTEM_PLUGIN_DIRECTORY} from '../config.js';
 
 /** @param {Gio.File[]} sources */
 const loadRenderers = async sources => {
-    const fileNames = new Set(sources.flatMap(enumerateRenderers).map(fileInfo => fileInfo.get_name()));
-    const renderers = await Promise.all([...fileNames].map(fileName => loadRendererModule(fileName, sources)));
+    const renderers = await Promise.all(
+        sources
+            .flatMap(enumerateRenderers)
+            .map(nameAndSource => loadRendererModule(...nameAndSource))
+    );
     return renderers.filter(renderer => Object.hasOwn(renderer, 'mimeTypes'));
 };
 
@@ -21,7 +24,8 @@ const loadRenderers = async sources => {
  *  @returns {Gio.FileInfo[]} */
 const enumerateRenderers = source => {
     try {
-        return [...source.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null)];
+        return [...source.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null)]
+            .map(fileInfo => [fileInfo.get_name(), source]);
     } catch (error) {
         if (error instanceof GLib.Error && error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
             return [];
@@ -32,18 +36,14 @@ const enumerateRenderers = source => {
 
 /** @param {string} fileName
  *  @param {Gio.File[]} sources */
-const loadRendererModule = async (fileName, sources) => {
-    const errors = [];
-    for (const source of sources) {
-        try {
-            const uri = source.get_child(fileName).get_uri();
-            // eslint-disable-next-line no-await-in-loop
-            return await import(uri);
-        } catch (error) {
-            errors.push(error);
-        }
+const loadRendererModule = async (fileName, source) => {
+    try {
+        const uri = source.get_child(fileName).get_uri();
+        return await import(uri);
+    } catch (error) {
+        console.error(`failed to load renderer '${fileName}': ${error}`);
+        return [];
     }
-    throw new AggregateError(errors, `failed to load renderer '${fileName}':\n${errors.map(e => `* ${e}`).join('\n')}`);
 };
 
 // Patch import path
