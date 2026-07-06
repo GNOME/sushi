@@ -1,19 +1,19 @@
 using Gtk 4.0;
 
 template $Gjs_VideoRenderer: $Gjs_ToolbarOverlay {
-  child: Gtk.Picture picture {
+  child: Picture picture {
     paintable: bind template.stream;
   };
 
   [overlay]
-  Gtk.Revealer {
+  Revealer {
     valign: end;
     transition-type: crossfade;
     margin-bottom: 12;
     margin-start: 12;
     margin-end: 12;
 
-    child: Gtk.MediaControls mediaControls {
+    child: MediaControls mediaControls {
       media-stream: bind template.stream;
 
       styles [
