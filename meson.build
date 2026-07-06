@@ -31,6 +31,7 @@ x11_dep = dependency('x11', required: get_option('X11'))
 libadwaita_dep = dependency('libadwaita-1')
 glycin_dep = dependency('glycin-2')
 glycin_gtk_dep = dependency('glycin-gtk4-2')
+webkit_webprocess_extension = dependency('webkitgtk-web-process-extension-6.0')
 
 blueprint_cmd = find_program(
   'blueprint-compiler',
@@ -44,6 +45,7 @@ libdir = join_paths(get_option('prefix'), get_option('libdir'))
 libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
 pkgdatadir = join_paths(datadir, meson.project_name())
 pkglibdir = join_paths(libdir, meson.project_name())
+web_process_extensions_dir = join_paths(pkglibdir, 'web-process-extensions')
 gjs = find_program('gjs', 'gjs-console')
 env = find_program('env')
 

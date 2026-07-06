@@ -3,6 +3,7 @@
 data/org.gnome.NautilusPreviewer.metainfo.xml.in.in
 src/core/mainWindow.js
 src/ui/fallback.blp
+src/ui/html.blp
 src/ui/mainWindow.blp
 src/viewers/audio.js
 src/viewers/error.js

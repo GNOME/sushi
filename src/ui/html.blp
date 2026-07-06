@@ -1,0 +1,17 @@
+using Gtk 4.0;
+using Adw 1;
+using WebKit 6.0;
+
+template $Gjs_HTMLRenderer: Box {
+  orientation: vertical;
+
+  Adw.Banner banner {
+    title: _("Remote content is blocked to protect your privacy");
+    button-label: _("_Show Remote Content");
+    button-clicked => $_onShowRemoteContentClicked();
+  }
+
+  WebKit.WebView webView {
+    vexpand: true;
+  }
+}

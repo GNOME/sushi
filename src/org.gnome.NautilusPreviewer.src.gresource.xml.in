@@ -2,13 +2,16 @@
 <gresources>
   <!-- Code -->
   <gresource prefix="@relative_object_path@/js">
+    <file>config.js</file>
     <file>core/application.js</file>
     <file>core/main.js</file>
     <file>core/mainWindow.js</file>
     <file>core/mimeHandler.js</file>
     <file>core/renderer.js</file>
     <file>util/customIcon.js</file>
+    <file>util/development.js</file>
     <file>util/totemMimeTypes.js</file>
+    <file>util/webProcessExtensions.js</file>
     <file>viewers/audio.js</file>
     <file>viewers/error.js</file>
     <file>viewers/evince.js</file>
@@ -26,6 +29,7 @@
     <!-- UI -->
     <file>ui/audio.ui</file>
     <file>ui/fallback.ui</file>
+    <file>ui/html.ui</file>
     <file>ui/mainWindow.ui</file>
     <file>ui/video.ui</file>
   </gresource>

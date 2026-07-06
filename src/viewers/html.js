@@ -9,6 +9,8 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 
+import {registerWebProcessExtension} from '../util/webProcessExtensions.js';
+
 Gio._promisify(Gtk.UriLauncher.prototype, 'launch', 'launch_finish');
 Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
 
@@ -25,29 +27,57 @@ function _isAvailable() {
 
 import {Renderer} from '../core/renderer.js';
 
-export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView {
+export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
     static {
         GObject.registerClass({
             Implements: [Renderer],
+            Template: 'resource:///org/gnome/NautilusPreviewer/ui/html.ui',
+            InternalChildren: ['banner', 'webView'],
         }, this);
+
+        registerWebProcessExtension(WebKit.WebContext.get_default());
     }
 
     constructor(file, _fileInfo, constructProperties = {}) {
+        GObject.type_ensure(WebKit.WebView);
+
         super(constructProperties);
 
         this.cancellable = new Gio.Cancellable();
 
-        this.connect('create', this._onCreate.bind(this));
+        this._webView.connect('create', this._onCreate.bind(this));
 
-        this.connect('context-menu', this._onContextMenu.bind(this));
+        this._onUserMessageReceived = this._onUserMessageReceived.bind(this);
+
+        const context = this._webView.get_context();
+        const userMessageReceivedHandler = context.connect('user-message-received', this._onUserMessageReceived);
+        this.connect('unmap', () => context.disconnect(userMessageReceivedHandler));
+
+        this._webView.connect('context-menu', this._onContextMenu.bind(this));
         if (pkg.name.endsWith('Devel'))
             this._enableDeveloperExtras();
 
-        this.load_uri(file.get_uri());
-        this.connect('load-failed', (view, loadEvent, uri, error) => {
+        this._webView.load_uri(file.get_uri());
+        this._webView.connect('load-failed', (view, loadEvent, uri, error) => {
             this.emit('error', error);
         });
         this.isReady();
+    }
+
+    _onShowRemoteContentClicked() {
+        this._banner.set_revealed(false);
+        const message = WebKit.UserMessage.new('Sushi.EnableFetchRemoteResources', null);
+        this._webView.get_context().send_message_to_all_extensions(message);
+        this._webView.reload();
+    }
+
+    /** @param {WebKit.WebContext} _webContext
+     *  @param {WebKit.UserMessage} message
+     *  @returns {boolean} */
+    _onUserMessageReceived(_webContext, message) {
+        if (message.get_name() === 'Sushi.PageHasRemoteResources')
+            this._banner.set_revealed(true);
+        return true;
     }
 
     /** @param {WebKit.WebView} _webView
@@ -71,7 +101,7 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends WebKit.WebView 
     }
 
     _enableDeveloperExtras() {
-        const settings = this.get_settings();
+        const settings = this._webView.get_settings();
         settings.set_enable_developer_extras(true);
     }
 
