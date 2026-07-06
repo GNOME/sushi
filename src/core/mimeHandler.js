@@ -46,7 +46,7 @@ const loadRendererModule = async (fileName, sources) => {
 };
 
 // Patch import path
-const localPath = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi', 'viewers']));
+const localPath = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi', 'plugins-1']));
 const builtinPath = Gio.File.new_for_uri(import.meta.url).get_parent().get_parent().get_child('viewers');
 const renderers = await loadRenderers([localPath, builtinPath]);
 
