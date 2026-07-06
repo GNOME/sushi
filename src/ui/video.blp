@@ -3,6 +3,10 @@ using Gtk 4.0;
 template $Gjs_VideoRenderer: $Gjs_ToolbarOverlay {
   child: Picture picture {
     paintable: bind template.stream;
+
+    GestureClick {
+      pressed => $_handleMediaClick();
+    }
   };
 
   [overlay]
