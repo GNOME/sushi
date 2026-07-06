@@ -47,6 +47,23 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         this.connect('unmap', () => this._stream.pause());
     }
 
+    togglePlay() {
+        if (this._stream.get_playing())
+            this._stream.pause();
+        else
+            this._stream.play();
+    }
+
+    handleMediaClick(_, numClicks) {
+        if (numClicks === 1) {
+            this.togglePlay();
+        } else if (numClicks === 2) {
+            // reset play state from click === 1
+            this.togglePlay();
+            this.activate_action('win.fullscreen', null);
+        }
+    }
+
     get overlay() {
         return ResizePolicy.SCALED;
     }
