@@ -20,3 +20,7 @@ flatpak install gnome-nightly org.gnome.NautilusPreviewerDevel
 After installing the nightly flatpak, you can launch Sushi via the below command, or by initiating a preview from the NautilusDevel nightly flatpak.
 
 `flatpak run org.gnome.NautilusPreviewerDevel <filename>`
+
+## Plugins
+
+See the [plugins subfolder](plugins/Plugins.md).
