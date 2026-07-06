@@ -34,6 +34,7 @@ template $Gjs_PdfRenderer: $Gjs_ToolbarOverlay {
     margin-start: 12;
     margin-end: 12;
     transition-type: crossfade;
+    visible: bind pageLabel.visible;
 
     child: Box {
       spacing: 18;
@@ -54,6 +55,8 @@ template $Gjs_PdfRenderer: $Gjs_ToolbarOverlay {
       }
 
       Label pageLabel {
+        visible: false;
+
         styles [
           "numeric",
         ]

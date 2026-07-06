@@ -123,6 +123,7 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
         this._toolbarBack.set_sensitive(currentPage > 0);
         this._toolbarForward.set_sensitive(currentPage < totalPages - 1);
         this._pageLabel.set_text(Format.vprintf(_('%d of %d'), [currentPage + 1, totalPages]));
+        this._pageLabel.set_visible(true);
     }
 
     get topBarStyle() {
