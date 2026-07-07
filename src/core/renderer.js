@@ -32,8 +32,7 @@ export class Renderer extends GObject.Interface {
 
     get customSize() {
         // customSize needs to be overwritten for ResizePolicy.CUSTOM
-        console.error('ResizePolicy programming error');
-        return [1, 1];
+        return null;
     }
 
     get ready() {

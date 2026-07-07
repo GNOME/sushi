@@ -152,8 +152,14 @@ export class MainWindow extends Adw.ApplicationWindow {
         switch (this._renderer.resizePolicy) {
         case ResizePolicy.CUSTOM: {
             const customSize = this._renderer.customSize;
-            return [Math.min(customSize[0], maxSize[0]),
-                Math.min(customSize[1], maxSize[1])];
+            if (customSize) {
+                const min = Math.min(customSize[0], maxSize[0]);
+                const max = Math.min(customSize[1], maxSize[1]);
+                return [min, max];
+            } else {
+                console.error('ResizePolicy programming error');
+                return [1, 1];
+            }
         }
         case ResizePolicy.MAX_SIZE:
             return maxSize;
