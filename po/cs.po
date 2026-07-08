@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-01 07:37+0000\n"
-"PO-Revision-Date: 2026-07-01 11:02+0200\n"
+"POT-Creation-Date: 2026-07-07 17:40+0000\n"
+"PO-Revision-Date: 2026-07-09 01:08+0200\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -37,23 +37,31 @@ msgstr ""
 "Jedná se o nezávislou komponentu, která se začleňuje do aplikace Soubory "
 "GNOME (Nautilus)."
 
-#: src/ui/fallback.blp:28
+#: src/ui/fallback.blp:29
 msgid "Size"
 msgstr "Velikost"
 
-#: src/ui/fallback.blp:57
+#: src/ui/fallback.blp:58
 msgid "Modified"
 msgstr "Změněno"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Vzdálený obsah je blokován z důvodu ochrany vašeho soukromí"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "Zobrazit vzdálený ob_sah"
 
 #: src/ui/mainWindow.blp:20
 msgid "Open"
 msgstr "Otevřít"
 
-#: src/viewers/audio.js:295
+#: src/viewers/audio.js:296
 msgid "by"
 msgstr "od"
 
-#: src/viewers/audio.js:300
+#: src/viewers/audio.js:301
 msgid "from"
 msgstr "z"
 
@@ -61,16 +69,16 @@ msgstr "z"
 msgid "Preview Failed"
 msgstr "Náhled selhal"
 
-#: src/viewers/error.js:38
+#: src/viewers/error.js:39
 msgid "Copy Full Error Message"
 msgstr "Kopírovat celou chybovou zprávu"
 
-#: src/viewers/evince.js:196
+#: src/viewers/evince.js:208
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d z %d"
 
-#: src/viewers/fallback.js:187
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -78,7 +86,7 @@ msgstr[0] "%d položka"
 msgstr[1] "%d položky"
 msgstr[2] "%d položek"
 
-#: src/viewers/fallback.js:192
+#: src/viewers/fallback.js:197
 msgid "Empty"
 msgstr "Prázdné"
 
