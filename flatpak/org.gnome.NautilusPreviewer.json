@@ -144,6 +144,21 @@
             ]
         },
         {
+            "name": "md4c",
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DBUILD_MD2HTML_EXECUTABLE=OFF"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/mity/md4c.git",
+                    "tag": "release-0.5.3",
+                    "commit": "472c417005c2c71b8617de4f7b8d6b30411d78f4"
+                }
+            ]
+        },
+        {
             "name": "sushi",
             "buildsystem": "meson",
             "config-opts": [

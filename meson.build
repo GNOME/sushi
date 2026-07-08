@@ -32,6 +32,7 @@ libadwaita_dep = dependency('libadwaita-1')
 glycin_dep = dependency('glycin-2')
 glycin_gtk_dep = dependency('glycin-gtk4-2')
 webkit_webprocess_extension = dependency('webkitgtk-web-process-extension-6.0')
+md4c_html_dep = dependency('md4c-html', version: '>=0.5.0', required: false)
 
 blueprint_cmd = find_program(
   'blueprint-compiler',

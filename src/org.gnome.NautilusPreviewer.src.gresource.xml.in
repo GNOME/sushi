@@ -32,6 +32,7 @@
   </gresource>
   <gresource prefix="@fixed_object_path@">
     <file>plugin-api-1.js</file>
+    <file>markdown.css</file>
     <!-- UI -->
     <file>ui/audio.ui</file>
     <file>ui/error.ui</file>
