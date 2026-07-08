@@ -48,7 +48,10 @@ export class ToolbarOverlay extends Adw.Bin {
         this._hoveredChildren = 0;
 
         this._motion = new Gtk.EventControllerMotion();
-        this._motion.connect('motion', this._onMotion.bind(this));
+        this._motion.connect_object(
+            'motion', (_motion, x, y) => this._onMotion(x, y),
+            this, GObject.ConnectFlags.DEFAULT
+        );
         this.add_controller(this._motion);
     }
 
@@ -61,21 +64,26 @@ export class ToolbarOverlay extends Adw.Bin {
 
     add_overlay(widget) {
         const _motion = new Gtk.EventControllerMotion();
-        _motion.connect('enter', () => {
-            this._removeRevealTimeout();
-            this._revealAll();
-            this._hoveredChildren++;
-        });
-        _motion.connect('leave', () => {
-            this._resetTimeout();
-            this._hoveredChildren--;
-        });
+        _motion.connect_object(
+            'enter', () => {
+                this._removeRevealTimeout();
+                this._revealAll();
+                this._hoveredChildren++;
+            },
+            this, GObject.ConnectFlags.DEFAULT
+        );
+        _motion.connect_object(
+            'leave', () => {
+                this._resetTimeout();
+                this._hoveredChildren--;
+            },
+            this, GObject.ConnectFlags.DEFAULT);
         widget.add_controller(_motion);
 
         this._overlay.add_overlay(widget);
     }
 
-    _onMotion(_motion, x, y) {
+    _onMotion(x, y) {
         if (this._hoveredChildren !== 0)
             return;
 
