@@ -22,6 +22,11 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         }, this);
     }
 
+    _handleClick(numClicks) {
+        if (numClicks === 2)
+            this.activate_action('win.fullscreen', null);
+    }
+
     constructor(file, _fileInfo, constructProperties = {}) {
         super(constructProperties);
 
@@ -30,10 +35,11 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
             .catch(error => this.emit('error', error));
 
         const click_handler = new Gtk.GestureClick();
-        click_handler.connect('pressed', (_, numClicks) => {
-            if (numClicks === 2)
-                this.activate_action('win.fullscreen', null);
-        });
+        click_handler.connect_object(
+            'pressed',
+            (_, numClicks) => this._handleClick(numClicks),
+            this, GObject.ConnectFlags.DEFAULT
+        );
         this.add_controller(click_handler);
     }
 
