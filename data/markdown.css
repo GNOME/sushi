@@ -1,0 +1,112 @@
+:root {
+    color-scheme: light dark;
+    --card-shade-color: rgba(0 0 6 / 7%);
+    --box-bg: rgba(135, 135, 135, 0.085);
+    margin: 20px;
+    font-family: 'Adwaita Sans', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    --card-shade-color: rgba(0 0 6 / 36%);
+    --box-bg: rgba(135, 135, 135, 0.1);
+}
+
+body {
+    max-width: 60em;
+    margin: auto;
+}
+
+h1, h2, h3 {
+    padding-bottom: .25em;
+    border-bottom: 1px solid color(srgb 0 0 0 / 0.1);
+}
+
+img {
+    max-width: 100%;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid color(srgb 0 0 0 / 0.1);
+    padding: .5em !important;
+}
+
+th {
+    background-color: color(srgb 0 0 0 / 0.1);
+}
+
+tr:nth-child(even) td {
+    background-color: color(srgb 0 0 0 / 0.05);
+}
+
+/* Copied from libadwaita to look like AdwShortcutLabel */
+kbd {
+    font-family: inherit;
+    font-size: smaller;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    box-shadow: inset 0 -2px var(--card-shade-color);
+
+    @media (prefers-contrast: more) {
+        box-shadow: inset 0 -2px var(--card-shade-color), 0 0 0 1px var(--border-color);
+    }
+
+    border-radius: 3px;
+    padding: 3px 6px;
+    display: inline-block;
+    min-width: 10px;
+}
+
+code {
+    /* See: https://www.brunildo.org/test/monospace_fsize.html for why serif is at the end. */
+    font-family: 'Adwaita Mono', ui-monospace, monospace, serif;
+}
+
+pre, code {
+    background-color: var(--box-bg);
+    padding: 0 0.35em;
+    border-radius: 0.35rem;
+}
+
+pre {
+    padding: 1em;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+a {
+    color: rgb(28, 118, 228);
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+pre {
+    overflow-x: auto;
+}
+
+/* Lists */
+
+ul {
+    list-style-position: inside;
+    padding-inline-start: 20px;
+}
+
+/* Task Lists */
+
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-right: 1ex;
+}

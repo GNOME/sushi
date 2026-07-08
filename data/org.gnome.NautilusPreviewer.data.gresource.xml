@@ -2,5 +2,6 @@
 <gresources>
   <gresource prefix="/org/gnome/NautilusPreviewer">
     <file>org.gnome.NautilusPreviewer2.xml</file>
+    <file>markdown.css</file>
   </gresource>
 </gresources>

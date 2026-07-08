@@ -3,7 +3,13 @@ externalwindow_sources = [
   'externalwindow.h',
 ]
 
+conf_h_data = configuration_data()
+conf_h_data.set('HAVE_MD4C_HTML', md4c_html_dep.found())
+
+conf_h = declare_dependency(sources: configure_file(output: 'config.h', configuration: conf_h_data))
+
 libsushi_deps = [
+  conf_h,
   papers_document_dep,
   papers_view_dep,
   freetype_dep,
@@ -15,6 +21,7 @@ libsushi_deps = [
   gtk_dep,
   harfbuzz_dep,
   x11_dep,
+  md4c_html_dep,
 ]
 
 libsushi_sources = [

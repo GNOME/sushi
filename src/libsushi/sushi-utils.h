@@ -7,6 +7,8 @@
 #ifndef __SUSHI_UTILS_H__
 #define __SUSHI_UTILS_H__
 
+#include <config.h>
+
 #include <gdk/gdk.h>
 #include <gio/gio.h>
 #include <gobject/gobject.h>
@@ -38,6 +40,10 @@ gboolean       sushi_running_under_wayland (GdkDisplay *display);
 
 SushiDiscoverer * sushi_discoverer_new (const char *uri);
 const GstTagList * sushi_discoverer_get_tag_list (SushiDiscoverer *self);
+
+#ifdef HAVE_MD4C_HTML
+GBytes *        sushi_markdown_to_html (GBytes *markdown);
+#endif
 
 G_END_DECLS
 

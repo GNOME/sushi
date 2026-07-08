@@ -24,6 +24,9 @@
 #include <papers-view.h>
 #include <papers-document.h>
 
+#ifdef HAVE_MD4C_HTML
+#include <md4c-html.h>
+#endif
 
 void
 sushi_window_set_child_of_external (GtkWindow *window,
@@ -390,3 +393,35 @@ sushi_discoverer_new (const char *uri)
 
   return self;
 }
+
+#ifdef HAVE_MD4C_HTML
+static void
+sushi_markdown_to_html_process_output_callback (const MD_CHAR *data, MD_SIZE size, void *user_data)
+{
+  GByteArray *html = user_data;
+  g_byte_array_append (html, (const guint8 *)data, size);
+}
+
+GBytes *
+sushi_markdown_to_html (GBytes *markdown)
+{
+    static guint8 prelude[] = "<!doctype html><html><head><meta charset=utf-8></head><body>";
+    static guint8 postlude[] = "</body></html>";
+
+    GByteArray *html = g_byte_array_new();
+
+    int parser_flags = MD_FLAG_TABLES | MD_FLAG_STRIKETHROUGH | MD_FLAG_TASKLISTS;
+    int render_flags = 0;
+
+    g_byte_array_append (html, prelude, sizeof(prelude));
+    md_html (g_bytes_get_data (markdown, NULL),
+             g_bytes_get_size (markdown),
+             sushi_markdown_to_html_process_output_callback,
+             html,
+             parser_flags,
+             render_flags);
+    g_byte_array_append (html, prelude, sizeof(postlude));
+
+    return g_byte_array_free_to_bytes (html);
+}
+#endif
