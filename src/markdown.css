@@ -1,0 +1,197 @@
+:root {
+    color-scheme: light dark;
+    --card-shade-color: rgba(0 0 6 / 7%);
+    --box-bg: rgba(135, 135, 135, 0.085);
+    margin: 20px;
+    font-family: var(--sushi-document-font-family), sans-serif;
+    font-size: var(--sushi-document-font-size);
+}
+
+@media (prefers-color-scheme: dark) {
+    --card-shade-color: rgba(0 0 6 / 36%);
+    --box-bg: rgba(135, 135, 135, 0.1);
+}
+
+body {
+    max-width: 60em;
+    margin: auto;
+}
+
+h1, h2, h3 {
+    padding-bottom: .25em;
+    border-bottom: 1px solid color(srgb 0 0 0 / 0.1);
+}
+
+img {
+    max-width: 100%;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid color(srgb 0 0 0 / 0.1);
+    padding: .5em !important;
+}
+
+th {
+    background-color: color(srgb 0 0 0 / 0.1);
+}
+
+tr:nth-child(even) td {
+    background-color: color(srgb 0 0 0 / 0.05);
+}
+
+/* Copied from libadwaita to look like AdwShortcutLabel */
+kbd {
+    font-family: inherit;
+    font-size: smaller;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    box-shadow: inset 0 -2px var(--card-shade-color);
+
+    @media (prefers-contrast: more) {
+        box-shadow: inset 0 -2px var(--card-shade-color), 0 0 0 1px var(--border-color);
+    }
+
+    border-radius: 3px;
+    padding: 3px 6px;
+    display: inline-block;
+    min-width: 10px;
+}
+
+code {
+    /* See: https://www.brunildo.org/test/monospace_fsize.html for why serif is at the end. */
+    font-family: var(--sushi-monospace-font-family), ui-monospace, monospace, serif;
+    font-size: var(--sushi-monospace-font-size);
+}
+
+pre, code {
+    background-color: var(--box-bg);
+    padding: 0 0.35em;
+    border-radius: 0.35rem;
+}
+
+pre {
+    padding: 1em;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+a {
+    color: rgb(28, 118, 228);
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+pre {
+    overflow-x: auto;
+}
+
+/* Lists */
+
+ul {
+    list-style-position: inside;
+    padding-inline-start: 20px;
+}
+
+/* Task Lists */
+
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-right: 1ex;
+}
+
+/* Admonitions */
+
+.admonition-note,
+.admonition-tip,
+.admonition-important,
+.admonition-warning,
+.admonition-caution {
+    --admonition-fg-color: var(--admonition-color-1);
+    --admonition-bg-color: var(--admonition-color-2);
+    --admonition-horizontal-padding: 1rem;
+    background-color: color-mix(in oklch, var(--admonition-bg-color), #fff 95%);
+    border-left: .2rem solid var(--admonition-fg-color);
+    border-radius: 0.2rem;
+    overflow: hidden;
+    padding: 0 var(--admonition-horizontal-padding);
+    box-shadow: 0 .2rem .5rem rgba(0, 0, 0, .05), 0 0 .0625rem rgba(0, 0, 0, .1);
+    margin-block: 1em;
+
+    @media (prefers-color-scheme: dark) {
+        --admonition-fg-color: var(--admonition-color-2);
+        --admonition-bg-color: var(--admonition-color-1);
+        background-color: color-mix(in oklch, var(--admonition-bg-color), #000 95%);
+    }
+
+    > .admonition-title {
+        background-color: var(--admonition-bg-color);
+        font-weight: 500;
+        margin: 0 calc(-1 * var(--admonition-horizontal-padding));
+        padding: 0.5rem var(--admonition-horizontal-padding);
+        text-transform: capitalize;
+    }
+
+    /* [FIXME] This is a workaround for WebKitGTK not yet supporting alignment-baseline: central */
+    > .admonition-title span {
+        text-box: trim-both cap central;
+        vertical-align: middle;
+    }
+
+    > .admonition-title::before {
+        content: '';
+        background-color: var(--admonition-fg-color);
+        mask-image: var(--admonition-icon);
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        width: 1em;
+        height: 1em;
+        display: inline-block;
+        margin-right: 0.3rem;
+        vertical-align: middle;
+    }
+}
+
+.admonition-note {
+    --admonition-color-1: #1A5FB4;
+    --admonition-color-2: #99C1F1;
+    --admonition-icon: url(sushi-resource:icons/scalable/actions/alert-note-symbolic.svg);
+}
+
+.admonition-tip {
+    --admonition-color-1: #26A269;
+    --admonition-color-2: #8FF0A4;
+    --admonition-icon: url(sushi-resource:icons/scalable/actions/alert-tip-symbolic.svg);
+}
+
+.admonition-important {
+    --admonition-color-1: #613583;
+    --admonition-color-2: #DC8ADD;
+    --admonition-icon: url(sushi-resource:icons/scalable/actions/alert-important-symbolic.svg);
+}
+
+.admonition-warning {
+    --admonition-color-1: #E5A50A;
+    --admonition-color-2: #F9F06B;
+    --admonition-icon: url(sushi-resource:icons/scalable/actions/alert-warning-symbolic.svg);
+}
+
+.admonition-caution {
+    --admonition-color-1: #A51D2D;
+    --admonition-color-2: #ff806f;
+    --admonition-icon: url(sushi-resource:icons/scalable/actions/alert-caution-symbolic.svg);
+}

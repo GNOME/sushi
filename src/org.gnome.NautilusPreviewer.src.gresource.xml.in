@@ -16,6 +16,7 @@
     <file>util/error.js</file>
     <file>util/hoverManager.js</file>
     <file>util/source.js</file>
+    <file>util/webAccessibleResources.js</file>
     <file>util/webProcessExtensions.js</file>
     <file>viewers/audio.js</file>
     <file>viewers/fallback.js</file>
@@ -33,6 +34,8 @@
   </gresource>
   <gresource prefix="@fixed_object_path@">
     <file>plugin-api-1.js</file>
+    <file>markdown.css</file>
+    <file>markdown.js</file>
     <!-- UI -->
     <file>ui/audio.ui</file>
     <file>ui/fallback.ui</file>
@@ -42,6 +45,12 @@
     <file>ui/rendererWrapper.ui</file>
     <file>ui/text.ui</file>
     <file>ui/video.ui</file>
+    <!-- Icons for Web Content -->
+    <file preprocess="xml-stripblanks">icons/scalable/actions/alert-caution-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/alert-important-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/alert-note-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/alert-tip-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/alert-warning-symbolic.svg</file>
   </gresource>
   <gresource prefix="@relative_object_path@">
     <!-- Icons -->

@@ -18,12 +18,16 @@ libsushi_deps = [
 ]
 
 libsushi_sources = [
+  'sushi-error.c',
+  'sushi-error.h',
   'sushi-font-loader.c',
   'sushi-font-loader.h',
   'sushi-font-widget.c',
   'sushi-font-widget.h',
   'sushi-utils.c',
   'sushi-utils.h',
+  'sushi-markdown.c',
+  'sushi-markdown.h',
 ]
 
 libsushi = shared_library(

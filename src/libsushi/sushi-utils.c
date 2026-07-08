@@ -24,7 +24,6 @@
 #include <papers-view.h>
 #include <papers-document.h>
 
-
 void
 sushi_window_set_child_of_external (GtkWindow *window,
                                     const char *handle)

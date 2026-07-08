@@ -22,7 +22,8 @@ sushi_web_process_extension_is_local_request (WebKitURIRequest         *request)
   const gchar *scheme = g_uri_peek_scheme (webkit_uri_request_get_uri (request));
   return g_strcmp0(scheme, "file") == 0 ||
          g_strcmp0(scheme, "blob") == 0 ||
-         g_strcmp0(scheme, "data") == 0;
+         g_strcmp0(scheme, "data") == 0 ||
+         g_strcmp0(scheme, "sushi-resource") == 0;
 }
 
 static void
