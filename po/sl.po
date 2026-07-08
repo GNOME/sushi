@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-06-23 06:23+0000\n"
-"PO-Revision-Date: 2026-07-01 02:11+0200\n"
+"POT-Creation-Date: 2026-07-07 17:40+0000\n"
+"PO-Revision-Date: 2026-07-08 09:56+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -38,40 +38,48 @@ msgstr ""
 "Sushi je program za predogled datotek za namizje GNOME. Program je neodvisen "
 "od sistemskih knjižnic in razširja zmožnosti Datotek GNOME (Nautilus)."
 
-#: src/core/mainWindow.js:73
-msgid "Open"
-msgstr "Odpri"
-
-#: src/ui/fallback.blp:28
+#: src/ui/fallback.blp:29
 msgid "Size"
 msgstr "Velikost"
 
-#: src/ui/fallback.blp:57
+#: src/ui/fallback.blp:58
 msgid "Modified"
 msgstr "Spremenjeno"
 
-#: src/viewers/audio.js:342
-msgid "from"
-msgstr "od"
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Oddaljena vsebina je blokirana zaradi zaščite vaše zasebnosti"
 
-#: src/viewers/audio.js:348
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Pokaži oddaljeno vsebino"
+
+#: src/ui/mainWindow.blp:20
+msgid "Open"
+msgstr "Odpri"
+
+#: src/viewers/audio.js:296
 msgid "by"
 msgstr "od"
 
-#: src/viewers/error.js:46
+#: src/viewers/audio.js:301
+msgid "from"
+msgstr "od"
+
+#: src/viewers/error.js:34
 msgid "Preview Failed"
 msgstr "Predogleda je spodletel"
 
-#: src/viewers/error.js:50
+#: src/viewers/error.js:39
 msgid "Copy Full Error Message"
 msgstr "Kopiraj celotno sporočilo o napaki"
 
-#: src/viewers/evince.js:212
+#: src/viewers/evince.js:208
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d od %d"
 
-#: src/viewers/fallback.js:203
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -80,6 +88,6 @@ msgstr[1] "%d predmet"
 msgstr[2] "%d predmeta"
 msgstr[3] "%d predmeti"
 
-#: src/viewers/fallback.js:208
+#: src/viewers/fallback.js:197
 msgid "Empty"
 msgstr "Prazno"
