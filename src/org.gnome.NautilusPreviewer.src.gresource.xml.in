@@ -28,6 +28,7 @@
   <gresource prefix="@fixed_object_path@">
     <!-- UI -->
     <file>ui/audio.ui</file>
+    <file>ui/error.ui</file>
     <file>ui/fallback.ui</file>
     <file>ui/html.ui</file>
     <file>ui/mainWindow.ui</file>

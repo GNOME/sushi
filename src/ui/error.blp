@@ -1,0 +1,24 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $Gjs_ErrorRenderer: Adw.Bin {
+  child: Adw.StatusPage statusPage {
+    title: _("Preview Failed");
+    icon-name: _("image-missing-symbolic");
+
+    styles [
+      "compact",
+    ]
+
+    child: Button {
+      label: _("Copy Full Error Message");
+      halign: center;
+
+      styles [
+        "pill",
+      ]
+
+      clicked => $_copyFullError();
+    };
+  };
+}

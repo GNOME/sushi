@@ -8,7 +8,6 @@
 import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
 
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 
@@ -16,6 +15,8 @@ export class ErrorRenderer extends Adw.Bin {
     static {
         GObject.registerClass({
             Implements: [Renderer],
+            Template: 'resource:///org/gnome/NautilusPreviewer/ui/error.ui',
+            InternalChildren: ['statusPage'],
         }, this);
     }
 
@@ -29,24 +30,12 @@ export class ErrorRenderer extends Adw.Bin {
             ? this._error_msg.substring(0, index)
             : this._error_msg;
 
-        this._status_page = new Adw.StatusPage({css_classes: ['compact']});
+        this._statusPage.set_description(first_line + (hasMultipleLines ? '…' : ''));
+    }
 
-        this._status_page.set_title(_('Preview Failed'));
-        this._status_page.set_icon_name('image-missing-symbolic');
-        this._status_page.set_description(first_line + (hasMultipleLines ? '…' : ''));
-
-        const copy_error_button = new Gtk.Button({
-            label: _('Copy Full Error Message'),
-            halign: Gtk.Align.CENTER,
-            css_classes: ['pill'],
-        });
-        copy_error_button.connect('clicked', () => {
-            const clipboard = Gdk.Display.get_default()?.get_clipboard();
-            clipboard?.set(this._error_msg);
-        });
-
-        this._status_page.set_child(copy_error_button);
-        this.set_child(this._status_page);
+    _copyFullError() {
+        const clipboard = Gdk.Display.get_default()?.get_clipboard();
+        clipboard?.set(this._error_msg);
     }
 
     get topBarStyle() {
