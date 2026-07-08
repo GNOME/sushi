@@ -40,7 +40,8 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         this._stream.play();
         this.notify('stream');
 
-        this._stream.connect('notify::prepared', () => {
+        const preparedId = this._stream.connect('notify::prepared', () => {
+            this._stream.disconnect(preparedId);
             this.isReady();
         });
 
