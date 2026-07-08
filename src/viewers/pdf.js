@@ -55,23 +55,18 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
 
         this._defineActions();
 
-        this.connect('unmap', this._onDestroy.bind(this));
-
         this.isReady();
-    }
-
-    _onDestroy() {
-        if (this._job && this._jobHandlerId > 0)
-            this._job.disconnect(this._jobHandlerId);
-        if (this._model && this._modelHandlerId > 0)
-            this._model.disconnect(this._modelHandlerId);
     }
 
     _loadFile(file) {
         this._job = PapersView.JobLoad.new();
         this._job.set_uri(file.get_uri());
 
-        this._jobHandlerId = this._job.connect('finished', this._onLoadJobFinished.bind(this));
+        this._job.connect_object(
+            'finished',
+            job => this._onLoadJobFinished(job),
+            this, GObject.ConnectFlags.DEFAULT
+        );
         this._job.scheduler_push_job(PapersView.JobPriority.PRIORITY_NONE);
     }
 
@@ -90,18 +85,20 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
         this._model.set_sizing_mode(PapersView.SizingMode.FIT_WIDTH);
         this._model.set_continuous(true);
 
-        this._modelHandlerId = this._model.connect('page-changed', () => {
-            this._updatePageLabel(this._model);
-        });
+        this._model.connect_object(
+            'page-changed',
+            () => this._updatePageLabel(this._model),
+            this, GObject.ConnectFlags.DEFAULT
+        );
         this._updatePageLabel(this._model);
     }
 
     _defineActions() {
         const application = Gio.Application.get_default();
         const copyAction = new Gio.SimpleAction({name: 'copy'});
-        copyAction.connect('activate', () => {
-            this._view.copy();
-        });
+        copyAction.connect_object(
+            'activate', () => this._view.copy(), this, GObject.ConnectFlags.DEFAULT
+        );
         application.set_accels_for_action('pdf.copy', ['<control>c']);
         const actionGroup = new Gio.SimpleActionGroup();
         actionGroup.add_action(copyAction);
