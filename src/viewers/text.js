@@ -58,9 +58,11 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
         const buffer = new GtkSource.Buffer();
 
         const adwStyleManager = Adw.StyleManager.get_default();
-        adwStyleManager.connect('notify::dark', () => {
-            this._setStyle(adwStyleManager, buffer);
-        });
+        adwStyleManager.connect_object(
+            'notify::dark',
+            () => this._setStyle(adwStyleManager, buffer),
+            this, GObject.ConnectFlags.DEFAULT
+        );
         this._setStyle(adwStyleManager, buffer);
 
         const langManager = GtkSource.LanguageManager.get_default();
