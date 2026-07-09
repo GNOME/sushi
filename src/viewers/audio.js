@@ -251,11 +251,15 @@ export const Klass = class AudioRenderer extends Adw.Bin {
         this._statusPage.set_paintable(this._coverPaintable);
 
         const disco = Sushi.Discoverer.new(file.get_uri());
-        disco.connect('tags-changed', () => {
-            const tag_list = disco.get_tag_list();
-            if (tag_list)
-                this._updateFromTags(tag_list);
-        });
+        disco.connect_object(
+            'tags-changed',
+            () => {
+                const tag_list = disco.get_tag_list();
+                if (tag_list)
+                    this._updateFromTags(tag_list);
+            },
+            this, GObject.ConnectFlags.DEFAULT
+        );
 
         this.cancellable = new Gio.Cancellable();
         this.cancellable.connect(() => this._coverPaintable.destroy());
