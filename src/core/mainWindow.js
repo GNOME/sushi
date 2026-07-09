@@ -71,22 +71,24 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     _defineActions() {
         const quit = new Gio.SimpleAction({name: 'quit'});
-        quit.connect('activate', () => {
-            this.close();
-        });
+        quit.connect_object(
+            'activate', () => this.close(), this, 0
+        );
         this.application.set_accels_for_action('win.quit', ['q', 'Escape', 'space']);
         this.add_action(quit);
 
         const fullscreen = new Gio.SimpleAction({name: 'fullscreen'});
-        fullscreen.connect('activate', this.toggleFullscreen.bind(this));
+        fullscreen.connect_object(
+            'activate', () => this.toggleFullscreen(), this, 0
+        );
         this.application.set_accels_for_action('win.fullscreen', ['f', 'F11']);
         this.add_action(fullscreen);
 
         const addSelectAction = (name, accel, direction) => {
             const action = new Gio.SimpleAction({name});
-            action.connect('activate', () => {
-                this.application.emitSelectionEvent(direction);
-            });
+            action.connect_object(
+                'activate', () => this.application.emitSelectionEvent(direction), this, 0
+            );
 
             this.application.set_accels_for_action(`win.${name}`, [accel]);
             this.add_action(action);
@@ -220,8 +222,11 @@ export class MainWindow extends Adw.ApplicationWindow {
                 const width_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[0], windowSize[0], 150, width_target);
                 const height_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[1], windowSize[1], 150, height_target);
                 this._animating += 2;
-                width_animation.connect('done', this._animationDone.bind(this));
-                height_animation.connect('done', this._animationDone.bind(this));
+                [width_animation, height_animation].map(animation => animation.connect_object(
+                    'done',
+                    () => this._animationDone(),
+                    this, GObject.ConnectFlags.DEFAULT
+                ));
                 width_animation.play();
                 height_animation.play();
             } else {
@@ -269,10 +274,15 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._toolbar_view.set_content(this._renderer);
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
 
-        if (renderer.ready)
+        if (renderer.ready) {
             this._onRendererReady();
-        else
-            renderer.connect('ready', this._onRendererReady.bind(this));
+        } else {
+            renderer.connect_object(
+                'ready',
+                () => this._onRendererReady(),
+                this, GObject.ConnectFlags.DEFAULT
+            );
+        }
     }
 
     _createView(fileInfo) {
@@ -284,9 +294,11 @@ export class MainWindow extends Adw.ApplicationWindow {
             : new FallbackRenderer(this.file, fileInfo);
         this._embedRenderer(renderer, fileInfo);
 
-        renderer.connect('error', (r, err) => {
-            this._reportError(err, fileInfo);
-        });
+        renderer.connect_object(
+            'error',
+            (_, err) => this._reportError(err, fileInfo),
+            this, GObject.ConnectFlags.DEFAULT
+        );
     }
 
     _onFileOpenClicked() {
