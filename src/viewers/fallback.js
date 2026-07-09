@@ -168,8 +168,7 @@ export class FallbackRenderer extends Adw.Bin {
     constructor(file, fileInfo, constructProperties = {}) {
         super(constructProperties);
 
-        this.cancellable = new Gio.Cancellable();
-        loadFile(file, fileInfo, this.cancellable, this._onFileInfoUpdated.bind(this));
+        loadFile(file, fileInfo, this.getCancellable(), this._onFileInfoUpdated.bind(this));
 
         this.isReady();
     }

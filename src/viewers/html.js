@@ -43,8 +43,6 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
 
         super(constructProperties);
 
-        this.cancellable = new Gio.Cancellable();
-
         this._webView.connect('create', this._onCreate.bind(this));
 
         this._onUserMessageReceived = this._onUserMessageReceived.bind(this);
@@ -120,9 +118,9 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
         const isFile = GLib.Uri.parse_scheme(uri).toLowerCase() === 'file';
         if (isFile) {
             const file = Gio.File.new_for_uri(uri);
-            await Gtk.FileLauncher.new(file).launch(parent, this.cancellable);
+            await Gtk.FileLauncher.new(file).launch(parent, this.getCancellable());
         } else {
-            await Gtk.UriLauncher.new(uri).launch(parent, this.cancellable);
+            await Gtk.UriLauncher.new(uri).launch(parent, this.getCancellable());
         }
     }
 } : undefined;

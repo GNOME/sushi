@@ -35,12 +35,10 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
 
         super(constructProperties);
 
-        this.cancellable = new Gio.Cancellable();
-
         if (papersTypes.includes(fileInfo.get_content_type())) {
             this._loadFile(file);
         } else {
-            Sushi.convert_libreoffice(file, this.cancellable, (o, res) => {
+            Sushi.convert_libreoffice(file, this.getCancellable(), (o, res) => {
                 let convertedFile;
                 try {
                     convertedFile = Sushi.convert_libreoffice_finish(res);

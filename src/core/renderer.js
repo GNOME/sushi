@@ -2,6 +2,7 @@
  * SPDX-FileCopyrightText: 2026 The Sushi authors */
 
 import Adw from 'gi://Adw';
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
@@ -25,10 +26,20 @@ export class Renderer extends GObject.Interface {
         }, this);
     }
 
+    getCancellable() {
+        if (this._rendererCancellable === undefined)
+            this._rendererCancellable = new Gio.Cancellable();
+        return this._rendererCancellable;
+    }
+
     initialized() {
+        const cancellable = this.getCancellable();
         this._rendererUnmapId = this.connect('unmap', () => {
             this.disconnect(this._rendererUnmapId);
             this._rendererUnmapId = 0;
+
+            if (!cancellable.is_cancelled())
+                this.stopRenderer();
             this.cleanup();
         });
     }
@@ -38,6 +49,10 @@ export class Renderer extends GObject.Interface {
             this.initialized();
         this._ready = true;
         this.emit('ready');
+    }
+
+    stop() {
+        // overwrite this function with code to stop e.g. running animations
     }
 
     cleanup() {
@@ -60,5 +75,12 @@ export class Renderer extends GObject.Interface {
     get ready() {
         // intended to be called by main window
         return !!this._ready;
+    }
+
+    stopRenderer() {
+        // intended to be called by main window
+        const cancellable = this.getCancellable();
+        cancellable.cancel();
+        this.stop();
     }
 }

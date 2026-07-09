@@ -56,11 +56,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.connect('notify::default-width', this._checkScaledByUser);
     }
 
-    vfunc_unrealize() {
-        super.vfunc_unrealize();
-        this._renderer?.cancellable?.cancel();
-    }
-
     _getDecorationLayout() {
         const layout_groups = Gtk.Settings.get_default().gtk_decoration_layout.split(':');
         const has_close = layout_groups.map(group => group.split(',').includes('close'));
@@ -263,7 +258,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _embedRenderer(renderer, fileInfo) {
-        this._renderer?.cancellable?.cancel();
+        this._renderer?.stopRenderer();
         this._renderer = renderer;
 
         const title = fileInfo?.get_display_name() ??

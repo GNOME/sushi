@@ -23,8 +23,6 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
     constructor(file, fileInfo, constructProperties = {}) {
         super(constructProperties);
 
-        this.cancellable = new Gio.Cancellable();
-
         const buffer = this._createBuffer(file, fileInfo);
         this._view = new GtkSource.View({
             buffer,
@@ -76,7 +74,7 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
             buffer,
             file: sourceFile,
         });
-        loader.load_async(0, this.cancellable, null, (loader, result) => {
+        loader.load_async(0, this.getCancellable(), null, (loader, result) => {
             try {
                 loader.load_finish(result);
             } catch (e) {

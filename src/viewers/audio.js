@@ -261,11 +261,12 @@ export const Klass = class AudioRenderer extends Adw.Bin {
             this, GObject.ConnectFlags.DEFAULT
         );
 
-        this.cancellable = new Gio.Cancellable();
-        this.cancellable.connect(() => this._coverPaintable.destroy());
         this.isReady();
+    }
 
-        this.connect('unmap', () => this._stream.pause());
+    stop() {
+        this._stream.clear();
+        this._coverPaintable.destroy();
     }
 
     _setCover(cover) {
@@ -309,7 +310,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
         this._statusPage.set_description(description);
 
         if (artistName && albumName && !this._coverFetched) {
-            fetchCoverArt(tags, this.cancellable, this._onCoverArtFetched.bind(this));
+            fetchCoverArt(tags, this.getCancellable(), this._onCoverArtFetched.bind(this));
             this._coverFetched = true;
         }
     }
