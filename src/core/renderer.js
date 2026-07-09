@@ -25,9 +25,23 @@ export class Renderer extends GObject.Interface {
         }, this);
     }
 
+    initialized() {
+        this._rendererUnmapId = this.connect('unmap', () => {
+            this.disconnect(this._rendererUnmapId);
+            this._rendererUnmapId = 0;
+            this.cleanup();
+        });
+    }
+
     isReady() {
+        if (this._rendererUnmapId === undefined)
+            this.initialized();
         this._ready = true;
         this.emit('ready');
+    }
+
+    cleanup() {
+        // overwrite this function with cleanup code
     }
 
     get resizePolicy() {

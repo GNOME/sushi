@@ -46,6 +46,8 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         });
 
         this.connect('unmap', () => this._stream.pause());
+
+        this.initialized();
     }
 
     _togglePlay() {

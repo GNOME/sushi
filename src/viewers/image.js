@@ -41,6 +41,12 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
             this, GObject.ConnectFlags.DEFAULT
         );
         this.add_controller(click_handler);
+
+        this.initialized();
+    }
+
+    cleanup() {
+        this.set_paintable(null);
     }
 
     async _loadFile(file) {
