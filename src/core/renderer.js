@@ -30,20 +30,21 @@ export class Renderer extends GObject.Interface {
         this.emit('ready');
     }
 
+    get resizePolicy() {
+        return ResizePolicy.MAX_SIZE;
+    }
+
     get customSize() {
         // customSize needs to be overwritten for ResizePolicy.CUSTOM
         return null;
     }
 
-    get ready() {
-        return !!this._ready;
-    }
-
-    get resizePolicy() {
-        return ResizePolicy.MAX_SIZE;
-    }
-
     get topBarStyle() {
         return Adw.ToolbarStyle.RAISED_BORDER;
+    }
+
+    get ready() {
+        // intended to be called by main window
+        return !!this._ready;
     }
 }
