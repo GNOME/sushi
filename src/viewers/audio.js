@@ -269,10 +269,6 @@ export const Klass = class AudioRenderer extends Adw.Bin {
         this._coverPaintable.destroy();
     }
 
-    _setCover(cover) {
-        this._coverPaintable.texture = cover;
-    }
-
     _onCoverArtFetched(err, cover) {
         if (err) {
             if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
@@ -281,7 +277,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
             return;
         }
 
-        this._setCover(cover);
+        this._coverPaintable.texture = cover;
     }
 
     _updateFromTags(tags) {
