@@ -82,10 +82,16 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
         if (!ok)
             throw new Error('Failed to map GstBuffer');
         const bytes = GLib.Bytes.new(info.data);
-        const loader = Gly.Loader.new_for_bytes(bytes);
-        const image = await loader.load_async(cancellable);
-        const frame = await image.next_frame_async(cancellable);
-        return GlyGtk4.frame_get_texture(frame);
+        try {
+            const loader = Gly.Loader.new_for_bytes(bytes);
+            const image = await loader.load_async(cancellable);
+            const frame = await image.next_frame_async(cancellable);
+            return GlyGtk4.frame_get_texture(frame);
+        } catch (error) {
+            if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                console.error(`failed to load image: ${error}`);
+            return null;
+        }
     }
 
     function _fetchFromCache(mbid, cancellable, done) {
