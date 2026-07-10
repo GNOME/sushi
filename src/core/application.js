@@ -9,6 +9,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
+import Sushi from 'gi://Sushi';
 const ByteArray = imports.byteArray;
 
 import {MainWindow} from './mainWindow.js';
@@ -123,6 +124,7 @@ export class Application extends Adw.Application {
     _teardownMainWindow() {
         this._mainWindow.close();
         this._mainWindow = null;
+        this._windowHandle = null;
     }
 
     close() {
@@ -136,8 +138,12 @@ export class Application extends Adw.Application {
     }
 
     updateParentHandle(handle) {
-        this._skeleton2.impl.emit_property_changed(
-            'ParentHandle', new GLib.Variant('s', handle));
+        if (this._windowHandle !== handle) {
+            this._windowHandle = handle;
+            Sushi.window_set_child_of_external(this._mainWindow, handle);
+            this._skeleton2.impl.emit_property_changed(
+                'ParentHandle', new GLib.Variant('s', handle));
+        }
     }
 
     showFile(uri, windowHandle, closeIfAlreadyShown, activationToken) {
@@ -149,7 +155,7 @@ export class Application extends Adw.Application {
         } else {
             this._ensureMainWindow(activationToken);
             this._mainWindow.set_startup_id(activationToken);
-            this._mainWindow.setParent(windowHandle);
+            this.updateParentHandle(windowHandle);
             this._mainWindow.setFile(file);
             this._mainWindow.present();
         }

@@ -10,7 +10,6 @@ import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Sushi from 'gi://Sushi';
 
 import {ErrorRenderer} from '../viewers/error.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
@@ -271,11 +270,6 @@ export class MainWindow extends Adw.ApplicationWindow {
     /** ************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
-    setParent(handle) {
-        Sushi.window_set_child_of_external(this, handle);
-        this.application.updateParentHandle(handle);
-    }
-
     setFile(file) {
         this.file = file;
         this._createRenderer();
