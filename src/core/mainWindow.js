@@ -29,7 +29,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         }, this);
     }
 
-    constructor(application) {
+    constructor(application, actions) {
         const min_width = 340;
         const min_height = 294;
 
@@ -38,6 +38,8 @@ export class MainWindow extends Adw.ApplicationWindow {
             height_request: min_height,
             width_request: min_width,
         });
+
+        actions.map(action => this.add_action(action));
 
         this._renderer = null;
         this._fileQueryCancellable = null;
@@ -49,8 +51,6 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         this._lastWindowSize = [min_width, min_height];
         this.set_default_size(min_width, min_height);
-
-        this._defineActions();
 
         this._checkScaledByUser = this._checkScaledByUser.bind(this);
         this.connect('notify::default-width', this._checkScaledByUser);
@@ -67,37 +67,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             return ':close';
         else
             return '';
-    }
-
-    _defineActions() {
-        const quit = new Gio.SimpleAction({name: 'quit'});
-        quit.connect_object(
-            'activate', () => this.close(), this, 0
-        );
-        this.application.set_accels_for_action('win.quit', ['q', 'Escape', 'space']);
-        this.add_action(quit);
-
-        const fullscreen = new Gio.SimpleAction({name: 'fullscreen'});
-        fullscreen.connect_object(
-            'activate', () => this.toggleFullscreen(), this, 0
-        );
-        this.application.set_accels_for_action('win.fullscreen', ['f', 'F11']);
-        this.add_action(fullscreen);
-
-        const addSelectAction = (name, accel, direction) => {
-            const action = new Gio.SimpleAction({name});
-            action.connect_object(
-                'activate', () => this.application.emitSelectionEvent(direction), this, 0
-            );
-
-            this.application.set_accels_for_action(`win.${name}`, [accel]);
-            this.add_action(action);
-        };
-
-        addSelectAction('select-left', 'Left', Gtk.DirectionType.LEFT);
-        addSelectAction('select-right', 'Right', Gtk.DirectionType.RIGHT);
-        addSelectAction('select-up', 'Up', Gtk.DirectionType.UP);
-        addSelectAction('select-down', 'Down', Gtk.DirectionType.DOWN);
     }
 
     /** @param {GLib.Error} error

@@ -8,6 +8,7 @@ import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 const ByteArray = imports.byteArray;
 
 import {MainWindow} from './mainWindow.js';
@@ -77,11 +78,35 @@ export class Application extends Adw.Application {
     vfunc_activate() {
     }
 
+    _getActions() {
+        if (!this._actions) {
+            this._actions = [];
+            const addAction = (name, accels, callback) => {
+                const action = new Gio.SimpleAction({name});
+                action.connect_object('activate', callback, this, GObject.ConnectFlags.DEFAULT);
+                this.set_accels_for_action(`win.${name}`, accels);
+                this._actions.push(action);
+            };
+            const directionCallback = direction => {
+                return () => this.emitSelectionEvent(direction);
+            };
+            addAction('quit', ['q', 'Escape', 'space'], () => this.close());
+            addAction('fullscreen', ['f', 'F11'], () => this._mainWindow.toggleFullscreen());
+
+            addAction('select-left', ['Left'], directionCallback(Gtk.DirectionType.LEFT));
+            addAction('select-right', ['Right'], directionCallback(Gtk.DirectionType.RIGHT));
+            addAction('select-up', ['Up'], directionCallback(Gtk.DirectionType.UP));
+            addAction('select-down', ['Down'], directionCallback(Gtk.DirectionType.DOWN));
+        }
+
+        return this._actions;
+    }
+
     _ensureMainWindow() {
         if (this._mainWindow)
             return;
 
-        this._mainWindow = new MainWindow(this);
+        this._mainWindow = new MainWindow(this, this._getActions());
         if (pkg.name.endsWith('Devel'))
             this._mainWindow.get_style_context().add_class('devel');
 
