@@ -135,19 +135,15 @@ export class Application extends Adw.Application {
             'ParentHandle', new GLib.Variant('s', handle));
     }
 
-    showFile(uri, windowHandle, closeIfAlreadyShown, activationToken = '') {
-        this._ensureMainWindow();
-
-        if (activationToken)
-            this._mainWindow.set_startup_id(activationToken);
-
-
+    showFile(uri, windowHandle, closeIfAlreadyShown, activationToken) {
         const file = Gio.file_new_for_uri(uri);
-        if (closeIfAlreadyShown &&
-            this._mainWindow.file &&
-            this._mainWindow.file.equal(file)) {
-            this._mainWindow.close();
+        if (this._mainWindow?.file?.equal(file)) {
+            if (closeIfAlreadyShown)
+                this._mainWindow.close();
+            // otherwise correct file is already shown
         } else {
+            this._ensureMainWindow(activationToken);
+            this._mainWindow.set_startup_id(activationToken);
             this._mainWindow.setParent(windowHandle);
             this._mainWindow.setFile(file);
             this._mainWindow.present();
