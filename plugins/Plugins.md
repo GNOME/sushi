@@ -1,7 +1,7 @@
 # Plugins
 Sushi can be extended with plugins to provide preview support for additional file types.
 Desired plugins can be installed by placing them under `$HOME/.local/share/sushi/plugins-1`.
-They can also be installed system-wide by placing them in `/usr/lib64/sushi/plugins-1`.
+They can also be installed system-wide by placing them in `/usr/lib/sushi/plugins-1`.
 Plugins will automatically be used the next time sushi is started.
 
 ## Developers
