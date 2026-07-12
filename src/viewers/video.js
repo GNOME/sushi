@@ -49,6 +49,10 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         this.initialized();
     }
 
+    cleanup() {
+        this.cleanupOverlay();
+    }
+
     stop() {
         this._stream.clear();
     }

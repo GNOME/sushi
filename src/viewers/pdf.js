@@ -55,6 +55,10 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
         this.isReady();
     }
 
+    cleanup() {
+        this.cleanupOverlay();
+    }
+
     _loadFile(file) {
         this._job = PapersView.JobLoad.new();
         this._job.set_uri(file.get_uri());

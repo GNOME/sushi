@@ -87,6 +87,14 @@ export class ToolbarOverlay extends Adw.Bin {
         this._overlay.add_overlay(widget);
     }
 
+    cleanupOverlay() {
+        for (const revealer of this._revealerOverlays)
+            this._overlay.remove_overlay(revealer);
+        this._revealerOverlays = [];
+        this._overlay = null;
+        this.set_child(null);
+    }
+
     _onMotion(x, y) {
         if (this._hoveredChildren !== 0)
             return;
