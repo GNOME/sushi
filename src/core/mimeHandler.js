@@ -8,6 +8,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
 import {FallbackRenderer} from '../viewers/fallback.js';
+import {SYSTEM_PLUGIN_DIRECTORY} from '../config.js';
 
 /** @param {Gio.File[]} sources */
 const loadRenderers = async sources => {
@@ -47,8 +48,9 @@ const loadRendererModule = async (fileName, sources) => {
 
 // Patch import path
 const localPath = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi', 'plugins-1']));
+const systemPath = Gio.File.new_for_path(SYSTEM_PLUGIN_DIRECTORY);
 const builtinPath = Gio.File.new_for_uri(import.meta.url).get_parent().get_parent().get_child('viewers');
-const renderers = await loadRenderers([localPath, builtinPath]);
+const renderers = await loadRenderers([localPath, systemPath, builtinPath]);
 
 /** @param {string} mime */
 export const getKlass = mime => {

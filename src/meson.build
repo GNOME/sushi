@@ -37,6 +37,7 @@ conf.set('libdir', libdir)
 conf.set('pkgdatadir', pkgdatadir)
 conf.set('app_id', app_id)
 conf.set('relative_object_path', relative_object_path)
+conf.set('system_plugin_directory', plugindir)
 conf.set('web_process_extensions_dir', web_process_extensions_dir)
 
 config_js = configure_file(
