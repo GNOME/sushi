@@ -36,6 +36,7 @@ export class ToolbarOverlay extends Adw.Bin {
             GObject.BindingFlags.SYNC_CREATE);
         this.set_child(this._overlay);
 
+        this._revealerOverlays = [];
         if (this._initialOverlays) {
             for (const overlay of this._initialOverlays)
                 this.add_overlay(overlay);
@@ -67,7 +68,7 @@ export class ToolbarOverlay extends Adw.Bin {
         _motion.connect_object(
             'enter', () => {
                 this._removeRevealTimeout();
-                this._revealAll();
+                this._revealAll(true);
                 this._hoveredChildren++;
             },
             this, GObject.ConnectFlags.DEFAULT
@@ -80,6 +81,9 @@ export class ToolbarOverlay extends Adw.Bin {
             this, GObject.ConnectFlags.DEFAULT);
         widget.add_controller(_motion);
 
+        if (widget instanceof Gtk.Revealer)
+            this._revealerOverlays.push(widget);
+
         this._overlay.add_overlay(widget);
     }
 
@@ -88,32 +92,16 @@ export class ToolbarOverlay extends Adw.Bin {
             return;
 
         if (this._lastX !== x && this._lastY !== y) {
-            this._revealAll();
+            this._revealAll(true);
             this._resetTimeout();
             this._lastX = x;
             this._lastY = y;
         }
     }
 
-    _revealAll() {
-        for (const child of this._getRevealers())
-            child.set_reveal_child(true);
-    }
-
-    _hideAll() {
-        for (const child of this._getRevealers())
-            child.set_reveal_child(false);
-    }
-
-    _getRevealers() {
-        const revealers = [];
-        let child = this._overlay.get_first_child();
-        while (child) {
-            if (child instanceof Gtk.Revealer)
-                revealers.push(child);
-            child = child.get_next_sibling();
-        }
-        return revealers;
+    _revealAll(revealed) {
+        for (const revealer of this._revealerOverlays)
+            revealer.set_reveal_child(revealed);
     }
 
     _resetTimeout() {
@@ -124,7 +112,7 @@ export class ToolbarOverlay extends Adw.Bin {
 
     _onRevealTimeout() {
         this._revealTimeoutId = 0;
-        this._hideAll();
+        this._revealAll(false);
         return GLib.SOURCE_REMOVE;
     }
 
