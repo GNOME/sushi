@@ -108,16 +108,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._embedRenderer(new ErrorRenderer(error), fileInfo);
     }
 
-    toggleFullscreen() {
-        if (!this.is_fullscreen()) {
-            this.fullscreen();
-            this._fullscreen_button.set_icon_name('view-restore-symbolic');
-        } else {
-            this.unfullscreen();
-            this._fullscreen_button.set_icon_name('view-fullscreen-symbolic');
-        }
-    }
-
     _onRendererReady() {
         if (this._renderer.ready) {
             this._resizeWindow();
@@ -320,5 +310,15 @@ export class MainWindow extends Adw.ApplicationWindow {
     setFile(file) {
         this.file = file;
         this._createRenderer();
+    }
+
+    toggleFullscreen() {
+        if (!this.is_fullscreen()) {
+            this.fullscreen();
+            this._fullscreen_button.set_icon_name('view-restore-symbolic');
+        } else {
+            this.unfullscreen();
+            this._fullscreen_button.set_icon_name('view-fullscreen-symbolic');
+        }
     }
 }
