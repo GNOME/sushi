@@ -37,4 +37,11 @@
       <gnome:userid>coreyberla</gnome:userid>
     </foaf:Person>
   </maintainer>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Tau Gärtli</foaf:name>
+      <foaf:mbox rdf:resource="mailto:git@tau.garden" />
+      <gnome:userid>taugaertli</gnome:userid>
+    </foaf:Person>
+  </maintainer>
 </Project>
