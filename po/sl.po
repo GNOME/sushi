@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-07 17:40+0000\n"
-"PO-Revision-Date: 2026-07-08 09:56+0200\n"
+"POT-Creation-Date: 2026-07-12 19:53+0000\n"
+"PO-Revision-Date: 2026-07-13 23:10+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
-msgstr "Sushi"
+msgstr "Suši"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
@@ -37,6 +37,18 @@ msgid ""
 msgstr ""
 "Sushi je program za predogled datotek za namizje GNOME. Program je neodvisen "
 "od sistemskih knjižnic in razširja zmožnosti Datotek GNOME (Nautilus)."
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Predogleda je spodletel"
+
+#: src/ui/error.blp:7
+msgid "image-missing-symbolic"
+msgstr "Slika-brez-simbolnega-pomena"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Kopiraj celotno sporočilo o napaki"
 
 #: src/ui/fallback.blp:29
 msgid "Size"
@@ -58,28 +70,15 @@ msgstr "_Pokaži oddaljeno vsebino"
 msgid "Open"
 msgstr "Odpri"
 
-#: src/viewers/audio.js:296
+#: src/viewers/audio.js:303
 msgid "by"
 msgstr "od"
 
-#: src/viewers/audio.js:301
+#: src/viewers/audio.js:308
 msgid "from"
 msgstr "od"
 
-#: src/viewers/error.js:34
-msgid "Preview Failed"
-msgstr "Predogleda je spodletel"
-
-#: src/viewers/error.js:39
-msgid "Copy Full Error Message"
-msgstr "Kopiraj celotno sporočilo o napaki"
-
-#: src/viewers/evince.js:208
-#, javascript-format
-msgid "%d of %d"
-msgstr "%d od %d"
-
-#: src/viewers/fallback.js:192
+#: src/viewers/fallback.js:191
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -88,6 +87,11 @@ msgstr[1] "%d predmet"
 msgstr[2] "%d predmeta"
 msgstr[3] "%d predmeti"
 
-#: src/viewers/fallback.js:197
+#: src/viewers/fallback.js:196
 msgid "Empty"
 msgstr "Prazno"
+
+#: src/viewers/pdf.js:120
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d od %d"
