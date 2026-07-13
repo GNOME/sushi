@@ -46,6 +46,11 @@ config_js = configure_file(
   output: '@BASENAME@',
   configuration: conf,
 )
+plugin_api_js = configure_file(
+  input: 'plugin-api-1.js.in',
+  output: '@BASENAME@',
+  configuration: conf,
+)
 
 sushi_src_resources = gnome.compile_resources(
   '@0@.src'.format(app_id),
@@ -54,7 +59,7 @@ sushi_src_resources = gnome.compile_resources(
     output: '@BASENAME@',
     configuration: conf_src,
   ),
-  dependencies: [blueprints, config_js],
+  dependencies: [blueprints, config_js, plugin_api_js],
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,

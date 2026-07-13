@@ -27,6 +27,10 @@ A common issue is with signal handlers, so it's recommended to either use
 [`GObject.Object.connect_object`](https://gjs-docs.gnome.org/gjs/overrides.md#gobject-object-connect_object)
 or store the signal handler ID and disconnect them in `cleanup()`.
 
+Sushi's modules are considered an implementation detail and may change at any time.
+Use the plugin API module at `resource://org/gnome/NautilusPreviewer/plugin-api-1.js`.
+It provides a stable interface for your plugins.
+
 ## Note On Compatibility
 In version 51 the plugin directory was changed, as previous plugins become incompatible with the port to GTK4.
 For version 50 and before plugins were placed in `$HOME/.local/share/sushi/viewers`.

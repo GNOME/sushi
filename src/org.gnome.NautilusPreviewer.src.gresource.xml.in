@@ -7,6 +7,7 @@
     <file>core/main.js</file>
     <file>core/mainWindow.js</file>
     <file>core/mimeHandler.js</file>
+    <file>core/pluginApi.js</file>
     <file>core/renderer.js</file>
     <file>util/customIcon.js</file>
     <file>util/development.js</file>
@@ -26,6 +27,7 @@
     <file>widgets/toolbarOverlay.js</file>
   </gresource>
   <gresource prefix="@fixed_object_path@">
+    <file>plugin-api-1.js</file>
     <!-- UI -->
     <file>ui/audio.ui</file>
     <file>ui/error.ui</file>

@@ -7,14 +7,16 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-export const ResizePolicy = {
+/** Note: This constant is part of the stable plugin API. Only change it in backwards-compatible ways. */
+export const ResizePolicy = Object.freeze({
     MAX_SIZE: 0,
     NAT_SIZE: 1,
     SCALED: 2,
     STATUS_PAGE: 3,
     CUSTOM: 4,
-};
+});
 
+/** Note: This class is part of the stable plugin API. Only change it in backwards-compatible ways. */
 export class Renderer extends GObject.Interface {
     static {
         GObject.registerClass({

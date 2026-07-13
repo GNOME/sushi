@@ -5,7 +5,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import {Renderer, ResizePolicy} from 'resource:///org/gnome/NautilusPreviewerDevel/js/core/renderer.js';
+import {Renderer, ResizePolicy} from 'resource://org/gnome/NautilusPreviewer/plugin-api-1.js';
 
 export const Klass = class ExampleRenderer extends Adw.Bin {
     static {
