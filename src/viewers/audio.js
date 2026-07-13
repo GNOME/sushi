@@ -220,13 +220,13 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
     }
 
     _fetchFromTags(_cancellable)
-      .catch(() => null)
-      .then(cover => {
-          if (cover)
-              _callback(null, cover);
-          else
-              _fetchFromMusicBrainz(_callback);
-      });
+        .then(cover => {
+            if (cover)
+                _callback(null, cover);
+            else
+                _fetchFromMusicBrainz(_callback);
+        })
+        .catch(() => null);
 };
 
 export const Klass = class AudioRenderer extends Adw.Bin {
