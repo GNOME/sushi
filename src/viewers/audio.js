@@ -27,8 +27,8 @@ Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 
 const COVER_ART_ARCHIVE_URL = 'https://coverartarchive.org/release/%s';
 const MUSIC_BRAINZ_ASIN_FORMAT = 'https://musicbrainz.org/ws/2/release/?query=release:"%s"AND artist:"%s"&limit=1&fmt=json';
-const fetchCoverArt = (_tagList, _cancellable, _callback) => {
-    async function _fetchFromTags(cancellable) {
+const fetchCoverArt = (_tagList, _cancellable) => {
+    function _fetchFromTags(cancellable) {
         let coverSample = null;
         let idx = 0;
 
@@ -54,14 +54,10 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
         if (!coverSample)
             coverSample = _tagList.get_sample_index(Gst.TAG_PREVIEW_IMAGE, 0)[1];
 
-        if (coverSample) {
-            try {
-                return await _fetchFromGstSample(coverSample, cancellable);
-            } catch (e) {
-                console.warn(e, 'Unable to fetch cover art from GstSample');
-            }
-        }
-        return null;
+        if (coverSample)
+            return _fetchFromGstSample(coverSample, cancellable);
+        else
+            return Promise.reject(new Error('No cover art tag'));
     }
 
     function _getCacheFile(mbid) {
@@ -69,36 +65,28 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
         return Gio.File.new_for_path(GLib.build_filenamev([cachePath, `${mbid}.jpg`]));
     }
 
-    async function _fetchFromFile(file, cancellable) {
+    function _fetchFromFile(file, cancellable) {
         const loader = Gly.Loader.new(file);
-        const image = await loader.load_async(cancellable);
-        const frame = await image.next_frame_async(cancellable);
-        return GlyGtk4.frame_get_texture(frame);
+        return loader.load_async(cancellable)
+            .then(image => image.next_frame_async(cancellable))
+            .then(frame => GlyGtk4.frame_get_texture(frame));
     }
 
-    async function _fetchFromGstSample(sample, cancellable) {
+    function _fetchFromGstSample(sample, cancellable) {
         const buffer = sample.get_buffer();
         const [ok, info] = buffer.map(Gst.MapFlags.READ);
         if (!ok)
-            throw new Error('Failed to map GstBuffer');
+            return Promise.reject(new Error('Failed to map GstBuffer'));
         const bytes = GLib.Bytes.new(info.data);
-        try {
-            const loader = Gly.Loader.new_for_bytes(bytes);
-            const image = await loader.load_async(cancellable);
-            const frame = await image.next_frame_async(cancellable);
-            return GlyGtk4.frame_get_texture(frame);
-        } catch (error) {
-            if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                console.error(`failed to load image: ${error}`);
-            return null;
-        }
+        const loader = Gly.Loader.new_for_bytes(bytes);
+        return loader.load_async(cancellable)
+            .then(image => image.next_frame_async(cancellable))
+            .then(frame => GlyGtk4.frame_get_texture(frame));
     }
 
-    function _fetchFromCache(mbid, cancellable, done) {
+    function _fetchFromCache(mbid, cancellable) {
         const file = _getCacheFile(mbid);
-        _fetchFromFile(file, cancellable)
-          .then(texture => done(null, texture))
-          .catch(error => done(error, null));
+        return _fetchFromFile(file, cancellable);
     }
 
     function _saveToCache(mbid, stream, done) {
@@ -137,52 +125,42 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
         return decoder.decode(buffer);
     }
 
-    function _fetchCoverArtArchiveImage(uri, mbid, done) {
+    function _fetchCoverArtArchiveImage(uri, mbid) {
         const session = new Soup.Session();
 
         const message = Soup.Message.new('GET', uri);
         message.request_headers.append('User-Agent', 'gnome-sushi');
 
         session.send_async(message, 0, _cancellable, (r, res) => {
-            let stream;
-            try {
-                stream = session.send_finish(res);
-            } catch (e) {
-                done(e, null);
-                return;
-            }
+            const stream = session.send_finish(res);
 
             _saveToCache(mbid, stream, err => {
                 if (err)
                     console.warn(err, 'Unable to save cover to cache');
-                _fetchFromCache(mbid, _cancellable, done);
+                return _fetchFromCache(mbid, _cancellable);
             });
         });
     }
 
-    function _fetchCoverArtArchiveMetadata(mbid, done) {
+    function _fetchCoverArtArchiveMetadata(mbid) {
         const uri = Format.vprintf(COVER_ART_ARCHIVE_URL, [mbid]);
         const session = new Soup.Session();
 
         const message = Soup.Message.new('GET', uri);
         message.request_headers.append('User-Agent', 'gnome-sushi');
         session.send_and_read_async(message, 0, _cancellable, (r, res) => {
-            try {
-                const data = decode(session.send_and_read_finish(res).get_data());
-                if (message.get_status() !== Soup.Status.OK)
-                    return;
+            const data = decode(session.send_and_read_finish(res).get_data());
+            if (message.get_status() !== Soup.Status.OK)
+                return;
 
-                const json_data = JSON.parse(data);
+            const json_data = JSON.parse(data);
 
-                const uri = json_data['images'][0]['thumbnails']['small'];
-                _fetchCoverArtArchiveImage(uri, mbid, done);
-            } catch (e) {
-                done(e, null);
-            }
+            const uri = json_data['images'][0]['thumbnails']['small'];
+            return _fetchCoverArtArchiveImage(uri, mbid);
         });
     }
 
-    function _fetchFromMusicBrainz(done) {
+    function _fetchFromMusicBrainz() {
         const artist = _tagList.get_string('artist')[1];
         const album = _tagList.get_string('album')[1];
 
@@ -193,40 +171,32 @@ const fetchCoverArt = (_tagList, _cancellable, _callback) => {
         message.request_headers.append('User-Agent', 'gnome-sushi');
 
         session.send_and_read_async(message, 0, _cancellable, (r, res) => {
-            let mbid = null;
-            try {
-                const data = decode(session.send_and_read_finish(res).get_data());
-                if (message.get_status() !== Soup.Status.OK)
-                    return;
+            const data = decode(session.send_and_read_finish(res).get_data());
+            if (message.get_status() !== Soup.Status.OK)
+                return Promise.reject(new Error('Musicbrainz lookup failed'));
 
-                const json_response = JSON.parse(data);
+            const json_response = JSON.parse(data);
 
-                if (!('releases' in json_response) || json_response['releases'].length === 0)
-                    return;
+            if (!('releases' in json_response) || json_response['releases'].length === 0)
+                return Promise.reject(new Error('Musicbrainz: Unknown release'));
 
-                mbid = json_response['releases'][0]['id'];
-            } catch (e) {
-                done(e, null);
-                return;
-            }
+            const mbid = json_response['releases'][0]['id'];
 
             _fetchFromCache(mbid, _cancellable, (err, cover) => {
                 if (cover)
-                    done(null, cover);
+                    return cover;
                 else
-                    _fetchCoverArtArchiveMetadata(mbid, done);
+                    return _fetchCoverArtArchiveMetadata(mbid);
             });
         });
     }
 
-    _fetchFromTags(_cancellable)
-        .then(cover => {
-            if (cover)
-                _callback(null, cover);
-            else
-                _fetchFromMusicBrainz(_callback);
-        })
-        .catch(() => null);
+    return _fetchFromTags(_cancellable)
+        .catch(error => {
+            if (!error.hasOwnProperty('matches') ||
+                !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                return _fetchFromMusicBrainz();
+        });
 };
 
 export const Klass = class AudioRenderer extends Adw.Bin {
@@ -275,17 +245,6 @@ export const Klass = class AudioRenderer extends Adw.Bin {
         this._coverPaintable.destroy();
     }
 
-    _onCoverArtFetched(err, cover) {
-        if (err) {
-            if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
-                !err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                console.warn(err, 'Unable to fetch cover art');
-            return;
-        }
-
-        this._coverPaintable.texture = cover;
-    }
-
     _updateFromTags(tags) {
         const albumName = tags.get_string('album')[1];
         const artistName = tags.get_string('artist')[1];
@@ -312,7 +271,15 @@ export const Klass = class AudioRenderer extends Adw.Bin {
         this._statusPage.set_description(description);
 
         if (artistName && albumName && !this._coverFetched) {
-            fetchCoverArt(tags, this.getCancellable(), this._onCoverArtFetched.bind(this));
+            fetchCoverArt(tags, this.getCancellable())
+                .then(cover => {
+                    this._coverPaintable.texture = cover;
+                })
+                .catch(error => {
+                    if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
+                        !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                        console.warn(error, 'Unable to fetch cover art');
+                });
             this._coverFetched = true;
         }
     }
