@@ -292,7 +292,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
         let titleName = tags.get_string('title')[1];
 
         if (!titleName) {
-            const file = Gio.file_new_for_uri(this._player.file.get_uri());
+            const file = Gio.file_new_for_uri(this._stream.file.get_uri());
             titleName = file.get_basename();
         }
 
