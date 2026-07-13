@@ -164,6 +164,9 @@ const fetchCoverArt = (_tagList, _cancellable) => {
         const artist = _tagList.get_string('artist')[1];
         const album = _tagList.get_string('album')[1];
 
+        if (!artist || !album)
+            return Promise.reject(new Error('Not enough metadata to lookup file'));
+
         const uri = Format.vprintf(MUSIC_BRAINZ_ASIN_FORMAT, [album, artist]);
         const session = new Soup.Session();
 
@@ -270,7 +273,8 @@ export const Klass = class AudioRenderer extends Adw.Bin {
         this._statusPage.set_title(titleName);
         this._statusPage.set_description(description);
 
-        if (artistName && albumName && !this._coverFetched) {
+        if (!this._coverFetched) {
+            this._coverFetched = true;
             fetchCoverArt(tags, this.getCancellable())
                 .then(cover => {
                     this._coverPaintable.texture = cover;
@@ -280,7 +284,6 @@ export const Klass = class AudioRenderer extends Adw.Bin {
                         !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                         console.warn(error, 'Unable to fetch cover art');
                 });
-            this._coverFetched = true;
         }
     }
 
