@@ -22,6 +22,8 @@ import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
 import {CoverPaintable} from '../widgets/coverPaintable.js';
 
+Gio._promisify(Gio.File.prototype, 'replace_async', 'replace_finish');
+Gio._promisify(Gio.FileOutputStream.prototype, 'splice_async', 'splice_finish');
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 Gio._promisify(Soup.Session.prototype, 'send_async', 'send_finish');
@@ -92,32 +94,21 @@ const fetchCoverArt = (_tagList, _cancellable) => {
     }
 
     function _saveToCache(mbid, stream) {
+        let streamToClose = null;
         const cacheFile = _getCacheFile(mbid);
         const cachePath = cacheFile.get_parent().get_path();
         GLib.mkdir_with_parents(cachePath, 448);
 
-        cacheFile.replace_async(null, false, Gio.FileCreateFlags.PRIVATE, 0, _cancellable, (f, res) => {
-            let outStream;
-            try {
-                outStream = cacheFile.replace_finish(res);
-            } catch (e) {
-                return Promise.reject(e);
-            }
-
-            outStream.splice_async(
-                stream,
-                Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
-                Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
-                0, _cancellable, (s, res) => {
-                    try {
-                        outStream.splice_finish(res);
-                    } catch (e) {
-                        return Promise.reject(e);
-                    }
-
-                    return Promise.resolve();
-                });
-        });
+        return cacheFile.replace_async(null, false, Gio.FileCreateFlags.PRIVATE, 0, _cancellable)
+            .then(outStream => {
+                streamToClose = outStream;
+                return outStream.splice_async(
+                    stream,
+                    Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
+                    Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
+                    0, _cancellable);
+            })
+            .then(_ => streamToClose.close(_cancellable));
     }
 
     function decode(buffer) {
