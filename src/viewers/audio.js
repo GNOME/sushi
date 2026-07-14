@@ -24,6 +24,8 @@ import {CoverPaintable} from '../widgets/coverPaintable.js';
 
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
+Gio._promisify(Soup.Session.prototype, 'send_async', 'send_finish');
+Gio._promisify(Soup.Session.prototype, 'send_and_read_async', 'send_and_read_finish');
 
 const COVER_ART_ARCHIVE_URL = 'https://coverartarchive.org/release/%s';
 const MUSIC_BRAINZ_ASIN_FORMAT = 'https://musicbrainz.org/ws/2/release/?query=release:"%s"AND artist:"%s"&limit=1&fmt=json';
@@ -89,7 +91,7 @@ const fetchCoverArt = (_tagList, _cancellable) => {
         return _fetchFromFile(file, cancellable);
     }
 
-    function _saveToCache(mbid, stream, done) {
+    function _saveToCache(mbid, stream) {
         const cacheFile = _getCacheFile(mbid);
         const cachePath = cacheFile.get_parent().get_path();
         GLib.mkdir_with_parents(cachePath, 448);
@@ -99,8 +101,7 @@ const fetchCoverArt = (_tagList, _cancellable) => {
             try {
                 outStream = cacheFile.replace_finish(res);
             } catch (e) {
-                done(e);
-                return;
+                return Promise.reject(e);
             }
 
             outStream.splice_async(
@@ -111,11 +112,10 @@ const fetchCoverArt = (_tagList, _cancellable) => {
                     try {
                         outStream.splice_finish(res);
                     } catch (e) {
-                        done(e);
-                        return;
+                        return Promise.reject(e);
                     }
 
-                    done();
+                    return Promise.resolve();
                 });
         });
     }
@@ -131,15 +131,13 @@ const fetchCoverArt = (_tagList, _cancellable) => {
         const message = Soup.Message.new('GET', uri);
         message.request_headers.append('User-Agent', 'gnome-sushi');
 
-        session.send_async(message, 0, _cancellable, (r, res) => {
-            const stream = session.send_finish(res);
-
-            _saveToCache(mbid, stream, err => {
-                if (err)
-                    console.warn(err, 'Unable to save cover to cache');
-                return _fetchFromCache(mbid, _cancellable);
-            });
-        });
+        return session.send_async(message, 0, _cancellable)
+            .then(stream => _saveToCache(mbid, stream))
+            .catch(error => {
+                console.warn(error, 'Unable to save cover to cache');
+                return error;
+            })
+            .then(_ => _fetchFromCache(mbid, _cancellable));
     }
 
     function _fetchCoverArtArchiveMetadata(mbid) {
@@ -148,16 +146,17 @@ const fetchCoverArt = (_tagList, _cancellable) => {
 
         const message = Soup.Message.new('GET', uri);
         message.request_headers.append('User-Agent', 'gnome-sushi');
-        session.send_and_read_async(message, 0, _cancellable, (r, res) => {
-            const data = decode(session.send_and_read_finish(res).get_data());
-            if (message.get_status() !== Soup.Status.OK)
-                return;
+        return session.send_and_read_async(message, 0, _cancellable)
+            .then(raw_data => {
+                const data = decode(raw_data.get_data());
+                if (message.get_status() !== Soup.Status.OK)
+                    return Promise.reject(new Error('Art archive cover fetch failed'));
 
-            const json_data = JSON.parse(data);
+                const json_data = JSON.parse(data);
 
-            const uri = json_data['images'][0]['thumbnails']['small'];
-            return _fetchCoverArtArchiveImage(uri, mbid);
-        });
+                const uri = json_data['images'][0]['thumbnails']['small'];
+                return _fetchCoverArtArchiveImage(uri, mbid);
+            });
     }
 
     function _fetchFromMusicBrainz() {
@@ -173,25 +172,22 @@ const fetchCoverArt = (_tagList, _cancellable) => {
         const message = Soup.Message.new('GET', uri);
         message.request_headers.append('User-Agent', 'gnome-sushi');
 
-        session.send_and_read_async(message, 0, _cancellable, (r, res) => {
-            const data = decode(session.send_and_read_finish(res).get_data());
-            if (message.get_status() !== Soup.Status.OK)
-                return Promise.reject(new Error('Musicbrainz lookup failed'));
+        return session.send_and_read_async(message, 0, _cancellable)
+            .then(raw_data => {
+                const data = decode(raw_data.get_data());
+                if (message.get_status() !== Soup.Status.OK)
+                    return Promise.reject(new Error('Musicbrainz lookup failed'));
 
-            const json_response = JSON.parse(data);
+                const json_response = JSON.parse(data);
 
-            if (!('releases' in json_response) || json_response['releases'].length === 0)
-                return Promise.reject(new Error('Musicbrainz: Unknown release'));
+                if (!('releases' in json_response) || json_response['releases'].length === 0)
+                    return Promise.reject(new Error('Musicbrainz: Unknown release'));
 
-            const mbid = json_response['releases'][0]['id'];
+                const mbid = json_response['releases'][0]['id'];
 
-            _fetchFromCache(mbid, _cancellable, (err, cover) => {
-                if (cover)
-                    return cover;
-                else
-                    return _fetchCoverArtArchiveMetadata(mbid);
+                return _fetchFromCache(mbid, _cancellable)
+                    .catch(_ => _fetchCoverArtArchiveMetadata(mbid));
             });
-        });
     }
 
     return _fetchFromTags(_cancellable)
@@ -199,7 +195,8 @@ const fetchCoverArt = (_tagList, _cancellable) => {
             if (!error.hasOwnProperty('matches') ||
                 !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return _fetchFromMusicBrainz();
-        });
+        })
+        .catch(error => console.warn(`Couldn't retrieve cover art: ${error}`));
 };
 
 export const Klass = class AudioRenderer extends Adw.Bin {
