@@ -116,6 +116,10 @@ const fetchCoverArt = (_tagList, _cancellable) => {
         return decoder.decode(buffer);
     }
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     function _fetchCoverArtArchiveImage(uri, mbid) {
         const session = new Soup.Session();
 
@@ -128,6 +132,7 @@ const fetchCoverArt = (_tagList, _cancellable) => {
                 console.warn(error, 'Unable to save cover to cache');
                 return error;
             })
+            .then(_ => sleep(50)) // give the filesystem some time
             .then(_ => _fetchFromCache(mbid, _cancellable));
     }
 
