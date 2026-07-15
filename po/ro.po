@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-09 07:44+0000\n"
-"PO-Revision-Date: 2026-07-09 10:10+0200\n"
+"POT-Creation-Date: 2026-07-12 19:53+0000\n"
+"PO-Revision-Date: 2026-07-15 18:59+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -22,6 +22,12 @@ msgstr ""
 "X-Generator: Gtranslator 50.0\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/sushi/\n"
+"X-DL-Lang: ro\n"
+"X-DL-Module: sushi\n"
+"X-DL-Branch: main\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
@@ -38,6 +44,18 @@ msgid ""
 msgstr ""
 "Sushi este o aplicație de previzualizat fișiere pentru interfața GNOME. Este "
 "o componentă independentă care se integrează cu Fișiere GNOME (Nautilus)."
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Previzualizare nereușită"
+
+#: src/ui/error.blp:7
+msgid "image-missing-symbolic"
+msgstr "image-missing-symbolic"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Copiază mesajul de eroare complet"
 
 #: src/ui/fallback.blp:29
 msgid "Size"
@@ -59,23 +77,15 @@ msgstr "_Arată conținutul extern"
 msgid "Open"
 msgstr "Deschide"
 
-#: src/viewers/audio.js:296
+#: src/viewers/audio.js:303
 msgid "by"
 msgstr "de"
 
-#: src/viewers/audio.js:301
+#: src/viewers/audio.js:308
 msgid "from"
 msgstr "din"
 
-#: src/viewers/error.js:34
-msgid "Preview Failed"
-msgstr "Previzualizare nereușită"
-
-#: src/viewers/error.js:39
-msgid "Copy Full Error Message"
-msgstr "Copiază mesajul de eroare complet"
-
-#: src/viewers/fallback.js:192
+#: src/viewers/fallback.js:191
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -83,11 +93,11 @@ msgstr[0] "%d element"
 msgstr[1] "%d elemente"
 msgstr[2] "%d de elemente"
 
-#: src/viewers/fallback.js:197
+#: src/viewers/fallback.js:196
 msgid "Empty"
 msgstr "Gol"
 
-#: src/viewers/pdf.js:125
+#: src/viewers/pdf.js:120
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d din %d"
