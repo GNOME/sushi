@@ -69,7 +69,7 @@ export class Renderer extends GObject.Interface {
     }
 
     get topBarStyle() {
-        return Adw.ToolbarStyle.RAISED_BORDER;
+        return Adw.ToolbarStyle.FLAT;
     }
 
     get ready() {

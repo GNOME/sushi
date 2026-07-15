@@ -1,3 +1,4 @@
+import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
@@ -80,6 +81,10 @@ export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
 
         this._view.zoom_level = zoomLevel;
         this._lastAllocWidth = allocWidth;
+    }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.RAISED_BORDER;
     }
 };
 

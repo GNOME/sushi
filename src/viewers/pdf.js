@@ -4,7 +4,6 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
-import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GioUnix from 'gi://GioUnix';
 import GObject from 'gi://GObject';
@@ -119,10 +118,6 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
         this._toolbarForward.set_sensitive(currentPage < totalPages - 1);
         this._pageLabel.set_text(Format.vprintf(_('%d of %d'), [currentPage + 1, totalPages]));
         this._pageLabel.set_visible(true);
-    }
-
-    get topBarStyle() {
-        return Adw.ToolbarStyle.FLAT;
     }
 };
 

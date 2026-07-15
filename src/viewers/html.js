@@ -4,6 +4,7 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
+import Adw from 'gi://Adw';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
@@ -122,6 +123,10 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
         } else {
             await Gtk.UriLauncher.new(uri).launch(parent, this.getCancellable());
         }
+    }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.RAISED_BORDER;
     }
 } : undefined;
 

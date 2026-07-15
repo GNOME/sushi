@@ -227,8 +227,4 @@ export class FallbackRenderer extends Adw.Bin {
     get resizePolicy() {
         return ResizePolicy.STATUS_PAGE;
     }
-
-    get topBarStyle() {
-        return Adw.ToolbarStyle.FLAT;
-    }
 }

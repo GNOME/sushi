@@ -85,6 +85,10 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
 
         return buffer;
     }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.RAISED_BORDER;
+    }
 };
 
 // register for text/plain and let the mime handler call us for child types

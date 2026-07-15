@@ -4,6 +4,7 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
+import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
@@ -77,6 +78,10 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
 
     get resizePolicy() {
         return ResizePolicy.CUSTOM;
+    }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.RAISED_BORDER;
     }
 
     /**

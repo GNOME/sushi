@@ -4,7 +4,6 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
-import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Sushi from 'gi://Sushi';
 
@@ -24,10 +23,6 @@ export const Klass = class FontRenderer extends Sushi.FontWidget {
         });
 
         this.isReady();
-    }
-
-    get topBarStyle() {
-        return Adw.ToolbarStyle.FLAT;
     }
 };
 

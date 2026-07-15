@@ -283,10 +283,6 @@ export const Klass = class AudioRenderer extends Adw.Bin {
     get resizePolicy() {
         return ResizePolicy.STATUS_PAGE;
     }
-
-    get topBarStyle() {
-        return Adw.ToolbarStyle.FLAT;
-    }
 };
 
 export const mimeTypes = TotemMimeTypes.audioTypes;

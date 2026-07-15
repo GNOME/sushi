@@ -4,6 +4,7 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
+import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
@@ -75,6 +76,10 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
 
     get resizePolicy() {
         return ResizePolicy.SCALED;
+    }
+
+    get topBarStyle() {
+        return Adw.ToolbarStyle.RAISED_BORDER;
     }
 };
 

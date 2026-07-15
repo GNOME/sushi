@@ -40,10 +40,6 @@ export class ErrorRenderer extends Adw.Bin {
         clipboard?.set(this._error_msg);
     }
 
-    get topBarStyle() {
-        return Adw.ToolbarStyle.FLAT;
-    }
-
     get resizePolicy() {
         return ResizePolicy.STATUS_PAGE;
     }
