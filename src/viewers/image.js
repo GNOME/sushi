@@ -32,7 +32,11 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         super(constructProperties);
 
         this._loadFile(file)
-            .catch(error => this.emit('error', error));
+            .catch(error => {
+                if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED) &&
+                    !this.getCancellable().is_cancelled())
+                    this.emit('error', error);
+            });
 
         const click_handler = new Gtk.GestureClick();
         click_handler.connect_object(
