@@ -55,6 +55,11 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
         this.isReady();
     }
 
+    stop() {
+        this._job?.cancel();
+        this._job = null;
+    }
+
     cleanup() {
         this.cleanupOverlay();
     }
@@ -63,9 +68,16 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
         this._job = PapersView.JobLoad.new();
         this._job.set_uri(file.get_uri());
 
-        this._job.connect_object(
+        const cancellable = this.getCancellable();
+        const loadJobID = this._job.connect_object(
             'finished',
-            job => this._onLoadJobFinished(job),
+            job => {
+                if (cancellable.is_cancelled())
+                    return;
+                job.disconnect(loadJobID);
+                this._job = null;
+                return this._onLoadJobFinished(job);
+            },
             this, GObject.ConnectFlags.DEFAULT
         );
         this._job.scheduler_push_job(PapersView.JobPriority.PRIORITY_NONE);
@@ -78,7 +90,8 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
             // which gets converted to an exception by GJS.
             job.is_succeeded();
         } catch (e) {
-            this.emit('error', e);
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                this.emit('error', e);
             return;
         }
 
