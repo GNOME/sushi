@@ -83,6 +83,41 @@ export class Renderer extends GObject.Interface {
 
     /* Public methods, intended to be called by main window */
 
+    getSize(maxSize) {
+        const rendererSize = this.get_preferred_size();
+        const natSize = [rendererSize[1].width, rendererSize[1].height];
+
+        switch (this.resizePolicy) {
+        case ResizePolicy.CUSTOM: {
+            const customSize = this.customSize;
+            if (customSize) {
+                return customSize;
+            } else {
+                console.error('ResizePolicy programming error');
+                return maxSize;
+            }
+        }
+        case ResizePolicy.MAX_SIZE:
+            return maxSize;
+        case ResizePolicy.NAT_SIZE:
+            return natSize;
+        case ResizePolicy.SCALED:
+            if (natSize[0] <= maxSize[0] && natSize[1] <= maxSize[1]) {
+                // no scaling needed
+                return natSize;
+            } else {
+                // scale by smaller ratio of width or height
+                const ratio = Math.min(maxSize[0] / natSize[0], maxSize[1] / natSize[1]);
+                return natSize.map(size => Math.floor(size * ratio));
+            }
+        case ResizePolicy.STATUS_PAGE:
+            return [400, 420];
+        default:
+            console.warn(`Renderer uses unknown resize policy '${this.resizePolicy}'`);
+            return maxSize;
+        }
+    }
+
     stopRenderer() {
         const cancellable = this.getCancellable();
         cancellable.cancel();

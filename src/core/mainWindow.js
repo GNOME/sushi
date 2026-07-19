@@ -14,7 +14,6 @@ import GObject from 'gi://GObject';
 import {ErrorRenderer} from '../viewers/error.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
 import * as MimeHandler from './mimeHandler.js';
-import {ResizePolicy} from './renderer.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 
 const WINDOW_MAX_PERCENT_H = 0.5;
@@ -99,57 +98,18 @@ export class MainWindow extends Adw.ApplicationWindow {
             Math.floor(geometry.height * WINDOW_MAX_PERCENT_H)];
     }
 
-    _getContentSize() {
-        const maxSize = this._getMaxSize();
-        const rendererSize = this._renderer.get_preferred_size();
-        const natSize = [rendererSize[1].width, rendererSize[1].height];
-
-        switch (this._renderer.resizePolicy) {
-        case ResizePolicy.CUSTOM: {
-            const customSize = this._renderer.customSize;
-            if (customSize) {
-                const min = Math.min(customSize[0], maxSize[0]);
-                const max = Math.min(customSize[1], maxSize[1]);
-                return [min, max];
-            } else {
-                console.error('ResizePolicy programming error');
-                return [1, 1];
-            }
-        }
-        case ResizePolicy.MAX_SIZE:
-            return maxSize;
-        case ResizePolicy.NAT_SIZE:
-            return [Math.min(natSize[0], maxSize[0]),
-                Math.min(natSize[1], maxSize[1])];
-        case ResizePolicy.SCALED:
-            if (natSize[0] <= maxSize[0] && natSize[1] <= maxSize[1]) {
-                // no scaling needed
-                return natSize;
-            } else {
-                // scale by smaller ratio of width or height
-                const ratio = Math.min(maxSize[0] / natSize[0], maxSize[1] / natSize[1]);
-                return natSize.map(size => Math.floor(size * ratio));
-            }
-        case ResizePolicy.STATUS_PAGE:
-            return [Math.min(400, maxSize[0]),
-                Math.min(420, maxSize[1])];
-        default:
-            console.warn(`Renderer uses unknown resize policy '${this._renderer.resizePolicy}'`);
-            return maxSize;
-        }
-    }
-
     _resizeWindow() {
         if (!this._renderer || this._scaled_by_user)
             return;
 
-        const contentSize = this._getContentSize();
+        const maxSize = this._getMaxSize();
+        const contentSize = this._renderer.getSize(maxSize);
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
-        const windowSize = [contentSize[0],
-            contentSize[1] + naturalTitlebarSize.height];
+        const width = Math.min(contentSize[0], maxSize[0]);
+        const height = Math.min(contentSize[1] + naturalTitlebarSize.height, maxSize[1]);
 
         GObject.signal_handlers_block_by_func(this, this._checkScaledByUser);
-        this._setDefaultSize(windowSize);
+        this._setDefaultSize([width, height]);
         GObject.signal_handlers_unblock_by_func(this, this._checkScaledByUser);
     }
 
