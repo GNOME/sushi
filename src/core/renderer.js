@@ -26,6 +26,8 @@ export class Renderer extends GObject.Interface {
         }, this);
     }
 
+    /* Methods called by subclasses */
+
     getCancellable() {
         if (this._rendererCancellable === undefined)
             this._rendererCancellable = new Gio.Cancellable();
@@ -51,12 +53,14 @@ export class Renderer extends GObject.Interface {
         this.emit('ready');
     }
 
+    /* Virtual methods, overridable by subclasses */
+
     stop() {
-        // overwrite this function with code to stop e.g. running animations
+        // override this function with code to stop e.g. running animations
     }
 
     cleanup() {
-        // overwrite this function with cleanup code
+        // override this function with cleanup code
     }
 
     get resizePolicy() {
@@ -64,7 +68,7 @@ export class Renderer extends GObject.Interface {
     }
 
     get customSize() {
-        // customSize needs to be overwritten for ResizePolicy.CUSTOM
+        // customSize needs to be overridden for ResizePolicy.CUSTOM
         return null;
     }
 
@@ -77,8 +81,9 @@ export class Renderer extends GObject.Interface {
         return !!this._ready;
     }
 
+    /* Public methods, intended to be called by main window */
+
     stopRenderer() {
-        // intended to be called by main window
         const cancellable = this.getCancellable();
         cancellable.cancel();
         this.stop();
