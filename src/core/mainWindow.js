@@ -143,9 +143,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (!this._renderer || this._scaled_by_user)
             return;
 
-        if (this._renderer.fullscreen)
-            return;
-
         const contentSize = this._getContentSize();
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
         const windowSize = [contentSize[0],
