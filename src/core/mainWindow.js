@@ -109,7 +109,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         const height = Math.min(contentSize[1] + naturalTitlebarSize.height, maxSize[1]);
 
         GObject.signal_handlers_block_by_func(this, this._checkScaledByUser);
-        this._setDefaultSize([width, height]);
+        this._setDefaultSize(width, height);
         GObject.signal_handlers_unblock_by_func(this, this._checkScaledByUser);
     }
 
@@ -128,14 +128,14 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._skip_next_size_adjustment = true;
     }
 
-    _setDefaultSize(windowSize) {
-        if ((windowSize[0] > 0 && windowSize[0] !== this._lastWindowSize[0]) ||
-            (windowSize[1] > 0 && windowSize[1] !== this._lastWindowSize[1])) {
+    _setDefaultSize(width, height) {
+        if ((width > 0 && width !== this._lastWindowSize[0]) ||
+            (height > 0 && height !== this._lastWindowSize[1])) {
             if (!this.get_settings().gtk_interface_reduced_motion && this._lastWindowSize[0] !== 0) {
                 const width_target = Adw.PropertyAnimationTarget.new(this, 'default-width');
                 const height_target = Adw.PropertyAnimationTarget.new(this, 'default-height');
-                const width_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[0], windowSize[0], 150, width_target);
-                const height_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[1], windowSize[1], 150, height_target);
+                const width_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[0], width, 150, width_target);
+                const height_animation = Adw.TimedAnimation.new(this, this._lastWindowSize[1], height, 150, height_target);
                 this._animating += 2;
                 [width_animation, height_animation].map(animation => animation.connect_object(
                     'done',
@@ -145,9 +145,9 @@ export class MainWindow extends Adw.ApplicationWindow {
                 width_animation.play();
                 height_animation.play();
             } else {
-                this.set_default_size(...windowSize);
+                this.set_default_size(width, height);
             }
-            this._lastWindowSize = windowSize;
+            this._lastWindowSize = [width, height];
         }
     }
 
