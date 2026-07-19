@@ -75,13 +75,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._embedRenderer(new ErrorRenderer(error), fileInfo);
     }
 
-    _onRendererReady() {
-        if (this._renderer.ready) {
-            this._resizeWindow();
-            this.queue_resize();
-        }
-    }
-
     _getMaxSize() {
         const display = Gdk.Display.get_default();
         const surface = this.get_surface();
@@ -177,6 +170,11 @@ export class MainWindow extends Adw.ApplicationWindow {
             });
     }
 
+    _setRenderer() {
+        this._resizeWindow();
+        this.queue_resize();
+    }
+
     _embedRenderer(renderer, fileInfo) {
         this._renderer?.stopRenderer();
         this._renderer = renderer;
@@ -190,11 +188,15 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
 
         if (renderer.ready) {
-            this._onRendererReady();
+            this._setRenderer();
         } else {
-            renderer.connect_object(
+            const rendererReadyId = renderer.connect_object(
                 'ready',
-                () => this._onRendererReady(),
+                () => {
+                    renderer.disconnect(rendererReadyId);
+                    if (renderer.ready)
+                        this._setRenderer();
+                },
                 this, GObject.ConnectFlags.DEFAULT
             );
         }
