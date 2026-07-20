@@ -21,5 +21,13 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
         clicked => $_onFileOpenClicked();
       }
     }
+
+    content: Stack mainStack {
+      StackPage loading {
+        name: "loading";
+
+        child: Adw.Spinner {};
+      }
+    };
   };
 }

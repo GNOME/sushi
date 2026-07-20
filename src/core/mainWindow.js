@@ -23,7 +23,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     static {
         GObject.registerClass({
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/mainWindow.ui',
-            InternalChildren: ['toolbar_view', 'titlebar', 'fullscreen_button'],
+            InternalChildren: ['toolbar_view', 'titlebar', 'fullscreen_button', 'mainStack'],
         }, this);
     }
 
@@ -40,6 +40,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         actions.map(action => this.add_action(action));
 
         this._renderer = null;
+        this._loadingRenderer = null;
+        this._spinnerDelayId = 0;
         this._fileQueryCancellable = null;
         this.file = null;
 
@@ -49,6 +51,8 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         this._lastWindowSize = [min_width, min_height];
         this.set_default_size(min_width, min_height);
+
+        this._mainStack.set_visible_child_name('loading');
 
         this._checkScaledByUser = this._checkScaledByUser.bind(this);
         this.connect('notify::default-width', this._checkScaledByUser);
@@ -171,30 +175,52 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _setRenderer() {
+        if (this._spinnerDelayId) {
+            GLib.Source.remove(this._spinnerDelayId);
+            this._spinnerDelayId = 0;
+        }
+        const previousRenderer = this._renderer;
+        this._renderer = this._loadingRenderer;
+        this._loadingRenderer = null;
+        this._mainStack.add_child(this._renderer);
+        this._mainStack.set_visible_child(this._renderer);
+        if (previousRenderer)
+            this._mainStack.remove(previousRenderer);
         this._resizeWindow();
         this.queue_resize();
+        this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
     }
 
     _embedRenderer(renderer, fileInfo) {
         this._renderer?.stopRenderer();
-        this._renderer = renderer;
+        if (this._loadingRenderer)
+            this._loadingRenderer.stopRenderer();
+        this._loadingRenderer = renderer;
 
         const title = fileInfo?.get_display_name() ??
             this.file.get_basename() ??
             this.file.get_uri();
         this.set_title(title);
 
-        this._toolbar_view.set_content(this._renderer);
-        this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
-
         if (renderer.ready) {
             this._setRenderer();
         } else {
+            if (!this._spinnerDelayId) {
+                this._spinnerDelayId = GLib.timeout_add(
+                    GLib.PRIORITY_DEFAULT_IDLE,
+                    200,
+                    () => {
+                        this._mainStack.set_visible_child_name('loading');
+                        this._spinnerDelayId = 0;
+                        return GLib.SOURCE_REMOVE;
+                    }
+                );
+            }
             const rendererReadyId = renderer.connect_object(
                 'ready',
                 () => {
                     renderer.disconnect(rendererReadyId);
-                    if (renderer.ready)
+                    if (renderer.ready && this._loadingRenderer === renderer)
                         this._setRenderer();
                 },
                 this, GObject.ConnectFlags.DEFAULT
