@@ -29,7 +29,10 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
     }
 
     constructor(file, _fileInfo, constructProperties = {}) {
-        super(constructProperties);
+        super({
+            ...constructProperties,
+            content_fit: Gtk.ContentFit.SCALE_DOWN,
+        });
 
         this._loadFile(file)
             .catch(error => {
@@ -64,7 +67,6 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         const frame = await image.next_frame_async(this.getCancellable());
         const texture = GlyGtk4.frame_get_texture(frame);
         this._texture = texture;
-        this.content_fit = Gtk.ContentFit.SCALE_DOWN;
         this.set_paintable(texture);
     }
 
