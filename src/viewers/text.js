@@ -39,7 +39,7 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
 
         this.set_child(this._view);
 
-        this.isReady();
+        this.initialized();
     }
 
     _setStyle(adwStyleManager, buffer) {
@@ -77,6 +77,7 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
         loader.load_async(0, this.getCancellable(), null, (loader, result) => {
             try {
                 loader.load_finish(result);
+                this.isReady();
             } catch (e) {
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                     this.emit('error', e);
