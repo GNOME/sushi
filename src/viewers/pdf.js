@@ -96,8 +96,6 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
         }
 
         this._model.set_document(document);
-        this._model.set_sizing_mode(PapersView.SizingMode.FIT_WIDTH);
-        this._model.set_continuous(true);
 
         this._model.connect_object(
             'page-changed',

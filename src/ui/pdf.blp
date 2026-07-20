@@ -9,6 +9,9 @@ template $Gjs_PdfRenderer: $Gjs_ToolbarOverlay {
     child: PapersView.View view {
       model: PapersView.DocumentModel model {
         annotation-model: PapersView.AnnotationModel {};
+
+        continuous: true;
+        sizing-mode: fit_width;
       };
 
       annotations-context: PapersView.AnnotationsContext {
