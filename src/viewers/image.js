@@ -56,18 +56,21 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         this.set_paintable(null);
     }
 
-    async _loadFile(file) {
+    _loadFile(file) {
         const loader = Gly.Loader.new(file);
-        const image = loader.load();
-        this._imageWidth = image.get_width();
-        this._imageHeight = image.get_height();
-        this.isReady();
-
-        this.queue_resize();
-        const frame = await image.next_frame_async(this.getCancellable());
-        const texture = GlyGtk4.frame_get_texture(frame);
-        this._texture = texture;
-        this.set_paintable(texture);
+        const cancellable = this.getCancellable();
+        return loader.load_async(cancellable)
+            .then(image => {
+                this._imageWidth = image.get_width();
+                this._imageHeight = image.get_height();
+                return image.next_frame_async(cancellable);
+            })
+            .then(frame => {
+                const texture = GlyGtk4.frame_get_texture(frame);
+                this._texture = texture;
+                this.set_paintable(texture);
+                this.isReady();
+            });
     }
 
     vfunc_measure(orientation, _for_size) {
