@@ -36,6 +36,10 @@
     <file>ui/video.ui</file>
   </gresource>
   <gresource prefix="@relative_object_path@">
+    <!-- Icons -->
+    <file preprocess="xml-stripblanks">icons/scalable/actions/detach-symbolic.svg</file>
+  </gresource>
+  <gresource prefix="@relative_object_path@">
     <file>style.css</file>
   </gresource>
 </gresources>

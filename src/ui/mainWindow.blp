@@ -15,9 +15,14 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
         action-name: "win.fullscreen";
       }
 
-      [start]
+      [end]
       Button {
-        label: _("Open");
+        icon-name: "detach-symbolic";
+
+        accessibility {
+          label: _("Open");
+        }
+
         clicked => $_onFileOpenClicked();
       }
     }
