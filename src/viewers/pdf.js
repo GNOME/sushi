@@ -52,7 +52,7 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
 
         this._defineActions();
 
-        this.isReady();
+        this.initialized();
     }
 
     stop() {
@@ -103,6 +103,7 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
             this, GObject.ConnectFlags.DEFAULT
         );
         this._updatePageLabel(this._model);
+        this.isReady();
     }
 
     _defineActions() {
