@@ -64,22 +64,23 @@ export class ToolbarOverlay extends Adw.Bin {
     }
 
     add_overlay(widget) {
-        const _motion = new Gtk.EventControllerMotion();
-        _motion.connect_object(
+        const motion = new Gtk.EventControllerMotion();
+        motion.connect_object(
             'enter', () => {
                 this._removeRevealTimeout();
-                this._revealAll(true);
+                this._setRevealed(true);
                 this._hoveredChildren++;
             },
             this, GObject.ConnectFlags.DEFAULT
         );
-        _motion.connect_object(
+        motion.connect_object(
             'leave', () => {
                 this._resetTimeout();
                 this._hoveredChildren--;
             },
-            this, GObject.ConnectFlags.DEFAULT);
-        widget.add_controller(_motion);
+            this, GObject.ConnectFlags.DEFAULT
+        );
+        widget.add_controller(motion);
 
         if (widget instanceof Gtk.Revealer)
             this._revealerOverlays.push(widget);
@@ -100,14 +101,14 @@ export class ToolbarOverlay extends Adw.Bin {
             return;
 
         if (this._lastX !== x && this._lastY !== y) {
-            this._revealAll(true);
+            this._setRevealed(true);
             this._resetTimeout();
             this._lastX = x;
             this._lastY = y;
         }
     }
 
-    _revealAll(revealed) {
+    _setRevealed(revealed) {
         for (const revealer of this._revealerOverlays)
             revealer.set_reveal_child(revealed);
     }
@@ -115,12 +116,13 @@ export class ToolbarOverlay extends Adw.Bin {
     _resetTimeout() {
         this._removeRevealTimeout();
         this._revealTimeoutId = GLib.timeout_add(
-            GLib.PRIORITY_DEFAULT, 1500, this._onRevealTimeout.bind(this));
+            GLib.PRIORITY_DEFAULT, 1500, _ => this._onRevealTimeout()
+        );
     }
 
     _onRevealTimeout() {
         this._revealTimeoutId = 0;
-        this._revealAll(false);
+        this._setRevealed(false);
         return GLib.SOURCE_REMOVE;
     }
 
