@@ -11,6 +11,7 @@
     <file>core/renderer.js</file>
     <file>util/customIcon.js</file>
     <file>util/development.js</file>
+    <file>util/overlayWrapper.js</file>
     <file>util/totemMimeTypes.js</file>
     <file>util/webProcessExtensions.js</file>
     <file>viewers/audio.js</file>
@@ -34,6 +35,7 @@
     <file>ui/fallback.ui</file>
     <file>ui/html.ui</file>
     <file>ui/mainWindow.ui</file>
+    <file>ui/overlayWrapper.ui</file>
     <file>ui/pdf.ui</file>
     <file>ui/video.ui</file>
   </gresource>
