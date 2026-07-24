@@ -2,68 +2,37 @@
  * SPDX-FileCopyrightText: 2026 The Sushi authors
  *
  * Authors: Nokse <nokse@posteo.com>
+ * Authors: Peter Eisenmann <p3732@getgoogleoff.me>
  */
 
-import Adw from 'gi://Adw';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-export class ToolbarOverlay extends Adw.Bin {
-    static {
-        GObject.registerClass({
-            Implements: [Gtk.Buildable],
-            Properties: {
-                child: GObject.ParamSpec.object(
-                    'child',
-                    null,
-                    null,
-                    GObject.ParamFlags.READWRITE,
-                    Gtk.Widget
-                ),
-            },
-        }, this);
-    }
-
-    constructor(constructProperties = {}) {
-        super(constructProperties);
-
-        this._overlay = new Gtk.Overlay();
-        this.bind_property(
-            'child',
-            this._overlay,
-            'child',
-            GObject.BindingFlags.SYNC_CREATE);
-        this.set_child(this._overlay);
-
-        this._revealerOverlays = [];
-        if (this._initialOverlays) {
-            for (const overlay of this._initialOverlays)
-                this.add_overlay(overlay);
-        }
-        this._initialOverlays = null;
-
+export class HoverManager {
+    constructor(toolbarView, titlebar) {
         this._lastX = 0.0;
         this._lastY = 0.0;
         this._revealTimeoutId = 0;
         this._hoveredChildren = 0;
+        this._fullscreened = false;
+        this._revealer = null;
 
-        this._motion = new Gtk.EventControllerMotion();
-        this._motion.connect_object(
+        const motion = new Gtk.EventControllerMotion();
+        motion.connect_object(
             'motion', (_motion, x, y) => this._onMotion(x, y),
-            this, GObject.ConnectFlags.DEFAULT
+            toolbarView, GObject.ConnectFlags.DEFAULT
         );
-        this.add_controller(this._motion);
+        toolbarView.add_controller(motion);
+
+        this.addWidget(titlebar);
+
+        this._toolbarView = toolbarView;
     }
 
-    vfunc_add_child(builder, child, type) {
-        if (child instanceof Gtk.Widget && type === 'overlay')
-            this._initialOverlays = [...this._initialOverlays ?? [], child];
-        else
-            super.vfunc_add_child(builder, child, type);
-    }
-
-    add_overlay(widget) {
+    addWidget(widget) {
+        if (!widget)
+            return;
         const motion = new Gtk.EventControllerMotion();
         motion.connect_object(
             'enter', () => {
@@ -71,29 +40,34 @@ export class ToolbarOverlay extends Adw.Bin {
                 this._setRevealed(true);
                 this._hoveredChildren++;
             },
-            this, GObject.ConnectFlags.DEFAULT
+            widget, GObject.ConnectFlags.DEFAULT
         );
         motion.connect_object(
             'leave', () => {
                 this._resetTimeout();
                 this._hoveredChildren--;
             },
-            this, GObject.ConnectFlags.DEFAULT
+            widget, GObject.ConnectFlags.DEFAULT
         );
         widget.add_controller(motion);
-
-        if (widget instanceof Gtk.Revealer)
-            this._revealerOverlays.push(widget);
-
-        this._overlay.add_overlay(widget);
     }
 
-    cleanupOverlay() {
-        for (const revealer of this._revealerOverlays)
-            this._overlay.remove_overlay(revealer);
-        this._revealerOverlays = [];
-        this._overlay = null;
-        this.set_child(null);
+    setRevealer(revealer) {
+        if (revealer && !(revealer instanceof Gtk.Revealer)) {
+            console.error('Trying to add non-GtkRevealer as revealer!');
+            return;
+        }
+
+        this._revealer = revealer;
+        if (this._revealer)
+            this.addWidget(this._revealer.get_child());
+    }
+
+    setFullscreened(fullscreened) {
+        if (this._fullscreened === fullscreened)
+            return;
+        this._fullscreened = fullscreened;
+        this._setRevealed(true);
     }
 
     _onMotion(x, y) {
@@ -109,8 +83,12 @@ export class ToolbarOverlay extends Adw.Bin {
     }
 
     _setRevealed(revealed) {
-        for (const revealer of this._revealerOverlays)
-            revealer.set_reveal_child(revealed);
+        if (this._revealer)
+            this._revealer.set_reveal_child(revealed);
+        if (this._toolbarView) {
+            this._toolbarView.set_reveal_top_bars(revealed || !this._fullscreened);
+            this._toolbarView.set_reveal_bottom_bars(revealed || !this._fullscreened);
+        }
     }
 
     _resetTimeout() {

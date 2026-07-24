@@ -15,9 +15,11 @@ export class OverlayWrapper extends Gtk.Overlay {
         }, this);
     }
 
-    constructor(renderer, overlay) {
+    constructor(renderer, overlay, hoverManager) {
         super({child: renderer});
 
         this._revealer.set_child(overlay);
+
+        hoverManager.setRevealer(this._revealer);
     }
 }

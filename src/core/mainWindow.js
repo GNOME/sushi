@@ -13,6 +13,7 @@ import GObject from 'gi://GObject';
 
 import {ErrorRenderer} from '../viewers/error.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
+import {HoverManager} from '../util/hoverManager.js';
 import {OverlayWrapper} from '../util/overlayWrapper.js';
 import * as MimeHandler from './mimeHandler.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
@@ -55,6 +56,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._lastWindowWidth = min_width;
         this._lastWindowHeight = min_height;
         this.set_default_size(min_width, min_height);
+
+        this._hoverManager = new HoverManager(this._toolbar_view, this._titlebar);
 
         this._checkScaledByUser = this._checkScaledByUser.bind(this);
         this.connect('notify::default-width', this._checkScaledByUser);
@@ -215,7 +218,9 @@ export class MainWindow extends Adw.ApplicationWindow {
         const toolbar = this._renderer.getToolbar();
         let stackWidget = this._renderer;
         if (toolbar)
-            stackWidget = new OverlayWrapper(this._renderer, toolbar);
+            stackWidget = new OverlayWrapper(this._renderer, toolbar, this._hoverManager);
+        else
+            this._hoverManager.setRevealer(null);
         this._mainStack.add_child(stackWidget);
         this.#setDisplayedWidget(stackWidget);
 
@@ -288,12 +293,14 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     toggleFullscreen() {
-        if (!this.is_fullscreen()) {
+        const fullscreened = this.is_fullscreen();
+        if (!fullscreened) {
             this.fullscreen();
             this._fullscreen_button.set_icon_name('view-restore-symbolic');
         } else {
             this.unfullscreen();
             this._fullscreen_button.set_icon_name('view-fullscreen-symbolic');
         }
+        this._hoverManager.setFullscreened(!fullscreened);
     }
 }
