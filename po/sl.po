@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-12 19:53+0000\n"
-"PO-Revision-Date: 2026-07-13 23:10+0200\n"
+"POT-Creation-Date: 2026-07-25 15:04+0000\n"
+"PO-Revision-Date: 2026-07-25 21:32+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -37,6 +37,26 @@ msgid ""
 msgstr ""
 "Sushi je program za predogled datotek za namizje GNOME. Program je neodvisen "
 "od sistemskih knjižnic in razširja zmožnosti Datotek GNOME (Nautilus)."
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "Nautilus"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "pogled"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "predoglednik"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "predogled"
 
 #: src/ui/error.blp:6
 msgid "Preview Failed"
@@ -70,11 +90,11 @@ msgstr "_Pokaži oddaljeno vsebino"
 msgid "Open"
 msgstr "Odpri"
 
-#: src/viewers/audio.js:303
+#: src/viewers/audio.js:258
 msgid "by"
 msgstr "od"
 
-#: src/viewers/audio.js:308
+#: src/viewers/audio.js:263
 msgid "from"
 msgstr "od"
 
@@ -91,7 +111,7 @@ msgstr[3] "%d predmeti"
 msgid "Empty"
 msgstr "Prazno"
 
-#: src/viewers/pdf.js:120
+#: src/viewers/pdf.js:136
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d od %d"
