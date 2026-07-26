@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-12 19:53+0000\n"
-"PO-Revision-Date: 2026-07-15 18:59+0200\n"
+"POT-Creation-Date: 2026-07-25 15:04+0000\n"
+"PO-Revision-Date: 2026-07-26 18:49+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -45,6 +45,26 @@ msgstr ""
 "Sushi este o aplicație de previzualizat fișiere pentru interfața GNOME. Este "
 "o componentă independentă care se integrează cu Fișiere GNOME (Nautilus)."
 
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "arată"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "previzualizare"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "previzualiza"
+
 #: src/ui/error.blp:6
 msgid "Preview Failed"
 msgstr "Previzualizare nereușită"
@@ -77,11 +97,11 @@ msgstr "_Arată conținutul extern"
 msgid "Open"
 msgstr "Deschide"
 
-#: src/viewers/audio.js:303
+#: src/viewers/audio.js:258
 msgid "by"
 msgstr "de"
 
-#: src/viewers/audio.js:308
+#: src/viewers/audio.js:263
 msgid "from"
 msgstr "din"
 
@@ -97,7 +117,7 @@ msgstr[2] "%d de elemente"
 msgid "Empty"
 msgstr "Gol"
 
-#: src/viewers/pdf.js:120
+#: src/viewers/pdf.js:136
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d din %d"
