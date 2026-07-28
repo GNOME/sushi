@@ -4,21 +4,22 @@
 #
 # PW <petr.wudi@gmail.com>, 2011.
 # Marek Černocký <marek@manet.cz>, 2011, 2012, 2019, 2020.
+# Patrik Sivek <sivekpatrik@gmail.com>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-07 17:40+0000\n"
-"PO-Revision-Date: 2026-07-09 01:08+0200\n"
-"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
-"Language-Team: čeština <gnome-cs-list@gnome.org>\n"
+"POT-Creation-Date: 2026-07-25 15:04+0000\n"
+"PO-Revision-Date: 2026-07-28 19:29+0200\n"
+"Last-Translator: Patrik Sivek <sivekpatrik@gmail.com>\n"
+"Language-Team: Czech\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
@@ -36,6 +37,38 @@ msgstr ""
 "Sushi slouží k zobrazení náhledů souborů v uživatelském prostředí GNOME. "
 "Jedná se o nezávislou komponentu, která se začleňuje do aplikace Soubory "
 "GNOME (Nautilus)."
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "zobrazení"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "náhlížení"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "náhled"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Náhled selhal"
+
+#: src/ui/error.blp:7
+msgid "image-missing-symbolic"
+msgstr ""
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Kopírovat celou chybovou zprávu"
 
 #: src/ui/fallback.blp:29
 msgid "Size"
@@ -57,28 +90,15 @@ msgstr "Zobrazit vzdálený ob_sah"
 msgid "Open"
 msgstr "Otevřít"
 
-#: src/viewers/audio.js:296
+#: src/viewers/audio.js:258
 msgid "by"
 msgstr "od"
 
-#: src/viewers/audio.js:301
+#: src/viewers/audio.js:263
 msgid "from"
 msgstr "z"
 
-#: src/viewers/error.js:34
-msgid "Preview Failed"
-msgstr "Náhled selhal"
-
-#: src/viewers/error.js:39
-msgid "Copy Full Error Message"
-msgstr "Kopírovat celou chybovou zprávu"
-
-#: src/viewers/evince.js:208
-#, javascript-format
-msgid "%d of %d"
-msgstr "%d z %d"
-
-#: src/viewers/fallback.js:192
+#: src/viewers/fallback.js:191
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -86,9 +106,14 @@ msgstr[0] "%d položka"
 msgstr[1] "%d položky"
 msgstr[2] "%d položek"
 
-#: src/viewers/fallback.js:197
+#: src/viewers/fallback.js:196
 msgid "Empty"
 msgstr "Prázdné"
+
+#: src/viewers/pdf.js:136
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d z %d"
 
 #~ msgid "Type"
 #~ msgstr "Typ"
