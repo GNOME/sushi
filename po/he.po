@@ -7,30 +7,28 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Sushi\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-23 08:16+0000\n"
-"PO-Revision-Date: 2021-03-29 02:32+0300\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-07-30 12:40+0000\n"
+"PO-Revision-Date: 2026-07-30 20:21+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n>2||n==0) ? 1 : 2\n"
-"X-Poedit-Language: Hebrew\n"
-"X-Poedit-Country: ISRAEL\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n>2||n==0) ? 1 : 2;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Gtranslator 3.38.0\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "מספק אמצעי להצגה מהירה של מגוון קבצים"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -38,11 +36,68 @@ msgstr ""
 "‏Sushi הוא מציג תצוגה מקדימה של קבצים עבור שולחן העבודה GNOME. זהו רכיב עצמאי "
 "שמשתלב עם יישום הקבצים של GNOME (‏Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "סוג"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#| msgid "Sushi"
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "תצוגה"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "מציג מקדים"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "תצוגה מקדימה"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "התצוגה המקדימה נכשלה"
+
+#: src/ui/error.blp:7
+msgid "image-missing-symbolic"
+msgstr "לתמונה-חסר-סמלי"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "העתקת הודעת השגיאה המלאה"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "גודל"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "מועד השינוי"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "התוכן המרוחק חסום כדי להגן על הפרטיות שלך"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "הצגת תוכן מ_רוחק"
+
+#: src/ui/mainWindow.blp:20
+msgid "Open"
+msgstr "פתיחה"
+
+#: src/viewers/audio.js:258
+msgid "by"
+msgstr "על ידי"
+
+#: src/viewers/audio.js:263
+msgid "from"
+msgstr "מאת"
+
+#: src/viewers/fallback.js:191
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -50,46 +105,28 @@ msgstr[0] "פריט אחד"
 msgstr[1] "%d פריטים"
 msgstr[2] "%d פריטים"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "תיקייה ריקה"
+#: src/viewers/fallback.js:196
+msgid "Empty"
+msgstr "ריק"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "גודל"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "מועד השינוי"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "לא נתן להציג את %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "פתיחה באמצעות %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "פתיחה"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "מאת"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "על ידי"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:135
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d מתוך %d"
+
+#~ msgid "Type"
+#~ msgstr "סוג"
+
+#~ msgid "Empty Folder"
+#~ msgstr "תיקייה ריקה"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "לא נתן להציג את %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "פתיחה באמצעות %s"
 
 #~ msgid "Client decoration"
 #~ msgstr "Client decoration"
