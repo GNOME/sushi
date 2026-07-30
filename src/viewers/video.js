@@ -10,13 +10,15 @@ import Gtk from 'gi://Gtk';
 
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
-import {ToolbarOverlay} from '../widgets/toolbarOverlay.js';
 
-export const Klass = class VideoRenderer extends ToolbarOverlay {
+export const Klass = class VideoRenderer extends Adw.Bin {
     static {
         GObject.registerClass({
             Implements: [Renderer],
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/video.ui',
+            InternalChildren: [
+                'mediaControls',
+            ],
             Properties: {
                 stream: GObject.ParamSpec.object(
                     'stream',
@@ -49,12 +51,12 @@ export const Klass = class VideoRenderer extends ToolbarOverlay {
         this.initialized();
     }
 
-    cleanup() {
-        this.cleanupOverlay();
-    }
-
     stop() {
         this._stream.clear();
+    }
+
+    get toolbar() {
+        return this._mediaControls;
     }
 
     _togglePlay() {

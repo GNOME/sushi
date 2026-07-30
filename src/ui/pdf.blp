@@ -1,7 +1,8 @@
 using Gtk 4.0;
+using Adw 1;
 using PapersView 4.0;
 
-template $Gjs_PdfRenderer: $Gjs_ToolbarOverlay {
+template $Gjs_PdfRenderer: Adw.Bin {
   child: ScrolledWindow {
     propagate-natural-height: true;
     propagate-natural-width: true;
@@ -27,53 +28,43 @@ template $Gjs_PdfRenderer: $Gjs_ToolbarOverlay {
       };
     };
   };
+}
 
-  [overlay]
-  Revealer {
-    halign: start;
-    valign: end;
-    reveal-child: true;
-    margin-bottom: 12;
-    margin-start: 12;
-    margin-end: 12;
-    transition-type: crossfade;
-    visible: bind pageLabel.visible;
+Box toolbar {
+  halign: start;
+  valign: end;
+  spacing: 18;
 
-    child: Box {
-      spacing: 18;
+  styles [
+    "osd",
+    "pill-osd",
+  ]
 
-      styles [
-        "osd",
-        "pill-osd",
-      ]
+  Button toolbarBack {
+    icon-name: "go-previous-symbolic";
+    clicked => $_goPreviousPage();
 
-      Button toolbarBack {
-        icon-name: "go-previous-symbolic";
-        clicked => $_goPreviousPage();
+    styles [
+      "circular",
+      "flat",
+    ]
+  }
 
-        styles [
-          "circular",
-          "flat",
-        ]
-      }
+  Label pageLabel {
+    visible: false;
 
-      Label pageLabel {
-        visible: false;
+    styles [
+      "numeric",
+    ]
+  }
 
-        styles [
-          "numeric",
-        ]
-      }
+  Button toolbarForward {
+    icon-name: "go-next-symbolic";
+    clicked => $_goNextPage();
 
-      Button toolbarForward {
-        icon-name: "go-next-symbolic";
-        clicked => $_goNextPage();
-
-        styles [
-          "circular",
-          "flat",
-        ]
-      }
-    };
+    styles [
+      "circular",
+      "flat",
+    ]
   }
 }

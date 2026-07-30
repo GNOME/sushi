@@ -1,6 +1,7 @@
 using Gtk 4.0;
+using Adw 1;
 
-template $Gjs_VideoRenderer: $Gjs_ToolbarOverlay {
+template $Gjs_VideoRenderer: Adw.Bin {
   child: Picture picture {
     paintable: bind template.stream;
 
@@ -8,22 +9,14 @@ template $Gjs_VideoRenderer: $Gjs_ToolbarOverlay {
       pressed => $_handleMediaClick();
     }
   };
+}
 
-  [overlay]
-  Revealer {
-    valign: end;
-    transition-type: crossfade;
-    margin-bottom: 12;
-    margin-start: 12;
-    margin-end: 12;
+MediaControls mediaControls {
+  media-stream: bind template.stream;
+  valign: end;
 
-    child: MediaControls mediaControls {
-      media-stream: bind template.stream;
-
-      styles [
-        "osd-bin",
-        "osd",
-      ]
-    };
-  }
+  styles [
+    "osd-bin",
+    "osd",
+  ]
 }

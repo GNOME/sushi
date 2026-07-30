@@ -4,6 +4,7 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
+import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GioUnix from 'gi://GioUnix';
 import GObject from 'gi://GObject';
@@ -14,17 +15,17 @@ import Sushi from 'gi://Sushi';
 const Format = imports.format;
 
 import {Renderer} from '../core/renderer.js';
-import {ToolbarOverlay} from '../widgets/toolbarOverlay.js';
 
 import * as Libreoffice from './libreoffice.js';
 
-export const Klass = class PdfRenderer extends ToolbarOverlay {
+export const Klass = class PdfRenderer extends Adw.Bin {
     static {
         GObject.registerClass({
             Implements: [Renderer],
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/pdf.ui',
             InternalChildren: [
                 'model', 'view', 'toolbarBack', 'toolbarForward', 'pageLabel',
+                'toolbar',
             ],
         }, this);
     }
@@ -60,8 +61,8 @@ export const Klass = class PdfRenderer extends ToolbarOverlay {
         this._job = null;
     }
 
-    cleanup() {
-        this.cleanupOverlay();
+    get toolbar() {
+        return this._toolbar;
     }
 
     _loadFile(file) {

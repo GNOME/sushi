@@ -13,6 +13,7 @@ import GObject from 'gi://GObject';
 
 import {ErrorRenderer} from '../viewers/error.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
+import {OverlayWrapper} from '../util/overlayWrapper.js';
 import * as MimeHandler from './mimeHandler.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 
@@ -210,8 +211,14 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._stopDelayedSpinner();
         this._renderer = this._loadingRenderer;
         this._loadingRenderer = null;
-        this._mainStack.add_child(this._renderer);
-        this.#setDisplayedWidget(this._renderer);
+
+        const toolbar = this._renderer.getToolbar();
+        let stackWidget = this._renderer;
+        if (toolbar)
+            stackWidget = new OverlayWrapper(this._renderer, toolbar);
+        this._mainStack.add_child(stackWidget);
+        this.#setDisplayedWidget(stackWidget);
+
         this._resizeWindow();
         this.queue_resize();
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);

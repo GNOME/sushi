@@ -54,6 +54,8 @@ export class Renderer extends GObject.Interface {
         if (this._rendererUnmapId === undefined)
             this.initialized();
         this._ready = true;
+        // Cache toolbar, renderer isn't meant to dynamically change this
+        this._toolbar = this.toolbar;
         this.emit('ready');
     }
 
@@ -76,11 +78,19 @@ export class Renderer extends GObject.Interface {
         return null;
     }
 
+    get toolbar() {
+        return null;
+    }
+
     get topBarStyle() {
         return Adw.ToolbarStyle.FLAT;
     }
 
     /* Public methods, intended to be called by main window */
+
+    getToolbar() {
+        return this._toolbar;
+    }
 
     getSize(maxSize) {
         const rendererSize = this.get_preferred_size();
