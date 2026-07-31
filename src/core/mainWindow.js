@@ -178,6 +178,13 @@ export class MainWindow extends Adw.ApplicationWindow {
             });
     }
 
+    #setDisplayedWidget(widget) {
+        const previousWidget = this._mainStack.get_visible_child();
+        this._mainStack.set_visible_child(widget);
+        if (previousWidget && previousWidget !== this._spinner)
+            this._mainStack.remove(previousWidget);
+    }
+
     _startDelayedSpinner() {
         if (this._spinnerDelayId)
             return;
@@ -185,7 +192,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             GLib.PRIORITY_DEFAULT_IDLE,
             200,
             () => {
-                this._mainStack.set_visible_child(this._spinner);
+                this.#setDisplayedWidget(this._spinner);
                 this._spinnerDelayId = 0;
                 return GLib.SOURCE_REMOVE;
             }
@@ -201,13 +208,10 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     _setRenderer() {
         this._stopDelayedSpinner();
-        const previousRenderer = this._renderer;
         this._renderer = this._loadingRenderer;
         this._loadingRenderer = null;
         this._mainStack.add_child(this._renderer);
-        this._mainStack.set_visible_child(this._renderer);
-        if (previousRenderer)
-            this._mainStack.remove(previousRenderer);
+        this.#setDisplayedWidget(this._renderer);
         this._resizeWindow();
         this.queue_resize();
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
