@@ -192,7 +192,11 @@ const fetchCoverArt = (_tagList, _cancellable) => {
                 !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return _fetchFromMusicBrainz();
         })
-        .catch(error => console.warn(`Couldn't retrieve cover art: ${error}`));
+        .catch(error => {
+            if (!error.hasOwnProperty('matches') ||
+                !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                console.warn(`Couldn't retrieve cover art: ${error}`);
+        });
 };
 
 export const Klass = class AudioRenderer extends Adw.Bin {
