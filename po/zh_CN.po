@@ -4,87 +4,126 @@
 # Kuang Chen <kuangchen@ucla.edu>, 2011.
 # YunQiang Su <wzssyqa@gmail.com>, 2011.
 # Dingzhong Chen <wsxy162@gmail.com>, 2019.
+# lumingzh <lumingzh@qq.com>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2021-01-25 19:28+0000\n"
-"PO-Revision-Date: 2021-01-28 13:46+0800\n"
-"Last-Translator: mars <gzhqyz@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-07-30 12:40+0000\n"
+"PO-Revision-Date: 2026-07-31 13:54+0800\n"
+"Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Gtranslator 50.0\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "提供快速查看不同类型文件的功能"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
 "Sushi 是 GNOME 桌面的文件预览工具，作为独立组件集成到文件（Nautilus）。"
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "类型"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
-#, javascript-format
-msgid "%d item"
-msgid_plural "%d items"
-msgstr[0] "%d 个条目"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "空文件夹"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "查看"
 
-#: src/ui/fallbackRenderer.js:259
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "预览器"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "预览"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "预览失败"
+
+#: src/ui/error.blp:7
+msgid "image-missing-symbolic"
+msgstr "image-missing-symbolic"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "复制完整错误消息"
+
+#: src/ui/fallback.blp:29
 msgid "Size"
 msgstr "大小"
 
-#: src/ui/fallbackRenderer.js:264
+#: src/ui/fallback.blp:58
 msgid "Modified"
 msgstr "已修改"
 
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "无法显示 %s"
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "为保护您的隐私已封锁远程内容"
 
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "使用 %s 打开"
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "显示远程内容(_S)"
 
-#: src/ui/mainWindow.js:348
+#: src/ui/mainWindow.blp:20
 msgid "Open"
 msgstr "打开"
 
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "从"
-
-#: src/viewers/audio.js:364
+#: src/viewers/audio.js:258
 msgid "by"
 msgstr "由"
 
-#: src/viewers/evince.js:94
+#: src/viewers/audio.js:263
+msgid "from"
+msgstr "从"
+
+#: src/viewers/fallback.js:191
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d 项"
+
+#: src/viewers/fallback.js:196
+msgid "Empty"
+msgstr "空"
+
+#: src/viewers/pdf.js:135
 #, javascript-format
 msgid "%d of %d"
-msgstr "第 %d 页, 共 %d 页"
+msgstr "%d 共 %d"
+
+#~ msgid "Type"
+#~ msgstr "类型"
+
+#~ msgid "Empty Folder"
+#~ msgstr "空文件夹"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "无法显示 %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "使用 %s 打开"
 
 #~ msgid "Client decoration"
 #~ msgstr "客户端装饰"
