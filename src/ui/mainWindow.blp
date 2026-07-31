@@ -28,13 +28,11 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
     }
 
     content: Stack mainStack {
+      visible-child: spinner;
+
       StackPage loading {
-        name: "loading";
-
-        child: Adw.Spinner {};
+        child: Adw.Spinner spinner {};
       }
-
-      visible-child-name: "loading";
     };
   };
 }

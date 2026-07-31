@@ -23,7 +23,9 @@ export class MainWindow extends Adw.ApplicationWindow {
     static {
         GObject.registerClass({
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/mainWindow.ui',
-            InternalChildren: ['toolbar_view', 'titlebar', 'fullscreen_button', 'mainStack'],
+            InternalChildren: [
+                'toolbar_view', 'titlebar', 'fullscreen_button', 'mainStack', 'spinner',
+            ],
         }, this);
     }
 
@@ -183,7 +185,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             GLib.PRIORITY_DEFAULT_IDLE,
             200,
             () => {
-                this._mainStack.set_visible_child_name('loading');
+                this._mainStack.set_visible_child(this._spinner);
                 this._spinnerDelayId = 0;
                 return GLib.SOURCE_REMOVE;
             }
