@@ -5,12 +5,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-06-06 12:36+0000\n"
-"PO-Revision-Date: 2026-06-06 18:54+0200\n"
+"POT-Creation-Date: 2026-07-30 12:40+0000\n"
+"PO-Revision-Date: 2026-07-31 06:33+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
-"Language-Team: \n"
+"Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,53 +34,88 @@ msgstr ""
 "Sushi არის ფაილის წინასწარი გადამხედველი GNOME სამუშაო გარემოსთვის. ეს არის "
 "დამოუკიდებელი კომპონენტი, რომელიც ინტეგრირდება GNOME ფაილებთან (Nautilus)."
 
-#: src/core/mainWindow.js:96
-msgid "Open"
-msgstr "გახსნა"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/viewers/audio.js:342
-msgid "from"
-msgstr "საიდან"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#| msgid "Sushi"
+msgid "sushi"
+msgstr "sushi"
 
-#: src/viewers/audio.js:348
-msgid "by"
-msgstr "ავტორი"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "ნახვა"
 
-#: src/viewers/error.js:41
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "გადახედვის პროგრამა"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "მინიატურა"
+
+#: src/ui/error.blp:6
 msgid "Preview Failed"
 msgstr "მინიატურის შეცდომა"
 
-#: src/viewers/error.js:45
+#: src/ui/error.blp:7
+msgid "image-missing-symbolic"
+msgstr "გამოსახულება-აკლია-სიმბოლური"
+
+#: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "შეცდომის სრული შეტყობინების კოპირება"
 
-#: src/viewers/evince.js:211
-#, javascript-format
-msgid "%d of %d"
-msgstr "%d-დან %d"
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "ზომა"
 
-#: src/viewers/fallback.js:207
-msgid "Type"
-msgstr "ტიპი"
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "შეცვლილია"
 
-#: src/viewers/fallback.js:217
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "დაშორებული შემცველობა დაბლოკილია თქვენი კონფიდენციალობის დასაცავად"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "დაშორებული შემცველობი_ს ჩატვირთვა"
+
+#: src/ui/mainWindow.blp:20
+msgid "Open"
+msgstr "გახსნა"
+
+#: src/viewers/audio.js:258
+msgid "by"
+msgstr "ავტორი"
+
+#: src/viewers/audio.js:263
+msgid "from"
+msgstr "საიდან"
+
+#: src/viewers/fallback.js:191
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d ელემენტი"
 msgstr[1] "%d ელემენტი"
 
-#: src/viewers/fallback.js:222
-msgid "Empty Folder"
-msgstr "ცარიელი საქაღალდე"
+#: src/viewers/fallback.js:196
+msgid "Empty"
+msgstr "ცარიელი"
 
-#: src/viewers/fallback.js:226
-msgid "Size"
-msgstr "ზომა"
+#: src/viewers/pdf.js:135
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d-დან %d"
 
-#: src/viewers/fallback.js:232
-msgid "Modified"
-msgstr "შეცვლილია"
+#~ msgid "Type"
+#~ msgstr "ტიპი"
+
+#~ msgid "Empty Folder"
+#~ msgstr "ცარიელი საქაღალდე"
 
 #, javascript-format
 #~ msgid "Unable to display %s"
