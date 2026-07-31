@@ -269,6 +269,11 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._createRenderer();
     }
 
+    prepareClose() {
+        this._loadingRenderer?.stopRenderer();
+        this._renderer?.stopRenderer();
+    }
+
     toggleFullscreen() {
         if (!this.is_fullscreen()) {
             this.fullscreen();
