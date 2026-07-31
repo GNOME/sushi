@@ -49,6 +49,8 @@ export class Renderer extends GObject.Interface {
     }
 
     isReady() {
+        if (this.getCancellable().is_cancelled())
+            return;
         if (this._rendererUnmapId === undefined)
             this.initialized();
         this._ready = true;
