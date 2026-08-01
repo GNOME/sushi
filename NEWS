@@ -1,3 +1,44 @@
+51.beta
+=======
+
+UI changes:
+- Show a loading spinner when loading a file takes longer (Peter Eisenmann)
+- Ensure legibility of icons in statuspage (Nokse)
+- Clamp MediaControls to limit width (Nokse)
+- Wrap lines in text viewer (Peter Eisenmann)
+- Handle single- and double-click in video viewer (Peter Eisenmann)
+- Add double-click to fullscreen support to image viewer (Peter Eisenmann)
+- Enable context menu in HTML viewer (Tau Gärtli)
+- Prompt user before loading remote resources in HTML viewer (Tau Gärtli)
+- Improve loading states (Peter Eisenmann)
+- Tweak toolbar and headerbar (Peter Eisenmann)
+- Fix title for tagless files (Peter Eisenmann)
+- Always use integrated artwork (Peter Eisenmann)
+- Hide headerbar in fullscreen (Peter Eisenmann)
+- Use icon for file open button (Peter Eisenmann)
+- Preserve aspect ratio when showing images (Tau Gärtli)
+
+Known regressions:
+- Only the first frame of animated GIFs is shown
+
+Backend changes:
+- Add more mime types to the LibreOffice viewer (Nicolas Palix)
+- Add ESLint (Tau Gärtli)
+- Replace use of deprecated GJS APIs with their suggested replacements (Tau Gärtli)
+- Use Blueprint (Peter Eisenmann)
+- Handle XHTML mime type (Tau Gärtli)
+- Cancel pending operations when file is switched (Peter Eisenmann)
+- Plug memory leaks (Peter Eisenmann)
+- Overhaul plugin API and introduce a system-wide plugin path (Peter Eisenmann, Tau Gärtli)
+- Document plugin API (Peter Eisenmann)
+- Promisify async calls (Peter Eisenmann)
+- Rework hovering (Peter Eisenmann)
+- Improve handling of renderer sizing (Peter Eisenmann)
+- Use fast-content-type as fallback (Peter Eisenmann)
+
+Translations:
+- Translation updates (GNOME Translation Project contributors)
+
 51.alpha
 ========
 
