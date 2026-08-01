@@ -11,7 +11,7 @@ You can also look at other renderers under `src/viewers/`, e.g. `image.js` imple
 Sushi picks an appropriate previewer based on the previewed file's content type.
 Each previewer derives from the `Renderer` interface, allowing to use the same API with all of them.
 Noteworthy functions of `Renderer` are:
-* `getCancellable` - provides a cancellable that will be cancelled if the previewer closes
+* `get cancellable` - provides a cancellable that will be cancelled if the previewer closes
 * `isReady` - call to communicate the previewer is ready to be displayed
 * `initialized` - call to communicate that previewer was created (not needed when `isReady` is already called)
 

@@ -119,9 +119,9 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
         const isFile = GLib.Uri.parse_scheme(uri).toLowerCase() === 'file';
         if (isFile) {
             const file = Gio.File.new_for_uri(uri);
-            await Gtk.FileLauncher.new(file).launch(parent, this.getCancellable());
+            await Gtk.FileLauncher.new(file).launch(parent, this.cancellable);
         } else {
-            await Gtk.UriLauncher.new(uri).launch(parent, this.getCancellable());
+            await Gtk.UriLauncher.new(uri).launch(parent, this.cancellable);
         }
     }
 

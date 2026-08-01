@@ -272,7 +272,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
 
         if (!this._coverFetched) {
             this._coverFetched = true;
-            fetchCoverArt(tags, this.getCancellable())
+            fetchCoverArt(tags, this.cancellable)
                 .then(cover => {
                     this._coverPaintable.texture = cover;
                 })

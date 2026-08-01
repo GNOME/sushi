@@ -38,7 +38,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         if (papersTypes.includes(fileInfo.get_content_type())) {
             this._loadFile(file);
         } else {
-            Sushi.convert_libreoffice(file, this.getCancellable(), (o, res) => {
+            Sushi.convert_libreoffice(file, this.cancellable, (o, res) => {
                 let convertedFile;
                 try {
                     convertedFile = Sushi.convert_libreoffice_finish(res);
@@ -69,11 +69,10 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         this._job = PapersView.JobLoad.new();
         this._job.set_uri(file.get_uri());
 
-        const cancellable = this.getCancellable();
         const loadJobID = this._job.connect_object(
             'finished',
             job => {
-                if (cancellable.is_cancelled())
+                if (this.cancellable.is_cancelled())
                     return;
                 job.disconnect(loadJobID);
                 this._job = null;

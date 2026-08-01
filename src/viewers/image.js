@@ -37,7 +37,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         this._loadFile(file)
             .catch(error => {
                 if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED) &&
-                    !this.getCancellable().is_cancelled())
+                    !this.cancellable.is_cancelled())
                     this.emit('error', error);
             });
 
@@ -58,12 +58,11 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
 
     _loadFile(file) {
         const loader = Gly.Loader.new(file);
-        const cancellable = this.getCancellable();
-        return loader.load_async(cancellable)
+        return loader.load_async(this.cancellable)
             .then(image => {
                 this._imageWidth = image.get_width();
                 this._imageHeight = image.get_height();
-                return image.next_frame_async(cancellable);
+                return image.next_frame_async(this.cancellable);
             })
             .then(frame => {
                 const texture = GlyGtk4.frame_get_texture(frame);

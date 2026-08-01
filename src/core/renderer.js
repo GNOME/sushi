@@ -16,6 +16,32 @@ export const ResizePolicy = Object.freeze({
     CUSTOM: 4,
 });
 
+// We can't use private elements for the `Renderer` because it's not really a parent
+// class of the implementors. gjs only copies over the properties and functions.
+
+/** @type {WeakMap<any, boolean>} */
+const ready = new WeakMap();
+/** @type {WeakMap<any, Gio.Cancellable>} */
+const cancellable = new WeakMap();
+/** @type {WeakMap<any, number>} */
+const rendererUnmapId = new WeakMap();
+/** @type {WeakMap} */
+const toolbar = new WeakMap();
+
+/** @template TKey
+ *  @template TValue
+ *  @param {WeakMap<TKey, TValue>} map
+ *  @param {TKey} key
+ *  @param {(key: TKey) => TValue} callback
+ *  @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap/getOrInsertComputed} */
+const getOrInsertComputed = (map, key, callback) => {
+    if (map.has(key))
+        return map.get(key);
+    const value = callback(key);
+    map.set(key, value);
+    return value;
+};
+
 /** Note: This class is part of the stable plugin API. Only change it in backwards-compatible ways. */
 export class Renderer extends GObject.Interface {
     static {
@@ -31,32 +57,30 @@ export class Renderer extends GObject.Interface {
     /* Methods called by subclasses */
 
     /** @returns {Gio.Cancellable} */
-    getCancellable() {
-        if (this._rendererCancellable === undefined)
-            this._rendererCancellable = new Gio.Cancellable();
-        return this._rendererCancellable;
+    get cancellable() {
+        return getOrInsertComputed(cancellable, this, () => new Gio.Cancellable());
     }
 
     initialized() {
-        const cancellable = this.getCancellable();
-        this._rendererUnmapId = this.connect('unmap', () => {
-            this.disconnect(this._rendererUnmapId);
-            this._rendererUnmapId = 0;
+        const cancellable = this.cancellable;
+        rendererUnmapId.set(this, this.connect('unmap', () => {
+            this.disconnect(rendererUnmapId.get(this));
+            rendererUnmapId.set(this, 0);
 
             if (!cancellable.is_cancelled())
                 this.stopRenderer();
             this.cleanup();
-        });
+        }));
     }
 
     isReady() {
-        if (this.getCancellable().is_cancelled())
+        if (this.cancellable.is_cancelled())
             return;
-        if (this._rendererUnmapId === undefined)
+        if (!rendererUnmapId.has(this))
             this.initialized();
-        this._ready = true;
+        ready.set(this, true);
         // Cache toolbar, renderer isn't meant to dynamically change this
-        this._toolbar = this.toolbar;
+        toolbar.set(this, this.toolbar);
         this.emit('ready');
     }
 
@@ -93,7 +117,7 @@ export class Renderer extends GObject.Interface {
     /* Public methods, intended to be called by main window */
 
     getToolbar() {
-        return this._toolbar;
+        return toolbar.get(this);
     }
 
     /** @param {[number, number]} maxSize
@@ -140,13 +164,11 @@ export class Renderer extends GObject.Interface {
 
     /** @returns {boolean} */
     get ready() {
-        // intended to be called by main window
-        return !!this._ready;
+        return !!ready.get(this);
     }
 
     stopRenderer() {
-        const cancellable = this.getCancellable();
-        cancellable.cancel();
+        this.cancellable.cancel();
         this.stop();
     }
 }
