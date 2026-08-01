@@ -84,6 +84,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._embedRenderer(new ErrorRenderer(error), fileInfo);
     }
 
+    /** @returns {[number, number]} */
     _getMaxSize() {
         const display = Gdk.Display.get_default();
         const surface = this.get_surface();
@@ -229,6 +230,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
     }
 
+    /** @param {import('./renderer.js').Renderer} renderer */
     _embedRenderer(renderer, fileInfo) {
         this._renderer?.stopRenderer();
         this._loadingRenderer?.stopRenderer();
@@ -255,6 +257,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         }
     }
 
+    /** @param {Gio.FileInfo} fileInfo */
     _createView(fileInfo) {
         const content_type = fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
             ? fileInfo.get_content_type()
