@@ -9,7 +9,7 @@ See the `example.js` file for a basic plugin skeleton.
 You can also look at other renderers under `src/viewers/`, e.g. `image.js` implements delayed loading and a custom size.
 
 Sushi picks an appropriate previewer based on the previewed file's content type.
-Each previewer derives from the `Renderer` interface, allowing to use the same API with all of them.
+Each previewer derives from the [`Renderer`](../src/core/renderer.js) interface, allowing to use the same API with all of them.
 Noteworthy functions of `Renderer` are:
 * `get cancellable` - provides a cancellable that will be cancelled if the previewer closes
 * `isReady` - call to communicate the previewer is ready to be displayed
