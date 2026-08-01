@@ -62,6 +62,8 @@ export class Renderer extends GObject.Interface {
     }
 
     markInitialized() {
+        if (rendererUnmapId.has(this))
+            return;
         const cancellable = this.cancellable;
         rendererUnmapId.set(this, this.connect('unmap', () => {
             this.disconnect(rendererUnmapId.get(this));
@@ -74,10 +76,9 @@ export class Renderer extends GObject.Interface {
     }
 
     markReady() {
-        if (this.cancellable.is_cancelled())
+        if (this.cancellable.is_cancelled() || ready.get(this))
             return;
-        if (!rendererUnmapId.has(this))
-            this.markInitialized();
+        this.markInitialized();
         ready.set(this, true);
         // Cache toolbar, renderer isn't meant to dynamically change this
         toolbar.set(this, this.toolbar);
