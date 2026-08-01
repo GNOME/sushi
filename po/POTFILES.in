@@ -6,6 +6,7 @@ src/ui/error.blp
 src/ui/fallback.blp
 src/ui/html.blp
 src/ui/mainWindow.blp
+src/ui/pdf.blp
 src/viewers/audio.js
 src/viewers/error.js
 src/viewers/fallback.js

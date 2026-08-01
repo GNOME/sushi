@@ -44,6 +44,10 @@ Box toolbar {
     icon-name: "go-previous-symbolic";
     clicked => $_goPreviousPage();
 
+    accessibility {
+      label: _("Previous Page");
+    }
+
     styles [
       "circular",
       "flat",
@@ -61,6 +65,10 @@ Box toolbar {
   Button toolbarForward {
     icon-name: "go-next-symbolic";
     clicked => $_goNextPage();
+
+    accessibility {
+      label: _("Next Page");
+    }
 
     styles [
       "circular",
