@@ -39,7 +39,7 @@ export const Klass = class LibreofficeRenderer extends Gtk.ScrolledWindow {
         this.add(this._view);
 
         this._view.open_document(file.get_uri(), '{}', null, null);
-        this.isReady();
+        this.markReady();
     }
 
     vfunc_size_allocate(allocation) {

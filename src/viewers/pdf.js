@@ -53,7 +53,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
 
         this._defineActions();
 
-        this.initialized();
+        this.markInitialized();
     }
 
     stop() {
@@ -103,7 +103,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
             this, GObject.ConnectFlags.DEFAULT
         );
         this._updatePageLabel(this._model);
-        this.isReady();
+        this.markReady();
     }
 
     _defineActions() {

@@ -39,7 +39,7 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
 
         this.set_child(this._view);
 
-        this.isReady();
+        this.markReady();
     }
 
     _setStyle(adwStyleManager, buffer) {

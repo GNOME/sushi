@@ -49,7 +49,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         );
         this.add_controller(click_handler);
 
-        this.initialized();
+        this.markInitialized();
     }
 
     cleanup() {
@@ -68,7 +68,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
                 const texture = GlyGtk4.frame_get_texture(frame);
                 this._texture = texture;
                 this.set_paintable(texture);
-                this.isReady();
+                this.markReady();
             });
     }
 

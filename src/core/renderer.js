@@ -61,7 +61,7 @@ export class Renderer extends GObject.Interface {
         return getOrInsertComputed(cancellable, this, () => new Gio.Cancellable());
     }
 
-    initialized() {
+    markInitialized() {
         const cancellable = this.cancellable;
         rendererUnmapId.set(this, this.connect('unmap', () => {
             this.disconnect(rendererUnmapId.get(this));
@@ -73,11 +73,11 @@ export class Renderer extends GObject.Interface {
         }));
     }
 
-    isReady() {
+    markReady() {
         if (this.cancellable.is_cancelled())
             return;
         if (!rendererUnmapId.has(this))
-            this.initialized();
+            this.markInitialized();
         ready.set(this, true);
         // Cache toolbar, renderer isn't meant to dynamically change this
         toolbar.set(this, this.toolbar);

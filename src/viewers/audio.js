@@ -237,7 +237,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
             this, GObject.ConnectFlags.DEFAULT
         );
 
-        this.isReady();
+        this.markReady();
     }
 
     stop() {

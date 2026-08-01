@@ -170,7 +170,7 @@ export class FallbackRenderer extends Adw.Bin {
 
         loadFile(file, fileInfo, this.cancellable, this._onFileInfoUpdated.bind(this));
 
-        this.isReady();
+        this.markReady();
     }
 
     _applyLabels(state) {

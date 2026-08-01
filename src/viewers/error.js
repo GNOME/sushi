@@ -32,7 +32,7 @@ export class ErrorRenderer extends Adw.Bin {
 
         this._statusPage.set_description(first_line + (hasMultipleLines ? '…' : ''));
 
-        this.isReady();
+        this.markReady();
     }
 
     _copyFullError() {

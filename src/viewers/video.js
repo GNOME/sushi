@@ -45,10 +45,10 @@ export const Klass = class VideoRenderer extends Adw.Bin {
 
         const preparedId = this._stream.connect('notify::prepared', () => {
             this._stream.disconnect(preparedId);
-            this.isReady();
+            this.markReady();
         });
 
-        this.initialized();
+        this.markInitialized();
     }
 
     stop() {

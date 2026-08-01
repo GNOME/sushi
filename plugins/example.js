@@ -30,7 +30,7 @@ export const Klass = class ExampleRenderer extends Adw.Bin {
         statusPage.set_child(button);
         this.set_child(statusPage);
 
-        this.isReady();
+        this.markReady();
     }
 
     get resizePolicy() {

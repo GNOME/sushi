@@ -60,7 +60,7 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
         this._webView.connect('load-failed', (view, loadEvent, uri, error) => {
             this.emit('error', error);
         });
-        this.isReady();
+        this.markReady();
     }
 
     _onShowRemoteContentClicked() {
