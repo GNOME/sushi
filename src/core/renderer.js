@@ -30,6 +30,7 @@ export class Renderer extends GObject.Interface {
 
     /* Methods called by subclasses */
 
+    /** @returns {Gio.Cancellable} */
     getCancellable() {
         if (this._rendererCancellable === undefined)
             this._rendererCancellable = new Gio.Cancellable();
@@ -69,10 +70,12 @@ export class Renderer extends GObject.Interface {
         // override this function with cleanup code
     }
 
+    /** @returns {ResizePolicy[keyof ResizePolicy]} */
     get resizePolicy() {
         return ResizePolicy.MAX_SIZE;
     }
 
+    /** @returns {[number, number] | null} */
     get customSize() {
         // customSize needs to be overridden for ResizePolicy.CUSTOM
         return null;
@@ -82,6 +85,7 @@ export class Renderer extends GObject.Interface {
         return null;
     }
 
+    /** @returns {Adw.ToolbarStyle} */
     get topBarStyle() {
         return Adw.ToolbarStyle.FLAT;
     }
@@ -92,10 +96,11 @@ export class Renderer extends GObject.Interface {
         return this._toolbar;
     }
 
+    /** @param {[number, number]} maxSize
+      * @returns {[number, number]} */
     getSize(maxSize) {
         const rendererSize = this.get_preferred_size();
         const natSize = [rendererSize[1].width, rendererSize[1].height];
-
 
         switch (this.resizePolicy) {
         case ResizePolicy.CUSTOM: {
@@ -133,6 +138,7 @@ export class Renderer extends GObject.Interface {
         }
     }
 
+    /** @returns {boolean} */
     get ready() {
         // intended to be called by main window
         return !!this._ready;
