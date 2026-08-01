@@ -13,16 +13,13 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
       Button fullscreen_button {
         icon-name: "view-fullscreen-symbolic";
         action-name: "win.fullscreen";
+        tooltip-text: _("Toggle Fullscreen");
       }
 
       [end]
       Button {
         icon-name: "detach-symbolic";
-
-        accessibility {
-          label: _("Open");
-        }
-
+        tooltip-text: _("Open");
         clicked => $_onFileOpenClicked();
       }
     }
