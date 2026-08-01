@@ -68,7 +68,7 @@ export class Renderer extends GObject.Interface {
             rendererUnmapId.set(this, 0);
 
             if (!cancellable.is_cancelled())
-                this.stopRenderer();
+                stopRenderer(this);
             this.cleanup();
         }));
     }
@@ -113,62 +113,68 @@ export class Renderer extends GObject.Interface {
     get topBarStyle() {
         return Adw.ToolbarStyle.FLAT;
     }
-
-    /* Public methods, intended to be called by main window */
-
-    getToolbar() {
-        return toolbar.get(this);
-    }
-
-    /** @param {[number, number]} maxSize
-      * @returns {[number, number]} */
-    getSize(maxSize) {
-        const rendererSize = this.get_preferred_size();
-        const natSize = [rendererSize[1].width, rendererSize[1].height];
-
-        switch (this.resizePolicy) {
-        case ResizePolicy.CUSTOM: {
-            const customSize = this.customSize;
-            if (!customSize) {
-                console.error('ResizePolicy programming error');
-                return [1, 1];
-            } else if (customSize[0] <= maxSize[0] && customSize[1] <= maxSize[1]) {
-                // no scaling needed
-                return natSize;
-            } else {
-                // scale by smaller ratio of width or height
-                const ratio = Math.min(maxSize[0] / customSize[0], maxSize[1] / customSize[1]);
-                return customSize.map(size => Math.floor(size * ratio));
-            }
-        }
-        case ResizePolicy.MAX_SIZE:
-            return maxSize;
-        case ResizePolicy.NAT_SIZE:
-            return natSize;
-        case ResizePolicy.SCALED:
-            if (natSize[0] <= maxSize[0] && natSize[1] <= maxSize[1]) {
-                // no scaling needed
-                return natSize;
-            } else {
-                // scale by smaller ratio of width or height
-                const ratio = Math.min(maxSize[0] / natSize[0], maxSize[1] / natSize[1]);
-                return natSize.map(size => Math.floor(size * ratio));
-            }
-        case ResizePolicy.STATUS_PAGE:
-            return [400, 420];
-        default:
-            console.warn(`Renderer uses unknown resize policy '${this.resizePolicy}'`);
-            return maxSize;
-        }
-    }
-
-    /** @returns {boolean} */
-    get ready() {
-        return !!ready.get(this);
-    }
-
-    stopRenderer() {
-        this.cancellable.cancel();
-        this.stop();
-    }
 }
+
+// Functions intended to be called by main window
+
+/** @param {Renderer} renderer */
+export const getRendererToolbar = renderer => {
+    return toolbar.get(renderer);
+};
+
+/** @param {Renderer} renderer
+ *  @param {[number, number]} maxSize
+ *  @returns {[number, number]} */
+export const getRendererSize = (renderer, maxSize) => {
+    const rendererSize = renderer.get_preferred_size();
+    const natSize = [rendererSize[1].width, rendererSize[1].height];
+
+    switch (renderer.resizePolicy) {
+    case ResizePolicy.CUSTOM: {
+        const customSize = renderer.customSize;
+        if (!customSize) {
+            console.error('ResizePolicy programming error');
+            return [1, 1];
+        } else if (customSize[0] <= maxSize[0] && customSize[1] <= maxSize[1]) {
+            // no scaling needed
+            return natSize;
+        } else {
+            // scale by smaller ratio of width or height
+            const ratio = Math.min(maxSize[0] / customSize[0], maxSize[1] / customSize[1]);
+            return customSize.map(size => Math.floor(size * ratio));
+        }
+    }
+    case ResizePolicy.MAX_SIZE:
+        return maxSize;
+    case ResizePolicy.NAT_SIZE:
+        return natSize;
+    case ResizePolicy.SCALED:
+        if (natSize[0] <= maxSize[0] && natSize[1] <= maxSize[1]) {
+            // no scaling needed
+            return natSize;
+        } else {
+            // scale by smaller ratio of width or height
+            const ratio = Math.min(maxSize[0] / natSize[0], maxSize[1] / natSize[1]);
+            return natSize.map(size => Math.floor(size * ratio));
+        }
+    case ResizePolicy.STATUS_PAGE:
+        return [400, 420];
+    default:
+        console.warn(`Renderer uses unknown resize policy '${renderer.resizePolicy}'`);
+        return maxSize;
+    }
+};
+
+/** @param {Renderer} renderer
+ *  @returns {boolean} */
+export const isRendererReady = renderer => {
+    return !!ready.get(renderer);
+};
+
+/** @param {Renderer|null|undefined} renderer */
+export const stopRenderer = renderer => {
+    if (!renderer)
+        return;
+    renderer.cancellable.cancel();
+    renderer.stop();
+};

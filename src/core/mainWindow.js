@@ -17,6 +17,7 @@ import {HoverManager} from '../util/hoverManager.js';
 import {OverlayWrapper} from '../util/overlayWrapper.js';
 import * as MimeHandler from './mimeHandler.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
+import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
 
 const WINDOW_MAX_PERCENT_H = 0.5;
 const WINDOW_MAX_PERCENT_W = 0.5;
@@ -106,7 +107,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             return;
 
         const maxSize = this._getMaxSize();
-        const contentSize = this._renderer.getSize(maxSize);
+        const contentSize = getRendererSize(this._renderer, maxSize);
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
         const width = Math.min(contentSize[0], maxSize[0]);
         const height = Math.min(contentSize[1] + naturalTitlebarSize.height, maxSize[1]);
@@ -216,7 +217,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._renderer = this._loadingRenderer;
         this._loadingRenderer = null;
 
-        const toolbar = this._renderer.getToolbar();
+        const toolbar = getRendererToolbar(this._renderer);
         let stackWidget = this._renderer;
         if (toolbar)
             stackWidget = new OverlayWrapper(this._renderer, toolbar, this._hoverManager);
@@ -232,8 +233,8 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     /** @param {import('./renderer.js').Renderer} renderer */
     _embedRenderer(renderer, fileInfo) {
-        this._renderer?.stopRenderer();
-        this._loadingRenderer?.stopRenderer();
+        stopRenderer(this._renderer);
+        stopRenderer(this._loadingRenderer);
         this._loadingRenderer = renderer;
 
         const title = fileInfo?.get_display_name() ??
@@ -241,7 +242,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             this.file.get_uri();
         this.set_title(title);
 
-        if (renderer.ready) {
+        if (isRendererReady(renderer)) {
             this._setRenderer();
         } else {
             this._startDelayedSpinner();
@@ -249,7 +250,7 @@ export class MainWindow extends Adw.ApplicationWindow {
                 'ready',
                 () => {
                     renderer.disconnect(rendererReadyId);
-                    if (renderer.ready && this._loadingRenderer === renderer)
+                    if (isRendererReady(renderer) && this._loadingRenderer === renderer)
                         this._setRenderer();
                 },
                 this, GObject.ConnectFlags.DEFAULT
@@ -291,8 +292,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     prepareClose() {
-        this._loadingRenderer?.stopRenderer();
-        this._renderer?.stopRenderer();
+        stopRenderer(this._loadingRenderer);
+        stopRenderer(this._renderer);
     }
 
     toggleFullscreen() {
