@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:15+0000\n"
-"PO-Revision-Date: 2021-05-11 19:45+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-07-31 15:17+0000\n"
+"PO-Revision-Date: 2026-08-01 19:20+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -17,18 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.9\n"
 "X-Project-Style: gnome\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr "Ofrís un biais facil per visualizar diferents tipes de fichièrs"
+msgstr "Fornir un biais facil per visualizar mantun tipe de fichièrs"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -36,57 +36,95 @@ msgstr ""
 "Sushi es un previsualizaire de fichièrs per l’environament de burèu GNOME. "
 "Es un compausant independent que s’intègra a GNOME Files (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Tipe"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "vista"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "previsualizaire"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "apercebut"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Fracàs de l’apercebut"
+
+#: src/ui/error.blp:7
+msgid "image-missing-symbolic"
+msgstr "image-missing-symbolic"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Copiar lo messatge d’error entièr"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Talha"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Modificat"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Lo contengut distant es estat blocat per protegir vòstra vida privada"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Afichar lo contengut distant"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "Dobrir"
+
+#: src/viewers/audio.js:258
+msgid "by"
+msgstr "per"
+
+#: src/viewers/audio.js:263
+msgid "from"
+msgstr "de"
+
+#: src/viewers/fallback.js:191
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d element"
 msgstr[1] "%d elements"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Dorsièr void"
+#: src/viewers/fallback.js:196
+msgid "Empty"
+msgstr "Void"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Talha"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Modificat"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Impossible d'afichar %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Dobrir amb %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Dobrir"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "de"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "per"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:135
 #, javascript-format
 msgid "%d of %d"
-msgstr "%d sus %d"
+msgstr "%d de %d"
+
+#~ msgid "Type"
+#~ msgstr "Tipe"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Dorsièr void"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Impossible d'afichar %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Dobrir amb %s"
 
 #~ msgid "Loading…"
 #~ msgstr "Cargament…"
