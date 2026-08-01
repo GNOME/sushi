@@ -3,41 +3,97 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi.master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2022-07-24 06:37+0000\n"
-"PO-Revision-Date: 2022-12-01 05:41+0300\n"
-"Last-Translator: Launchpad translators\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-07-31 15:17+0000\n"
+"PO-Revision-Date: 2026-08-01 13:33+0300\n"
+"Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.2\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Забяспечвае магчымасць хуткага прагляду для розных тыпаў файлаў"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi - праграма папярэдняга прагляду файлаў для працоўнага асяроддзя "
-"GNOME. Гэта незалежны кампанент, які інтэграваны ў «Файлы» GNOME "
-"(Nautilus)."
+"Sushi - праграма папярэдняга прагляду файлаў для працоўнага асяроддзя GNOME. "
+"Гэта незалежны кампанент, які інтэграваны ў «Файлы» GNOME (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Тып"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#| msgid "Sushi"
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "прагляд"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "сродак перадпрагляду"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "перадпрагляд"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Збой перадпрагляду"
+
+#: src/ui/error.blp:7
+msgid "image-missing-symbolic"
+msgstr "image-missing-symbolic"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Скапіяваць паведамленне пра памылку"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Памер"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Дата змянення"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Аддаленае змесціва заблакіравана для абароны вашай прыватнасці"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "Паказаць _аддаленае змесціва"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "Адкрыць"
+
+#: src/viewers/audio.js:258
+msgid "by"
+msgstr "выканаўца: "
+
+#: src/viewers/audio.js:263
+msgid "from"
+msgstr "альбом: "
+
+#: src/viewers/fallback.js:191
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -45,43 +101,11 @@ msgstr[0] "%d элемент"
 msgstr[1] "%d элементы"
 msgstr[2] "%d элементаў"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Пустая папка"
+#: src/viewers/fallback.js:196
+msgid "Empty"
+msgstr "Пуста"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Памер"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Дата змянення"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Не ўдалося паказаць %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Адкрыць праз %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Адкрыць"
-
-#: src/viewers/audio.js:375
-msgid "from"
-msgstr "альбом: "
-
-#: src/viewers/audio.js:380
-msgid "by"
-msgstr "выканаўца: "
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:135
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d з %d"
