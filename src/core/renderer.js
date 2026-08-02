@@ -181,6 +181,11 @@ export const stopRenderer = renderer => {
 };
 
 /** @param {Renderer} renderer
+ *  @returns {boolean} */
+export const isRendererStopped = renderer =>
+    getCancellable(renderer).is_cancelled();
+
+/** @param {Renderer} renderer
  *  @returns {Gio.Cancellable} */
 const getCancellable = renderer =>
     getOrInsertComputed(cancellable, renderer, () => new Gio.Cancellable());
