@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-30 12:40+0000\n"
-"PO-Revision-Date: 2026-07-31 06:33+0200\n"
+"POT-Creation-Date: 2026-08-02 10:30+0000\n"
+"PO-Revision-Date: 2026-08-02 17:31+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -39,7 +39,6 @@ msgid "nautilus"
 msgstr "nautilus"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
-#| msgid "Sushi"
 msgid "sushi"
 msgstr "sushi"
 
@@ -58,10 +57,6 @@ msgstr "მინიატურა"
 #: src/ui/error.blp:6
 msgid "Preview Failed"
 msgstr "მინიატურის შეცდომა"
-
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "გამოსახულება-აკლია-სიმბოლური"
 
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
@@ -83,15 +78,27 @@ msgstr "დაშორებული შემცველობა დაბ�
 msgid "_Show Remote Content"
 msgstr "დაშორებული შემცველობი_ს ჩატვირთვა"
 
-#: src/ui/mainWindow.blp:20
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "სრული ეკრანის გადართვა"
+
+#: src/ui/mainWindow.blp:22
 msgid "Open"
 msgstr "გახსნა"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "წინა გვერდი"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "შემდეგი გვერდი"
+
+#: src/viewers/audio.js:262
 msgid "by"
 msgstr "ავტორი"
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:267
 msgid "from"
 msgstr "საიდან"
 
@@ -110,6 +117,9 @@ msgstr "ცარიელი"
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d-დან %d"
+
+#~ msgid "image-missing-symbolic"
+#~ msgstr "გამოსახულება-აკლია-სიმბოლური"
 
 #~ msgid "Type"
 #~ msgstr "ტიპი"
