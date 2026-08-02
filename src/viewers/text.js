@@ -78,8 +78,11 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
             file: sourceFile,
         });
 
+        // using idle instead of default so that cancellation is
+        // "reactive" for large files i.e. switching to a different renderer
+        // and cancelling this one works in a reasonable time.
         loader
-            .load_async(GLib.PRIORITY_DEFAULT, this.cancellable, null)
+            .load_async(GLib.PRIORITY_DEFAULT_IDLE, this.cancellable, null)
             .catch(error => this.emit('error', error));
 
         return buffer;
