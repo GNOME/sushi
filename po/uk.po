@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-30 12:40+0000\n"
-"PO-Revision-Date: 2026-07-30 21:41+0300\n"
+"POT-Creation-Date: 2026-08-02 10:30+0000\n"
+"PO-Revision-Date: 2026-08-02 21:49+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -41,7 +41,6 @@ msgid "nautilus"
 msgstr "nautilus"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
-#| msgid "Sushi"
 msgid "sushi"
 msgstr "sushi"
 
@@ -60,10 +59,6 @@ msgstr "попередній перегляд"
 #: src/ui/error.blp:6
 msgid "Preview Failed"
 msgstr "Не вдалося попередньо переглянути"
-
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "image-missing-symbolic"
 
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
@@ -86,15 +81,27 @@ msgstr ""
 msgid "_Show Remote Content"
 msgstr "_Показати віддалені дані"
 
-#: src/ui/mainWindow.blp:20
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Увімкнути/Вимкнути повноекранний режим"
+
+#: src/ui/mainWindow.blp:22
 msgid "Open"
 msgstr "Відкрити"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Попередня сторінка"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Наст.Стор."
+
+#: src/viewers/audio.js:262
 msgid "by"
 msgstr " "
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:267
 msgid "from"
 msgstr "з"
 
@@ -114,6 +121,9 @@ msgstr "Порожньо"
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d з %d"
+
+#~ msgid "image-missing-symbolic"
+#~ msgstr "image-missing-symbolic"
 
 #~ msgid "Type"
 #~ msgstr "Тип"
