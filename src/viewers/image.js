@@ -6,15 +6,19 @@
 
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Gly from 'gi://Gly';
 import GlyGtk4 from 'gi://GlyGtk4';
 
 import {Renderer, ResizePolicy} from '../core/renderer.js';
+import {isCancelledError} from '../util/error.js';
 
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
+
+const MICROS_PER_MILLIS = 1_000;
 
 export const Klass = class ImageRenderer extends Gtk.Picture {
     static {
@@ -22,6 +26,8 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
             Implements: [Renderer],
         }, this);
     }
+
+    #nextFrameTimeoutId = 0;
 
     _handleClick(numClicks) {
         if (numClicks === 2)
@@ -48,6 +54,13 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         this.markInitialized();
     }
 
+    stop() {
+        if (this.#nextFrameTimeoutId) {
+            GLib.source_remove(this.#nextFrameTimeoutId);
+            this.#nextFrameTimeoutId = 0;
+        }
+    }
+
     cleanup() {
         this.set_paintable(null);
     }
@@ -55,13 +68,33 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
     async _loadFile(file) {
         const loader = Gly.Loader.new(file);
         const image = await loader.load_async(this.cancellable);
+        this._image = image;
         this._imageWidth = image.get_width();
         this._imageHeight = image.get_height();
-        const frame = await image.next_frame_async(this.cancellable);
+        await this.#showNextFrame();
+        this.markReady();
+    }
+
+    async #showNextFrame() {
+        const frame = await this._image.next_frame_async(this.cancellable);
         const texture = GlyGtk4.frame_get_texture(frame);
         this._texture = texture;
         this.set_paintable(texture);
-        this.markReady();
+        const delayInMicroseconds = frame.get_delay();
+        if (delayInMicroseconds)
+            this.#queueNextFrame(delayInMicroseconds / MICROS_PER_MILLIS);
+    }
+
+    /** @param {number} delay in milliseconds */
+    #queueNextFrame(delay) {
+        this.#nextFrameTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, delay, () => {
+            this.#showNextFrame().catch(error => {
+                if (!isCancelledError(error))
+                    console.warn('Failed to show next image frame', error);
+            });
+            this.#nextFrameTimeoutId = 0;
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     vfunc_measure(orientation, _for_size) {
