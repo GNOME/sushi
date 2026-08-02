@@ -22,10 +22,12 @@ import {isCancelledError} from '../util/error.js';
 
 const WINDOW_MAX_PERCENT_H = 0.5;
 const WINDOW_MAX_PERCENT_W = 0.5;
+const ACCEPTABLE_USER_ACTION_DELAY_IN_MS = 200;
 
 export class MainWindow extends Adw.ApplicationWindow {
     static {
         GObject.registerClass({
+            Signals: {'ready': {param_types: []}},
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/mainWindow.ui',
             InternalChildren: [
                 'toolbar_view', 'titlebar', 'fullscreen_button', 'mainStack', 'spinner',
@@ -203,7 +205,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             return;
         this._spinnerDelayId = GLib.timeout_add(
             GLib.PRIORITY_DEFAULT_IDLE,
-            200,
+            ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
             () => {
                 this.#setDisplayedWidget(this._spinner);
                 this._spinnerDelayId = 0;
@@ -236,6 +238,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._resizeWindow();
         this.queue_resize();
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
+        this.emit('ready');
     }
 
     /** @param {import('./renderer.js').Renderer} renderer */
@@ -319,5 +322,33 @@ export class MainWindow extends Adw.ApplicationWindow {
             this._fullscreen_button.set_icon_name('view-fullscreen-symbolic');
         }
         this._hoverManager.setFullscreened(!fullscreened);
+    }
+
+    presentWhenReady() {
+        let timeoutId = 0;
+        let readyHandlerId = 0;
+        let closeRequestHandlerId = 0;
+        const disconnectHandlersAndSources = () => {
+            if (timeoutId) {
+                GLib.source_remove(timeoutId);
+                timeoutId = 0;
+            }
+            if (readyHandlerId) {
+                this.disconnect(readyHandlerId);
+                readyHandlerId = 0;
+            }
+            if (closeRequestHandlerId) {
+                this.disconnect(closeRequestHandlerId);
+                closeRequestHandlerId = 0;
+            }
+        };
+        const present = () => {
+            disconnectHandlersAndSources();
+            this.present();
+            return GLib.SOURCE_REMOVE;
+        };
+        timeoutId = GLib.timeout_add(GLib.G_PRIORITY_HIGH, ACCEPTABLE_USER_ACTION_DELAY_IN_MS, present);
+        readyHandlerId = this.connect('ready', present);
+        closeRequestHandlerId = this.connect('close-request', disconnectHandlersAndSources);
     }
 }

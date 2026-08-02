@@ -154,11 +154,29 @@ export class Application extends Adw.Application {
                 this._teardownMainWindow();
             // otherwise correct file is already shown
         } else {
-            this._ensureMainWindow(activationToken);
+            this._ensureMainWindow();
             this._mainWindow.set_startup_id(activationToken);
             this.updateParentHandle(windowHandle);
+            this.#presentMainWindow(file);
+        }
+    }
+
+    #presentMainWindow(file) {
+        if (!this._mainWindow.visible) {
+            // Window is shown for the first time
             this._mainWindow.setFile(file);
+            this._mainWindow.presentWhenReady();
+        } else if (!this._mainWindow.isActive) {
+            // Window is brought to the foreground
+            // (i.e. when the user selects a file in nautilus while sushi is open)
+            // [TODO] we need some delay here or wait until the window gains focus probably
+            // before we call setFile
             this._mainWindow.present();
+            this._mainWindow.setFile(file);
+        } else {
+            // Window is already in the foreground
+            // (i.e. when user switches file with arrow keys)
+            this._mainWindow.setFile(file);
         }
     }
 }
