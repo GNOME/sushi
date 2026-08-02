@@ -17,7 +17,7 @@ import {HoverManager} from '../util/hoverManager.js';
 import {OverlayWrapper} from '../util/overlayWrapper.js';
 import * as MimeHandler from './mimeHandler.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
-import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
+import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize, isRendererStopped} from './renderer.js';
 import {isCancelledError} from '../util/error.js';
 
 const WINDOW_MAX_PERCENT_H = 0.5;
@@ -79,10 +79,15 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     /** @param {GLib.Error} error
-     *  @param {Gio.FileInfo|undefined} fileInfo */
-    _reportError(error, fileInfo) {
+     *  @param {Gio.FileInfo|undefined} fileInfo
+     *  @param {import('./renderer.js').Renderer|undefined} renderer */
+    _reportError(error, fileInfo, renderer) {
         if (isCancelledError(error))
             return;
+        if (renderer && isRendererStopped(renderer)) {
+            console.warn('error from stopped renderer', error);
+            return;
+        }
         this._embedRenderer(new ErrorRenderer(error), fileInfo);
     }
 
@@ -271,7 +276,7 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         renderer.connect_object(
             'error',
-            (_, err) => this._reportError(err, fileInfo),
+            (renderer, err) => this._reportError(err, fileInfo, renderer),
             this, GObject.ConnectFlags.DEFAULT
         );
     }
