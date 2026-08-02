@@ -122,7 +122,6 @@ export class Application extends Adw.Application {
     }
 
     _teardownMainWindow() {
-        this._mainWindow.prepareClose();
         this._mainWindow.close();
         this._mainWindow = null;
         this._windowHandle = null;

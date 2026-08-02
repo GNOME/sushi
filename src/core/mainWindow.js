@@ -65,6 +65,13 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.connect('notify::default-width', this._checkScaledByUser);
     }
 
+    vfunc_close_request() {
+        stopRenderer(this._loadingRenderer);
+        stopRenderer(this._renderer);
+
+        return super.vfunc_close_request();
+    }
+
     _getDecorationLayout() {
         const layout_groups = Gtk.Settings.get_default().gtk_decoration_layout.split(':');
         const has_close = layout_groups.map(group => group.split(',').includes('close'));
@@ -295,11 +302,6 @@ export class MainWindow extends Adw.ApplicationWindow {
     setFile(file) {
         this.file = file;
         this._createRenderer();
-    }
-
-    prepareClose() {
-        stopRenderer(this._loadingRenderer);
-        stopRenderer(this._renderer);
     }
 
     toggleFullscreen() {
