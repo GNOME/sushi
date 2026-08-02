@@ -18,6 +18,7 @@ import {OverlayWrapper} from '../util/overlayWrapper.js';
 import * as MimeHandler from './mimeHandler.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
+import {isCancelledError} from '../util/error.js';
 
 const WINDOW_MAX_PERCENT_H = 0.5;
 const WINDOW_MAX_PERCENT_W = 0.5;
@@ -80,7 +81,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     /** @param {GLib.Error} error
      *  @param {Gio.FileInfo|undefined} fileInfo */
     _reportError(error, fileInfo) {
-        if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+        if (isCancelledError(error))
             return;
         this._embedRenderer(new ErrorRenderer(error), fileInfo);
     }

@@ -89,9 +89,8 @@ export const Klass = class PdfRenderer extends Adw.Bin {
             // the original C function has an out param for the error
             // which gets converted to an exception by GJS.
             job.is_succeeded();
-        } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                this.emit('error', e);
+        } catch (error) {
+            this.emit('error', error);
             return;
         }
 

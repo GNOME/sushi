@@ -11,6 +11,7 @@
     <file>core/renderer.js</file>
     <file>util/customIcon.js</file>
     <file>util/development.js</file>
+    <file>util/error.js</file>
     <file>util/hoverManager.js</file>
     <file>util/overlayWrapper.js</file>
     <file>util/totemMimeTypes.js</file>
