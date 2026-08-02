@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-25 15:04+0000\n"
-"PO-Revision-Date: 2026-07-25 21:32+0200\n"
+"POT-Creation-Date: 2026-08-02 10:30+0000\n"
+"PO-Revision-Date: 2026-08-02 16:52+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -62,10 +62,6 @@ msgstr "predogled"
 msgid "Preview Failed"
 msgstr "Predogleda je spodletel"
 
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "Slika-brez-simbolnega-pomena"
-
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "Kopiraj celotno sporočilo o napaki"
@@ -86,15 +82,27 @@ msgstr "Oddaljena vsebina je blokirana zaradi zaščite vaše zasebnosti"
 msgid "_Show Remote Content"
 msgstr "_Pokaži oddaljeno vsebino"
 
-#: src/ui/mainWindow.blp:20
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Vključi/izključi celozaslonski pogled"
+
+#: src/ui/mainWindow.blp:22
 msgid "Open"
 msgstr "Odpri"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Predhodna stran"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Naslednja stran"
+
+#: src/viewers/audio.js:262
 msgid "by"
 msgstr "od"
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:267
 msgid "from"
 msgstr "od"
 
@@ -111,7 +119,7 @@ msgstr[3] "%d predmeti"
 msgid "Empty"
 msgstr "Prazno"
 
-#: src/viewers/pdf.js:136
+#: src/viewers/pdf.js:135
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d od %d"
