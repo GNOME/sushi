@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-31 15:17+0000\n"
-"PO-Revision-Date: 2026-08-01 13:33+0300\n"
+"POT-Creation-Date: 2026-08-02 10:30+0000\n"
+"PO-Revision-Date: 2026-08-03 00:20+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -37,7 +37,6 @@ msgid "nautilus"
 msgstr "nautilus"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
-#| msgid "Sushi"
 msgid "sushi"
 msgstr "sushi"
 
@@ -56,10 +55,6 @@ msgstr "перадпрагляд"
 #: src/ui/error.blp:6
 msgid "Preview Failed"
 msgstr "Збой перадпрагляду"
-
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "image-missing-symbolic"
 
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
@@ -81,15 +76,27 @@ msgstr "Аддаленае змесціва заблакіравана для а
 msgid "_Show Remote Content"
 msgstr "Паказаць _аддаленае змесціва"
 
-#: src/ui/mainWindow.blp:23
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Поўнаэкранны рэжым"
+
+#: src/ui/mainWindow.blp:22
 msgid "Open"
 msgstr "Адкрыць"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Папярэдняя старонка"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Наступная старонка"
+
+#: src/viewers/audio.js:262
 msgid "by"
 msgstr "выканаўца: "
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:267
 msgid "from"
 msgstr "альбом: "
 
@@ -109,3 +116,6 @@ msgstr "Пуста"
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d з %d"
+
+#~ msgid "image-missing-symbolic"
+#~ msgstr "image-missing-symbolic"
