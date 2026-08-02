@@ -58,7 +58,7 @@ export class Renderer extends GObject.Interface {
 
     /** @returns {Gio.Cancellable} */
     get cancellable() {
-        return getOrInsertComputed(cancellable, this, () => new Gio.Cancellable());
+        return getCancellable(this);
     }
 
     markInitialized() {
@@ -176,6 +176,11 @@ export const isRendererReady = renderer => {
 export const stopRenderer = renderer => {
     if (!renderer)
         return;
-    renderer.cancellable.cancel();
+    getCancellable(renderer).cancel();
     renderer.stop();
 };
+
+/** @param {Renderer} renderer
+ *  @returns {Gio.Cancellable} */
+const getCancellable = renderer =>
+    getOrInsertComputed(cancellable, renderer, () => new Gio.Cancellable());
