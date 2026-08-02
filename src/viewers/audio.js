@@ -21,6 +21,7 @@ const Format = imports.format;
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
 import {CoverPaintable} from '../widgets/coverPaintable.js';
+import {isCancelledError, isGLibError} from '../util/error.js';
 
 Gio._promisify(Gio.File.prototype, 'replace_async', 'replace_finish');
 Gio._promisify(Gio.FileOutputStream.prototype, 'splice_async', 'splice_finish');
@@ -188,13 +189,11 @@ const fetchCoverArt = (_tagList, _cancellable) => {
 
     return _fetchFromTags(_cancellable)
         .catch(error => {
-            if (!error.hasOwnProperty('matches') ||
-                !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+            if (!isCancelledError(error))
                 return _fetchFromMusicBrainz();
         })
         .catch(error => {
-            if (!error.hasOwnProperty('matches') ||
-                !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+            if (!isCancelledError(error))
                 console.warn(`Couldn't retrieve cover art: ${error}`);
         });
 };
@@ -277,8 +276,8 @@ export const Klass = class AudioRenderer extends Adw.Bin {
                     this._coverPaintable.texture = cover;
                 })
                 .catch(error => {
-                    if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
-                        !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    if (!isGLibError(error, Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
+                        !isCancelledError(error))
                         console.warn(error, 'Unable to fetch cover art');
                 });
         }

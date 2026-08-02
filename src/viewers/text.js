@@ -5,7 +5,6 @@
  */
 
 import Adw from 'gi://Adw';
-import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import GtkSource from 'gi://GtkSource';
@@ -77,9 +76,8 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
         loader.load_async(0, this.cancellable, null, (loader, result) => {
             try {
                 loader.load_finish(result);
-            } catch (e) {
-                if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                    this.emit('error', e);
+            } catch (error) {
+                this.emit('error', error);
             }
         });
 

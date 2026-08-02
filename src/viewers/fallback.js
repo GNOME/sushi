@@ -16,6 +16,7 @@ const Format = imports.format;
 
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 import {getCustomIcon} from '../util/customIcon.js';
+import {isCancelledError} from '../util/error.js';
 
 function _getDeepCountAttrs() {
     return [
@@ -59,7 +60,7 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
                     _enumerator = _file.enumerate_children_finish(res);
                 } catch (e) {
                     _state.unreadableItems++;
-                    if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    if (!isCancelledError(e))
                         _deepCountNext();
                     return;
                 }
@@ -75,7 +76,7 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
         try {
             files = _enumerator.next_files_finish(res);
         } catch (e) {
-            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+            if (isCancelledError(e))
                 return;
         }
 

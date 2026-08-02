@@ -36,8 +36,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
 
         this._loadFile(file)
             .catch(error => {
-                if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED) &&
-                    !this.cancellable.is_cancelled())
+                if (!this.cancellable.is_cancelled())
                     this.emit('error', error);
             });
 
