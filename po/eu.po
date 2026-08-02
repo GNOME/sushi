@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the sushi package.
 # Julen Ruiz Aizpuru <julenx@gmail.com>, 2011, 2013.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2013, 2014.
-# Asier Sarasua Garmendia <asier.sarasua@gmail.com>, 2019.
+# Asier Saratsua Garmendia <asiersarasua@ni.eus>, 2019, 2026.
 #
 msgid ""
 msgstr "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:35+0000\n"
-"PO-Revision-Date: 2020-10-29 10:00+0100\n"
-"Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-07-31 15:17+0000\n"
+"PO-Revision-Date: 2025-08-02 10:00+0100\n"
+"Last-Translator: Asier Saratsua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
@@ -19,71 +19,109 @@ msgstr "Project-Id-Version: sushi master\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Project-Style: gnome\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Fitxategi mota desberdinak azkar bistaratzeko tresna bat"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
-msgstr "Sushi fitxategien aurrebistak ikusteko aplikazio bat da, GNOME mahaigain-ingurunerako sortua. Osagai independentea da, GNOME Fitxategiak (Nautilus) aplikazioan integratzen dena."
+msgstr "Sushi fitxategien aurrebistak izateko aplikazio bat da, GNOME mahaigaineko ingurunerako sortua. GNOME Fitxategiak (Nautilus) aplikazioarekin integratzen den osagai independentea da."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Mota"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "ikusi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "aurrebista-sortzailea"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "aurrebista"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Aurrebistak huts egin du"
+
+#: src/ui/error.blp:7
+msgid "image-missing-symbolic"
+msgstr "image-missing-symbolic"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Kopiatu errore-mezu osoa"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Tamaina"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Aldatze-data"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Urruneko edukia blokeatu da zure pribatutasuna babesteko"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Erakutsi urruneko edukia"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "Ireki"
+
+#: src/viewers/audio.js:258
+msgid "by"
+msgstr "egilea:"
+
+#: src/viewers/audio.js:263
+msgid "from"
+msgstr "diskoa:"
+
+#: src/viewers/fallback.js:191
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "Elementu %d"
 msgstr[1] "%d elementu"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Karpeta hutsa"
+#: src/viewers/fallback.js:196
+msgid "Empty"
+msgstr "Hustu"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Tamaina"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Aldatze-data"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Ezin da %s erakutsi"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Ireki honekin: %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Ireki"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "diskoa:"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "egilea:"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:135
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d / %d"
+
+#~ msgid "Type"
+#~ msgstr "Mota"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Karpeta hutsa"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Ezin da %s erakutsi"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Ireki honekin: %s"
 
 #~ msgid "Client decoration"
 #~ msgstr "Bezeroaren dekorazioa"
