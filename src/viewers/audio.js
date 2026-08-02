@@ -194,7 +194,7 @@ const fetchCoverArt = (_tagList, _cancellable) => {
         })
         .catch(error => {
             if (!isCancelledError(error))
-                console.warn(`Couldn't retrieve cover art: ${error}`);
+                console.info(`Couldn't retrieve cover art: ${error}`);
         });
 };
 
