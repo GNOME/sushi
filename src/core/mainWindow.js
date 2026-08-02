@@ -63,6 +63,7 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         this._checkScaledByUser = this._checkScaledByUser.bind(this);
         this.connect('notify::default-width', this._checkScaledByUser);
+        this.connect('notify::fullscreened', this.#restoreCenterGravity);
     }
 
     _getDecorationLayout() {
@@ -289,6 +290,11 @@ export class MainWindow extends Adw.ApplicationWindow {
         });
     }
 
+    #restoreCenterGravity = () => {
+        if (!this.fullscreened)
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE, 100, () => this.set_gravity(Gtk.WindowGravity.CENTER));
+    }
+
     /** ************************************************************************
      ************************ public methods **********************************
      **************************************************************************/
@@ -305,6 +311,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     toggleFullscreen() {
         const fullscreened = this.is_fullscreen();
         if (!fullscreened) {
+            this.set_gravity(Gtk.WindowGravity.TOP_START);
             this.fullscreen();
             this._fullscreen_button.set_icon_name('view-restore-symbolic');
         } else {
