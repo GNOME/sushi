@@ -5,12 +5,16 @@
  */
 
 import Adw from 'gi://Adw';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import GtkSource from 'gi://GtkSource';
 import Pango from 'gi://Pango';
 
 import {Renderer} from '../core/renderer.js';
+
+Gio._promisify(GtkSource.FileLoader.prototype, 'load_async', 'load_finish');
 
 export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
     static {
@@ -73,13 +77,10 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
             buffer,
             file: sourceFile,
         });
-        loader.load_async(0, this.cancellable, null, (loader, result) => {
-            try {
-                loader.load_finish(result);
-            } catch (error) {
-                this.emit('error', error);
-            }
-        });
+
+        loader
+            .load_async(GLib.PRIORITY_DEFAULT, this.cancellable, null)
+            .catch(error => this.emit('error', error));
 
         return buffer;
     }
