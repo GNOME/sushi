@@ -76,12 +76,8 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         return [1, (size ?? scaleFactor) / scaleFactor, -1, -1];
     }
 
-    get customSize() {
-        return [this._imageWidth, this._imageHeight];
-    }
-
     get resizePolicy() {
-        return ResizePolicy.CUSTOM;
+        return ResizePolicy.SCALED;
     }
 
     get topBarStyle() {

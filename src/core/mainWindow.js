@@ -17,8 +17,9 @@ import {HoverManager} from '../util/hoverManager.js';
 import {OverlayWrapper} from '../util/overlayWrapper.js';
 import * as MimeHandler from './mimeHandler.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
-import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize, isRendererStopped} from './renderer.js';
+import {getRendererToolbar, isRendererReady, stopRenderer, isRendererStopped} from './renderer.js';
 import {isCancelledError} from '../util/error.js';
+import {RendererBin} from '../widgets/rendererBin.js';
 
 const WINDOW_MAX_PERCENT_H = 0.5;
 const WINDOW_MAX_PERCENT_W = 0.5;
@@ -66,6 +67,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._checkScaledByUser = this._checkScaledByUser.bind(this);
         this.connect('notify::default-width', this._checkScaledByUser);
         this.connect('notify::fullscreened', this.#restoreCenterGravity);
+
+        this.connect('notify::default-width', () => console.log('notify::default-width'));
     }
 
     _getDecorationLayout() {
@@ -95,7 +98,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     /** @returns {[number, number]} */
-    _getMaxSize() {
+    _getMaxSize(orientation) {
         const display = Gdk.Display.get_default();
         const surface = this.get_surface();
         const monitor = display.get_monitor_at_surface(surface);
@@ -107,23 +110,28 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (geometry.height > 100_000)
             geometry.height = 800;
 
-        return [Math.floor(geometry.width * WINDOW_MAX_PERCENT_W),
-            Math.floor(geometry.height * WINDOW_MAX_PERCENT_H)];
+        const maxSize = [
+            Math.floor(geometry.width * WINDOW_MAX_PERCENT_W),
+            Math.floor(geometry.height * WINDOW_MAX_PERCENT_H),
+        ];
+        return orientation !== undefined ? maxSize[orientation] : maxSize;
     }
 
     _resizeWindow() {
-        if (!this._renderer || this._scaled_by_user)
-            return;
+        // if (!this._renderer || this._scaled_by_user)
+        //     return;
 
-        const maxSize = this._getMaxSize();
-        const contentSize = getRendererSize(this._renderer, maxSize);
-        const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
-        const width = Math.min(contentSize[0], maxSize[0]);
-        const height = Math.min(contentSize[1] + naturalTitlebarSize.height, maxSize[1]);
+        // const maxSize = this._getMaxSize();
+        // const contentSize = getRendererSize(this._renderer, maxSize);
+        // const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
+        // const width = Math.min(contentSize[0], maxSize[0]);
+        // const height = Math.min(contentSize[1] + naturalTitlebarSize.height, maxSize[1]);
 
-        GObject.signal_handlers_block_by_func(this, this._checkScaledByUser);
-        this.#setDefaultSize(width, height);
-        GObject.signal_handlers_unblock_by_func(this, this._checkScaledByUser);
+        const [_, natSize] = this.get_preferred_size();
+        if (natSize.width !== this.defaultWidth || natSize.height !== this.defaultHeight) {
+            console.log(`resizing to (${natSize.width}, ${natSize.height})`);
+            this.#setDefaultSize(natSize.width, natSize.height);
+        }
     }
 
     _checkScaledByUser() {
@@ -142,9 +150,9 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #setDefaultSize(width, height) {
-        if ((width > 0 && width !== this._lastWindowWidth) ||
-            (height > 0 && height !== this._lastWindowHeight)) {
-            if (!this.get_settings().gtk_interface_reduced_motion && this._lastWindowWidth !== 0) {
+        // if ((width > 0 && width !== this._lastWindowWidth) ||
+        //     (height > 0 && height !== this._lastWindowHeight)) {
+            if (false) {
                 const width_target = Adw.PropertyAnimationTarget.new(this, 'default-width');
                 const height_target = Adw.PropertyAnimationTarget.new(this, 'default-height');
                 const width_animation = Adw.TimedAnimation.new(
@@ -162,9 +170,9 @@ export class MainWindow extends Adw.ApplicationWindow {
             } else {
                 this.set_default_size(width, height);
             }
-            this._lastWindowWidth = width;
-            this._lastWindowHeight = height;
-        }
+            // this._lastWindowWidth = width;
+            // this._lastWindowHeight = height;
+        // }
     }
 
     _createRenderer() {
@@ -204,7 +212,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (this._spinnerDelayId)
             return;
         this._spinnerDelayId = GLib.timeout_add(
-            GLib.PRIORITY_DEFAULT_IDLE,
+            GLib.PRIORITY_HIGH,
             ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
             () => {
                 this.#setDisplayedWidget(this._spinner);
@@ -227,16 +235,16 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._loadingRenderer = null;
 
         const toolbar = getRendererToolbar(this._renderer);
-        let stackWidget = this._renderer;
+        const rendererBin = new RendererBin(this._renderer, this._getMaxSize.bind(this));
+        let stackWidget = rendererBin;
         if (toolbar)
-            stackWidget = new OverlayWrapper(this._renderer, toolbar, this._hoverManager);
+            stackWidget = new OverlayWrapper(rendererBin, toolbar, this._hoverManager);
         else
             this._hoverManager.setRevealer(null);
         this._mainStack.add_child(stackWidget);
         this.#setDisplayedWidget(stackWidget);
 
         this._resizeWindow();
-        this.queue_resize();
         this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
         this.emit('ready');
     }
@@ -253,12 +261,14 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.set_title(title);
 
         if (isRendererReady(renderer)) {
+            console.log('renderer ready [sync]');
             this._setRenderer();
         } else {
             this._startDelayedSpinner();
             const rendererReadyId = renderer.connect_object(
                 'ready',
                 () => {
+                    console.log('renderer ready [async]');
                     renderer.disconnect(rendererReadyId);
                     if (isRendererReady(renderer) && this._loadingRenderer === renderer)
                         this._setRenderer();

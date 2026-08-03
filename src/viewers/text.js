@@ -24,7 +24,11 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
     }
 
     constructor(file, fileInfo, constructProperties = {}) {
-        super(constructProperties);
+        super({
+            ...constructProperties,
+            // propagateNaturalHeight: true,
+            // propagateNaturalWidth: true,
+        });
 
         const buffer = this._createBuffer(file, fileInfo);
         this._view = new GtkSource.View({
@@ -38,11 +42,20 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
             bottom_margin: 12,
             show_line_numbers: !!buffer.language,
             wrap_mode: Pango.WrapMode.WORD_CHAR,
+            visible: false,
         });
 
         this.set_child(this._view);
 
         this.markReady();
+
+        // when switching between renderers, the GtkSource.View
+        // somehow causes the window to not be resized properly from the center.
+        // showing the view after calling `markReady` gives it time to resize the window
+        // to the appropriate size.
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE, 0, () => {
+            this._view.visible = true;
+        });
     }
 
     _setStyle(adwStyleManager, buffer) {
