@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-25 15:04+0000\n"
-"PO-Revision-Date: 2026-07-26 18:49+0200\n"
+"POT-Creation-Date: 2026-08-03 11:41+0000\n"
+"PO-Revision-Date: 2026-08-03 14:26+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -69,10 +69,6 @@ msgstr "previzualiza"
 msgid "Preview Failed"
 msgstr "Previzualizare nereușită"
 
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "image-missing-symbolic"
-
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "Copiază mesajul de eroare complet"
@@ -93,19 +89,31 @@ msgstr "Conținutul extern este blocat pentru a-ți proteja intimitatea"
 msgid "_Show Remote Content"
 msgstr "_Arată conținutul extern"
 
-#: src/ui/mainWindow.blp:20
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Pe tot ecranul / Fereastră normală"
+
+#: src/ui/mainWindow.blp:22
 msgid "Open"
 msgstr "Deschide"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Pagina precedentă"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Pagina următoare"
+
+#: src/viewers/audio.js:261
 msgid "by"
 msgstr "de"
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:266
 msgid "from"
 msgstr "din"
 
-#: src/viewers/fallback.js:191
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -113,11 +121,11 @@ msgstr[0] "%d element"
 msgstr[1] "%d elemente"
 msgstr[2] "%d de elemente"
 
-#: src/viewers/fallback.js:196
+#: src/viewers/fallback.js:197
 msgid "Empty"
 msgstr "Gol"
 
-#: src/viewers/pdf.js:136
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d din %d"
