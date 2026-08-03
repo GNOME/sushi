@@ -73,6 +73,21 @@ export class Application extends Adw.Application {
         this._skeleton2.impl.emit_signal('NavigateTo', param);
     }
 
+    async #emitRenameEvent() {
+        const param = new GLib.Variant('(s)', [this._mainWindow.file.get_uri()]);
+        this._mainWindow.close();
+        /* The compositor disregards nautilus' rename popover for some time after
+         * sushi is closed. Use an artificial delay to work around that. */
+        await new Promise(r => setTimeout(r, 200));
+        this._skeleton2.impl.emit_signal('Rename', param);
+    }
+
+    #emitTrashEvent() {
+        const param = new GLib.Variant('(s)', [this._mainWindow.file.get_uri()]);
+        this._mainWindow.close();
+        this._skeleton2.impl.emit_signal('Trash', param);
+    }
+
     #setupActions() {
         const addAction = (name, accels, callback) => {
             const action = new Gio.SimpleAction({name});
@@ -88,6 +103,8 @@ export class Application extends Adw.Application {
         addAction('quit', ['q', 'Escape', 'space'], () => this.close());
 
         addAction('navigate', [], () => this.#emitNavigateToEvent());
+        addAction('rename', ['F2'], () => this.#emitRenameEvent());
+        addAction('trash', ['Delete'], () => this.#emitTrashEvent());
 
         addAction('select-left', ['Left'], directionCallback(Gtk.DirectionType.LEFT));
         addAction('select-right', ['Right'], directionCallback(Gtk.DirectionType.RIGHT));
