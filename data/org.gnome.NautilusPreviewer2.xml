@@ -14,5 +14,9 @@
     <signal name="SelectionEvent">
       <arg type="u" name="direction" />
     </signal>
+    <!-- Since version 51 -->
+    <signal name="NavigateTo">
+      <arg type="s" name="uri" />
+    </signal>
   </interface>
 </node>

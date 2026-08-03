@@ -67,11 +67,18 @@ export class Application extends Adw.Application {
         this.#setupActions();
     }
 
+    #emitNavigateToEvent() {
+        const param = new GLib.Variant('(s)', [this._mainWindow.file.get_uri()]);
+        this._mainWindow.close();
+        this._skeleton2.impl.emit_signal('NavigateTo', param);
+    }
+
     #setupActions() {
         const addAction = (name, accels, callback) => {
             const action = new Gio.SimpleAction({name});
             action.connect_object('activate', callback, this, GObject.ConnectFlags.DEFAULT);
-            this.set_accels_for_action(`app.${name}`, accels);
+            if (accels)
+                this.set_accels_for_action(`app.${name}`, accels);
             this.add_action(action);
         };
         const directionCallback = direction => {
@@ -79,6 +86,8 @@ export class Application extends Adw.Application {
         };
 
         addAction('quit', ['q', 'Escape', 'space'], () => this.close());
+
+        addAction('navigate', [], () => this.#emitNavigateToEvent());
 
         addAction('select-left', ['Left'], directionCallback(Gtk.DirectionType.LEFT));
         addAction('select-right', ['Right'], directionCallback(Gtk.DirectionType.RIGHT));

@@ -50,6 +50,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._spinnerDelayId = 0;
         this._fileQueryCancellable = null;
         this.file = null;
+        this._fileIsFolder = false;
 
         this._animating = 0;
         this._skip_next_size_adjustment = false;
@@ -290,6 +291,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             ? new (MimeHandler.getKlass(content_type))(this.file, fileInfo)
             : new FallbackRenderer(this.file, fileInfo);
         this._embedRenderer(renderer, fileInfo);
+        this._fileIsFolder = fileInfo.get_file_type() === Gio.FileType.DIRECTORY;
 
         renderer.connect_object(
             'error',
@@ -299,6 +301,11 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #openFile() {
+        if (this._fileIsFolder) {
+            this.get_application().activate_action('navigate', null);
+            return;
+        }
+
         const fileLauncher = new Gtk.FileLauncher({file: this.file});
         fileLauncher.launch(null, null, (obj, result) => {
             try {
