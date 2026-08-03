@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-25 15:04+0000\n"
-"PO-Revision-Date: 2026-07-28 19:29+0200\n"
+"POT-Creation-Date: 2026-08-03 11:41+0000\n"
+"PO-Revision-Date: 2026-08-03 23:22+0200\n"
 "Last-Translator: Patrik Sivek <sivekpatrik@gmail.com>\n"
 "Language-Team: Czech\n"
 "Language: cs\n"
@@ -62,10 +62,6 @@ msgstr "náhled"
 msgid "Preview Failed"
 msgstr "Náhled selhal"
 
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr ""
-
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "Kopírovat celou chybovou zprávu"
@@ -86,19 +82,31 @@ msgstr "Vzdálený obsah je blokován z důvodu ochrany vašeho soukromí"
 msgid "_Show Remote Content"
 msgstr "Zobrazit vzdálený ob_sah"
 
-#: src/ui/mainWindow.blp:20
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Přepnout režim celé obrazovky"
+
+#: src/ui/mainWindow.blp:22
 msgid "Open"
 msgstr "Otevřít"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Předchozí stránka"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Následující stránka"
+
+#: src/viewers/audio.js:261
 msgid "by"
 msgstr "od"
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:266
 msgid "from"
 msgstr "z"
 
-#: src/viewers/fallback.js:191
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -106,11 +114,11 @@ msgstr[0] "%d položka"
 msgstr[1] "%d položky"
 msgstr[2] "%d položek"
 
-#: src/viewers/fallback.js:196
+#: src/viewers/fallback.js:197
 msgid "Empty"
 msgstr "Prázdné"
 
-#: src/viewers/pdf.js:136
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d z %d"
