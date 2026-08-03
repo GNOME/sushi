@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-30 12:40+0000\n"
-"PO-Revision-Date: 2026-07-31 13:54+0800\n"
+"POT-Creation-Date: 2026-08-02 10:30+0000\n"
+"PO-Revision-Date: 2026-08-03 09:03+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -60,10 +60,6 @@ msgstr "预览"
 msgid "Preview Failed"
 msgstr "预览失败"
 
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "image-missing-symbolic"
-
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "复制完整错误消息"
@@ -84,15 +80,27 @@ msgstr "为保护您的隐私已封锁远程内容"
 msgid "_Show Remote Content"
 msgstr "显示远程内容(_S)"
 
-#: src/ui/mainWindow.blp:20
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "切换全屏"
+
+#: src/ui/mainWindow.blp:22
 msgid "Open"
 msgstr "打开"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "上一页"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "下一页"
+
+#: src/viewers/audio.js:262
 msgid "by"
 msgstr "由"
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:267
 msgid "from"
 msgstr "从"
 
@@ -110,6 +118,9 @@ msgstr "空"
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d 共 %d"
+
+#~ msgid "image-missing-symbolic"
+#~ msgstr "image-missing-symbolic"
 
 #~ msgid "Type"
 #~ msgstr "类型"
