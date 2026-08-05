@@ -132,7 +132,7 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
 
 export const mimeTypes = _isAvailable() ? ['text/html', 'application/xhtml+xml'] : [];
 
-const ALLOWED_STOCK_ACTIONS = new Set([
+const ALLOWED_STOCK_ACTIONS = _isAvailable() ? new Set([
     WebKit.ContextMenuAction.NO_ACTION,
     WebKit.ContextMenuAction.OPEN_LINK_IN_NEW_WINDOW,
     WebKit.ContextMenuAction.COPY_LINK_TO_CLIPBOARD,
@@ -169,7 +169,7 @@ const ALLOWED_STOCK_ACTIONS = new Set([
     WebKit.ContextMenuAction.MEDIA_MUTE,
     WebKit.ContextMenuAction.INSERT_EMOJI,
     WebKit.ContextMenuAction.PASTE_AS_PLAIN_TEXT,
-]);
+]) : new Set();
 
 /** @param {WebKit.ContextMenuItem} item
  *  @returns {boolean} */
