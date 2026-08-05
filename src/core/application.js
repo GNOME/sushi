@@ -116,6 +116,7 @@ export class Application extends Adw.Application {
 
         this._mainWindow.connect('close-request', () => {
             this._mainWindow = null;
+            this._windowHandle = null;
             this._skeleton2.impl.emit_property_changed(
                 'Visible', new GLib.Variant('b', false));
         });
