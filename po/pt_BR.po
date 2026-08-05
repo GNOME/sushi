@@ -1,18 +1,19 @@
 # Brazilian Portuguese translation for sushi.
-# Copyright (C) 2019 sushi's COPYRIGHT HOLDER
+# Copyright (C) 2026 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
 # Djavan Fagundes <djavan@comum.org>, 2011.
 # Og Maciel <ogmaciel@gnome.org>, 2011.
 # Enrico Nicoletto <enriconlto@src.gnome.org>, 2019, 2020.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2012-2026.
+# Luiggi R. Cardoso <lrc@gnome.org>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-04-28 15:56+0000\n"
-"PO-Revision-Date: 2026-08-05 20:35-0300\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"POT-Creation-Date: 2026-08-03 10:36+0000\n"
+"PO-Revision-Date: 2026-08-02 16:48-0300\n"
+"Last-Translator: Luiggi R. Cardoso <lrc@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao/>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +24,7 @@ msgstr ""
 "X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/sushi/\n"
 "X-DL-Lang: pt_BR\n"
 "X-DL-Module: sushi\n"
-"X-DL-Branch: gnome-50\n"
+"X-DL-Branch: main\n"
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
 
@@ -55,64 +56,90 @@ msgstr "sushi"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
 msgid "view"
-msgstr "visualizar"
+msgstr "visualização"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
 msgid "previewer"
-msgstr "pré-previsualizador"
+msgstr "pré-visualizador"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
 msgid "preview"
-msgstr "pré-visualizar"
+msgstr "pré-visualização"
 
-#: src/ui/fallbackRenderer.js:244
-msgid "Type"
-msgstr "Tipo"
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Falha na pré-visualização"
 
-#: src/ui/fallbackRenderer.js:254
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Copiar mensagem de erro completa"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Tamanho"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Modificado"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Conteúdo remoto bloqueado para proteger sua privacidade"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Mostrar conteúdo remoto"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Ativar/desativar tela cheia"
+
+#: src/ui/mainWindow.blp:22
+msgid "Open"
+msgstr "Abrir"
+
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Página anterior"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Próxima página"
+
+#: src/viewers/audio.js:261
+msgid "by"
+msgstr "por"
+
+#: src/viewers/audio.js:266
+msgid "from"
+msgstr "de"
+
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d item"
 msgstr[1] "%d itens"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Empty Folder"
-msgstr "Pasta vazia"
+#: src/viewers/fallback.js:197
+msgid "Empty"
+msgstr "Vazio"
 
-#: src/ui/fallbackRenderer.js:263
-msgid "Size"
-msgstr "Tamanho"
-
-#: src/ui/fallbackRenderer.js:269
-msgid "Modified"
-msgstr "Modificado"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Não foi possível exibir %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:358
-#, javascript-format
-msgid "Open With %s"
-msgstr "Abrir com %s"
-
-#: src/ui/mainWindow.js:364
-msgid "Open"
-msgstr "Abrir"
-
-#: src/viewers/audio.js:401
-msgid "from"
-msgstr "de"
-
-#: src/viewers/audio.js:406
-msgid "by"
-msgstr "por"
-
-#: src/viewers/evince.js:111
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d de %d"
+
+#~ msgid "Type"
+#~ msgstr "Tipo"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Pasta vazia"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Não foi possível exibir %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Abrir com %s"
