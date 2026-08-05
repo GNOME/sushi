@@ -1,60 +1,80 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Georgian translation for sushi.
+# Copyright (C) 2026 sushi's authors
+# This file is distributed under the same license as the sushi package.
+# Ekaterine Papava <papava.e@gtu.ge>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2022-05-06 10:02+0000\n"
-"PO-Revision-Date: 2022-06-30 15:15+0200\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-04-28 15:56+0000\n"
+"PO-Revision-Date: 2026-08-05 05:41+0200\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: \n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "სხვადასხვა ტიპის ფაილების ნახვა"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi არის ფაილის წინასწარი გადამხედველი GNOME სამუშაო გარემოსთვის. "
-"ეს არის დამოუკიდებელი კომპონენტი, რომელიც ინტეგრირდება GNOME "
-"ფაილებთან (Nautilus)."
+"Sushi არის ფაილის წინასწარი გადამხედველი GNOME სამუშაო გარემოსთვის. ეს არის "
+"დამოუკიდებელი კომპონენტი, რომელიც ინტეგრირდება GNOME ფაილებთან (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#| msgid "Sushi"
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "ნახვა"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "გადახედვის პროგრამა"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "მინიატურა"
+
+#: src/ui/fallbackRenderer.js:244
 msgid "Type"
 msgstr "ტიპი"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:254
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d ელემენტი"
 msgstr[1] "%d ელემენტი"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:259
 msgid "Empty Folder"
 msgstr "ცარიელი საქაღალდე"
 
-#: src/ui/fallbackRenderer.js:259
+#: src/ui/fallbackRenderer.js:263
 msgid "Size"
 msgstr "ზომა"
 
-#: src/ui/fallbackRenderer.js:264
+#: src/ui/fallbackRenderer.js:269
 msgid "Modified"
 msgstr "შეცვლილია"
 
@@ -65,24 +85,24 @@ msgid "Unable to display %s"
 msgstr "%s-ის ჩვენების შეცდომა"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
+#: src/ui/mainWindow.js:358
 #, javascript-format
 msgid "Open With %s"
 msgstr "%s-ით გახსნა"
 
-#: src/ui/mainWindow.js:348
+#: src/ui/mainWindow.js:364
 msgid "Open"
 msgstr "გახსნა"
 
-#: src/viewers/audio.js:375
+#: src/viewers/audio.js:401
 msgid "from"
-msgstr "-დან"
+msgstr "ვისგან"
 
-#: src/viewers/audio.js:380
+#: src/viewers/audio.js:406
 msgid "by"
-msgstr "-ის მიერ"
+msgstr "ავტორი"
 
-#: src/viewers/evince.js:94
+#: src/viewers/evince.js:111
 #, javascript-format
 msgid "%d of %d"
-msgstr "%d-დან %d"
+msgstr "%d / %d"
