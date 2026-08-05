@@ -177,7 +177,7 @@ export class Application extends Adw.Application {
             this._ensureMainWindow(activationToken);
             this._mainWindow.set_startup_id(activationToken);
             this.updateParentHandle(windowHandle);
-            this._mainWindow.setFile(file);
+            this._mainWindow.file = file;
             this._mainWindow.present();
         }
     }
