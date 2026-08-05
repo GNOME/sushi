@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2021-04-23 12:16+0000\n"
-"PO-Revision-Date: 2021-08-30 13:33+0500\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-04-28 15:56+0000\n"
+"PO-Revision-Date: 2026-08-05 21:37+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk@li.org>\n"
 "Language: kk\n"
@@ -16,44 +16,63 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Суши"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Әр түрлі файлдарды жылдам карауды қамтамасыз ету"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi — GNOME жұмыс үстелі ортасына арналған файлды алдын ала қарау "
-"құралы. Ол GNOME файлдарымен (Nautilus) интеграцияланатын дербес "
-"компонент."
+"Sushi — GNOME жұмыс үстелі ортасына арналған файлды алдын ала қарау құралы. "
+"Ол GNOME файлдарымен (Nautilus) интеграцияланатын дербес компонент."
 
-#: src/ui/fallbackRenderer.js:241
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "суши"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "көру"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "алдын ала қарау сайманы"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "алдын ала қарау "
+
+#: src/ui/fallbackRenderer.js:244
 msgid "Type"
 msgstr "Түрі"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:254
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d нәрсе"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:259
 msgid "Empty Folder"
 msgstr "Бос бума"
 
-#: src/ui/fallbackRenderer.js:259
+#: src/ui/fallbackRenderer.js:263
 msgid "Size"
 msgstr "Өлшемі"
 
-#: src/ui/fallbackRenderer.js:264
+#: src/ui/fallbackRenderer.js:269
 msgid "Modified"
 msgstr "Өзгертілген"
 
@@ -64,24 +83,24 @@ msgid "Unable to display %s"
 msgstr "%s көрсету мүмкін емес"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
+#: src/ui/mainWindow.js:358
 #, javascript-format
 msgid "Open With %s"
 msgstr "%s көмегімен ашу"
 
-#: src/ui/mainWindow.js:348
+#: src/ui/mainWindow.js:364
 msgid "Open"
 msgstr "Ашу"
 
-#: src/viewers/audio.js:359
+#: src/viewers/audio.js:401
 msgid "from"
 msgstr "альбомнан"
 
-#: src/viewers/audio.js:364
+#: src/viewers/audio.js:406
 msgid "by"
 msgstr "орындайтын"
 
-#: src/viewers/evince.js:94
+#: src/viewers/evince.js:111
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d, барлығы %d"
