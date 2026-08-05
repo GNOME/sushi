@@ -30,6 +30,15 @@ export class MainWindow extends Adw.ApplicationWindow {
             InternalChildren: [
                 'toolbar_view', 'titlebar', 'fullscreen_button', 'mainStack', 'spinner',
             ],
+            Properties: {
+                file: GObject.ParamSpec.object(
+                    'file',
+                    'Current File',
+                    null,
+                    GObject.ParamFlags.READWRITE,
+                    Gtk.MediaStream
+                ),
+            },
         }, this);
     }
 
@@ -49,7 +58,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._loadingRenderer = null;
         this._spinnerDelayId = 0;
         this._fileQueryCancellable = null;
-        this.file = null;
+        this._file = null;
         this._fileIsFolder = false;
 
         this._animating = 0;
@@ -71,6 +80,15 @@ export class MainWindow extends Adw.ApplicationWindow {
         stopRenderer(this._renderer);
 
         return super.vfunc_close_request();
+    }
+
+    get file() {
+        return this._file;
+    }
+
+    set file(newFile) {
+        this._file = newFile;
+        this._createRenderer();
     }
 
     #setupActions() {
@@ -185,7 +203,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     _createRenderer() {
         this._fileQueryCancellable?.cancel();
         this._fileQueryCancellable = new Gio.Cancellable();
-        this.file.query_info_async(
+        this._file.query_info_async(
             [Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                 Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE,
                 Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
@@ -262,8 +280,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._loadingRenderer = renderer;
 
         const title = fileInfo?.get_display_name() ??
-            this.file.get_basename() ??
-            this.file.get_uri();
+            this._file.get_basename() ??
+            this._file.get_uri();
         this.set_title(title);
 
         if (isRendererReady(renderer)) {
@@ -288,8 +306,8 @@ export class MainWindow extends Adw.ApplicationWindow {
             ? fileInfo.get_content_type()
             : fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
         const renderer = content_type
-            ? new (MimeHandler.getKlass(content_type))(this.file, fileInfo)
-            : new FallbackRenderer(this.file, fileInfo);
+            ? new (MimeHandler.getKlass(content_type))(this._file, fileInfo)
+            : new FallbackRenderer(this._file, fileInfo);
         this._embedRenderer(renderer, fileInfo);
         this._fileIsFolder = fileInfo.get_file_type() === Gio.FileType.DIRECTORY;
 
@@ -306,7 +324,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             return;
         }
 
-        const fileLauncher = new Gtk.FileLauncher({file: this.file});
+        const fileLauncher = new Gtk.FileLauncher({file: this._file});
         fileLauncher.launch(null, null, (obj, result) => {
             try {
                 obj.launch_finish(result);
@@ -316,14 +334,6 @@ export class MainWindow extends Adw.ApplicationWindow {
                     console.warn(error);
             }
         });
-    }
-
-    /** ************************************************************************
-     ************************ public methods **********************************
-     **************************************************************************/
-    setFile(file) {
-        this.file = file;
-        this._createRenderer();
     }
 
     #toggleFullscreen() {
