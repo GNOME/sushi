@@ -10,7 +10,6 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import GtkSource from 'gi://GtkSource';
-import Pango from 'gi://Pango';
 
 import {Renderer} from '../core/renderer.js';
 
@@ -37,7 +36,7 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
             top_margin: 12,
             bottom_margin: 12,
             show_line_numbers: !!buffer.language,
-            wrap_mode: Pango.WrapMode.WORD_CHAR,
+            wrap_mode: Gtk.WrapMode.WORD_CHAR,
         });
 
         this.set_child(this._view);
