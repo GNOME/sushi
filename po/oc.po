@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-31 15:17+0000\n"
-"PO-Revision-Date: 2026-08-01 19:20+0200\n"
+"POT-Creation-Date: 2026-08-03 11:41+0000\n"
+"PO-Revision-Date: 2026-08-05 08:13+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -60,10 +60,6 @@ msgstr "apercebut"
 msgid "Preview Failed"
 msgstr "Fracàs de l’apercebut"
 
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "image-missing-symbolic"
-
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "Copiar lo messatge d’error entièr"
@@ -84,33 +80,48 @@ msgstr "Lo contengut distant es estat blocat per protegir vòstra vida privada"
 msgid "_Show Remote Content"
 msgstr "_Afichar lo contengut distant"
 
-#: src/ui/mainWindow.blp:23
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Alternar lo mòde ecran complèt"
+
+#: src/ui/mainWindow.blp:22
 msgid "Open"
 msgstr "Dobrir"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Pagina precedenta"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Pagina seguenta"
+
+#: src/viewers/audio.js:261
 msgid "by"
 msgstr "per"
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:266
 msgid "from"
 msgstr "de"
 
-#: src/viewers/fallback.js:191
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d element"
 msgstr[1] "%d elements"
 
-#: src/viewers/fallback.js:196
+#: src/viewers/fallback.js:197
 msgid "Empty"
 msgstr "Void"
 
-#: src/viewers/pdf.js:135
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d de %d"
+
+#~ msgid "image-missing-symbolic"
+#~ msgstr "image-missing-symbolic"
 
 #~ msgid "Type"
 #~ msgstr "Tipe"
