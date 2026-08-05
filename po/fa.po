@@ -2,14 +2,14 @@
 # Copyright (C) 2011 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
 # Arash Mousavi <mousavi.arash@gmail.com>, 2012.
-# Danial Behzadi <dani.behzi@ubuntu.com>, 2013-2021.
+# Danial Behzadi <dani.behzi@ubuntu.com>, 2013-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:15+0000\n"
-"PO-Revision-Date: 2021-01-22 13:59+0000\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-03 11:41+0000\n"
+"PO-Revision-Date: 2026-08-06 00:41+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian\n"
 "Language: fa\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "سوشی"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "امکانی برای دیدن سریع گونه‌های مختلف پرونده‌ها فراهم می‌‌کند"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -36,56 +36,102 @@ msgstr ""
 "سوشی یک پیش‌نمای پرونده برای محیط میزکار گنوم است. مولّفه‌ای مستقل که با "
 "پرونده‌های گنوم (ناتیلوس) یکپارچه می‌شود."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "گونه"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "ناتیلوس"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "سوشی"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "نما"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "پیش‌نمایشگر"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "پیش‌نمایش"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "پیش‌نمایش شکست خورد"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "رونوشت از پیام خطای کامل"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "اندازه"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "تغییر یافته"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "محتوای دوردست برای محافظت از محرمانگیتان مسدود شد"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_نمایش محتوای دوردست"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "تغییر وضعیت تمام‌صفحه"
+
+#: src/ui/mainWindow.blp:22
+msgid "Open"
+msgstr "گشودن"
+
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "صفحهٔ پیشین"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "صفحهٔ بعدی"
+
+#: src/viewers/audio.js:261
+msgid "by"
+msgstr "با"
+
+#: src/viewers/audio.js:266
+msgid "from"
+msgstr "از"
+
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%Id مورد"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "شاخهٔ خالی"
+#: src/viewers/fallback.js:197
+msgid "Empty"
+msgstr "خالی"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "اندازه"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "تغییر یافته"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "ناتوان در نمایش %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "گشودن با %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "گشودن"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "از"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "با"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
-msgstr "%Id از %Id"
+msgstr "‏%Id از %Id"
+
+#~ msgid "Type"
+#~ msgstr "گونه"
+
+#~ msgid "Empty Folder"
+#~ msgstr "شاخهٔ خالی"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "ناتوان در نمایش %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "گشودن با %s"
 
 #~ msgid "Client decoration"
 #~ msgstr "آرایش کارگیر"
