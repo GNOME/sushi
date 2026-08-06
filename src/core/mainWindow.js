@@ -301,8 +301,13 @@ export class MainWindow extends Adw.ApplicationWindow {
     #openFile() {
         const fileLauncher = new Gtk.FileLauncher({file: this.file});
         fileLauncher.launch(null, null, (obj, result) => {
-            obj.launch_finish(result);
-            this.close();
+            try {
+                obj.launch_finish(result);
+                this.close();
+            } catch (error) {
+                if (error === Gtk.DialogError.FAILED)
+                    console.warn(error);
+            }
         });
     }
 
