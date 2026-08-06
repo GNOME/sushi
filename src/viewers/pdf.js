@@ -15,6 +15,7 @@ import PapersView from 'gi://PapersView';
 const Format = imports.format;
 
 import {Renderer} from '../core/renderer.js';
+import * as Image from './image.js';
 
 let papersInitialized = false;
 
@@ -134,7 +135,13 @@ export const Klass = class PdfRenderer extends Adw.Bin {
 const getPaperTypes = () => {
     const appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
     // Papers might not be installed, fallback to only PDF
-    return appInfo?.get_supported_types() ?? ['application/pdf'];
+    let contentTypes = appInfo?.get_supported_types() ?? ['application/pdf'];
+
+    const TIFF_CONTENT_TYPE = 'image/tiff';
+    if (Image.contentTypes.includes(TIFF_CONTENT_TYPE))
+        contentTypes = contentTypes.filter(t => t !== TIFF_CONTENT_TYPE);
+
+    return contentTypes;
 };
 
 export const contentTypes = getPaperTypes();
