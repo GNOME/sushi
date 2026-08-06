@@ -122,15 +122,8 @@ export class Application extends Adw.Application {
         });
     }
 
-    _teardownMainWindow() {
-        this._mainWindow.close();
-        this._mainWindow = null;
-        this._windowHandle = null;
-    }
-
     close() {
-        if (this._mainWindow)
-            this._teardownMainWindow();
+        this._mainWindow?.close();
     }
 
     emitSelectionEvent(direction) {
@@ -151,7 +144,7 @@ export class Application extends Adw.Application {
         const file = Gio.file_new_for_uri(uri);
         if (this._mainWindow?.file?.equal(file)) {
             if (closeIfAlreadyShown)
-                this._teardownMainWindow();
+                this._mainWindow.close();
             // otherwise correct file is already shown
         } else {
             this._ensureMainWindow(activationToken);
