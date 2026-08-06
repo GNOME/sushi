@@ -104,26 +104,11 @@ export class Application extends Adw.Application {
     vfunc_activate() {
     }
 
-    _getActions() {
-        if (!this._actions) {
-            this._actions = [];
-            const addAction = (name, accels, callback) => {
-                const action = new Gio.SimpleAction({name});
-                action.connect_object('activate', callback, this, GObject.ConnectFlags.DEFAULT);
-                this.set_accels_for_action(`win.${name}`, accels);
-                this._actions.push(action);
-            };
-            addAction('fullscreen', ['f', 'F11'], () => this._mainWindow.toggleFullscreen());
-        }
-
-        return this._actions;
-    }
-
     _ensureMainWindow() {
         if (this._mainWindow)
             return;
 
-        this._mainWindow = new MainWindow(this, this._getActions());
+        this._mainWindow = new MainWindow(this);
         if (pkg.name.endsWith('Devel'))
             this._mainWindow.get_style_context().add_class('devel');
 

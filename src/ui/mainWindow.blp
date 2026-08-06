@@ -32,4 +32,18 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
       }
     };
   };
+
+  ShortcutController {
+    scope: managed;
+
+    Shortcut {
+      trigger: "f";
+      action: "action(win.fullscreen)";
+    }
+
+    Shortcut {
+      trigger: "F11";
+      action: "action(win.fullscreen)";
+    }
+  }
 }

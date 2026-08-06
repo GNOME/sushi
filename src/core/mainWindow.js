@@ -33,7 +33,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         }, this);
     }
 
-    constructor(application, actions) {
+    constructor(application) {
         const min_width = 340;
         const min_height = 294;
 
@@ -43,7 +43,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             width_request: min_width,
         });
 
-        actions.map(action => this.add_action(action));
+        this.#setupActions();
 
         this._renderer = null;
         this._loadingRenderer = null;
@@ -70,6 +70,15 @@ export class MainWindow extends Adw.ApplicationWindow {
         stopRenderer(this._renderer);
 
         return super.vfunc_close_request();
+    }
+
+    #setupActions() {
+        const addAction = (name, callback) => {
+            const action = new Gio.SimpleAction({name});
+            action.connect_object('activate', callback, this, GObject.ConnectFlags.DEFAULT);
+            this.add_action(action);
+        };
+        addAction('fullscreen', () => this.#toggleFullscreen());
     }
 
     _getDecorationLayout() {
@@ -304,7 +313,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._createRenderer();
     }
 
-    toggleFullscreen() {
+    #toggleFullscreen() {
         const fullscreened = this.is_fullscreen();
         if (!fullscreened) {
             this.fullscreen();
