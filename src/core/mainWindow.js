@@ -79,6 +79,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             this.add_action(action);
         };
         addAction('fullscreen', () => this.#toggleFullscreen());
+        addAction('open-file', () => this.#openFile());
     }
 
     _getDecorationLayout() {
@@ -297,7 +298,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         );
     }
 
-    _onFileOpenClicked() {
+    #openFile() {
         const fileLauncher = new Gtk.FileLauncher({file: this.file});
         fileLauncher.launch(null, null, (obj, result) => {
             obj.launch_finish(result);

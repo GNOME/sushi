@@ -19,8 +19,8 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
       [end]
       Button {
         icon-name: "detach-symbolic";
+        action-name: "win.open-file";
         tooltip-text: _("Open");
-        clicked => $_onFileOpenClicked();
       }
     }
 
@@ -44,6 +44,11 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
     Shortcut {
       trigger: "F11";
       action: "action(win.fullscreen)";
+    }
+
+    Shortcut {
+      trigger: "o";
+      action: "action(win.open-file)";
     }
   }
 }
