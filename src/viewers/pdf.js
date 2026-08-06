@@ -7,6 +7,7 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GioUnix from 'gi://GioUnix';
+import Gly from 'gi://Gly';
 import GObject from 'gi://GObject';
 import PapersDocument from 'gi://PapersDocument';
 import PapersView from 'gi://PapersView';
@@ -35,7 +36,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
 
         super(constructProperties);
 
-        if (papersTypes.includes(fileInfo.get_content_type())) {
+        if (!Libreoffice.officeTypes.includes(fileInfo.get_content_type())) {
             this._loadFile(file);
         } else {
             Sushi.convert_libreoffice(file, this.cancellable, (o, res) => {
@@ -137,8 +138,17 @@ export const Klass = class PdfRenderer extends Adw.Bin {
 };
 
 PapersDocument.init();
-const appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
-const papersTypes = appInfo.get_supported_types();
-export const mimeTypes = Libreoffice.isAvailable()
-    ? papersTypes
-    : [...papersTypes, ...Libreoffice.officeTypes];
+export const mimeTypes = (() => {
+    const appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
+    let mimeTypes = appInfo.get_supported_types();
+
+    if (!Libreoffice.isAvailable())
+        mimeTypes = [...mimeTypes, ...Libreoffice.officeTypes];
+
+    const TIFF_MIME_TYPE = 'image/tiff';
+    const glycinTypes = Gly.Loader.get_mime_types();
+    if (glycinTypes.includes(TIFF_MIME_TYPE))
+        mimeTypes = mimeTypes.filter(t => t !== TIFF_MIME_TYPE);
+
+    return mimeTypes;
+})();
