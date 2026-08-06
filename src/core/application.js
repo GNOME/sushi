@@ -61,6 +61,31 @@ export class Application extends Adw.Application {
         GObject.registerClass(this);
     }
 
+    constructor(constructProperties = {}) {
+        super(constructProperties);
+
+        this.#setupActions();
+    }
+
+    #setupActions() {
+        const addAction = (name, accels, callback) => {
+            const action = new Gio.SimpleAction({name});
+            action.connect_object('activate', callback, this, GObject.ConnectFlags.DEFAULT);
+            this.set_accels_for_action(`app.${name}`, accels);
+            this.add_action(action);
+        };
+        const directionCallback = direction => {
+            return () => this.emitSelectionEvent(direction);
+        };
+
+        addAction('quit', ['q', 'Escape', 'space'], () => this.close());
+
+        addAction('select-left', ['Left'], directionCallback(Gtk.DirectionType.LEFT));
+        addAction('select-right', ['Right'], directionCallback(Gtk.DirectionType.RIGHT));
+        addAction('select-up', ['Up'], directionCallback(Gtk.DirectionType.UP));
+        addAction('select-down', ['Down'], directionCallback(Gtk.DirectionType.DOWN));
+    }
+
     vfunc_dbus_register(connection, path) {
         const actualPath = `/org/gnome/${pkg.name.split('.').at(-1)}`;
 
@@ -88,16 +113,7 @@ export class Application extends Adw.Application {
                 this.set_accels_for_action(`win.${name}`, accels);
                 this._actions.push(action);
             };
-            const directionCallback = direction => {
-                return () => this.emitSelectionEvent(direction);
-            };
-            addAction('quit', ['q', 'Escape', 'space'], () => this.close());
             addAction('fullscreen', ['f', 'F11'], () => this._mainWindow.toggleFullscreen());
-
-            addAction('select-left', ['Left'], directionCallback(Gtk.DirectionType.LEFT));
-            addAction('select-right', ['Right'], directionCallback(Gtk.DirectionType.RIGHT));
-            addAction('select-up', ['Up'], directionCallback(Gtk.DirectionType.UP));
-            addAction('select-down', ['Down'], directionCallback(Gtk.DirectionType.DOWN));
         }
 
         return this._actions;
