@@ -8,8 +8,8 @@
 msgid ""
 msgstr "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-31 15:17+0000\n"
-"PO-Revision-Date: 2025-08-02 10:00+0100\n"
+"POT-Creation-Date: 2026-08-03 11:41+0000\n"
+"PO-Revision-Date: 2025-08-07 10:00+0100\n"
 "Last-Translator: Asier Saratsua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -57,10 +57,6 @@ msgstr "aurrebista"
 msgid "Preview Failed"
 msgstr "Aurrebistak huts egin du"
 
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "image-missing-symbolic"
-
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "Kopiatu errore-mezu osoa"
@@ -81,33 +77,48 @@ msgstr "Urruneko edukia blokeatu da zure pribatutasuna babesteko"
 msgid "_Show Remote Content"
 msgstr "_Erakutsi urruneko edukia"
 
-#: src/ui/mainWindow.blp:23
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Ikusi pantaila osoan"
+
+#: src/ui/mainWindow.blp:22
 msgid "Open"
 msgstr "Ireki"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Aurreko orria"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Hurrengo orria"
+
+#: src/viewers/audio.js:261
 msgid "by"
 msgstr "egilea:"
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:266
 msgid "from"
 msgstr "diskoa:"
 
-#: src/viewers/fallback.js:191
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "Elementu %d"
 msgstr[1] "%d elementu"
 
-#: src/viewers/fallback.js:196
+#: src/viewers/fallback.js:197
 msgid "Empty"
 msgstr "Hustu"
 
-#: src/viewers/pdf.js:135
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d / %d"
+
+#~ msgid "image-missing-symbolic"
+#~ msgstr "image-missing-symbolic"
 
 #~ msgid "Type"
 #~ msgstr "Mota"
