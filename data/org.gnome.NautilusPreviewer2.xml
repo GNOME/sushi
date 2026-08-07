@@ -12,7 +12,7 @@
     <property name="ParentHandle" type="s" access="read" />
     <property name="Visible" type="b" access="read" />
     <signal name="SelectionEvent">
-      <arg type="q" name="direction" />
+      <arg type="u" name="direction" />
     </signal>
   </interface>
 </node>
