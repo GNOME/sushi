@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-06-06 12:36+0000\n"
-"PO-Revision-Date: 2026-06-07 18:28+0300\n"
+"POT-Creation-Date: 2026-08-03 10:36+0000\n"
+"PO-Revision-Date: 2026-08-04 15:50+0300\n"
 "Last-Translator: Artur S0 <arturios2005@mail.ru>\n"
 "Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -33,39 +33,78 @@ msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi - программа быстрого просмотра для рабочего стола GNOME. Она является "
+"Sushi - предпросмотрщик файлов для рабочего стола GNOME. Он является "
 "независимым компонентом и интегрируется в Файлы (Nautilus)"
 
-#: src/core/mainWindow.js:96
-msgid "Open"
-msgstr "Открыть"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/viewers/audio.js:342
-msgid "from"
-msgstr "из"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
 
-#: src/viewers/audio.js:348
-msgid "by"
-msgstr "в исполнении"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "просмотр"
 
-#: src/viewers/error.js:41
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "предпросмотрщик"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "предпросмотр"
+
+#: src/ui/error.blp:6
 msgid "Preview Failed"
 msgstr "Ошибка предпросмотра"
 
-#: src/viewers/error.js:45
+#: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "Копировать сообщение об ошибке"
 
-#: src/viewers/evince.js:211
-#, javascript-format
-msgid "%d of %d"
-msgstr "%d из %d"
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Размер"
 
-#: src/viewers/fallback.js:207
-msgid "Type"
-msgstr "Тип"
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Изменено"
 
-#: src/viewers/fallback.js:217
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Удалённый контент заблокирован для защиты вашей конфиденциальности"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Показать удалённый контент"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Переключить полноэкранный режим"
+
+#: src/ui/mainWindow.blp:22
+msgid "Open"
+msgstr "Открыть"
+
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Предыдущая страница"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Следующая страница"
+
+#: src/viewers/audio.js:261
+msgid "by"
+msgstr "в исполнении"
+
+#: src/viewers/audio.js:266
+msgid "from"
+msgstr "из"
+
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -73,17 +112,23 @@ msgstr[0] "%d элемент"
 msgstr[1] "%d элемента"
 msgstr[2] "%d элементов"
 
-#: src/viewers/fallback.js:222
-msgid "Empty Folder"
-msgstr "Пустая папка"
+#: src/viewers/fallback.js:197
+msgid "Empty"
+msgstr "Пусто"
 
-#: src/viewers/fallback.js:226
-msgid "Size"
-msgstr "Размер"
+#: src/viewers/pdf.js:134
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d из %d"
 
-#: src/viewers/fallback.js:232
-msgid "Modified"
-msgstr "Изменено"
+#~ msgid "image-missing-symbolic"
+#~ msgstr "image-missing-symbolic"
+
+#~ msgid "Type"
+#~ msgstr "Тип"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Пустая папка"
 
 #, javascript-format
 #~ msgid "Unable to display %s"
