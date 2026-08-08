@@ -18,6 +18,7 @@ import Sushi from 'gi://Sushi';
 // eslint-disable-next-line no-restricted-properties
 const Format = imports.format;
 
+import {setupActions} from '../util/action.js';
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
 import {CoverPaintable} from '../widgets/coverPaintable.js';
@@ -210,6 +211,10 @@ export const Klass = class AudioRenderer extends Adw.Bin {
     constructor(file, _fileInfo, constructProperties = {}) {
         super(constructProperties);
 
+        setupActions(this, 'audio', [
+            ['play-pause', () => this.#togglePlay()],
+        ]);
+
         this._stream = Gtk.MediaFile.new_for_file(file);
         this._stream.play();
         this._mediaControls.set_media_stream(this._stream);
@@ -242,6 +247,13 @@ export const Klass = class AudioRenderer extends Adw.Bin {
     stop() {
         this._stream.clear();
         this._coverPaintable.destroy();
+    }
+
+    #togglePlay() {
+        if (this._stream.get_playing())
+            this._stream.pause();
+        else
+            this._stream.play();
     }
 
     _updateFromTags(tags) {
