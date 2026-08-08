@@ -25,6 +25,7 @@ const loadRenderers = async sources => {
 const enumerateRenderers = source => {
     try {
         return [...source.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null)]
+            .filter(fileInfo => fileInfo.get_name().endsWith('.js'))
             .map(fileInfo => [fileInfo.get_name(), source]);
     } catch (error) {
         if (error instanceof GLib.Error && error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
