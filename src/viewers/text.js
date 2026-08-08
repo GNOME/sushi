@@ -8,17 +8,19 @@ import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
 import GtkSource from 'gi://GtkSource';
 
 import {Renderer} from '../core/renderer.js';
 
 Gio._promisify(GtkSource.FileLoader.prototype, 'load_async', 'load_finish');
 
-export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
+export const Klass = class TextRenderer extends Adw.Bin {
     static {
+        GObject.type_ensure(GtkSource.View);
         GObject.registerClass({
             Implements: [Renderer],
+            Template: 'resource:///org/gnome/NautilusPreviewer/ui/text.ui',
+            InternalChildren: ['view'],
         }, this);
     }
 
@@ -26,20 +28,8 @@ export const Klass = class TextRenderer extends Gtk.ScrolledWindow {
         super(constructProperties);
 
         const buffer = this._createBuffer(file, fileInfo);
-        this._view = new GtkSource.View({
-            buffer,
-            editable: false,
-            cursor_visible: false,
-            monospace: true,
-            left_margin: 12,
-            right_margin: 12,
-            top_margin: 12,
-            bottom_margin: 12,
-            show_line_numbers: !!buffer.language,
-            wrap_mode: Gtk.WrapMode.WORD_CHAR,
-        });
-
-        this.set_child(this._view);
+        this._view.buffer = buffer;
+        this._view.showLineNumbers = !!buffer.language;
 
         this.markReady();
     }

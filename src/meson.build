@@ -12,6 +12,7 @@ blueprints = custom_target(
     'ui/mainWindow.blp',
     'ui/overlayWrapper.blp',
     'ui/pdf.blp',
+    'ui/text.blp',
     'ui/video.blp',
   ),
   output: '.',

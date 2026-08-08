@@ -38,6 +38,7 @@
     <file>ui/mainWindow.ui</file>
     <file>ui/overlayWrapper.ui</file>
     <file>ui/pdf.ui</file>
+    <file>ui/text.ui</file>
     <file>ui/video.ui</file>
   </gresource>
   <gresource prefix="@relative_object_path@">
