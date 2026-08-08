@@ -23,5 +23,16 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
         </property>
       </object>
     </child>
+    <child>
+      <object class="GtkShortcutController">
+        <property name="scope">1</property>
+        <child>
+          <object class="GtkShortcut">
+            <property name="trigger">t</property>
+            <property name="action">action(example.some-action)</property>
+          </object>
+        </child>
+      </object>
+    </child>
   </template>
 </interface>

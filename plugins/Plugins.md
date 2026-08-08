@@ -34,6 +34,11 @@ The UI file was generated from the [Blueprint](https://gitlab.gnome.org/GNOME/bl
 
 > `blueprint-compiler compile plugins/example-with-ui-file.blp > plugins/example-with-ui-file.ui`
 
+### Actions and Shortcuts
+The plugin API provides `setupActions`, with which a renderer can conveniently define actions.
+For such actions a shortcut can easily be added by adding a shortcut handler to the widget.
+The UI file of `example-with-ui-file` shows an example for this.
+
 ### API Stability
 Sushi's modules are considered an implementation detail and may change at any time.
 Use the plugin API module at `resource://org/gnome/NautilusPreviewer/plugin-api-1.js`.

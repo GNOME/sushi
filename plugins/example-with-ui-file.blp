@@ -14,4 +14,13 @@ template $Gjs_ExampleRendererWithUiFile: Adw.Bin {
       styles ["pill"]
     };
   }
+
+  ShortcutController {
+    scope: managed;
+
+    Shortcut {
+      trigger: "t";
+      action: "action(example.some-action)";
+    }
+  }
 }
