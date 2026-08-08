@@ -1,0 +1,18 @@
+using Gtk 4.0;
+using Adw 1;
+using GtkSource 5;
+
+template $Gjs_TextRenderer: Adw.Bin {
+  child: ScrolledWindow {
+    child: GtkSource.View view {
+      editable: false;
+      cursor-visible: false;
+      monospace: true;
+      left-margin: 12;
+      right-margin: 12;
+      top-margin: 12;
+      bottom-margin: 12;
+      wrap-mode: word_char;
+    };
+  };
+}
