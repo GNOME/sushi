@@ -8,6 +8,7 @@ Plugins will automatically be used the next time sushi is started.
 See the `example.js` file for a basic plugin skeleton.
 You can also look at other renderers under `src/viewers/`, e.g. `image.js` implements delayed loading and a custom size.
 
+### Renderers
 Sushi picks an appropriate previewer based on the previewed file's content type.
 Each previewer derives from the [`Renderer`](../src/core/renderer.js) interface, allowing to use the same API with all of them.
 Noteworthy functions of `Renderer` are:
@@ -30,6 +31,7 @@ or store the signal handler ID and disconnect them in `cleanup()`.
 Sushi's modules are considered an implementation detail and may change at any time.
 Use the plugin API module at `resource://org/gnome/NautilusPreviewer/plugin-api-1.js`.
 It provides a stable interface for your plugins.
+Breaking changes will result in a new API version, indicated by a respective suffix change.
 
 ## Note On Compatibility
 In version 51 the plugin directory was changed, as previous plugins become incompatible with the port to GTK4.
