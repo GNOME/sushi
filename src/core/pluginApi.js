@@ -2,3 +2,4 @@
 // SPDX-FileCopyrightText: 2026 The Sushi authors
 
 export {Renderer, ResizePolicy} from './renderer.js';
+export {setupActions} from '../util/action.js';

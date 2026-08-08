@@ -5,7 +5,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import {Renderer, ResizePolicy} from 'resource://org/gnome/NautilusPreviewer/plugin-api-1.js';
+import {Renderer, ResizePolicy, setupActions} from 'resource://org/gnome/NautilusPreviewer/plugin-api-1.js';
 
 export const Klass = class ExampleRenderer extends Adw.Bin {
     static {
@@ -17,6 +17,10 @@ export const Klass = class ExampleRenderer extends Adw.Bin {
     constructor(file, fileInfo, constructProperties = {}) {
         super(constructProperties);
 
+        setupActions(this, 'example', [
+            ['some-action', () => this.#callback()],
+        ]);
+
         const statusPage = new Adw.StatusPage({
             title: 'Example',
             description: 'This is only a test',
@@ -24,6 +28,7 @@ export const Klass = class ExampleRenderer extends Adw.Bin {
         const button = new Gtk.Button({
             halign: Gtk.Align.CENTER,
             label: 'OK',
+            action_name: 'example.some-action',
             css_classes: ['pill'],
         });
 
@@ -35,6 +40,10 @@ export const Klass = class ExampleRenderer extends Adw.Bin {
 
     get resizePolicy() {
         return ResizePolicy.STATUS_PAGE;
+    }
+
+    #callback() {
+        print('test');
     }
 };
 

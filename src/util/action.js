@@ -4,7 +4,11 @@
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 
-/** @param {Gtk.Widget} widget object this group should be set up for
+
+/** Note: This is part of the stable plugin API.
+ *  Only change it in backwards-compatible ways.
+ *
+ *  @param {Gtk.Widget} widget object this group should be set up for
  *  @param {string} prefix to be used for actions
  *  @param {[string, () => void][]} actions list of [action_name, callback] tuples
  *  Sets up @actions on given @widget with @prefix prefix */
