@@ -28,6 +28,13 @@ A common issue is with signal handlers, so it's recommended to either use
 [`GObject.Object.connect_object`](https://gjs-docs.gnome.org/gjs/overrides.md#gobject-object-connect_object)
 or store the signal handler ID and disconnect them in `cleanup()`.
 
+### UI Files
+Renderers can use UI files, as shown in `example-with-ui-file.js` and its UI file `example-with-ui-file.ui`.
+The UI file was generated from the [Blueprint](https://gitlab.gnome.org/GNOME/blueprint-compiler) `example-with-ui-file.blp` with
+
+> `blueprint-compiler compile plugins/example-with-ui-file.blp > plugins/example-with-ui-file.ui`
+
+### API Stability
 Sushi's modules are considered an implementation detail and may change at any time.
 Use the plugin API module at `resource://org/gnome/NautilusPreviewer/plugin-api-1.js`.
 It provides a stable interface for your plugins.

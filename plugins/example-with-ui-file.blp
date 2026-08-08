@@ -1,0 +1,17 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $Gjs_ExampleRendererWithUiFile: Adw.Bin {
+  Adw.StatusPage statusPage {
+    title: 'Example';
+    description: 'This is only a test';
+
+    child: Button {
+      halign: center;
+      label: 'OK';
+      action-name: 'example.some-action';
+
+      styles ["pill"]
+    };
+  }
+}
