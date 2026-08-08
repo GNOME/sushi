@@ -9,6 +9,15 @@ template $Gjs_VideoRenderer: Adw.Bin {
       pressed => $_handleMediaClick();
     }
   };
+
+  ShortcutController {
+    scope: managed;
+
+    Shortcut {
+      trigger: "p";
+      action: "action(video.play-pause)";
+    }
+  }
 }
 
 MediaControls mediaControls {

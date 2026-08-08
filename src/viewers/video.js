@@ -8,6 +8,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
+import {setupActions} from '../util/action.js';
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 const TotemMimeTypes = imports.util.totemMimeTypes;
 
@@ -37,6 +38,10 @@ export const Klass = class VideoRenderer extends Adw.Bin {
 
     constructor(file, _fileInfo, constructProperties = {}) {
         super(constructProperties);
+
+        setupActions(this, 'audio', [
+            ['play-pause', () => this._togglePlay()],
+        ]);
 
         this._stream = Gtk.MediaFile.new_for_file(file);
         this._stream.loop = true;
