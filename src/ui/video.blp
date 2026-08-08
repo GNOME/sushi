@@ -2,6 +2,10 @@ using Gtk 4.0;
 using Adw 1;
 
 template $Gjs_VideoRenderer: Adw.Bin {
+  styles [
+    "video-bg",
+  ]
+
   child: Picture picture {
     paintable: bind template.stream;
 
