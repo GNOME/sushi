@@ -18,6 +18,7 @@ import {OverlayWrapper} from '../util/overlayWrapper.js';
 import * as MimeHandler from './mimeHandler.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize, isRendererStopped} from './renderer.js';
+import {setupActions} from '../util/action.js';
 import {isCancelledError} from '../util/error.js';
 
 const WINDOW_MAX_PERCENT_H = 0.5;
@@ -52,7 +53,10 @@ export class MainWindow extends Adw.ApplicationWindow {
             width_request: min_width,
         });
 
-        this.#setupActions();
+        setupActions(this, 'win', [
+            ['fullscreen', () => this.#toggleFullscreen()],
+            ['open-file', () => this.#openFile()],
+        ]);
 
         this._renderer = null;
         this._loadingRenderer = null;
@@ -89,16 +93,6 @@ export class MainWindow extends Adw.ApplicationWindow {
     set file(newFile) {
         this._file = newFile;
         this._createRenderer();
-    }
-
-    #setupActions() {
-        const addAction = (name, callback) => {
-            const action = new Gio.SimpleAction({name});
-            action.connect_object('activate', callback, this, GObject.ConnectFlags.DEFAULT);
-            this.add_action(action);
-        };
-        addAction('fullscreen', () => this.#toggleFullscreen());
-        addAction('open-file', () => this.#openFile());
     }
 
     _getDecorationLayout() {
