@@ -16,4 +16,13 @@ template $Gjs_AudioRenderer: Adw.Bin {
       }
     };
   }
+
+  ShortcutController {
+    scope: managed;
+
+    Shortcut {
+      trigger: "p";
+      action: "action(audio.play-pause)";
+    }
+  }
 }
