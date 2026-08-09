@@ -8,15 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-30 12:40+0000\n"
-"PO-Revision-Date: 2026-07-30 20:21+0300\n"
+"POT-Creation-Date: 2026-08-07 21:31+0000\n"
+"PO-Revision-Date: 2026-08-09 10:00+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n>2||n==0) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? 2 : "
+"3);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 3.9\n"
 
@@ -41,7 +42,6 @@ msgid "nautilus"
 msgstr "nautilus"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
-#| msgid "Sushi"
 msgid "sushi"
 msgstr "sushi"
 
@@ -60,10 +60,6 @@ msgstr "תצוגה מקדימה"
 #: src/ui/error.blp:6
 msgid "Preview Failed"
 msgstr "התצוגה המקדימה נכשלה"
-
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "לתמונה-חסר-סמלי"
 
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
@@ -85,34 +81,50 @@ msgstr "התוכן המרוחק חסום כדי להגן על הפרטיות ש�
 msgid "_Show Remote Content"
 msgstr "הצגת תוכן מ_רוחק"
 
-#: src/ui/mainWindow.blp:20
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "מסך מלא/רגיל"
+
+#: src/ui/mainWindow.blp:23
 msgid "Open"
 msgstr "פתיחה"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "העמוד הקודם"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "העמוד הבא"
+
+#: src/viewers/audio.js:261
 msgid "by"
 msgstr "על ידי"
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:266
 msgid "from"
 msgstr "מאת"
 
-#: src/viewers/fallback.js:191
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "פריט אחד"
-msgstr[1] "%d פריטים"
-msgstr[2] "%d פריטים"
+msgstr[1] "שני פריטים"
+msgstr[2] "‫%d פריטים"
+msgstr[3] "‫%d פריטים"
 
-#: src/viewers/fallback.js:196
+#: src/viewers/fallback.js:197
 msgid "Empty"
 msgstr "ריק"
 
-#: src/viewers/pdf.js:135
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d מתוך %d"
+
+#~ msgid "image-missing-symbolic"
+#~ msgstr "לתמונה-חסר-סמלי"
 
 #~ msgid "Type"
 #~ msgstr "סוג"
