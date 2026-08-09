@@ -6,85 +6,118 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:15+0000\n"
-"PO-Revision-Date: 2020-12-19 16:18+0100\n"
-"Last-Translator: Miquel-Àngel Burgos i Fradeja <miquel.angel."
-"burgos@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-07 21:31+0000\n"
+"PO-Revision-Date: 2026-08-09 09:13+0000\n"
+"Last-Translator: Miquel-Àngel Burgos i Fradeja "
+"<miquel.angel.burgos@gmail.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Minairó 0.1.0\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr ""
 "Proporciona la capacitat de veure ràpidament diferents tipus de fitxers"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
 "El Sushi és un previsualitzador de fitxers per a l'entorn d'escriptori "
-"GNOME. Es tracta d'un component independent que s'integra amb el "
-"Fitxers del GNOME (Nautilus)."
+"GNOME. Es tracta d'un component independent que s'integra amb el Fitxers del "
+"GNOME (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Tipus"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#| msgid "Sushi"
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "vista"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "previsualitzador"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "vista prèvia"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Ha fallat la vista prèvia"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Copia el missatge complet d'error"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Mida"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Modificat"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "El contingut remot està bloquejat per a protegir la vostra privadesa"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "Mo_stra el contingut remot"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Commuta la pantalla completa"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "Obre"
+
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Pàgina anterior"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Pàgina següent"
+
+#: src/viewers/audio.js:261
+msgid "by"
+msgstr "per"
+
+#: src/viewers/audio.js:266
+msgid "from"
+msgstr "des de"
+
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d element"
 msgstr[1] "%d elements"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Carpeta buida"
+#: src/viewers/fallback.js:197
+msgid "Empty"
+msgstr "Buida"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Mida"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Modificat"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "No s'ha pogut mostrar %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Obre amb %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Obre"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "des de"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "per"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d de %d"
