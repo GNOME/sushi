@@ -81,10 +81,6 @@ export const Klass = class VideoRenderer extends Adw.Bin {
         }
     }
 
-    get overlay() {
-        return ResizePolicy.SCALED;
-    }
-
     get resizePolicy() {
         return ResizePolicy.SCALED;
     }
