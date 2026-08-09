@@ -27,6 +27,7 @@ const MIN_WIDTH = 340;
 const MIN_HEIGHT = 294;
 const WINDOW_MAX_PERCENT_W = 0.5;
 const WINDOW_MAX_PERCENT_H = 0.5;
+const ACCEPTABLE_USER_ACTION_DELAY_IN_MS = 200;
 
 export class MainWindow extends Adw.ApplicationWindow {
     static {
@@ -53,6 +54,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     #requestedDefaultWidth = MIN_WIDTH;
     #requestedDefaultHeight = MIN_HEIGHT;
     #scaledByUser = false;
+    #presentTimeoutId = 0;
 
     constructor(application) {
         super({
@@ -79,11 +81,13 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         this.connect('notify::default-width', this.#checkScaledByUser);
         this.connect('notify::default-height', this.#checkScaledByUser);
+        this.connect('notify::is-active', this.#onIsActiveChanged);
     }
 
     vfunc_close_request() {
         this.#cleanupRenderer();
         this.#stopDelayedSpinner();
+        this.#cancelPresentTimeout();
 
         return super.vfunc_close_request();
     }
@@ -96,6 +100,40 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._file = newFile;
         this._createRenderer();
     }
+
+    presentWhenReady() {
+        if (!this.visible) {
+            // Window is shown for the first time
+            this.#presentWhenReady();
+        } else {
+            this.present();
+        }
+    }
+
+    #presentWhenReady() {
+        if (this.#presentTimeoutId === 0) {
+            this.#presentTimeoutId = GLib.timeout_add(
+                GLib.G_PRIORITY_HIGH,
+                ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
+                () => {
+                    this.#presentTimeoutId = 0;
+                    this.present();
+                    return GLib.SOURCE_REMOVE;
+                });
+        }
+    }
+
+    #cancelPresentTimeout() {
+        if (this.#presentTimeoutId !== 0) {
+            GLib.source_remove(this.#presentTimeoutId);
+            this.#presentTimeoutId = 0;
+        }
+    }
+
+    #onIsActiveChanged = () => {
+        if (this.isActive)
+            this.#cancelPresentTimeout();
+    };
 
     #unsetErrorHandleId() {
         if (this.#errorHandleId !== 0) {
@@ -260,7 +298,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             return;
         this._spinnerDelayId = GLib.timeout_add(
             GLib.PRIORITY_DEFAULT_IDLE,
-            200,
+            ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
             () => {
                 this.#setDisplayedWidget(this._spinner);
                 this._spinnerDelayId = 0;
@@ -292,6 +330,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._resizeWindow();
         this.queue_resize();
         this._toolbar_view.set_top_bar_style(this.#renderer.topBarStyle);
+        this.present();
     }
 
     #cleanupRenderer() {
