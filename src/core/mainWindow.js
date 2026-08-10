@@ -21,6 +21,8 @@ import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize, isRe
 import {setupActions} from '../util/action.js';
 import {isCancelledError} from '../util/error.js';
 
+Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
+
 const WINDOW_MAX_PERCENT_H = 0.5;
 const WINDOW_MAX_PERCENT_W = 0.5;
 
@@ -319,15 +321,12 @@ export class MainWindow extends Adw.ApplicationWindow {
         }
 
         const fileLauncher = new Gtk.FileLauncher({file: this._file});
-        fileLauncher.launch(this, null, (obj, result) => {
-            try {
-                obj.launch_finish(result);
-                this.close();
-            } catch (error) {
+        fileLauncher.launch(this, null)
+            .then(() => this.close())
+            .catch(error => {
                 if (error === Gtk.DialogError.FAILED)
                     console.warn(error);
-            }
-        });
+            });
     }
 
     #toggleFullscreen() {
