@@ -319,7 +319,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         }
 
         const fileLauncher = new Gtk.FileLauncher({file: this._file});
-        fileLauncher.launch(null, null, (obj, result) => {
+        fileLauncher.launch(this, null, (obj, result) => {
             try {
                 obj.launch_finish(result);
                 this.close();
