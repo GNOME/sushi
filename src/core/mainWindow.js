@@ -46,6 +46,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #renderer = null;
+    #errorHandleId = 0;
 
     constructor(application) {
         const min_width = 340;
@@ -97,6 +98,23 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._createRenderer();
     }
 
+    #unsetErrorHandleId() {
+        if (this.#errorHandleId !== 0) {
+            this.#renderer.disconnect(this.#errorHandleId);
+            this.#errorHandleId = 0;
+        }
+    }
+
+    #setupErrorHandling(fileInfo) {
+        if (!(this.#renderer instanceof ErrorRenderer)) {
+            this.#errorHandleId = this.#renderer.connect_object(
+                'error',
+                (renderer, err) => this._reportError(err, fileInfo, renderer),
+                this, GObject.ConnectFlags.DEFAULT
+            );
+        }
+    }
+
     _getDecorationLayout() {
         const layout_groups = Gtk.Settings.get_default().gtk_decoration_layout.split(':');
         const has_close = layout_groups.map(group => group.split(',').includes('close'));
@@ -114,6 +132,7 @@ export class MainWindow extends Adw.ApplicationWindow {
      *  @param {Gio.FileInfo|undefined} fileInfo
      *  @param {import('./renderer.js').Renderer|undefined} renderer */
     _reportError(error, fileInfo, renderer) {
+        this.#unsetErrorHandleId();
         if (isCancelledError(error))
             return;
         if (renderer && isRendererStopped(renderer)) {
@@ -268,6 +287,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #cleanupRenderer() {
+        this.#unsetErrorHandleId();
         stopRenderer(this.#renderer);
     }
 
@@ -280,6 +300,8 @@ export class MainWindow extends Adw.ApplicationWindow {
             this._file.get_basename() ??
             this._file.get_uri();
         this.set_title(title);
+
+        this.#setupErrorHandling(fileInfo);
 
         if (isRendererReady(renderer)) {
             this.#embedRenderer();
@@ -307,12 +329,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             : new FallbackRenderer(this._file, fileInfo);
         this.#loadRenderer(renderer, fileInfo);
         this._fileIsFolder = fileInfo.get_file_type() === Gio.FileType.DIRECTORY;
-
-        renderer.connect_object(
-            'error',
-            (renderer, err) => this._reportError(err, fileInfo, renderer),
-            this, GObject.ConnectFlags.DEFAULT
-        );
     }
 
     #openFile() {
