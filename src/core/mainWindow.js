@@ -17,10 +17,11 @@ import {HoverManager} from '../util/hoverManager.js';
 import {OverlayWrapper} from '../util/overlayWrapper.js';
 import * as MimeHandler from './mimeHandler.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
-import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize, isRendererStopped} from './renderer.js';
+import {getRendererToolbar, isRendererReady, stopRenderer, isRendererStopped} from './renderer.js';
 import {setupActions} from '../util/action.js';
 import {isCancelledError} from '../util/error.js';
 import {SourceId} from '../util/source.js';
+import {RendererBin} from '../widgets/rendererBin.js';
 
 Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
 
@@ -208,8 +209,9 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.#loadRenderer(new ErrorRenderer(error), fileInfo);
     }
 
-    /** @returns {[number, number]} */
-    _getMaxSize() {
+    /** @param {Gtk.Orientation|undefined} orientation
+     *  @returns {number|[number, number]} */
+    #getMaxSize = orientation => {
         const display = Gdk.Display.get_default();
         const surface = this.get_surface();
         const monitor = display.get_monitor_at_surface(surface);
@@ -221,21 +223,20 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (geometry.height > 100_000)
             geometry.height = 800;
 
-        return [Math.floor(geometry.width * WINDOW_MAX_PERCENT_W),
-            Math.floor(geometry.height * WINDOW_MAX_PERCENT_H)];
-    }
+        const maxSize = [
+            Math.floor(geometry.width * WINDOW_MAX_PERCENT_W),
+            Math.floor(geometry.height * WINDOW_MAX_PERCENT_H),
+        ];
+
+        return orientation !== undefined ? maxSize[orientation] : maxSize;
+    };
 
     _resizeWindow() {
         if (this.#scaledByUser)
             return;
 
-        const maxSize = this._getMaxSize();
-        const contentSize = getRendererSize(this.#renderer, maxSize);
-        const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
-        const width = Math.round(Math.min(contentSize[0], maxSize[0]));
-        const height = Math.round(Math.min(contentSize[1], maxSize[1]) + naturalTitlebarSize.height);
-
-        this.#setDefaultSize(width, height);
+        const [_, nat] = this.get_preferred_size();
+        this.#setDefaultSize(nat.width, nat.height);
     }
 
     #checkScaledByUser = () => {
@@ -259,8 +260,8 @@ export class MainWindow extends Adw.ApplicationWindow {
             (height === 0 || height === this.#requestedDefaultHeight))
             return;
 
-        this.#requestedDefaultWidth = Math.max(width, MIN_WIDTH);
-        this.#requestedDefaultHeight = Math.max(height, MIN_HEIGHT);
+        this.#requestedDefaultWidth = width;
+        this.#requestedDefaultHeight = height;
 
         if (!this.get_settings().gtk_interface_reduced_motion) {
             const width_target = Adw.PropertyAnimationTarget.new(this, 'default-width');
@@ -341,16 +342,16 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.#spinnerDelayId.remove();
 
         const toolbar = getRendererToolbar(this.#renderer);
-        let stackWidget = this.#renderer;
+        const rendererBin = new RendererBin(this.#renderer, this.#getMaxSize);
+        let stackWidget = rendererBin;
         if (toolbar)
-            stackWidget = new OverlayWrapper(this.#renderer, toolbar, this._hoverManager);
+            stackWidget = new OverlayWrapper(rendererBin, toolbar, this._hoverManager);
         else
             this._hoverManager.setRevealer(null);
         this._mainStack.add_child(stackWidget);
         this.#setDisplayedWidget(stackWidget);
 
         this._resizeWindow();
-        this.queue_resize();
         this._toolbar_view.set_top_bar_style(this.#renderer.topBarStyle);
         this.present();
     }
