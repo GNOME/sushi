@@ -84,6 +84,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     vfunc_close_request() {
         stopRenderer(this._loadingRenderer);
         stopRenderer(this._renderer);
+        this.#stopDelayedSpinner();
 
         return super.vfunc_close_request();
     }
@@ -243,7 +244,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         );
     }
 
-    _stopDelayedSpinner() {
+    #stopDelayedSpinner() {
         if (this._spinnerDelayId) {
             GLib.Source.remove(this._spinnerDelayId);
             this._spinnerDelayId = 0;
@@ -251,7 +252,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _setRenderer() {
-        this._stopDelayedSpinner();
+        this.#stopDelayedSpinner();
         this._renderer = this._loadingRenderer;
         this._loadingRenderer = null;
 
