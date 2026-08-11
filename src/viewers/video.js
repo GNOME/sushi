@@ -37,6 +37,7 @@ export const Klass = class VideoRenderer extends Adw.Bin {
     }
 
     #errorHandleId = 0;
+    #prepareHandleId = 0;
 
     constructor(file, _fileInfo, constructProperties = {}) {
         super(constructProperties);
@@ -50,8 +51,8 @@ export const Klass = class VideoRenderer extends Adw.Bin {
         this._stream.play();
         this.notify('stream');
 
-        const preparedId = this._stream.connect('notify::prepared', () => {
-            this._stream.disconnect(preparedId);
+        this.#prepareHandleId = this._stream.connect('notify::prepared', () => {
+            this.#unsetPrepareHandleId();
             this.markReady();
         });
         this.#errorHandleId = this._stream.connect(
@@ -64,12 +65,20 @@ export const Klass = class VideoRenderer extends Adw.Bin {
     }
 
     stop() {
+        this.#unsetPrepareHandleId();
         this._stream.disconnect(this.#errorHandleId);
         this._stream.clear();
     }
 
     get toolbar() {
         return this._mediaControls;
+    }
+
+    #unsetPrepareHandleId() {
+        if (this.#prepareHandleId !== 0) {
+            this._stream.disconnect(this.#prepareHandleId);
+            this.#prepareHandleId = 0;
+        }
     }
 
     _togglePlay() {
