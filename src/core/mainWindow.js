@@ -47,6 +47,7 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     #renderer = null;
     #errorHandleId = 0;
+    #readyHandleId = 0;
 
     constructor(application) {
         const min_width = 340;
@@ -102,6 +103,13 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (this.#errorHandleId !== 0) {
             this.#renderer.disconnect(this.#errorHandleId);
             this.#errorHandleId = 0;
+        }
+    }
+
+    #unsetReadyHandleId() {
+        if (this.#readyHandleId !== 0) {
+            this.#renderer.disconnect(this.#readyHandleId);
+            this.#readyHandleId = 0;
         }
     }
 
@@ -270,6 +278,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #embedRenderer() {
+        this.#unsetReadyHandleId();
         this.#stopDelayedSpinner();
 
         const toolbar = getRendererToolbar(this.#renderer);
@@ -288,6 +297,7 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     #cleanupRenderer() {
         this.#unsetErrorHandleId();
+        this.#unsetReadyHandleId();
         stopRenderer(this.#renderer);
     }
 
@@ -307,13 +317,9 @@ export class MainWindow extends Adw.ApplicationWindow {
             this.#embedRenderer();
         } else {
             this._startDelayedSpinner();
-            const rendererReadyId = renderer.connect_object(
+            this.#readyHandleId = renderer.connect_object(
                 'ready',
-                () => {
-                    renderer.disconnect(rendererReadyId);
-                    if (isRendererReady(renderer) && this.#renderer === renderer)
-                        this.#embedRenderer();
-                },
+                () => this.#embedRenderer(),
                 this, GObject.ConnectFlags.DEFAULT
             );
         }
