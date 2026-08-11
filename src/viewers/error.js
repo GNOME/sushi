@@ -7,6 +7,7 @@
 
 import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
 import {Renderer, ResizePolicy} from '../core/renderer.js';
@@ -24,15 +25,18 @@ export class ErrorRenderer extends Adw.Bin {
         super(constructProperties);
 
         this._error_msg = error.message.trim();
-        const index = this._error_msg.indexOf('\n');
-        const hasMultipleLines = index >= 0;
-        const first_line = hasMultipleLines
-            ? this._error_msg.substring(0, index)
-            : this._error_msg;
-
-        this._statusPage.set_description(first_line + (hasMultipleLines ? '…' : ''));
+        this._statusPage.set_description(this.#getSummary(error));
 
         this.markReady();
+    }
+
+    #getSummary(error) {
+        const lines = this._error_msg.split('\n');
+
+        if (lines.length > 1 && GLib.quark_to_string(error.domain) === 'gst-play-error-quark' && error.code === 1)
+            return lines[1];
+        else
+            return `${lines[0]}${lines.length > 1 ? '…' : ''}`;
     }
 
     _copyFullError() {

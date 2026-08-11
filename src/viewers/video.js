@@ -36,6 +36,8 @@ export const Klass = class VideoRenderer extends Adw.Bin {
         return this._stream ?? null;
     }
 
+    #errorHandleId = 0;
+
     constructor(file, _fileInfo, constructProperties = {}) {
         super(constructProperties);
 
@@ -52,11 +54,17 @@ export const Klass = class VideoRenderer extends Adw.Bin {
             this._stream.disconnect(preparedId);
             this.markReady();
         });
+        this.#errorHandleId = this._stream.connect(
+            'notify::error', mediaFile => {
+                if (mediaFile.error)
+                    this.emit('error', mediaFile.error);
+            });
 
         this.markInitialized();
     }
 
     stop() {
+        this._stream.disconnect(this.#errorHandleId);
         this._stream.clear();
     }
 
