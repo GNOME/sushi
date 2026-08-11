@@ -45,6 +45,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         }, this);
     }
 
+    #renderer = null;
+
     constructor(application) {
         const min_width = 340;
         const min_height = 294;
@@ -60,8 +62,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             ['open-file', () => this.#openFile()],
         ]);
 
-        this._renderer = null;
-        this._loadingRenderer = null;
         this._spinnerDelayId = 0;
         this._fileQueryCancellable = null;
         this._file = null;
@@ -82,8 +82,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     vfunc_close_request() {
-        stopRenderer(this._loadingRenderer);
-        stopRenderer(this._renderer);
+        stopRenderer(this.#renderer);
         this.#stopDelayedSpinner();
 
         return super.vfunc_close_request();
@@ -142,11 +141,11 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _resizeWindow() {
-        if (!this._renderer || this._scaled_by_user)
+        if (this._scaled_by_user)
             return;
 
         const maxSize = this._getMaxSize();
-        const contentSize = getRendererSize(this._renderer, maxSize);
+        const contentSize = getRendererSize(this.#renderer, maxSize);
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
         const width = Math.min(contentSize[0], maxSize[0]);
         const height = Math.min(contentSize[1] + naturalTitlebarSize.height, maxSize[1]);
@@ -253,13 +252,11 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     _setRenderer() {
         this.#stopDelayedSpinner();
-        this._renderer = this._loadingRenderer;
-        this._loadingRenderer = null;
 
-        const toolbar = getRendererToolbar(this._renderer);
-        let stackWidget = this._renderer;
+        const toolbar = getRendererToolbar(this.#renderer);
+        let stackWidget = this.#renderer;
         if (toolbar)
-            stackWidget = new OverlayWrapper(this._renderer, toolbar, this._hoverManager);
+            stackWidget = new OverlayWrapper(this.#renderer, toolbar, this._hoverManager);
         else
             this._hoverManager.setRevealer(null);
         this._mainStack.add_child(stackWidget);
@@ -267,14 +264,13 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         this._resizeWindow();
         this.queue_resize();
-        this._toolbar_view.set_top_bar_style(this._renderer.topBarStyle);
+        this._toolbar_view.set_top_bar_style(this.#renderer.topBarStyle);
     }
 
     /** @param {import('./renderer.js').Renderer} renderer */
     _embedRenderer(renderer, fileInfo) {
-        stopRenderer(this._renderer);
-        stopRenderer(this._loadingRenderer);
-        this._loadingRenderer = renderer;
+        stopRenderer(this.#renderer);
+        this.#renderer = renderer;
 
         const title = fileInfo?.get_display_name() ??
             this._file.get_basename() ??
@@ -289,7 +285,7 @@ export class MainWindow extends Adw.ApplicationWindow {
                 'ready',
                 () => {
                     renderer.disconnect(rendererReadyId);
-                    if (isRendererReady(renderer) && this._loadingRenderer === renderer)
+                    if (isRendererReady(renderer) && this.#renderer === renderer)
                         this._setRenderer();
                 },
                 this, GObject.ConnectFlags.DEFAULT
