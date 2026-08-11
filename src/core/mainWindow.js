@@ -222,7 +222,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         const contentSize = getRendererSize(this.#renderer, maxSize);
         const naturalTitlebarSize = this._titlebar.get_preferred_size()[1];
         const width = Math.min(contentSize[0], maxSize[0]);
-        const height = Math.min(contentSize[1] + naturalTitlebarSize.height, maxSize[1]);
+        const height = Math.min(contentSize[1], maxSize[1]) + naturalTitlebarSize.height;
 
         this.#setDefaultSize(width, height);
     }
