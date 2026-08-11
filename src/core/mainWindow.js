@@ -23,8 +23,10 @@ import {isCancelledError} from '../util/error.js';
 
 Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
 
-const WINDOW_MAX_PERCENT_H = 0.5;
+const MIN_WIDTH = 340;
+const MIN_HEIGHT = 294;
 const WINDOW_MAX_PERCENT_W = 0.5;
+const WINDOW_MAX_PERCENT_H = 0.5;
 
 export class MainWindow extends Adw.ApplicationWindow {
     static {
@@ -48,15 +50,17 @@ export class MainWindow extends Adw.ApplicationWindow {
     #renderer = null;
     #errorHandleId = 0;
     #readyHandleId = 0;
+    #requestedDefaultWidth = MIN_WIDTH;
+    #requestedDefaultHeight = MIN_HEIGHT;
+    #scaledByUser = false;
 
     constructor(application) {
-        const min_width = 340;
-        const min_height = 294;
-
         super({
             application,
-            height_request: min_height,
-            width_request: min_width,
+            widthRequest: MIN_WIDTH,
+            heightRequest: MIN_HEIGHT,
+            defaultWidth: MIN_WIDTH,
+            defaultHeight: MIN_HEIGHT,
         });
 
         setupActions(this, 'win', [
@@ -70,12 +74,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._fileIsFolder = false;
 
         this._animating = 0;
-        this._skip_next_size_adjustment = false;
-        this._scaled_by_user = false;
-
-        this._lastWindowWidth = min_width;
-        this._lastWindowHeight = min_height;
-        this.set_default_size(min_width, min_height);
 
         this._hoverManager = new HoverManager(this._toolbar_view, this._titlebar);
 
@@ -168,7 +166,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _resizeWindow() {
-        if (this._scaled_by_user)
+        if (this.#scaledByUser)
             return;
 
         const maxSize = this._getMaxSize();
@@ -177,49 +175,47 @@ export class MainWindow extends Adw.ApplicationWindow {
         const width = Math.min(contentSize[0], maxSize[0]);
         const height = Math.min(contentSize[1] + naturalTitlebarSize.height, maxSize[1]);
 
-        GObject.signal_handlers_block_by_func(this, this._checkScaledByUser);
         this.#setDefaultSize(width, height);
-        GObject.signal_handlers_unblock_by_func(this, this._checkScaledByUser);
     }
 
     _checkScaledByUser() {
-        if (this._skip_next_size_adjustment) {
-            this._skip_next_size_adjustment = false;
-        } else if (this._animating === 0) {
+        if (this.defaultWidth !== this.#requestedDefaultWidth && this._animating === 0) {
             console.debug('Window scaled by user, keeping size');
-            this._scaled_by_user = true;
+            this.#scaledByUser = true;
         }
     }
 
     _animationDone() {
         this._animating -= 1;
-        // last size update arrives after animation is done
-        this._skip_next_size_adjustment = true;
     }
 
+    /** @param {number} width
+     *  @param {number} height */
     #setDefaultSize(width, height) {
-        if ((width > 0 && width !== this._lastWindowWidth) ||
-            (height > 0 && height !== this._lastWindowHeight)) {
-            if (!this.get_settings().gtk_interface_reduced_motion && this._lastWindowWidth !== 0) {
-                const width_target = Adw.PropertyAnimationTarget.new(this, 'default-width');
-                const height_target = Adw.PropertyAnimationTarget.new(this, 'default-height');
-                const width_animation = Adw.TimedAnimation.new(
-                    this, this._lastWindowWidth, width, 150, width_target);
-                const height_animation = Adw.TimedAnimation.new(
-                    this, this._lastWindowHeight, height, 150, height_target);
-                this._animating += 2;
-                [width_animation, height_animation].map(animation => animation.connect_object(
-                    'done',
-                    () => this._animationDone(),
-                    this, GObject.ConnectFlags.DEFAULT
-                ));
-                width_animation.play();
-                height_animation.play();
-            } else {
-                this.set_default_size(width, height);
-            }
-            this._lastWindowWidth = width;
-            this._lastWindowHeight = height;
+        if ((width === 0 || width === this.#requestedDefaultWidth) &&
+            (height === 0 || height === this.#requestedDefaultHeight))
+            return;
+
+        this.#requestedDefaultWidth = Math.max(width, MIN_WIDTH);
+        this.#requestedDefaultHeight = Math.max(height, MIN_HEIGHT);
+
+        if (!this.get_settings().gtk_interface_reduced_motion) {
+            const width_target = Adw.PropertyAnimationTarget.new(this, 'default-width');
+            const height_target = Adw.PropertyAnimationTarget.new(this, 'default-height');
+            const width_animation = Adw.TimedAnimation.new(
+                this, this.defaultWidth, this.#requestedDefaultWidth, 150, width_target);
+            const height_animation = Adw.TimedAnimation.new(
+                this, this.defaultHeight, this.#requestedDefaultHeight, 150, height_target);
+            this._animating += 2;
+            [width_animation, height_animation].map(animation => animation.connect_object(
+                'done',
+                () => this._animationDone(),
+                this, GObject.ConnectFlags.DEFAULT
+            ));
+            width_animation.play();
+            height_animation.play();
+        } else {
+            this.set_default_size(this.#requestedDefaultWidth, this.#requestedDefaultHeight);
         }
     }
 
