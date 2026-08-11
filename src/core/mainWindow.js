@@ -55,6 +55,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     #requestedDefaultHeight = MIN_HEIGHT;
     #scaledByUser = false;
     #presentTimeoutId = 0;
+    #retrySetDefaultSizeTimeoutId = 0;
+    #recentlyReceivedFocus = false;
 
     constructor(application) {
         super({
@@ -88,6 +90,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.#cleanupRenderer();
         this.#stopDelayedSpinner();
         this.#cancelPresentTimeout();
+        this.#cancelRetrySetDefaultSizeTimeout();
 
         return super.vfunc_close_request();
     }
@@ -106,6 +109,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             // Window is shown for the first time
             this.#presentWhenReady();
         } else {
+            this.#recentlyReceivedFocus = true;
             this.present();
         }
     }
@@ -127,6 +131,13 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (this.#presentTimeoutId !== 0) {
             GLib.source_remove(this.#presentTimeoutId);
             this.#presentTimeoutId = 0;
+        }
+    }
+
+    #cancelRetrySetDefaultSizeTimeout() {
+        if (this.#retrySetDefaultSizeTimeoutId !== 0) {
+            GLib.source_remove(this.#retrySetDefaultSizeTimeoutId);
+            this.#retrySetDefaultSizeTimeoutId = 0;
         }
     }
 
@@ -256,8 +267,24 @@ export class MainWindow extends Adw.ApplicationWindow {
             width_animation.play();
             height_animation.play();
         } else {
+            this.#cancelRetrySetDefaultSizeTimeout();
             this.set_default_size(this.#requestedDefaultWidth, this.#requestedDefaultHeight);
+            // When Sushi re-gains focus, window size changes are
+            // sometimes not applied until the user hovers the window.
+            // Setting the size again after a short delay fixes that.
+            if (this.#recentlyReceivedFocus) {
+                this.#retrySetDefaultSizeTimeoutId = GLib.timeout_add(
+                    GLib.G_PRIORITY_DEFAULT,
+                    50,
+                    () => {
+                        this.#retrySetDefaultSizeTimeoutId = 0;
+                        this.set_default_size(this.#requestedDefaultWidth, this.#requestedDefaultHeight);
+                        return GLib.SOURCE_REMOVE;
+                    });
+            }
         }
+
+        this.#recentlyReceivedFocus = false;
     }
 
     _createRenderer() {
