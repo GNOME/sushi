@@ -82,7 +82,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     vfunc_close_request() {
-        stopRenderer(this.#renderer);
+        this.#cleanupRenderer();
         this.#stopDelayedSpinner();
 
         return super.vfunc_close_request();
@@ -267,9 +267,13 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._toolbar_view.set_top_bar_style(this.#renderer.topBarStyle);
     }
 
+    #cleanupRenderer() {
+        stopRenderer(this.#renderer);
+    }
+
     /** @param {import('./renderer.js').Renderer} renderer */
     #loadRenderer(renderer, fileInfo) {
-        stopRenderer(this.#renderer);
+        this.#cleanupRenderer();
         this.#renderer = renderer;
 
         const title = fileInfo?.get_display_name() ??
