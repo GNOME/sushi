@@ -120,7 +120,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             console.warn('error from stopped renderer', error);
             return;
         }
-        this._embedRenderer(new ErrorRenderer(error), fileInfo);
+        this.#loadRenderer(new ErrorRenderer(error), fileInfo);
     }
 
     /** @returns {[number, number]} */
@@ -250,7 +250,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         }
     }
 
-    _setRenderer() {
+    #embedRenderer() {
         this.#stopDelayedSpinner();
 
         const toolbar = getRendererToolbar(this.#renderer);
@@ -268,7 +268,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     /** @param {import('./renderer.js').Renderer} renderer */
-    _embedRenderer(renderer, fileInfo) {
+    #loadRenderer(renderer, fileInfo) {
         stopRenderer(this.#renderer);
         this.#renderer = renderer;
 
@@ -278,7 +278,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.set_title(title);
 
         if (isRendererReady(renderer)) {
-            this._setRenderer();
+            this.#embedRenderer();
         } else {
             this._startDelayedSpinner();
             const rendererReadyId = renderer.connect_object(
@@ -286,7 +286,7 @@ export class MainWindow extends Adw.ApplicationWindow {
                 () => {
                     renderer.disconnect(rendererReadyId);
                     if (isRendererReady(renderer) && this.#renderer === renderer)
-                        this._setRenderer();
+                        this.#embedRenderer();
                 },
                 this, GObject.ConnectFlags.DEFAULT
             );
@@ -301,7 +301,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         const renderer = content_type
             ? new (MimeHandler.getKlass(content_type))(this._file, fileInfo)
             : new FallbackRenderer(this._file, fileInfo);
-        this._embedRenderer(renderer, fileInfo);
+        this.#loadRenderer(renderer, fileInfo);
         this._fileIsFolder = fileInfo.get_file_type() === Gio.FileType.DIRECTORY;
 
         renderer.connect_object(
