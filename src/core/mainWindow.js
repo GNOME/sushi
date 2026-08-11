@@ -77,8 +77,8 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         this._hoverManager = new HoverManager(this._toolbar_view, this._titlebar);
 
-        this._checkScaledByUser = this._checkScaledByUser.bind(this);
-        this.connect('notify::default-width', this._checkScaledByUser);
+        this.connect('notify::default-width', this.#checkScaledByUser);
+        this.connect('notify::default-height', this.#checkScaledByUser);
     }
 
     vfunc_close_request() {
@@ -178,12 +178,15 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.#setDefaultSize(width, height);
     }
 
-    _checkScaledByUser() {
-        if (this.defaultWidth !== this.#requestedDefaultWidth && this._animating === 0) {
+    #checkScaledByUser = () => {
+        const sizeMatchesRequested =
+            this.defaultWidth === this.#requestedDefaultWidth &&
+            this.defaultHeight === this.#requestedDefaultHeight;
+        if (!sizeMatchesRequested && this._animating === 0) {
             console.debug('Window scaled by user, keeping size');
             this.#scaledByUser = true;
         }
-    }
+    };
 
     _animationDone() {
         this._animating -= 1;
