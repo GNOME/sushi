@@ -51,6 +51,7 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     #renderer = null;
     #errorHandleId = 0;
+    #surfaceScaleNotifyHandleId = 0;
     #readyHandleId = 0;
     #requestedDefaultWidth = MIN_WIDTH;
     #requestedDefaultHeight = MIN_HEIGHT;
@@ -85,6 +86,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.connect('notify::default-width', this.#checkScaledByUser);
         this.connect('notify::default-height', this.#checkScaledByUser);
         this.connect('notify::is-active', this.#onIsActiveChanged);
+        this.connect('realize', this.#onRealize);
+        this.connect('unrealize', this.#onUnrealize);
     }
 
     vfunc_close_request() {
@@ -153,6 +156,29 @@ export class MainWindow extends Adw.ApplicationWindow {
             );
         }
     }
+
+    #onRealize = () => {
+        const surface = this.get_native()?.get_surface();
+        if (surface != null) {
+            this.#surfaceScaleNotifyHandleId = surface.connect_object(
+                'notify::scale',
+                this.#onSurfaceScaleChanged,
+                this, GObject.ConnectFlags.DEFAULT);
+        }
+    };
+
+    #onUnrealize = () => {
+        const surface = this.get_native()?.get_surface();
+        if (this.#surfaceScaleNotifyHandleId !== 0) {
+            surface?.disconnect(this.#surfaceScaleNotifyHandleId);
+            this.#surfaceScaleNotifyHandleId = 0;
+        }
+    };
+
+    #onSurfaceScaleChanged = () => {
+        this.#renderer?.queue_resize();
+        this._resizeWindow();
+    };
 
     _getDecorationLayout() {
         const layout_groups = Gtk.Settings.get_default().gtk_decoration_layout.split(':');
