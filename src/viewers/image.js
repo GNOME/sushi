@@ -79,7 +79,11 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
     }
 
     get customSize() {
-        return [this._imageWidth, this._imageHeight];
+        const scaleFactor = this._getFractionalScaleFactor();
+        return [
+            (this._texture?.get_width() ?? this._imageWidth) / scaleFactor,
+            (this._texture?.get_height() ?? this._imageHeight) / scaleFactor,
+        ];
     }
 
     get resizePolicy() {

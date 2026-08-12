@@ -143,7 +143,7 @@ export const getRendererSize = (renderer, maxSize) => {
             return [1, 1];
         } else if (customSize[0] <= maxSize[0] && customSize[1] <= maxSize[1]) {
             // no scaling needed
-            return natSize;
+            return customSize;
         } else {
             // scale by smaller ratio of width or height
             const ratio = Math.min(maxSize[0] / customSize[0], maxSize[1] / customSize[1]);
