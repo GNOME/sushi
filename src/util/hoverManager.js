@@ -33,6 +33,10 @@ export class HoverManager {
         this._toolbarView = toolbarView;
     }
 
+    cleanup() {
+        this.#revealTimeoutId.remove();
+    }
+
     addWidget(widget) {
         if (!widget)
             return;

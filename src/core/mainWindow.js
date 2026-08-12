@@ -92,6 +92,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.#spinnerDelayId.remove();
         this.#presentTimeoutId.remove();
         this.#retrySetDefaultSizeTimeoutId.remove();
+        this._hoverManager.cleanup();
 
         return super.vfunc_close_request();
     }
