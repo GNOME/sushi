@@ -17,6 +17,7 @@ const Format = imports.format;
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 import {getCustomIcon} from '../util/customIcon.js';
 import {isCancelledError} from '../util/error.js';
+import {SourceId} from '../util/source.js';
 
 function _getDeepCountAttrs() {
     return [
@@ -44,7 +45,7 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
         totalSize: 0,
         unreadableItems: 0,
     };
-    let _timeoutId = 0;
+    const _timeoutId = new SourceId();
 
     function _cleanup() {
         if (_enumerator && !_enumerator.is_closed())
@@ -126,19 +127,12 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
     }
 
     function _queueUpdate() {
-        if (_timeoutId !== 0)
-            return;
-
-        _timeoutId = GLib.timeout_add(0, 300, () => {
-            _timeoutId = 0;
-            _sendUpdate();
-            return false;
-        });
+        if (!_timeoutId.added)
+            _timeoutId.timeoutAddOnce(GLib.PRIORITY_DEFAULT, 300, () => _sendUpdate());
     }
 
     function _unqueueUpdate() {
-        if (_timeoutId !== 0)
-            GLib.source_remove(_timeoutId);
+        _timeoutId.remove();
     }
 
     function _sendUpdate() {

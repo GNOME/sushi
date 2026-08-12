@@ -20,6 +20,7 @@ import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/c
 import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize, isRendererStopped} from './renderer.js';
 import {setupActions} from '../util/action.js';
 import {isCancelledError} from '../util/error.js';
+import {SourceId} from '../util/source.js';
 
 Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
 
@@ -54,8 +55,9 @@ export class MainWindow extends Adw.ApplicationWindow {
     #requestedDefaultWidth = MIN_WIDTH;
     #requestedDefaultHeight = MIN_HEIGHT;
     #scaledByUser = false;
-    #presentTimeoutId = 0;
-    #retrySetDefaultSizeTimeoutId = 0;
+    #spinnerDelayId = new SourceId();
+    #presentTimeoutId = new SourceId();
+    #retrySetDefaultSizeTimeoutId = new SourceId();
     #recentlyReceivedFocus = false;
 
     constructor(application) {
@@ -72,7 +74,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             ['open-file', () => this.#openFile()],
         ]);
 
-        this._spinnerDelayId = 0;
         this._fileQueryCancellable = null;
         this._file = null;
         this._fileIsFolder = false;
@@ -88,9 +89,9 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     vfunc_close_request() {
         this.#cleanupRenderer();
-        this.#stopDelayedSpinner();
-        this.#cancelPresentTimeout();
-        this.#cancelRetrySetDefaultSizeTimeout();
+        this.#spinnerDelayId.remove();
+        this.#presentTimeoutId.remove();
+        this.#retrySetDefaultSizeTimeoutId.remove();
 
         return super.vfunc_close_request();
     }
@@ -115,35 +116,17 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #presentWhenReady() {
-        if (this.#presentTimeoutId === 0) {
-            this.#presentTimeoutId = GLib.timeout_add(
+        if (!this.#presentTimeoutId.added) {
+            this.#presentTimeoutId.timeoutAddOnce(
                 GLib.G_PRIORITY_HIGH,
                 ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
-                () => {
-                    this.#presentTimeoutId = 0;
-                    this.present();
-                    return GLib.SOURCE_REMOVE;
-                });
-        }
-    }
-
-    #cancelPresentTimeout() {
-        if (this.#presentTimeoutId !== 0) {
-            GLib.source_remove(this.#presentTimeoutId);
-            this.#presentTimeoutId = 0;
-        }
-    }
-
-    #cancelRetrySetDefaultSizeTimeout() {
-        if (this.#retrySetDefaultSizeTimeoutId !== 0) {
-            GLib.source_remove(this.#retrySetDefaultSizeTimeoutId);
-            this.#retrySetDefaultSizeTimeoutId = 0;
+                () => this.present());
         }
     }
 
     #onIsActiveChanged = () => {
         if (this.isActive)
-            this.#cancelPresentTimeout();
+            this.#presentTimeoutId.remove();
     };
 
     #unsetErrorHandleId() {
@@ -267,20 +250,16 @@ export class MainWindow extends Adw.ApplicationWindow {
             width_animation.play();
             height_animation.play();
         } else {
-            this.#cancelRetrySetDefaultSizeTimeout();
             this.set_default_size(this.#requestedDefaultWidth, this.#requestedDefaultHeight);
+            this.#retrySetDefaultSizeTimeoutId.remove();
             // When Sushi re-gains focus, window size changes are
             // sometimes not applied until the user hovers the window.
             // Setting the size again after a short delay fixes that.
             if (this.#recentlyReceivedFocus) {
-                this.#retrySetDefaultSizeTimeoutId = GLib.timeout_add(
+                this.#retrySetDefaultSizeTimeoutId.timeoutAddOnce(
                     GLib.G_PRIORITY_DEFAULT,
                     50,
-                    () => {
-                        this.#retrySetDefaultSizeTimeoutId = 0;
-                        this.set_default_size(this.#requestedDefaultWidth, this.#requestedDefaultHeight);
-                        return GLib.SOURCE_REMOVE;
-                    });
+                    () => this.set_default_size(this.#requestedDefaultWidth, this.#requestedDefaultHeight));
             }
         }
 
@@ -321,29 +300,17 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     _startDelayedSpinner() {
-        if (this._spinnerDelayId)
+        if (this.#spinnerDelayId.added)
             return;
-        this._spinnerDelayId = GLib.timeout_add(
+        this.#spinnerDelayId.timeoutAddOnce(
             GLib.PRIORITY_DEFAULT_IDLE,
             ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
-            () => {
-                this.#setDisplayedWidget(this._spinner);
-                this._spinnerDelayId = 0;
-                return GLib.SOURCE_REMOVE;
-            }
-        );
-    }
-
-    #stopDelayedSpinner() {
-        if (this._spinnerDelayId) {
-            GLib.Source.remove(this._spinnerDelayId);
-            this._spinnerDelayId = 0;
-        }
+            () => this.#setDisplayedWidget(this._spinner));
     }
 
     #embedRenderer() {
         this.#unsetReadyHandleId();
-        this.#stopDelayedSpinner();
+        this.#spinnerDelayId.remove();
 
         const toolbar = getRendererToolbar(this.#renderer);
         let stackWidget = this.#renderer;

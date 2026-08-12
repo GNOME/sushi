@@ -9,11 +9,14 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
+import {SourceId} from './source.js';
+
 export class HoverManager {
+    #revealTimeoutId = new SourceId();
+
     constructor(toolbarView, titlebar) {
         this._lastX = 0.0;
         this._lastY = 0.0;
-        this._revealTimeoutId = 0;
         this._hoveredChildren = 0;
         this._fullscreened = false;
         this._revealer = null;
@@ -36,7 +39,7 @@ export class HoverManager {
         const motion = new Gtk.EventControllerMotion();
         motion.connect_object(
             'enter', () => {
-                this._removeRevealTimeout();
+                this.#revealTimeoutId.remove();
                 this._setRevealed(true);
                 this._hoveredChildren++;
             },
@@ -44,7 +47,7 @@ export class HoverManager {
         );
         motion.connect_object(
             'leave', () => {
-                this._resetTimeout();
+                this.#resetTimeout();
                 this._hoveredChildren--;
             },
             widget, GObject.ConnectFlags.DEFAULT
@@ -76,7 +79,7 @@ export class HoverManager {
 
         if (this._lastX !== x && this._lastY !== y) {
             this._setRevealed(true);
-            this._resetTimeout();
+            this.#resetTimeout();
             this._lastX = x;
             this._lastY = y;
         }
@@ -91,23 +94,10 @@ export class HoverManager {
         }
     }
 
-    _resetTimeout() {
-        this._removeRevealTimeout();
-        this._revealTimeoutId = GLib.timeout_add(
-            GLib.PRIORITY_DEFAULT, 1500, _ => this._onRevealTimeout()
-        );
-    }
-
-    _onRevealTimeout() {
-        this._revealTimeoutId = 0;
-        this._setRevealed(false);
-        return GLib.SOURCE_REMOVE;
-    }
-
-    _removeRevealTimeout() {
-        if (this._revealTimeoutId !== 0) {
-            GLib.source_remove(this._revealTimeoutId);
-            this._revealTimeoutId = 0;
-        }
+    #resetTimeout() {
+        this.#revealTimeoutId.timeoutAddOnce(
+            GLib.PRIORITY_DEFAULT,
+            1500,
+            () => this._setRevealed(false));
     }
 }
