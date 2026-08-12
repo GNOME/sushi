@@ -32,6 +32,8 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         super({
             ...constructProperties,
             content_fit: Gtk.ContentFit.SCALE_DOWN,
+            halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.CENTER,
         });
 
         this._loadFile(file)
