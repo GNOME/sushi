@@ -14,7 +14,7 @@ $ ninja -C builddir devel
 ### Using Foundry
 
 ```sh
-foundry run -- env SUSHI_HOLD=1 /app/libexec/org.gnome.NautilusPreviewerDevel
+foundry run -- env SUSHI_PERSIST=1 /app/libexec/org.gnome.NautilusPreviewerDevel
 ```
 
 ### From Builder
