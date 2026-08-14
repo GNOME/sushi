@@ -19,6 +19,7 @@ import {selectRenderer} from './rendererSelector.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 import {Renderer, getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
 import {setupActions} from '../util/action.js';
+import {Connection} from '../util/connection.js';
 import {isCancelledError} from '../util/error.js';
 import {SourceId} from '../util/source.js';
 
@@ -52,7 +53,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     #renderer = null;
     #rendererSignals = new GObject.SignalGroup({targetType: Renderer});
     #fileInfo = null;
-    #surfaceScaleNotifyHandleId = 0;
+    #surfaceScaleNotifyHandleId = new Connection('notify::scale', () => this.#onScaleChanged());
     #requestedDefaultWidth = MIN_WIDTH;
     #requestedDefaultHeight = MIN_HEIGHT;
     #scaledByUser = false;
@@ -131,23 +132,15 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     #onRealize = () => {
         const surface = this.get_native()?.get_surface();
-        if (surface != null) {
-            this.#surfaceScaleNotifyHandleId = surface.connect_object(
-                'notify::scale',
-                this.#onSurfaceScaleChanged,
-                this, GObject.ConnectFlags.DEFAULT);
-        }
+        if (surface != null)
+            this.#surfaceScaleNotifyHandleId.connect(surface);
     };
 
     #onUnrealize = () => {
-        const surface = this.get_native()?.get_surface();
-        if (this.#surfaceScaleNotifyHandleId !== 0) {
-            surface?.disconnect(this.#surfaceScaleNotifyHandleId);
-            this.#surfaceScaleNotifyHandleId = 0;
-        }
+        this.#surfaceScaleNotifyHandleId.disconnect();
     };
 
-    #onSurfaceScaleChanged = () => {
+    #onScaleChanged = () => {
         this.#renderer?.queue_resize();
         this._resizeWindow();
     };
