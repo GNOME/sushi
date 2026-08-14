@@ -5,7 +5,6 @@
  */
 
 import Adw from 'gi://Adw';
-import Gio from 'gi://Gio';
 import GioUnix from 'gi://GioUnix';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
@@ -16,6 +15,7 @@ const Format = imports.format;
 
 import {Renderer} from '../core/renderer.js';
 import * as Image from './image.js';
+import {setupActions} from '../util/action.js';
 
 let papersInitialized = false;
 
@@ -47,7 +47,9 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         else
             this.markFailed(new GLib.Error('Unhandled document type'));
 
-        this._defineActions();
+        setupActions(this, 'pdf', [
+            ['copy', () => this._view.copy()],
+        ]);
 
         this.markInitialized();
     }
@@ -99,18 +101,6 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         );
         this._updatePageLabel(this._model);
         this.markReady();
-    }
-
-    _defineActions() {
-        const application = Gio.Application.get_default();
-        const copyAction = new Gio.SimpleAction({name: 'copy'});
-        copyAction.connect_object(
-            'activate', () => this._view.copy(), this, GObject.ConnectFlags.DEFAULT
-        );
-        application.set_accels_for_action('pdf.copy', ['<control>c']);
-        const actionGroup = new Gio.SimpleActionGroup();
-        actionGroup.add_action(copyAction);
-        this.insert_action_group('pdf', actionGroup);
     }
 
     _goNextPage() {
