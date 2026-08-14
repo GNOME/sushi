@@ -16,6 +16,7 @@ const Format = imports.format;
 import {Renderer} from '../core/renderer.js';
 import * as Image from './image.js';
 import {setupActions} from '../util/action.js';
+import {Connection} from '../util/connection.js';
 
 let papersInitialized = false;
 
@@ -30,6 +31,8 @@ export const Klass = class PdfRenderer extends Adw.Bin {
             ],
         }, this);
     }
+
+    #loadJobId = new Connection('finished', job => this._onLoadJobFinished(job));
 
     constructor(file, fileInfo, constructProperties = {}) {
         if (!papersInitialized) {
@@ -55,6 +58,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
     }
 
     stop() {
+        this.#loadJobId.disconnect();
         this._job?.cancel();
         this._job = null;
     }
@@ -67,21 +71,17 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         this._job = PapersView.JobLoad.new();
         this._job.set_uri(file.get_uri());
 
-        const loadJobID = this._job.connect_object(
-            'finished',
-            job => {
-                if (this.cancellable.is_cancelled())
-                    return;
-                job.disconnect(loadJobID);
-                this._job = null;
-                return this._onLoadJobFinished(job);
-            },
-            this, GObject.ConnectFlags.DEFAULT
-        );
+        this.#loadJobId.connect(this._job);
         this._job.scheduler_push_job(PapersView.JobPriority.PRIORITY_NONE);
     }
 
     _onLoadJobFinished(job) {
+        this.#loadJobId.disconnect();
+        this._job = null;
+
+        if (this.cancellable.is_cancelled())
+            return;
+
         const document = job.get_loaded_document();
         try {
             // the original C function has an out param for the error
