@@ -15,6 +15,7 @@ import Sushi from 'gi://Sushi';
 const Format = imports.format;
 
 import {Renderer} from '../core/renderer.js';
+import {setupActions} from '../util/action.js';
 
 import * as Libreoffice from './libreoffice.js';
 
@@ -51,7 +52,9 @@ export const Klass = class PdfRenderer extends Adw.Bin {
             });
         }
 
-        this._defineActions();
+        setupActions(this, 'pdf', [
+            ['copy', () => this._view.copy()],
+        ]);
 
         this.markInitialized();
     }
@@ -103,18 +106,6 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         );
         this._updatePageLabel(this._model);
         this.markReady();
-    }
-
-    _defineActions() {
-        const application = Gio.Application.get_default();
-        const copyAction = new Gio.SimpleAction({name: 'copy'});
-        copyAction.connect_object(
-            'activate', () => this._view.copy(), this, GObject.ConnectFlags.DEFAULT
-        );
-        application.set_accels_for_action('pdf.copy', ['<control>c']);
-        const actionGroup = new Gio.SimpleActionGroup();
-        actionGroup.add_action(copyAction);
-        this.insert_action_group('pdf', actionGroup);
     }
 
     _goNextPage() {

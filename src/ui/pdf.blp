@@ -28,6 +28,15 @@ template $Gjs_PdfRenderer: Adw.Bin {
       };
     };
   };
+
+  ShortcutController {
+    scope: managed;
+
+    Shortcut {
+      trigger: "<Ctrl>c";
+      action: "action(pdf.copy)";
+    }
+  }
 }
 
 Box toolbar {
