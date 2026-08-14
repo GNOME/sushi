@@ -15,6 +15,7 @@ const Format = imports.format;
 
 import {Renderer} from '../core/renderer.js';
 import {setupActions} from '../util/action.js';
+import {Connection} from '../util/connection.js';
 
 import * as Libreoffice from './libreoffice.js';
 
@@ -29,6 +30,9 @@ export const Klass = class PdfRenderer extends Adw.Bin {
             ],
         }, this);
     }
+
+    #loadJobId = new Connection();
+    #pageChangedId = new Connection();
 
     constructor(file, fileInfo, constructProperties = {}) {
         GObject.type_ensure(PapersView.View);
@@ -59,6 +63,8 @@ export const Klass = class PdfRenderer extends Adw.Bin {
     }
 
     stop() {
+        this.#loadJobId.disconnect();
+        this.#pageChangedId.disconnect();
         this._job?.cancel();
         this._job = null;
     }
@@ -71,16 +77,15 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         this._job = PapersView.JobLoad.new();
         this._job.set_uri(file.get_uri());
 
-        const loadJobID = this._job.connect_object(
-            'finished',
+        this.#loadJobId.connect(
+            this._job, 'finished',
             job => {
+                this.#loadJobId.disconnect();
                 if (this.cancellable.is_cancelled())
                     return;
-                job.disconnect(loadJobID);
                 this._job = null;
                 return this._onLoadJobFinished(job);
-            },
-            this, GObject.ConnectFlags.DEFAULT
+            }
         );
         this._job.scheduler_push_job(PapersView.JobPriority.PRIORITY_NONE);
     }
@@ -98,10 +103,9 @@ export const Klass = class PdfRenderer extends Adw.Bin {
 
         this._model.set_document(document);
 
-        this._model.connect_object(
-            'page-changed',
-            () => this._updatePageLabel(this._model),
-            this, GObject.ConnectFlags.DEFAULT
+        this.#pageChangedId.connect(
+            this._model, 'page-changed',
+            () => this._updatePageLabel(this._model)
         );
         this._updatePageLabel(this._model);
         this.markReady();
