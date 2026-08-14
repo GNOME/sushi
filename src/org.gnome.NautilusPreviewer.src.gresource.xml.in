@@ -10,7 +10,6 @@
     <file>core/pluginApi.js</file>
     <file>core/renderer.js</file>
     <file>util/action.js</file>
-    <file>util/connection.js</file>
     <file>util/customIcon.js</file>
     <file>util/development.js</file>
     <file>util/error.js</file>

@@ -19,7 +19,6 @@ import * as MimeHandler from './mimeHandler.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize, isRendererStopped} from './renderer.js';
 import {setupActions} from '../util/action.js';
-import {Connection} from '../util/connection.js';
 import {isCancelledError} from '../util/error.js';
 import {SourceId} from '../util/source.js';
 
@@ -51,8 +50,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #renderer = null;
-    #errorHandleId = new Connection();
-    #readyHandleId = new Connection();
+    #errorHandleId = 0;
+    #readyHandleId = 0;
     #requestedDefaultWidth = MIN_WIDTH;
     #requestedDefaultHeight = MIN_HEIGHT;
     #scaledByUser = false;
@@ -131,12 +130,26 @@ export class MainWindow extends Adw.ApplicationWindow {
             this.#presentTimeoutId.remove();
     };
 
+    #unsetErrorHandleId() {
+        if (this.#errorHandleId !== 0) {
+            this.#renderer.disconnect(this.#errorHandleId);
+            this.#errorHandleId = 0;
+        }
+    }
+
+    #unsetReadyHandleId() {
+        if (this.#readyHandleId !== 0) {
+            this.#renderer.disconnect(this.#readyHandleId);
+            this.#readyHandleId = 0;
+        }
+    }
+
     #setupErrorHandling(fileInfo) {
         if (!(this.#renderer instanceof ErrorRenderer)) {
-            this.#errorHandleId.connect(
-                this.#renderer,
+            this.#errorHandleId = this.#renderer.connect_object(
                 'error',
                 (renderer, err) => this._reportError(err, fileInfo, renderer),
+                this, GObject.ConnectFlags.DEFAULT
             );
         }
     }
@@ -158,7 +171,7 @@ export class MainWindow extends Adw.ApplicationWindow {
      *  @param {Gio.FileInfo|undefined} fileInfo
      *  @param {import('./renderer.js').Renderer|undefined} renderer */
     _reportError(error, fileInfo, renderer) {
-        this.#errorHandleId.disconnect();
+        this.#unsetErrorHandleId();
         if (isCancelledError(error))
             return;
         if (renderer && isRendererStopped(renderer)) {
@@ -297,7 +310,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #embedRenderer() {
-        this.#readyHandleId.disconnect();
+        this.#unsetReadyHandleId();
         this.#spinnerDelayId.remove();
 
         const toolbar = getRendererToolbar(this.#renderer);
@@ -316,8 +329,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #cleanupRenderer() {
-        this.#errorHandleId.disconnect();
-        this.#readyHandleId.disconnect();
+        this.#unsetErrorHandleId();
+        this.#unsetReadyHandleId();
         stopRenderer(this.#renderer);
     }
 
@@ -337,9 +350,10 @@ export class MainWindow extends Adw.ApplicationWindow {
             this.#embedRenderer();
         } else {
             this._startDelayedSpinner();
-            this.#readyHandleId.connect(
-                renderer, 'ready',
-                () => this.#embedRenderer()
+            this.#readyHandleId = renderer.connect_object(
+                'ready',
+                () => this.#embedRenderer(),
+                this, GObject.ConnectFlags.DEFAULT
             );
         }
     }
