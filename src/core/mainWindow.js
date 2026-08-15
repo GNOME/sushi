@@ -109,17 +109,11 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     presentWhenReady() {
-        if (!this.visible) {
-            // Window is shown for the first time
-            this.#presentWhenReady();
-        } else {
+        if (this.visible) {
             this.#recentlyReceivedFocus = true;
             this.present();
-        }
-    }
-
-    #presentWhenReady() {
-        if (!this.#presentTimeoutId.added) {
+        } else if (!this.#presentTimeoutId.added) {
+            // Window is shown for the first time
             this.#presentTimeoutId.timeoutAddOnce(
                 GLib.G_PRIORITY_HIGH,
                 ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
