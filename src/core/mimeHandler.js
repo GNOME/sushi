@@ -8,6 +8,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
 import {resolveRelativePath} from './renderer.js';
+import {isGLibError} from '../util/error.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
 import {SYSTEM_PLUGIN_DIRECTORY} from '../config.js';
 
@@ -45,7 +46,7 @@ const enumerateRenderers = uri => {
             .filter(info => info.get_name().endsWith('.js'))
             .map(info => enumerator.get_child(info).get_uri());
     } catch (error) {
-        if (error instanceof GLib.Error && error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+        if (isGLibError(error, Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
             return [];
         else
             throw error;
