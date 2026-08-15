@@ -13,6 +13,7 @@ import Sushi from 'gi://Sushi';
 const ByteArray = imports.byteArray;
 
 import {MainWindow} from './mainWindow.js';
+import {checkInitDumping} from '../util/development.js';
 
 class NautilusPreviewerSkeleton {
     constructor(application, resource) {
@@ -65,6 +66,8 @@ export class Application extends Adw.Application {
         super(constructProperties);
 
         this.#setupActions();
+
+        checkInitDumping();
     }
 
     #emitNavigateToEvent() {
