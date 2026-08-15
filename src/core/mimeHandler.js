@@ -7,26 +7,43 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
+import {resolveRelativePath} from './renderer.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
 import {SYSTEM_PLUGIN_DIRECTORY} from '../config.js';
 
-/** @param {Gio.File[]} sources */
-const loadRenderers = async sources => {
+/** @returns {string[]} uri sources */
+const getRendererURIs = () => {
+    const localPath = GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi', 'plugins-1']);
+    const builtInPath = resolveRelativePath(import.meta.url, '../viewers');
+
+    // Load plugins in order user directory, system directory, and built-in.
+    // This way users can overwrite built-in mime types.
+    return [
+        GLib.filename_to_uri(localPath, null),
+        GLib.filename_to_uri(SYSTEM_PLUGIN_DIRECTORY, null),
+        builtInPath,
+    ];
+};
+
+const loadRenderers = async () => {
     const renderers = await Promise.all(
-        sources
+        getRendererURIs()
             .flatMap(enumerateRenderers)
-            .map(nameAndSource => loadRendererModule(...nameAndSource))
+            .map(loadRendererModule)
     );
     return renderers.filter(renderer => Object.hasOwn(renderer, 'mimeTypes'));
 };
 
-/** @param {Gio.File} source
- *  @returns {Gio.FileInfo[]} */
-const enumerateRenderers = source => {
+/** @param {string} uri
+ *  @returns {string[]} renderer URIs */
+const enumerateRenderers = uri => {
     try {
-        return [...source.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null)]
-            .filter(fileInfo => fileInfo.get_name().endsWith('.js'))
-            .map(fileInfo => [fileInfo.get_name(), source]);
+        const parent = Gio.File.new_for_uri(uri);
+        const flags = Gio.FileQueryInfoFlags.NONE;
+        const enumerator = parent.enumerate_children('standard::*', flags, null);
+        return [...enumerator]
+            .filter(info => info.get_name().endsWith('.js'))
+            .map(info => enumerator.get_child(info).get_uri());
     } catch (error) {
         if (error instanceof GLib.Error && error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
             return [];
@@ -35,23 +52,18 @@ const enumerateRenderers = source => {
     }
 };
 
-/** @param {string} fileName
- *  @param {Gio.File[]} sources */
-const loadRendererModule = async (fileName, source) => {
+/** @param {string} uri
+ *  @param {string} fileName */
+const loadRendererModule = async uri => {
     try {
-        const uri = source.get_child(fileName).get_uri();
         return await import(uri);
     } catch (error) {
-        console.error(`failed to load renderer '${fileName}': ${error}`);
+        console.error(`failed to load renderer '${uri}': ${error}`);
         return [];
     }
 };
 
-// Patch import path
-const localPath = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi', 'plugins-1']));
-const systemPath = Gio.File.new_for_path(SYSTEM_PLUGIN_DIRECTORY);
-const builtinPath = Gio.File.new_for_uri(import.meta.url).get_parent().get_parent().get_child('viewers');
-const renderers = await loadRenderers([localPath, systemPath, builtinPath]);
+const renderers = await loadRenderers();
 
 /** @param {string} mime */
 export const getKlass = mime => {
