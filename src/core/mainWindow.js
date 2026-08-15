@@ -94,6 +94,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.#presentTimeoutId.remove();
         this.#retrySetDefaultSizeTimeoutId.remove();
         this._hoverManager.cleanup();
+        this._fileQueryCancellable?.cancel();
 
         return super.vfunc_close_request();
     }
@@ -270,6 +271,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT,
             this._fileQueryCancellable,
             (obj, res) => {
+                this._fileQueryCancellable = null;
                 let fileInfo;
                 try {
                     fileInfo = obj.query_info_finish(res);
