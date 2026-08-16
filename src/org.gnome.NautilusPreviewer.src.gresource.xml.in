@@ -25,6 +25,7 @@
     <file>viewers/html.js</file>
     <file>viewers/image.js</file>
     <file>viewers/libreoffice.js</file>
+    <file>viewers/libreoffice-pdf.js</file>
     <file>viewers/pdf.js</file>
     <file>viewers/text.js</file>
     <file>viewers/video.js</file>
