@@ -16,7 +16,6 @@
     <file>util/hoverManager.js</file>
     <file>util/overlayWrapper.js</file>
     <file>util/source.js</file>
-    <file>util/totemMimeTypes.js</file>
     <file>util/webProcessExtensions.js</file>
     <file>viewers/audio.js</file>
     <file>viewers/error.js</file>

@@ -32,7 +32,8 @@ const loadRenderers = async () => {
             .flatMap(enumerateRenderers)
             .map(loadRendererModule)
     );
-    return renderers.filter(renderer => Object.hasOwn(renderer, 'mimeTypes'));
+    // Renderers need to provide a mimeTypes list or a supportsContentType function (or both)
+    return renderers.filter(r => Object.hasOwn(r, 'mimeTypes') || Object.hasOwn(r, 'supportsContentType'));
 };
 
 /** @param {string} uri
@@ -64,11 +65,16 @@ const loadRendererModule = async uri => {
     }
 };
 
-const contentTypeMap = await (async () => {
+const [contentTypeMap, contentTypeFunctions] = await (async () => {
     const renderers = await loadRenderers();
-    return Object.fromEntries(renderers.flatMap(
+    const contentTypeMap = Object.fromEntries(renderers.flatMap(
         r => Array.isArray(r.mimeTypes) ? r.mimeTypes.map(type => [type, r.Klass]) : []
     ));
+    const contentTypeFunctions = renderers.map(
+        r => r.supportsContentType instanceof Function ? [r.supportsContentType, r.Klass] : null
+    ).filter(Boolean);
+
+    return [contentTypeMap, contentTypeFunctions];
 })();
 
 /** @param {string} mime */
@@ -78,7 +84,8 @@ export const getKlass = mime => {
         return directMatch;
 
     const checkType = ([contentType, _]) => Gio.content_type_is_a(mime, contentType);
-    const entry = Object.entries(contentTypeMap).find(checkType);
+    const entry = Object.entries(contentTypeMap).find(checkType) ??
+        contentTypeFunctions.find(([fn, _]) =>  fn(mime));
     const renderer = entry?.[1] ?? FallbackRenderer;
 
     contentTypeMap[mime] = renderer;
