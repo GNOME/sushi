@@ -1,16 +1,16 @@
 # Bulgarian translation of sushi po-file.
 # Copyright (C) 2011 Free Software Foundation, Inc.
-# Copyright (C) 2022 Alexander Shopov <ash@kambanaria.org>.
+# Copyright (C) 2022, 2026 Alexander Shopov <ash@kambanaria.org>.
 # This file is distributed under the same license as the sushi package.
 # Ivaylo Valkov <ivaylo@e-valkov.org>, 2011.
-# Alexander Shopov <ash@kambanaria.org>, 2012, 2022.
+# Alexander Shopov <ash@kambanaria.org>, 2012, 2022, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2022-02-03 20:58+0000\n"
-"PO-Revision-Date: 2022-03-28 23:03+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-14 01:33+0000\n"
+"PO-Revision-Date: 2026-08-16 09:12+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -19,15 +19,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Програма за бърз преглед на файлове"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -36,54 +36,86 @@ msgstr ""
 "компонент, който се интегрира с програмата за управление на файлове "
 "(Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Вид"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "изглед"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "преглед"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "преглед"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Неуспешен преглед"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Копиране на цялото съобщение за грешка"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Размер"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Променен"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Отдалеченото съдържание е блокирано, за да се защитят личните ви данни"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Показване на отдалеченото съдържание"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Превключване на цял екран"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "Отваряне"
+
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Предишна страница"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Следваща страница"
+
+#: src/viewers/audio.js:273
+msgid "by"
+msgstr "на"
+
+#: src/viewers/audio.js:278
+msgid "from"
+msgstr "от"
+
+#: src/viewers/fallback.js:186
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d обект"
 msgstr[1] "%d обекта"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Празна папка"
+#: src/viewers/fallback.js:191
+msgid "Empty"
+msgstr "Празно"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Размер"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Променен"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "„%s“ не може да се покаже"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Отваряне с %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Отваряне"
-
-#: src/viewers/audio.js:375
-msgid "from"
-msgstr "от"
-
-#: src/viewers/audio.js:380
-msgid "by"
-msgstr "на"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d от %d"
