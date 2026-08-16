@@ -18,6 +18,8 @@ import {Renderer} from '../core/renderer.js';
 
 import * as Libreoffice from './libreoffice.js';
 
+let papersInitialized = false;
+
 export const Klass = class PdfRenderer extends Adw.Bin {
     static {
         GObject.registerClass({
@@ -31,6 +33,10 @@ export const Klass = class PdfRenderer extends Adw.Bin {
     }
 
     constructor(file, fileInfo, constructProperties = {}) {
+        if (!papersInitialized) {
+            PapersDocument.init();
+            papersInitialized = true;
+        }
         GObject.type_ensure(PapersView.View);
 
         super(constructProperties);
@@ -136,7 +142,6 @@ export const Klass = class PdfRenderer extends Adw.Bin {
     }
 };
 
-PapersDocument.init();
 const appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
 const papersTypes = appInfo.get_supported_types();
 export const mimeTypes = Libreoffice.isAvailable()
