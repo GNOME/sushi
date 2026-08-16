@@ -67,7 +67,7 @@ const loadRendererModule = async uri => {
 const contentTypeMap = await (async () => {
     const renderers = await loadRenderers();
     return Object.fromEntries(renderers.flatMap(
-        r => r.mimeTypes.map(type => [type, r.Klass])
+        r => Array.isArray(r.mimeTypes) ? r.mimeTypes.map(type => [type, r.Klass]) : []
     ));
 })();
 
