@@ -142,8 +142,13 @@ export const Klass = class PdfRenderer extends Adw.Bin {
     }
 };
 
-const appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
-const papersTypes = appInfo.get_supported_types();
+const getPaperTypes = () => {
+    const appInfo = GioUnix.DesktopAppInfo.new('org.gnome.Papers.desktop');
+    // Papers might not be installed, fallback to only PDF
+    return appInfo?.get_supported_types() ?? ['application/pdf'];
+};
+
+export const papersTypes = getPaperTypes();
 export const mimeTypes = Libreoffice.isAvailable()
     ? papersTypes
     : [...papersTypes, ...Libreoffice.officeTypes];
