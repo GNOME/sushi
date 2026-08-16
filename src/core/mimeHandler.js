@@ -81,5 +81,7 @@ export const getKlass = mime => {
     const entry = Object.entries(contentTypeMap).find(checkType);
     const renderer = entry?.[1] ?? FallbackRenderer;
 
+    contentTypeMap[mime] = renderer;
+
     return renderer;
 };
