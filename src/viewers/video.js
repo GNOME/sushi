@@ -5,12 +5,12 @@
  */
 
 import Adw from 'gi://Adw';
+import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
 import {setupActions} from '../util/action.js';
 import {Renderer, ResizePolicy} from '../core/renderer.js';
-const TotemMimeTypes = imports.util.totemMimeTypes;
 
 export const Klass = class VideoRenderer extends Adw.Bin {
     static {
@@ -90,4 +90,7 @@ export const Klass = class VideoRenderer extends Adw.Bin {
     }
 };
 
-export const mimeTypes = TotemMimeTypes.videoTypes;
+export const supportsContentType = contentType => {
+    const iconName = Gio.content_type_get_generic_icon_name(contentType);
+    return iconName === 'video-x-generic';
+};

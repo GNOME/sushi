@@ -20,7 +20,6 @@ const Format = imports.format;
 
 import {setupActions} from '../util/action.js';
 import {Renderer, ResizePolicy} from '../core/renderer.js';
-const TotemMimeTypes = imports.util.totemMimeTypes;
 import {CoverPaintable} from '../widgets/coverPaintable.js';
 import {isCancelledError, isGLibError} from '../util/error.js';
 
@@ -300,4 +299,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
     }
 };
 
-export const mimeTypes = TotemMimeTypes.audioTypes;
+export const supportsContentType = contentType => {
+    const iconName = Gio.content_type_get_generic_icon_name(contentType);
+    return iconName === 'audio-x-generic';
+};
