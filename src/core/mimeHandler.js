@@ -17,12 +17,12 @@ const getRendererURIs = () => {
     const localPath = GLib.build_filenamev([GLib.get_user_data_dir(), 'sushi', 'plugins-1']);
     const builtInPath = resolveRelativePath(import.meta.url, '../viewers');
 
-    // Load plugins in order user directory, system directory, and built-in.
-    // This way users can overwrite built-in mime types.
+    // Load plugins in order: built-in, system directory, user directory.
+    // This way a user can overwrite built-in content types.
     return [
-        GLib.filename_to_uri(localPath, null),
-        GLib.filename_to_uri(SYSTEM_PLUGIN_DIRECTORY, null),
         builtInPath,
+        GLib.filename_to_uri(SYSTEM_PLUGIN_DIRECTORY, null),
+        GLib.filename_to_uri(localPath, null),
     ];
 };
 
@@ -64,15 +64,22 @@ const loadRendererModule = async uri => {
     }
 };
 
-const renderers = await loadRenderers();
+const contentTypeMap = await (async () => {
+    const renderers = await loadRenderers();
+    return Object.fromEntries(renderers.flatMap(
+        r => r.mimeTypes.map(type => [type, r.Klass])
+    ));
+})();
 
 /** @param {string} mime */
 export const getKlass = mime => {
-    const renderer =
-        // first, try a direct match with the mimetype itself
-        renderers.find(r => r.mimeTypes.includes(mime)) ??
-        // if this fails, try to see if we have any handlers
-        // registered for a parent type
-        renderers.find(r => r.mimeTypes.some(rm => Gio.content_type_is_a(mime, rm)));
-    return renderer ? renderer.Klass : FallbackRenderer;
+    const directMatch = contentTypeMap[mime];
+    if (directMatch)
+        return directMatch;
+
+    const checkType = ([contentType, _]) => Gio.content_type_is_a(mime, contentType);
+    const entry = Object.entries(contentTypeMap).find(checkType);
+    const renderer = entry?.[1] ?? FallbackRenderer;
+
+    return renderer;
 };
