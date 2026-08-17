@@ -5,7 +5,6 @@
  */
 
 import Adw from 'gi://Adw';
-import Gio from 'gi://Gio';
 import GioUnix from 'gi://GioUnix';
 import GObject from 'gi://GObject';
 import PapersDocument from 'gi://PapersDocument';
