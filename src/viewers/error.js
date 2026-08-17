@@ -23,7 +23,7 @@ export class ErrorRenderer extends Adw.Bin {
     constructor(error, constructProperties = {}) {
         super(constructProperties);
 
-        this._error_msg = error.message.trim();
+        this._error_msg = error?.message?.trim() ?? _('Unknown Error');
         const index = this._error_msg.indexOf('\n');
         const hasMultipleLines = index >= 0;
         const first_line = hasMultipleLines
