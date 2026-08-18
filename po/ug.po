@@ -4,82 +4,128 @@
 # Sahran <sahran.ug@gmail.com>, 2011.
 #
 msgid ""
-msgstr "Project-Id-Version: sushi\n"
+msgstr ""
+"Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2025-09-10 23:21+0000\n"
-"PO-Revision-Date: 2013-01-27 13:34+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"POT-Creation-Date: 2026-08-03 11:41+0000\n"
+"PO-Revision-Date: 2026-08-18 13:16-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "ئوخشاش بولمىغان تۈردىكى ھۆججەتنى تېز سۈرئەتتە كۆرۈش ئىقتىدارى بىلەن تەمىنلەيدۇ"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:12
-msgid ""
-"Sushi is a file previewer for the GNOME desktop environment. It is an "
-"independent component that integrates with GNOME Files (Nautilus)."
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
+msgid "Sushi is a file previewer for the GNOME desktop environment. It is an independent component that integrates with GNOME Files (Nautilus)."
 msgstr "GNOME ئۈستەلئۈستى مۇھىتىدىكى ھۆججەتنى ئالدىن كۆزىتىش قورالى Sushi، مۇستەقىل بۆلەك سۈپىتىدە GNOME ھۆججەت (Nautilus) بىلەن توپلاشتۇرۇلغان."
 
-#: src/ui/fallbackRenderer.js:244
-msgid "Type"
-msgstr "تۈرى"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:254
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "كۆرۈنۈش"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "ئالدىن كۆزەتكۈچ"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "ئالدىن كۆزەت"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "ئالدىن كۆزىتەلمىدى"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "پۈتكۈل خاتالىق ئۇچۇرىنى كۆچۈر"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "چوڭلۇقى"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "ئۆزگەرتىلگەن ۋاقتى"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "شەخسىيىتىڭىزنى قوغداش ئۈچۈن يىراقتىكى مەزمۇن توسۇلدى"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "يىراقتىكى مەزمۇننى كۆرسەت(_S)"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "تولۇق ئېكرانغا ئالماش"
+
+#: src/ui/mainWindow.blp:22
+msgid "Open"
+msgstr "ئاچ"
+
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "ئالدىنقى بەت"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "كېيىنكى بەت"
+
+#: src/viewers/audio.js:261
+msgid "by"
+msgstr "يازغۇچى"
+
+#: src/viewers/audio.js:266
+msgid "from"
+msgstr "ئەۋەتكۈچى"
+
+#: src/viewers/fallback.js:192
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "‏‏%d تۈر"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Empty Folder"
-msgstr "بوش قىسقۇچ"
+#: src/viewers/fallback.js:197
+msgid "Empty"
+msgstr "بوش"
 
-#: src/ui/fallbackRenderer.js:263
-msgid "Size"
-msgstr "چوڭلۇقى"
-
-#: src/ui/fallbackRenderer.js:269
-msgid "Modified"
-msgstr "ئۆزگەرتىلگەن ۋاقتى"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "%s نى كۆرسىتەلمەيدۇ"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:358
-#, javascript-format
-msgid "Open With %s"
-msgstr "ئاچىدىغان پىروگرامما %s"
-
-#: src/ui/mainWindow.js:364
-msgid "Open"
-msgstr "ئاچ"
-
-#: src/viewers/audio.js:401
-msgid "from"
-msgstr "ئەۋەتكۈچى"
-
-#: src/viewers/audio.js:406
-msgid "by"
-msgstr "يازغۇچى"
-
-#: src/viewers/evince.js:111
+#: src/viewers/pdf.js:134
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d / %d"
+
+#~ msgid "Type"
+#~ msgstr "تۈرى"
+
+#~ msgid "Empty Folder"
+#~ msgstr "بوش قىسقۇچ"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "%s نى كۆرسىتەلمەيدۇ"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "ئاچىدىغان پىروگرامما %s"
 
 #~ msgid "Client decoration"
 #~ msgstr "خېرىدار بېزىكى"
