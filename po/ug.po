@@ -6,297 +6,317 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/d-spy/issues\n"
-"POT-Creation-Date: 2026-03-16 21:12+0000\n"
-"PO-Revision-Date: 2026-08-18 13:20-0400\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-17 09:18+0000\n"
+"PO-Revision-Date: 2026-08-18 13:46-0400\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: \n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.dspy.desktop.in.in:5
-#: data/org.gnome.dspy.metainfo.xml.in.in:14 src/dspy-window.ui:6
-#: src/dspy-window.ui:50 src/dspy-window.ui:69 src/main.c:91 src/main.c:128
-msgid "D-Spy"
-msgstr "D-Spy"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
+msgid "Sushi"
+msgstr "Sushi"
 
-#: data/org.gnome.dspy.desktop.in.in:6
-msgid "Discover and explore D-Bus services"
-msgstr "D-Bus مۇلازىمىتىنى بايقاش ۋە ئىزدىنىش"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr "ئوخشاش بولمىغان تۈردىكى ھۆججەتنى تېز سۈرئەتتە كۆرۈش ئىقتىدارى بىلەن تەمىنلەيدۇ"
 
-#: data/org.gnome.dspy.desktop.in.in:7
-msgid "dspy;dbus;"
-msgstr "dspy;dbus;باغلا;ئېغىز;ئاساسىي لىنىيە;"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
+msgid "Sushi is a file previewer for the GNOME desktop environment. It is an independent component that integrates with GNOME Files (Nautilus)."
+msgstr "GNOME ئۈستەلئۈستى مۇھىتىدىكى ھۆججەتنى ئالدىن كۆزىتىش قورالى Sushi، مۇستەقىل بۆلەك سۈپىتىدە GNOME ھۆججەت (Nautilus) بىلەن توپلاشتۇرۇلغان."
 
-#: data/org.gnome.dspy.desktop.in.in:17
-msgid "New Window"
-msgstr "يېڭى كۆزنەك"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#. developer_name tag deprecated with Appstream 1.0
-#: data/org.gnome.dspy.metainfo.xml.in.in:7
-#: data/org.gnome.dspy.metainfo.xml.in.in:9
-msgid "Christian Hergert"
-msgstr "Christian Hergert"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
 
-#: data/org.gnome.dspy.metainfo.xml.in.in:16
-msgid "Analyze D-Bus connections"
-msgstr "D-Bus باغلىنىش تەھلىلى"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "كۆرۈنۈش"
 
-#: data/org.gnome.dspy.metainfo.xml.in.in:18
-msgid "D-Spy is a simple tool to explore D-Bus connections."
-msgstr "D-Spy پىروگراممىسى D-Bus باغلىنىشىغا كۆز يۈگۈرتىدىغان ئاددىي قورال."
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "ئالدىن كۆزەتكۈچ"
 
-#: data/org.gnome.dspy.metainfo.xml.in.in:29
-msgid "D-Spy Interface"
-msgstr "D-Spy ئارايۈزى"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "ئالدىن كۆزەت"
 
-#: data/org.gnome.dspy.metainfo.xml.in.in:63
-msgid "spy"
-msgstr "spy"
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "ئالدىن كۆزىتەلمىدى"
 
-#: data/org.gnome.dspy.metainfo.xml.in.in:64
-msgid "D-Bus"
-msgstr "D-Bus"
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "پۈتكۈل خاتالىق ئۇچۇرىنى كۆچۈر"
 
-#: data/org.gnome.dspy.metainfo.xml.in.in:65
-msgid "inspect"
-msgstr "تەكشۈر"
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "چوڭلۇقى"
 
-#: data/org.gnome.dspy.metainfo.xml.in.in:66
-msgid "development"
-msgstr "ئىجادىيەت"
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "ئۆزگەرتىلگەن ۋاقتى"
 
-#: src/dspy-connection.c:510
-msgid "System Bus"
-msgstr "سىستېما باش لىنىيەسى"
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "شەخسىيىتىڭىزنى قوغداش ئۈچۈن يىراقتىكى مەزمۇن توسۇلدى"
 
-#: src/dspy-connection.c:513
-msgid "Session Bus"
-msgstr "جەريانچاق باش لىنىيەسى"
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "يىراقتىكى مەزمۇننى كۆرسەت(_S)"
 
-#. translators: PID refers to "process identifier"
-#: src/dspy-name.c:497
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "تولۇق ئېكرانغا ئالماش"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "ئاچ"
+
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "ئالدىنقى بەت"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "كېيىنكى بەت"
+
+#: src/viewers/audio.js:273
+msgid "by"
+msgstr "يازغۇچى"
+
+#: src/viewers/audio.js:278
+msgid "from"
+msgstr "ئەۋەتكۈچى"
+
+#: src/viewers/fallback.js:186
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "‏‏%d تۈر"
+
+#: src/viewers/fallback.js:191
+msgid "Empty"
+msgstr "بوش"
+
+#: src/viewers/pdf.js:129
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d / %d"
+
+#~ msgid "D-Spy"
+#~ msgstr "D-Spy"
+
+#~ msgid "Discover and explore D-Bus services"
+#~ msgstr "D-Bus مۇلازىمىتىنى بايقاش ۋە ئىزدىنىش"
+
+#~ msgid "dspy;dbus;"
+#~ msgstr "dspy;dbus;باغلا;ئېغىز;ئاساسىي لىنىيە;"
+
+#~ msgid "New Window"
+#~ msgstr "يېڭى كۆزنەك"
+
+#~ msgid "Christian Hergert"
+#~ msgstr "Christian Hergert"
+
+#~ msgid "Analyze D-Bus connections"
+#~ msgstr "D-Bus باغلىنىش تەھلىلى"
+
+#~ msgid "D-Spy is a simple tool to explore D-Bus connections."
+#~ msgstr "D-Spy پىروگراممىسى D-Bus باغلىنىشىغا كۆز يۈگۈرتىدىغان ئاددىي قورال."
+
+#~ msgid "D-Spy Interface"
+#~ msgstr "D-Spy ئارايۈزى"
+
+#~ msgid "spy"
+#~ msgstr "spy"
+
+#~ msgid "D-Bus"
+#~ msgstr "D-Bus"
+
+#~ msgid "inspect"
+#~ msgstr "تەكشۈر"
+
+#~ msgid "development"
+#~ msgstr "ئىجادىيەت"
+
+#~ msgid "System Bus"
+#~ msgstr "سىستېما باش لىنىيەسى"
+
+#~ msgid "Session Bus"
+#~ msgstr "جەريانچاق باش لىنىيەسى"
+
 #, c-format
-msgid "PID: %u"
-msgstr "PID: %u"
+#~ msgid "PID: %u"
+#~ msgstr "PID: %u"
 
-#: src/dspy-name.c:501
-msgid "Not Running"
-msgstr "ئىجرا قىلىنمايۋاتىدۇ"
+#~ msgid "Not Running"
+#~ msgstr "ئىجرا قىلىنمايۋاتىدۇ"
 
-#: src/dspy-property.c:63
-msgid "read/write"
-msgstr "ئوقۇش/يېزىش"
+#~ msgid "read/write"
+#~ msgstr "ئوقۇش/يېزىش"
 
-#: src/dspy-property.c:65
-msgid "write-only"
-msgstr "يېزىشقىلا"
+#~ msgid "write-only"
+#~ msgstr "يېزىشقىلا"
 
-#: src/dspy-property.c:67
-msgid "read-only"
-msgstr "ئوقۇشقىلا"
+#~ msgid "read-only"
+#~ msgstr "ئوقۇشقىلا"
 
-#: src/dspy-property.c:207
-msgid "Error"
-msgstr "خاتالىق"
+#~ msgid "Error"
+#~ msgstr "خاتالىق"
 
-#. translators: %s is replaced with the simple D-Bus type string
-#: src/dspy-signature.c:77
 #, c-format
-msgid "Array of [%s]"
-msgstr "[%s] سانلار قاتارى"
+#~ msgid "Array of [%s]"
+#~ msgstr "[%s] سانلار قاتارى"
 
-#: src/dspy-window.c:137
-msgid "Accessibility Bus"
-msgstr "قولايلىق باش لىنىيە"
+#~ msgid "Accessibility Bus"
+#~ msgstr "قولايلىق باش لىنىيە"
 
-#: src/dspy-window.c:406
-msgid "Methods"
-msgstr "ئۇسۇل"
+#~ msgid "Methods"
+#~ msgstr "ئۇسۇل"
 
-#: src/dspy-window.c:408
-msgid "Properties"
-msgstr "خاسلىق"
+#~ msgid "Properties"
+#~ msgstr "خاسلىق"
 
-#: src/dspy-window.c:410
-msgid "Signals"
-msgstr "سىگنال"
+#~ msgid "Signals"
+#~ msgstr "سىگنال"
 
-#: src/dspy-window.c:437
-msgid "Copied to Clipboard"
-msgstr "چاپلاش تاختىسىغا كۆچۈرۈلدى"
+#~ msgid "Copied to Clipboard"
+#~ msgstr "چاپلاش تاختىسىغا كۆچۈرۈلدى"
 
-#: src/dspy-window.c:524 src/dspy-window.c:534 src/dspy-window.c:543
-msgid "msec"
-msgstr "مىللىسېكۇنت"
+#~ msgid "msec"
+#~ msgstr "مىللىسېكۇنت"
 
-#: src/dspy-window.ui:62
-msgid "Connections"
-msgstr "باغلىنىش"
+#~ msgid "Connections"
+#~ msgstr "باغلىنىش"
 
-#: src/dspy-window.ui:165
-msgid "Bus Names"
-msgstr "باش لىنىيە ئىسمى"
+#~ msgid "Bus Names"
+#~ msgstr "باش لىنىيە ئىسمى"
 
-#: src/dspy-window.ui:206 src/dspy-window.ui:374 src/dspy-window.ui:577
-#: src/dspy-window.ui:724
-msgid "Filter…"
-msgstr "سۈزگۈچ…"
+#~ msgid "Filter…"
+#~ msgstr "سۈزگۈچ…"
 
-#: src/dspy-window.ui:326
-msgid "Objects"
-msgstr "جىسىم"
+#~ msgid "Objects"
+#~ msgstr "جىسىم"
 
-#: src/dspy-window.ui:349
-msgid "Refresh Objects"
-msgstr "جىسىمنى يېڭىلا"
+#~ msgid "Refresh Objects"
+#~ msgstr "جىسىمنى يېڭىلا"
 
-#: src/dspy-window.ui:481 src/dspy-window.ui:533
-msgid "Interfaces"
-msgstr "ئارايۈز"
+#~ msgid "Interfaces"
+#~ msgstr "ئارايۈز"
 
-#: src/dspy-window.ui:518
-msgid "Explore Objects"
-msgstr "جىسىم ئىزدىنىش"
+#~ msgid "Explore Objects"
+#~ msgstr "جىسىم ئىزدىنىش"
 
-#: src/dspy-window.ui:519
-msgid "Select a bus to explore objects"
-msgstr "جىسىم ئىزدىنىشتە باش لىنىيە تاللىنىدۇ"
+#~ msgid "Select a bus to explore objects"
+#~ msgstr "جىسىم ئىزدىنىشتە باش لىنىيە تاللىنىدۇ"
 
-#: src/dspy-window.ui:680 src/dspy-window.ui:871 src/dspy-window.ui:915
-#: src/dspy-window.ui:1103 src/dspy-window.ui:1264
-msgid "Members"
-msgstr "ئەزا"
+#~ msgid "Members"
+#~ msgstr "ئەزا"
 
-#: src/dspy-window.ui:855
-msgid "Details"
-msgstr "تەپسىلاتى"
+#~ msgid "Details"
+#~ msgstr "تەپسىلاتى"
 
-#: src/dspy-window.ui:895
-msgid "Explore Interfaces"
-msgstr "ئارايۈز ئىزدىنىش"
+#~ msgid "Explore Interfaces"
+#~ msgstr "ئارايۈز ئىزدىنىش"
 
-#: src/dspy-window.ui:896
-msgid "Select an object to explore members"
-msgstr "ئەزا ئۈستىدە ئىزدىنىشتە جىسىم تاللىنىدۇ"
+#~ msgid "Select an object to explore members"
+#~ msgstr "ئەزا ئۈستىدە ئىزدىنىشتە جىسىم تاللىنىدۇ"
 
-#: src/dspy-window.ui:948 src/dspy-window.ui:1136 src/dspy-window.ui:1297
-msgid "Bus"
-msgstr "باش لىنىيە"
+#~ msgid "Bus"
+#~ msgstr "باش لىنىيە"
 
-#: src/dspy-window.ui:961 src/dspy-window.ui:1149 src/dspy-window.ui:1310
-msgid "Bus Name"
-msgstr "باش لىنىيە ئىسمى"
+#~ msgid "Bus Name"
+#~ msgstr "باش لىنىيە ئىسمى"
 
-#: src/dspy-window.ui:975 src/dspy-window.ui:1163 src/dspy-window.ui:1324
-msgid "Owner"
-msgstr "ئىگىدار"
+#~ msgid "Owner"
+#~ msgstr "ئىگىدار"
 
-#: src/dspy-window.ui:989 src/dspy-window.ui:1177 src/dspy-window.ui:1338
-msgid "Object Path"
-msgstr "جىسىم يولى"
+#~ msgid "Object Path"
+#~ msgstr "جىسىم يولى"
 
-#: src/dspy-window.ui:1003 src/dspy-window.ui:1191 src/dspy-window.ui:1352
-msgid "Interface"
-msgstr "ئارايۈز"
+#~ msgid "Interface"
+#~ msgstr "ئارايۈز"
 
-#: src/dspy-window.ui:1021
-msgid "Property"
-msgstr "خاسلىق"
+#~ msgid "Property"
+#~ msgstr "خاسلىق"
 
-#: src/dspy-window.ui:1035
-msgid "Type Signature"
-msgstr "تۈر ئىمزاسى"
+#~ msgid "Type Signature"
+#~ msgstr "تۈر ئىمزاسى"
 
-#: src/dspy-window.ui:1049
-msgid "Value"
-msgstr "قىممەت"
+#~ msgid "Value"
+#~ msgstr "قىممەت"
 
-#: src/dspy-window.ui:1209
-msgid "Signal"
-msgstr "سىگنال"
+#~ msgid "Signal"
+#~ msgstr "سىگنال"
 
-#: src/dspy-window.ui:1223
-msgid "Signature"
-msgstr "ئىمزا"
+#~ msgid "Signature"
+#~ msgstr "ئىمزا"
 
-#: src/dspy-window.ui:1370
-msgid "Method"
-msgstr "ئۇسۇل"
+#~ msgid "Method"
+#~ msgstr "ئۇسۇل"
 
-#: src/dspy-window.ui:1384 src/dspy-window.ui:1414
-msgid "Parameters"
-msgstr "پارامېتىر"
+#~ msgid "Parameters"
+#~ msgstr "پارامېتىر"
 
-#: src/dspy-window.ui:1398
-msgid "Return Type"
-msgstr "قايتۇرىدىغان تۈرى"
+#~ msgid "Return Type"
+#~ msgstr "قايتۇرىدىغان تۈرى"
 
-#: src/dspy-window.ui:1436
-msgid "Call Method"
-msgstr "چاقىرىش ئۇسۇلى"
+#~ msgid "Call Method"
+#~ msgstr "چاقىرىش ئۇسۇلى"
 
-#: src/dspy-window.ui:1452
-msgid "Cancel"
-msgstr "ۋاز كەچ"
+#~ msgid "Cancel"
+#~ msgstr "ۋاز كەچ"
 
-#: src/dspy-window.ui:1469
-msgid "Result"
-msgstr "نەتىجە"
+#~ msgid "Result"
+#~ msgstr "نەتىجە"
 
-#: src/dspy-window.ui:1501
-msgid "Statistics"
-msgstr "ئىستاتىستىكا"
+#~ msgid "Statistics"
+#~ msgstr "ئىستاتىستىكا"
 
-#: src/dspy-window.ui:1505
-msgid "Duration"
-msgstr "سۈرۈك"
+#~ msgid "Duration"
+#~ msgstr "سۈرۈك"
 
-#: src/dspy-window.ui:1511
-msgid "Minimum Duration"
-msgstr "ئەڭ قىسقا سۈرۈك"
+#~ msgid "Minimum Duration"
+#~ msgstr "ئەڭ قىسقا سۈرۈك"
 
-#: src/dspy-window.ui:1517
-msgid "Maximum Duration"
-msgstr "ئەڭ ئۇزۇن سۈرۈك"
+#~ msgid "Maximum Duration"
+#~ msgstr "ئەڭ ئۇزۇن سۈرۈك"
 
-#: src/dspy-window.ui:1546
-msgid "New Connection"
-msgstr "يېڭى باغلىنىش"
+#~ msgid "New Connection"
+#~ msgstr "يېڭى باغلىنىش"
 
-#: src/dspy-window.ui:1557
-msgid "Bus Address"
-msgstr "باش لىنىيە ئادرېسى"
+#~ msgid "Bus Address"
+#~ msgstr "باش لىنىيە ئادرېسى"
 
-#: src/dspy-window.ui:1568
-msgid "Connect"
-msgstr "باغلان"
+#~ msgid "Connect"
+#~ msgstr "باغلان"
 
-#: src/dspy-window.ui:1589
-msgid "_New Window"
-msgstr "يېڭى كۆزنەك(_N)"
+#~ msgid "_New Window"
+#~ msgstr "يېڭى كۆزنەك(_N)"
 
-#: src/dspy-window.ui:1595
-msgid "Connect to Other _Bus"
-msgstr "باشقا باش لىنىيەگە باغلان(_B)"
+#~ msgid "Connect to Other _Bus"
+#~ msgstr "باشقا باش لىنىيەگە باغلان(_B)"
 
-#: src/dspy-window.ui:1601
-msgid "_About D-Spy"
-msgstr "D-Spy ھەققىدە(_A)"
+#~ msgid "_About D-Spy"
+#~ msgstr "D-Spy ھەققىدە(_A)"
 
-#: src/main.c:132
-msgid "translator-credits"
-msgstr ""
-"غەيرەت ت.كەنجى <gheyret@gmail.com>\n"
-"ئابدۇقادىر ئابلىز <sahranbay@gmail.com>"
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "غەيرەت ت.كەنجى <gheyret@gmail.com>\n"
+#~ "ئابدۇقادىر ئابلىز <sahranbay@gmail.com>"
 
-#: src/main.c:154
-msgid "Open a new window"
-msgstr "يېڭى كۆزنەكتىن بىرنى ئاچ"
+#~ msgid "Open a new window"
+#~ msgstr "يېڭى كۆزنەكتىن بىرنى ئاچ"
 
-#: src/main.c:155
-msgid "Print version information and exit"
-msgstr "نەشر ئۇچۇرىنى بېسىپ چېكىنىدۇ"
+#~ msgid "Print version information and exit"
+#~ msgstr "نەشر ئۇچۇرىنى بېسىپ چېكىنىدۇ"
