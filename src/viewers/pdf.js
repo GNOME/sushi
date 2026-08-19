@@ -39,7 +39,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
 
         super(constructProperties);
 
-        if (mimeTypes.includes(fileInfo.get_content_type()))
+        if (contentTypes.includes(fileInfo.get_content_type()))
             this._loadFile(file);
         else if (Klass.convertLibreoffice)
             Klass.convertLibreoffice(this, file);
@@ -137,4 +137,4 @@ const getPaperTypes = () => {
     return appInfo?.get_supported_types() ?? ['application/pdf'];
 };
 
-export const mimeTypes = getPaperTypes();
+export const contentTypes = getPaperTypes();

@@ -82,7 +82,7 @@ export const Klass = class TextRenderer extends Adw.Bin {
     }
 };
 
-// register for text/plain and let the mime handler call us for child types
-export const mimeTypes = [
+// register for generic text/plain so specific text types can be overwritten
+export const contentTypes = [
     'text/plain',
 ];

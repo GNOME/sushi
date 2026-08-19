@@ -6,9 +6,9 @@
     <file>core/application.js</file>
     <file>core/main.js</file>
     <file>core/mainWindow.js</file>
-    <file>core/mimeHandler.js</file>
     <file>core/pluginApi.js</file>
     <file>core/renderer.js</file>
+    <file>core/rendererSelector.js</file>
     <file>util/action.js</file>
     <file>util/customIcon.js</file>
     <file>util/development.js</file>

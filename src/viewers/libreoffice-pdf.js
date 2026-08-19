@@ -19,4 +19,4 @@ PdfRenderer.convertLibreoffice = (renderer, file) => {
 
 export const Klass = PdfRenderer;
 
-export const mimeTypes = Libreoffice.isAvailable() ? [] : Libreoffice.officeTypes;
+export const contentTypes = Libreoffice.isAvailable() ? [] : Libreoffice.officeTypes;
