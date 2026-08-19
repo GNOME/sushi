@@ -112,4 +112,4 @@ export const officeTypes = [
     'application/rtf',
 ];
 
-export const mimeTypes = isAvailable() ? officeTypes : [];
+export const contentTypes = isAvailable() ? officeTypes : [];

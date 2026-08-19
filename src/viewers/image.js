@@ -99,4 +99,4 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
     }
 };
 
-export const mimeTypes = Gly.Loader.get_mime_types();
+export const contentTypes = Gly.Loader.get_mime_types();

@@ -32,8 +32,8 @@ const loadRenderers = async () => {
             .flatMap(enumerateRenderers)
             .map(loadRendererModule)
     );
-    // Renderers need to provide a mimeTypes list or a supportsContentType function (or both)
-    return renderers.filter(r => Object.hasOwn(r, 'mimeTypes') || Object.hasOwn(r, 'supportsContentType'));
+    // Renderers need to provide a contentTypes list or a supportsContentType function (or both)
+    return renderers.filter(r => Object.hasOwn(r, 'contentTypes') || Object.hasOwn(r, 'supportsContentType'));
 };
 
 /** @param {string} uri
@@ -68,7 +68,7 @@ const loadRendererModule = async uri => {
 const [contentTypeMap, contentTypeFunctions] = await (async () => {
     const renderers = await loadRenderers();
     const contentTypeMap = Object.fromEntries(renderers.flatMap(
-        r => Array.isArray(r.mimeTypes) ? r.mimeTypes.map(type => [type, r.Klass]) : []
+        r => Array.isArray(r.contentTypes) ? r.contentTypes.map(type => [type, r.Klass]) : []
     ));
     const contentTypeFunctions = renderers.map(
         r => r.supportsContentType instanceof Function ? [r.supportsContentType, r.Klass] : null
@@ -77,18 +77,18 @@ const [contentTypeMap, contentTypeFunctions] = await (async () => {
     return [contentTypeMap, contentTypeFunctions];
 })();
 
-/** @param {string} mime */
-export const getKlass = mime => {
-    const directMatch = contentTypeMap[mime];
+/** @param {string} contentType */
+export const selectRenderer = contentType => {
+    const directMatch = contentTypeMap[contentType];
     if (directMatch)
         return directMatch;
 
-    const checkType = ([contentType, _]) => Gio.content_type_is_a(mime, contentType);
+    const checkType = ([supportedType, _]) => Gio.content_type_is_a(contentType, supportedType);
     const entry = Object.entries(contentTypeMap).find(checkType) ??
-        contentTypeFunctions.find(([fn, _]) =>  fn(mime));
+        contentTypeFunctions.find(([fn, _]) =>  fn(contentType));
     const renderer = entry?.[1] ?? FallbackRenderer;
 
-    contentTypeMap[mime] = renderer;
+    contentTypeMap[contentType] = renderer;
 
     return renderer;
 };

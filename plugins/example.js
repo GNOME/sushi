@@ -47,6 +47,6 @@ export const Klass = class ExampleRenderer extends Adw.Bin {
     }
 };
 
-export const mimeTypes = [
+export const contentTypes = [
     'your/filetype',
 ];

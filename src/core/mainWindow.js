@@ -15,7 +15,7 @@ import {ErrorRenderer} from '../viewers/error.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
 import {HoverManager} from '../util/hoverManager.js';
 import {OverlayWrapper} from '../util/overlayWrapper.js';
-import * as MimeHandler from './mimeHandler.js';
+import {selectRenderer} from './rendererSelector.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize, isRendererStopped} from './renderer.js';
 import {setupActions} from '../util/action.js';
@@ -364,7 +364,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             ? fileInfo.get_content_type()
             : fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
         const renderer = content_type
-            ? new (MimeHandler.getKlass(content_type))(this._file, fileInfo)
+            ? new (selectRenderer(content_type))(this._file, fileInfo)
             : new FallbackRenderer(this._file, fileInfo);
         this.#loadRenderer(renderer, fileInfo);
         this._fileIsFolder = fileInfo.get_file_type() === Gio.FileType.DIRECTORY;

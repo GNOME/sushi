@@ -130,7 +130,7 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
     }
 } : undefined;
 
-export const mimeTypes = _isAvailable() ? ['text/html', 'application/xhtml+xml'] : [];
+export const contentTypes = _isAvailable() ? ['text/html', 'application/xhtml+xml'] : [];
 
 const ALLOWED_STOCK_ACTIONS = _isAvailable() ? new Set([
     WebKit.ContextMenuAction.NO_ACTION,
