@@ -107,6 +107,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     set file(newFile) {
         this._file = newFile;
         this._createRenderer();
+        this.notify('file');
     }
 
     presentWhenReady() {
