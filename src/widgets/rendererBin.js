@@ -34,7 +34,6 @@ export class RendererBin extends Adw.Bin {
         case ResizePolicy.MAX_SIZE:
         case ResizePolicy.STATUS_PAGE:
         case ResizePolicy.SCALED:
-        case ResizePolicy.CUSTOM:
             return Gtk.SizeRequestMode.CONSTANT_SIZE;
         case ResizePolicy.NAT_SIZE:
         default:
@@ -58,8 +57,6 @@ export class RendererBin extends Adw.Bin {
             return measureScaledSize(child, orientation, this.#getMaxSize);
         case ResizePolicy.STATUS_PAGE:
             return measureStatusPage(child, orientation);
-        case ResizePolicy.CUSTOM:
-            return measureCustomSize(this.#renderer, orientation, this.#getMaxSize);
         default:
             console.warn(`Renderer uses unknown resize policy '${this.#resizePolicy}'`);
             return child.measure(orientation, forSize);
@@ -108,24 +105,6 @@ const measureScaledSize = (child, orientation, getMaxSize) => {
     const childNat = [childNatReq.width, childNatReq.height];
     const max = getMaxSize();
     return getScaledSize(childMin, childNat, max, orientation);
-};
-
-/** @param {import('../core/renderer').Renderer} renderer
- *  @param {Gtk.Orientation} orientation
- *  @param {(orientation?: Gtk.Orientation) => number|[number, number]} getMaxSize
- *  @return {[number, number, number, number]} */
-const measureCustomSize = (renderer, orientation, getMaxSize) => {
-    const [childMinReq] = renderer.get_preferred_size();
-    const childMin = [childMinReq.width, childMinReq.height];
-    const customSize = renderer.customSize;
-    const max = getMaxSize();
-
-    if (!customSize) {
-        console.error('ResizePolicy programming error');
-        return [childMin[orientation], childMin[orientation], -1, -1];
-    }
-
-    return getScaledSize(childMin, customSize, max, orientation);
 };
 
 /** @param {[number, number]} childMin
