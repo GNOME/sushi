@@ -21,7 +21,6 @@ Additionally, `Renderer` has overridable methods that get called at appropriate 
 * `stop` - To stop animations or media streams
 * `cleanup` - Various cleanups, e.g. disconnect child object signals
 * `resizePolicy` - See `ResizePolicy` enum
-* `customSize` - Use a specific window size with `ResizePolicy.CUSTOM`
 * `topBarStyle` - Whether to use a flat or a raised window headerbar style
 
 Make sure your plugin does not keep references to itself around after getting unloaded, as this will cause memory leaks.

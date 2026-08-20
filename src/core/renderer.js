@@ -13,8 +13,6 @@ export const ResizePolicy = Object.freeze({
     NAT_SIZE: 1,
     SCALED: 2,
     STATUS_PAGE: 3,
-    /** @deprecated Use {@link ResizePolicy.NAT_SIZE} instead and implement `GtkWidget.vfunc_measure`. */
-    CUSTOM: 4,
 });
 
 /** Note: This is part of the stable plugin API. Only change it in backwards-compatible ways. */
@@ -115,13 +113,6 @@ export class Renderer extends GObject.Interface {
     /** @returns {ResizePolicy[keyof ResizePolicy]} */
     get resizePolicy() {
         return ResizePolicy.MAX_SIZE;
-    }
-
-    /** @deprecated Use {@link ResizePolicy.NAT_SIZE} instead and implement `GtkWidget.vfunc_measure`
-     *  @returns {[number, number] | null} */
-    get customSize() {
-        // customSize needs to be overridden for ResizePolicy.CUSTOM
-        return null;
     }
 
     get toolbar() {
