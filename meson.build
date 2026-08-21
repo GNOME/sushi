@@ -51,6 +51,10 @@ web_process_extensions_dir = join_paths(pkglibdir, 'web-process-extensions')
 gjs = find_program('gjs', 'gjs-console')
 env = find_program('env')
 
+if get_option('tests')
+  jasmine = find_program('jasmine')
+endif
+
 add_project_arguments(
   '-DGETTEXT_PACKAGE="' + meson.project_name() + '"',
   language: 'c',
@@ -70,3 +74,7 @@ i18n = import('i18n')
 subdir('data')
 subdir('po')
 subdir('src')
+
+if get_option('tests')
+  subdir('tests')
+endif

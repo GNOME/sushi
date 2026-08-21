@@ -1,0 +1,13 @@
+import Gio from 'gi://Gio';
+
+imports.package.init({
+    name: '@package_name@',
+    version: "@package_version@",
+    prefix: '@prefix@',
+    libdir: '@libdir@',
+});
+
+const resource = Gio.Resource.load('@tests_build_dir@/@package_name@.test.gresource');
+resource._register();
+
+await import('resource://@relative_object_path@/tests/@name@.js');

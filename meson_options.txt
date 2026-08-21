@@ -11,3 +11,4 @@ option('profile',
 	choices: ['default', 'development'],
 	value: 'default',
 	description: 'Build with default or development App Id.')
+option('tests', type: 'boolean', value: true, description: 'Enable tests')

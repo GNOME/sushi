@@ -1,3 +1,4 @@
 .flatpak-builder/
 node_modules/
 .eslintcache
+subprojects/jasmine-gjs
