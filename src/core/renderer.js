@@ -21,6 +21,9 @@ export const resolveRelativePath = (url, filename) => GLib.Uri.resolve_relative(
     url, filename, GLib.UriFlags.NONE
 );
 
+/** Note: This is part of the stable plugin API. Only change it in backwards-compatible ways. */
+export class RendererUnavailableError extends Error { }
+
 // We can't use private elements for the `Renderer` because it's not really a parent
 // class of the implementors. gjs only copies over the properties and functions.
 

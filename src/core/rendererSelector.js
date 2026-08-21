@@ -7,7 +7,7 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
-import {resolveRelativePath} from './renderer.js';
+import {resolveRelativePath, RendererUnavailableError} from './renderer.js';
 import {isGLibError} from '../util/error.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
 import {SYSTEM_PLUGIN_DIRECTORY} from '../config.js';
@@ -60,7 +60,8 @@ const loadRendererModule = async uri => {
     try {
         return await import(uri);
     } catch (error) {
-        console.error(`failed to load renderer '${uri}': ${error}`);
+        if (!(error instanceof RendererUnavailableError))
+            console.error(`failed to load renderer '${uri}': ${error}`);
         return [];
     }
 };

@@ -10,25 +10,20 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 
+import {Renderer, RendererUnavailableError} from '../core/renderer.js';
 import {registerWebProcessExtension} from '../util/webProcessExtensions.js';
-
-Gio._promisify(Gtk.UriLauncher.prototype, 'launch', 'launch_finish');
-Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
 
 let WebKit;
 try {
     WebKit = (await import('gi://WebKit?version=6.0')).default;
-} catch {
-    /* ignored */
+} catch (error) {
+    throw new RendererUnavailableError('Failed to import WebKit', {cause: error});
 }
 
-function _isAvailable() {
-    return WebKit !== undefined;
-}
+Gio._promisify(Gtk.UriLauncher.prototype, 'launch', 'launch_finish');
+Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
 
-import {Renderer} from '../core/renderer.js';
-
-export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
+export const Klass = class HTMLRenderer extends Gtk.Box {
     static {
         GObject.registerClass({
             Implements: [Renderer],
@@ -128,11 +123,11 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
     get topBarStyle() {
         return Adw.ToolbarStyle.RAISED_BORDER;
     }
-} : undefined;
+};
 
-export const contentTypes = _isAvailable() ? ['text/html', 'application/xhtml+xml'] : [];
+export const contentTypes = ['text/html', 'application/xhtml+xml'];
 
-const ALLOWED_STOCK_ACTIONS = _isAvailable() ? new Set([
+const ALLOWED_STOCK_ACTIONS = new Set([
     WebKit.ContextMenuAction.NO_ACTION,
     WebKit.ContextMenuAction.OPEN_LINK_IN_NEW_WINDOW,
     WebKit.ContextMenuAction.COPY_LINK_TO_CLIPBOARD,
@@ -169,7 +164,7 @@ const ALLOWED_STOCK_ACTIONS = _isAvailable() ? new Set([
     WebKit.ContextMenuAction.MEDIA_MUTE,
     WebKit.ContextMenuAction.INSERT_EMOJI,
     WebKit.ContextMenuAction.PASTE_AS_PLAIN_TEXT,
-]) : new Set();
+]);
 
 /** @param {WebKit.ContextMenuItem} item
  *  @returns {boolean} */
