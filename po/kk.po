@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-25 15:04+0000\n"
-"PO-Revision-Date: 2026-07-30 11:29+0500\n"
+"POT-Creation-Date: 2026-08-20 16:43+0000\n"
+"PO-Revision-Date: 2026-08-21 22:02+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk@li.org>\n"
 "Language: kk\n"
@@ -58,10 +58,6 @@ msgstr "алдын ала қарау"
 msgid "Preview Failed"
 msgstr "Алдын ала қарау сәтсіз аяқталды"
 
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "image-missing-symbolic"
-
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "Толық қате хабарламасын көшіру"
@@ -82,32 +78,47 @@ msgstr "Жекелігіңізді қорғау үшін қашықтағы ма
 msgid "_Show Remote Content"
 msgstr "Қашықтағы мазмұнды _көрсету"
 
-#: src/ui/mainWindow.blp:20
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Толық экранға өту/одан шығу"
+
+#: src/ui/mainWindow.blp:23
 msgid "Open"
 msgstr "Ашу"
 
-#: src/viewers/audio.js:258
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Алдыңғы парақ"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Келесі парақ"
+
+#: src/viewers/audio.js:272
 msgid "by"
 msgstr "орындайтын"
 
-#: src/viewers/audio.js:263
+#: src/viewers/audio.js:277
 msgid "from"
 msgstr "альбомнан"
 
-#: src/viewers/fallback.js:191
+#: src/viewers/fallback.js:186
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d нәрсе"
 
-#: src/viewers/fallback.js:196
+#: src/viewers/fallback.js:191
 msgid "Empty"
 msgstr "Бос"
 
-#: src/viewers/pdf.js:136
+#: src/viewers/pdf.js:129
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d, барлығы %d"
+
+#~ msgid "image-missing-symbolic"
+#~ msgstr "image-missing-symbolic"
 
 #~ msgid "Type"
 #~ msgstr "Түрі"
