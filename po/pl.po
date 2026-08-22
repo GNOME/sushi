@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-07-25 15:04+0000\n"
-"PO-Revision-Date: 2026-07-28 11:24+0200\n"
+"POT-Creation-Date: 2026-08-20 16:43+0000\n"
+"PO-Revision-Date: 2026-08-04 13:30+0200\n"
 "Last-Translator: Marcel Mrówka <micro.mail88@gmail.com>\n"
 "Language-Team: Polish <https://l10n.gnome.org/teams/pl/>\n"
 "Language: pl\n"
@@ -34,7 +34,7 @@ msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi to program do podglądu plików dla środowiska GNOME. Jest niezależnym "
+"Sushi to aplikacja do podglądu plików dla środowiska GNOME. Jest niezależnym "
 "składnikiem integrującym się z Menedżerem plików GNOME (Nautilus)."
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
@@ -61,10 +61,6 @@ msgstr "podgląd"
 msgid "Preview Failed"
 msgstr "Wyświetlanie poglądu się nie powiodło"
 
-#: src/ui/error.blp:7
-msgid "image-missing-symbolic"
-msgstr "image-missing-symbolic"
-
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
 msgstr "Skopiuj cały komunikat błędu"
@@ -85,19 +81,31 @@ msgstr "Zablokowano zawartość zdalną, w celu chronienia prywatności"
 msgid "_Show Remote Content"
 msgstr "_Wyświetl zawartość zdalną"
 
-#: src/ui/mainWindow.blp:20
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Przełącz tryb pełnoekranowy"
+
+#: src/ui/mainWindow.blp:23
 msgid "Open"
 msgstr "Otwórz"
 
-#: src/viewers/audio.js:258
-msgid "by"
-msgstr " "
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Poprzednia strona"
 
-#: src/viewers/audio.js:263
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Następna strona"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "od"
+
+#: src/viewers/audio.js:277
 msgid "from"
 msgstr "z"
 
-#: src/viewers/fallback.js:191
+#: src/viewers/fallback.js:186
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -105,11 +113,14 @@ msgstr[0] "%d element"
 msgstr[1] "%d elementy"
 msgstr[2] "%d elementów"
 
-#: src/viewers/fallback.js:196
+#: src/viewers/fallback.js:191
 msgid "Empty"
 msgstr "Puste"
 
-#: src/viewers/pdf.js:136
+#: src/viewers/pdf.js:129
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d z %d"
+
+#~ msgid "image-missing-symbolic"
+#~ msgstr "image-missing-symbolic"
