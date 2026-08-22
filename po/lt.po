@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-04-28 15:56+0000\n"
-"PO-Revision-Date: 2026-08-10 22:04+0300\n"
+"POT-Creation-Date: 2026-08-20 16:43+0000\n"
+"PO-Revision-Date: 2026-08-22 16:33+0300\n"
 "Last-Translator: Aurimas Černius <aurimas.cernius@mailo.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -57,11 +57,55 @@ msgstr "peržiūros rodinys"
 msgid "preview"
 msgstr "peržiūra"
 
-#: src/ui/fallbackRenderer.js:244
-msgid "Type"
-msgstr "Tipas"
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Peržiūra nepavyko"
 
-#: src/ui/fallbackRenderer.js:254
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Kopijuoti visą klaidos pranešimą"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Dydis"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Pakeista"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Nuotolinis turinys yra blokuojamas jūsų privatumui apsaugoti"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Rodyti nuotolinį turinį"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Perjungti visą ekraną"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "Atverti"
+
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Ankstesnis puslapis"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Kitas puslapis"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "atlieka"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "iš"
+
+#: src/viewers/fallback.js:186
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -69,46 +113,28 @@ msgstr[0] "%d elementas"
 msgstr[1] "%d elementai"
 msgstr[2] "%d elementų"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Empty Folder"
-msgstr "Tuščias aplankas"
+#: src/viewers/fallback.js:191
+msgid "Empty"
+msgstr "Tuščia"
 
-#: src/ui/fallbackRenderer.js:263
-msgid "Size"
-msgstr "Dydis"
-
-#: src/ui/fallbackRenderer.js:269
-msgid "Modified"
-msgstr "Pakeista"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Nepavyko parodyti %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:358
-#, javascript-format
-msgid "Open With %s"
-msgstr "Atverti su %s"
-
-#: src/ui/mainWindow.js:364
-msgid "Open"
-msgstr "Atverti"
-
-#: src/viewers/audio.js:401
-msgid "from"
-msgstr "iš"
-
-#: src/viewers/audio.js:406
-msgid "by"
-msgstr "atlieka"
-
-#: src/viewers/evince.js:111
+#: src/viewers/pdf.js:129
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d iš %d"
+
+#~ msgid "Type"
+#~ msgstr "Tipas"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Tuščias aplankas"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Nepavyko parodyti %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Atverti su %s"
 
 #~ msgid "Client decoration"
 #~ msgstr "Kliento apipavidalinimas"
