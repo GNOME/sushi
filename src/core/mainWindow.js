@@ -111,18 +111,12 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     presentWhenReady() {
-        if (!this.visible) {
-            // Window is shown for the first time
-            this.#presentWhenReady();
-        } else {
+        if (this.visible) {
             this.#recentlyReceivedFocus = true;
             this.present();
-        }
-    }
-
-    #presentWhenReady() {
-        if (!this.#presentTimeoutId.added) {
-            this.#presentTimeoutId.timeoutAddOnce(
+        } else {
+            // Window is shown for the first time
+            this.#presentTimeoutId.ensureTimeout(
                 GLib.G_PRIORITY_HIGH,
                 ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
                 () => this.present());
@@ -322,15 +316,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             this._mainStack.remove(previousWidget);
     }
 
-    _startDelayedSpinner() {
-        if (this.#spinnerDelayId.added)
-            return;
-        this.#spinnerDelayId.timeoutAddOnce(
-            GLib.PRIORITY_DEFAULT_IDLE,
-            ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
-            () => this.#setDisplayedWidget(this._spinner));
-    }
-
     #embedRenderer() {
         this.#unsetReadyHandleId();
         this.#spinnerDelayId.remove();
@@ -371,7 +356,10 @@ export class MainWindow extends Adw.ApplicationWindow {
         if (isRendererReady(renderer)) {
             this.#embedRenderer();
         } else {
-            this._startDelayedSpinner();
+            this.#spinnerDelayId.ensureTimeout(
+                GLib.PRIORITY_DEFAULT_IDLE,
+                ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
+                () => this.#setDisplayedWidget(this._spinner));
             this.#readyHandleId = renderer.connect_object(
                 'ready',
                 () => this.#embedRenderer(),

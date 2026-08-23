@@ -26,6 +26,15 @@ export class SourceId {
         this.replace(GLib.timeout_add(priority, interval, wrapper));
     }
 
+    /** Adds a timeout if not is already set. See `timeoutAddOnce`.
+     *  @param {number} priority
+     *  @param {number} interval
+     *  @param {() => boolean} fn */
+    ensureTimeout(priority, interval, fn) {
+        if (this.#id === 0)
+            this.timeoutAddOnce(priority, interval, fn)
+    }
+
     /** @param {number} id */
     replace(id) {
         this.remove();
