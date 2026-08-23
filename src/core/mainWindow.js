@@ -143,13 +143,11 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #setupErrorHandling(fileInfo) {
-        if (!(this.#renderer instanceof ErrorRenderer)) {
-            this.#errorHandleId = this.#renderer.connect_object(
-                'failed',
-                (renderer, err) => this._reportError(err, fileInfo),
-                this, GObject.ConnectFlags.DEFAULT
-            );
-        }
+        this.#errorHandleId = this.#renderer.connect_object(
+            'failed',
+            (renderer, err) => this._reportError(err, fileInfo),
+            this, GObject.ConnectFlags.DEFAULT
+        );
     }
 
     #onRealize = () => {
@@ -191,6 +189,11 @@ export class MainWindow extends Adw.ApplicationWindow {
     /** @param {GLib.Error} error
      *  @param {Gio.FileInfo|undefined} fileInfo */
     _reportError(error, fileInfo) {
+        if (this.#renderer instanceof ErrorRenderer) {
+            console.warn(error?.message ?? "ErrorRenderer encountered error");
+            // ignore errors in error handler to avoid recursion
+            return;
+        }
         this.#unsetErrorHandleId();
         if (isCancelledError(error))
             return;
