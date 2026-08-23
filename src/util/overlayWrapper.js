@@ -4,20 +4,21 @@
  * Authors: Peter Eisenmann <p3732@getgoogleoff.me>
  */
 
+import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
 
-export class OverlayWrapper extends Gtk.Overlay {
+export class OverlayWrapper extends Adw.Bin {
     static {
         GObject.registerClass({
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/overlayWrapper.ui',
-            InternalChildren: ['revealer'],
+            InternalChildren: ['revealer', 'overlay'],
         }, this);
     }
 
     constructor(renderer, overlay, hoverManager) {
-        super({child: renderer});
+        super();
 
+        this._overlay.set_child(renderer);
         this._revealer.set_child(overlay);
 
         hoverManager.setRevealer(this._revealer);
