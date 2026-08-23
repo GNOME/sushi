@@ -17,7 +17,7 @@ import {HoverManager} from '../util/hoverManager.js';
 import {OverlayWrapper} from '../util/overlayWrapper.js';
 import {selectRenderer} from './rendererSelector.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
-import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
+import {Renderer, getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
 import {setupActions} from '../util/action.js';
 import {isCancelledError} from '../util/error.js';
 import {SourceId} from '../util/source.js';
@@ -50,10 +50,9 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #renderer = null;
+    #rendererSignals = new GObject.SignalGroup({targetType: Renderer});
     #fileInfo = null;
-    #errorHandleId = 0;
     #surfaceScaleNotifyHandleId = 0;
-    #readyHandleId = 0;
     #requestedDefaultWidth = MIN_WIDTH;
     #requestedDefaultHeight = MIN_HEIGHT;
     #scaledByUser = false;
@@ -80,6 +79,8 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._file = null;
 
         this._animating = 0;
+        this.#rendererSignals.connect_closure('ready', () => this.#embedRenderer(), false);
+        this.#rendererSignals.connect_closure('failed', (_, err) => this._reportError(err), false);
 
         this._hoverManager = new HoverManager(this._toolbar_view, this._titlebar);
 
@@ -128,28 +129,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             this.#presentTimeoutId.remove();
     };
 
-    #unsetErrorHandleId() {
-        if (this.#errorHandleId !== 0) {
-            this.#renderer.disconnect(this.#errorHandleId);
-            this.#errorHandleId = 0;
-        }
-    }
-
-    #unsetReadyHandleId() {
-        if (this.#readyHandleId !== 0) {
-            this.#renderer.disconnect(this.#readyHandleId);
-            this.#readyHandleId = 0;
-        }
-    }
-
-    #setupErrorHandling() {
-        this.#errorHandleId = this.#renderer.connect_object(
-            'failed',
-            (renderer, err) => this._reportError(err),
-            this, GObject.ConnectFlags.DEFAULT
-        );
-    }
-
     #onRealize = () => {
         const surface = this.get_native()?.get_surface();
         if (surface != null) {
@@ -192,7 +171,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             // ignore errors in error handler to avoid recursion
             return;
         }
-        this.#unsetErrorHandleId();
         if (isCancelledError(error))
             return;
         this.#loadRenderer(new ErrorRenderer(error));
@@ -317,7 +295,6 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #embedRenderer() {
-        this.#unsetReadyHandleId();
         this.#spinnerDelayId.remove();
 
         const toolbar = getRendererToolbar(this.#renderer);
@@ -336,8 +313,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #cleanupRenderer() {
-        this.#unsetErrorHandleId();
-        this.#unsetReadyHandleId();
+        this.#rendererSignals.set_target(null);
         stopRenderer(this.#renderer);
     }
 
@@ -351,7 +327,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             this._file.get_uri();
         this.set_title(title);
 
-        this.#setupErrorHandling();
+        this.#rendererSignals.set_target(this.#renderer);
 
         if (isRendererReady(renderer)) {
             this.#embedRenderer();
@@ -360,11 +336,6 @@ export class MainWindow extends Adw.ApplicationWindow {
                 GLib.PRIORITY_DEFAULT_IDLE,
                 ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
                 () => this.#setDisplayedWidget(this._spinner));
-            this.#readyHandleId = renderer.connect_object(
-                'ready',
-                () => this.#embedRenderer(),
-                this, GObject.ConnectFlags.DEFAULT
-            );
         }
     }
 
