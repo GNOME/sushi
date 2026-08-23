@@ -15,6 +15,7 @@ Noteworthy functions of `Renderer` are:
 * `get cancellable` - provides a cancellable that will be cancelled if the previewer closes
 * `markReady` - call to communicate the previewer is ready to be displayed
 * `markInitialized` - call to communicate that previewer was created (not needed when `markReady` is already called)
+* `markFailed` - call with a GLib.Error as a parameter, to communicate the previewer encountered an error
 
 Additionally, `Renderer` has overridable methods that get called at appropriate times:
 * `stop` - To stop animations or media streams

@@ -44,7 +44,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         else if (Klass.convertLibreoffice)
             Klass.convertLibreoffice(this, file);
         else
-            this.emit('error', new GLib.Error('Unhandled document type'));
+            this.markFailed(new GLib.Error('Unhandled document type'));
 
         this._defineActions();
 
@@ -85,7 +85,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
             // which gets converted to an exception by GJS.
             job.is_succeeded();
         } catch (error) {
-            this.emit('error', error);
+            this.markFailed(error);
             return;
         }
 

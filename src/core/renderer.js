@@ -24,7 +24,8 @@ export const resolveRelativePath = (url, filename) => GLib.Uri.resolve_relative(
 // We can't use private elements for the `Renderer` because it's not really a parent
 // class of the implementors. gjs only copies over the properties and functions.
 
-/** @type {WeakMap<any, boolean>} */
+/** @type {WeakMap<any, boolean>}
+ * Tri-state: true -> ready, false -> stopped/failed, no entry -> not ready */
 const ready = new WeakMap();
 /** @type {WeakMap<any, Gio.Cancellable>} */
 const cancellable = new WeakMap();
@@ -53,7 +54,7 @@ export class Renderer extends GObject.Interface {
         GObject.registerClass({
             Requires: [Gtk.Widget],
             Signals: {
-                'error': {param_types: [GLib.Error.$gtype]},
+                'failed': {param_types: [GLib.Error.$gtype]},
                 'ready': {param_types: []},
             },
         }, this);
@@ -64,6 +65,16 @@ export class Renderer extends GObject.Interface {
     /** @returns {Gio.Cancellable} */
     get cancellable() {
         return getCancellable(this);
+    }
+
+    markFailed(error) {
+        if (ready.get(this) === false) {
+            // Prevent overwriting of previous error, but log error still
+            console.error(`Failed renderer failed again with "${error?.message ?? '[Unknown]'}"`);
+            return;
+        }
+        stopRenderer(this);
+        this.emit('failed', error);
     }
 
     markInitialized() {
@@ -81,7 +92,7 @@ export class Renderer extends GObject.Interface {
     }
 
     markReady() {
-        if (this.cancellable.is_cancelled() || ready.get(this))
+        if (this.cancellable.is_cancelled() || ready.get(this) !== undefined)
             return;
         this.markInitialized();
         ready.set(this, true);
@@ -179,16 +190,12 @@ export const isRendererReady = renderer => {
 
 /** @param {Renderer|null|undefined} renderer */
 export const stopRenderer = renderer => {
-    if (!renderer)
+    if (!renderer || ready.get(renderer) === false)
         return;
+    ready.set(renderer, false);
     getCancellable(renderer).cancel();
     renderer.stop();
 };
-
-/** @param {Renderer} renderer
- *  @returns {boolean} */
-export const isRendererStopped = renderer =>
-    getCancellable(renderer).is_cancelled();
 
 /** @param {Renderer} renderer
  *  @returns {Gio.Cancellable} */

@@ -17,7 +17,7 @@ import {HoverManager} from '../util/hoverManager.js';
 import {OverlayWrapper} from '../util/overlayWrapper.js';
 import {selectRenderer} from './rendererSelector.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
-import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize, isRendererStopped} from './renderer.js';
+import {getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
 import {setupActions} from '../util/action.js';
 import {isCancelledError} from '../util/error.js';
 import {SourceId} from '../util/source.js';
@@ -151,8 +151,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     #setupErrorHandling(fileInfo) {
         if (!(this.#renderer instanceof ErrorRenderer)) {
             this.#errorHandleId = this.#renderer.connect_object(
-                'error',
-                (renderer, err) => this._reportError(err, fileInfo, renderer),
+                'failed',
+                (renderer, err) => this._reportError(err, fileInfo),
                 this, GObject.ConnectFlags.DEFAULT
             );
         }
@@ -195,16 +195,11 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     /** @param {GLib.Error} error
-     *  @param {Gio.FileInfo|undefined} fileInfo
-     *  @param {import('./renderer.js').Renderer|undefined} renderer */
-    _reportError(error, fileInfo, renderer) {
+     *  @param {Gio.FileInfo|undefined} fileInfo */
+    _reportError(error, fileInfo) {
         this.#unsetErrorHandleId();
         if (isCancelledError(error))
             return;
-        if (renderer && isRendererStopped(renderer)) {
-            console.warn('error from stopped renderer', error);
-            return;
-        }
         this.#loadRenderer(new ErrorRenderer(error), fileInfo);
     }
 

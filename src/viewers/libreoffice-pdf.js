@@ -11,8 +11,8 @@ PdfRenderer.convertLibreoffice = (renderer, file) => {
         try {
             const convertedFile = Sushi.convert_libreoffice_finish(res);
             renderer._loadFile(convertedFile);
-        } catch (e) {
-            renderer.emit('error', e);
+        } catch (error) {
+            renderer.markFailed(error);
         }
     });
 };

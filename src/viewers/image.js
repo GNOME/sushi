@@ -44,7 +44,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         });
 
         this._loadFile(file)
-            .catch(error => this.emit('error', error));
+            .catch(error => this.markFailed(error));
 
         const click_handler = new Gtk.GestureClick();
         click_handler.connect_object(

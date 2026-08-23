@@ -72,7 +72,7 @@ export const Klass = class TextRenderer extends Adw.Bin {
         // and cancelling this one works in a reasonable time.
         loader
             .load_async(GLib.PRIORITY_DEFAULT_IDLE, this.cancellable, null)
-            .catch(error => this.emit('error', error));
+            .catch(error => this.markFailed(error));
 
         return buffer;
     }
