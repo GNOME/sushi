@@ -50,6 +50,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #renderer = null;
+    #fileInfo = null;
     #errorHandleId = 0;
     #surfaceScaleNotifyHandleId = 0;
     #readyHandleId = 0;
@@ -77,7 +78,6 @@ export class MainWindow extends Adw.ApplicationWindow {
 
         this._fileQueryCancellable = null;
         this._file = null;
-        this._fileIsFolder = false;
 
         this._animating = 0;
 
@@ -142,10 +142,10 @@ export class MainWindow extends Adw.ApplicationWindow {
         }
     }
 
-    #setupErrorHandling(fileInfo) {
+    #setupErrorHandling() {
         this.#errorHandleId = this.#renderer.connect_object(
             'failed',
-            (renderer, err) => this._reportError(err, fileInfo),
+            (renderer, err) => this._reportError(err),
             this, GObject.ConnectFlags.DEFAULT
         );
     }
@@ -186,18 +186,16 @@ export class MainWindow extends Adw.ApplicationWindow {
             return '';
     }
 
-    /** @param {GLib.Error} error
-     *  @param {Gio.FileInfo|undefined} fileInfo */
-    _reportError(error, fileInfo) {
+    /** @param {GLib.Error} error */
+    _reportError(error) {
         if (this.#renderer instanceof ErrorRenderer) {
-            console.warn(error?.message ?? "ErrorRenderer encountered error");
             // ignore errors in error handler to avoid recursion
             return;
         }
         this.#unsetErrorHandleId();
         if (isCancelledError(error))
             return;
-        this.#loadRenderer(new ErrorRenderer(error), fileInfo);
+        this.#loadRenderer(new ErrorRenderer(error));
     }
 
     /** @returns {[number, number]} */
@@ -302,12 +300,11 @@ export class MainWindow extends Adw.ApplicationWindow {
             Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT,
             this._fileQueryCancellable,
             (obj, res) => {
-                let fileInfo;
                 try {
-                    fileInfo = obj.query_info_finish(res);
-                    this._createView(fileInfo);
+                    this.#fileInfo = obj.query_info_finish(res);
+                    this._createView();
                 } catch (e) {
-                    this._reportError(e, fileInfo);
+                    this._reportError(e);
                 }
             });
     }
@@ -345,16 +342,16 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     /** @param {import('./renderer.js').Renderer} renderer */
-    #loadRenderer(renderer, fileInfo) {
+    #loadRenderer(renderer) {
         this.#cleanupRenderer();
         this.#renderer = renderer;
 
-        const title = fileInfo?.get_display_name() ??
+        const title = this.#fileInfo?.get_display_name() ??
             this._file.get_basename() ??
             this._file.get_uri();
         this.set_title(title);
 
-        this.#setupErrorHandling(fileInfo);
+        this.#setupErrorHandling();
 
         if (isRendererReady(renderer)) {
             this.#embedRenderer();
@@ -372,19 +369,18 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     /** @param {Gio.FileInfo} fileInfo */
-    _createView(fileInfo) {
-        const content_type = fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
-            ? fileInfo.get_content_type()
-            : fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
+    _createView() {
+        const content_type = this.#fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
+            ? this.#fileInfo.get_content_type()
+            : this.#fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
         const renderer = content_type
-            ? new (selectRenderer(content_type))(this._file, fileInfo)
-            : new FallbackRenderer(this._file, fileInfo);
-        this.#loadRenderer(renderer, fileInfo);
-        this._fileIsFolder = fileInfo.get_file_type() === Gio.FileType.DIRECTORY;
+            ? new (selectRenderer(content_type))(this._file, this.#fileInfo)
+            : new FallbackRenderer(this._file, this.#fileInfo);
+        this.#loadRenderer(renderer);
     }
 
     #openFile() {
-        if (this._fileIsFolder) {
+        if (this.#fileInfo?.get_file_type() === Gio.FileType.DIRECTORY) {
             this.get_application().activate_action('navigate', null);
             return;
         }
