@@ -99,7 +99,7 @@ export class HoverManager {
     }
 
     #resetTimeout() {
-        this.#revealTimeoutId.timeoutAddOnce(
+        this.#revealTimeoutId.addTimeout(
             GLib.PRIORITY_DEFAULT,
             1500,
             () => this._setRevealed(false));
