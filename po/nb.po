@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi 3.38.x\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:35+0000\n"
-"PO-Revision-Date: 2021-01-13 15:09+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-24 08:46+0000\n"
+"PO-Revision-Date: 2026-08-24 21:13+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: nb\n"
@@ -17,68 +17,102 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Gir mulighet for å vise forskjellige typer filer raskt"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
-msgstr "Sushi gjør forhåndsvisning av filer for GNOME skrivebordsmiljøet. Det er en uavhengig komponent som integrerer med GNOME file (Nautilus)."
+msgstr ""
+"Sushi gjør forhåndsvisning av filer for GNOME skrivebordsmiljøet. Det er en "
+"uavhengig komponent som integrerer med GNOME file (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Type"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "vis"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "forhåndsviser"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "forhåndsvis"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Forhåndsvisning feilet"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Kopier full feilmelding"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Størrelse"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Endret"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Eksternt innhold er blokkert av hensyn til ditt personvern"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "Vi_s eksternt innhold"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Slå av/på fullskjerm"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "Åpne"
+
+#: src/ui/pdf.blp:48
+msgid "Previous Page"
+msgstr "Forrige side"
+
+#: src/ui/pdf.blp:70
+msgid "Next Page"
+msgstr "Neste side"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "av"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "fra"
+
+#: src/viewers/fallback.js:186
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d oppføring"
 msgstr[1] "%d oppføringer"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Tom mappe"
+#: src/viewers/fallback.js:191
+msgid "Empty"
+msgstr "Tom"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Størrelse"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Endret"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Kan ikke vise %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Åpne med %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Åpne"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "fra"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "av"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:130
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d av %d"
