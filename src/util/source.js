@@ -16,7 +16,7 @@ export class SourceId {
      *  The source is removed after one invocation.
      *  @param {number} priority
      *  @param {number} interval
-     *  @param {() => boolean} fn */
+     *  @param {() => void} fn */
     addTimeout(priority, interval, fn) {
         const wrapper = () => {
             fn();
@@ -29,7 +29,7 @@ export class SourceId {
     /** Adds a timeout if not is already set. See `addTimeout`.
      *  @param {number} priority
      *  @param {number} interval
-     *  @param {() => boolean} fn */
+     *  @param {() => void} fn */
     ensureTimeout(priority, interval, fn) {
         if (this.#id === 0)
             this.addTimeout(priority, interval, fn);
