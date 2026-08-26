@@ -13,6 +13,7 @@ template $Gjs_PdfRenderer: Adw.Bin {
 
         continuous: true;
         sizing-mode: fit_width;
+        page-changed => $_updatePageLabel();
       };
 
       annotations-context: PapersView.AnnotationsContext {

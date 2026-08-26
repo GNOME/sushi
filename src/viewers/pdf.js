@@ -94,11 +94,6 @@ export const Klass = class PdfRenderer extends Adw.Bin {
 
         this._model.set_document(document);
 
-        this._model.connect_object(
-            'page-changed',
-            () => this._updatePageLabel(this._model),
-            this, GObject.ConnectFlags.DEFAULT
-        );
         this._updatePageLabel(this._model);
         this.markReady();
     }
