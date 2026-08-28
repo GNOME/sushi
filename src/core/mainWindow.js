@@ -162,7 +162,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             return '';
     }
 
-    /** @param {GLib.Error} error */
+    /** @param {any} error */
     _reportError(error) {
         if (this.#renderer instanceof ErrorRenderer) {
             // ignore errors in error handler to avoid recursion
