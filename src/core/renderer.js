@@ -54,7 +54,7 @@ export class Renderer extends GObject.Interface {
         GObject.registerClass({
             Requires: [Gtk.Widget],
             Signals: {
-                'failed': {param_types: [GLib.Error.$gtype]},
+                'failed': {param_types: [Object.$gtype]},
                 'ready': {param_types: []},
             },
         }, this);
