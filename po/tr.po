@@ -5,14 +5,14 @@
 # Muhammet Kara <muhammet.k@gmail.com>, 2011.
 # Necdet Yücel <necdetyucel@gmail.com>, 2014.
 # Sabri Ünal <libreajans@gmail.com>, 2019.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2021.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2021, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2023-07-02 13:36+0000\n"
-"PO-Revision-Date: 2021-02-22 10:56+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-27 08:50+0000\n"
+"PO-Revision-Date: 2026-08-28 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -23,15 +23,15 @@ msgstr ""
 "X-Generator: Poedit 2.4.2\n"
 "X-POOTLE-MTIME: 1415555003.000000\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Değişik türdeki dosyaları hızlıca görüntülemeyi sağlar"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -39,53 +39,85 @@ msgstr ""
 "Sushi, GNOME masaüstü ortamı için dosya ön izleyicidir. GNOME Dosyalar "
 "(Nautilus) ile tümleşen bağımsız bileşendir."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Tür"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "görüntüle"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "ön izleyici"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "ön izle"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Ön İzleme Başarısız"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Tüm Hata İletisini Kopyala"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Boyut"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Değiştirilme"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Gizliliğinizi korumak için uzak içerik engellendi"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "Uzak İçeriği _Göster"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "Tam Ekranı Değiştir"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "Aç"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "Önceki Sayfa"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "Sonraki Sayfa"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "Sanatçı:"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "Albüm:"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d öge"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Boş Klasör"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "Boş"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Boyut"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Değiştirilme"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "%s gösterilemiyor"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:358
-#, javascript-format
-msgid "Open With %s"
-msgstr "%s İle Aç"
-
-#: src/ui/mainWindow.js:364
-msgid "Open"
-msgstr "Aç"
-
-#: src/viewers/audio.js:401
-msgid "from"
-msgstr "Albüm:"
-
-#: src/viewers/audio.js:406
-msgid "by"
-msgstr "Sanatçı:"
-
-#: src/viewers/evince.js:103
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d / %d"
