@@ -7,10 +7,10 @@
 import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 
-export class OverlayWrapper extends Adw.Bin {
+export class RendererWrapper extends Adw.Bin {
     static {
         GObject.registerClass({
-            Template: 'resource:///org/gnome/NautilusPreviewer/ui/overlayWrapper.ui',
+            Template: 'resource:///org/gnome/NautilusPreviewer/ui/rendererWrapper.ui',
             InternalChildren: ['revealer', 'overlay'],
         }, this);
     }

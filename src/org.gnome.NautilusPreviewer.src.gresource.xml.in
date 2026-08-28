@@ -15,7 +15,6 @@
     <file>util/development.js</file>
     <file>util/error.js</file>
     <file>util/hoverManager.js</file>
-    <file>util/overlayWrapper.js</file>
     <file>util/source.js</file>
     <file>util/webProcessExtensions.js</file>
     <file>viewers/audio.js</file>
@@ -30,6 +29,7 @@
     <file>viewers/text.js</file>
     <file>viewers/video.js</file>
     <file>widgets/coverPaintable.js</file>
+    <file>widgets/rendererWrapper.js</file>
   </gresource>
   <gresource prefix="@fixed_object_path@">
     <file>plugin-api-1.js</file>
@@ -39,8 +39,8 @@
     <file>ui/fallback.ui</file>
     <file>ui/html.ui</file>
     <file>ui/mainWindow.ui</file>
-    <file>ui/overlayWrapper.ui</file>
     <file>ui/pdf.ui</file>
+    <file>ui/rendererWrapper.ui</file>
     <file>ui/text.ui</file>
     <file>ui/video.ui</file>
   </gresource>

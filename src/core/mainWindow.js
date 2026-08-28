@@ -14,7 +14,7 @@ import GObject from 'gi://GObject';
 import {ErrorRenderer} from '../viewers/error.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
 import {HoverManager} from '../util/hoverManager.js';
-import {OverlayWrapper} from '../util/overlayWrapper.js';
+import {RendererWrapper} from '../widgets/rendererWrapper.js';
 import {selectRenderer} from './rendererSelector.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
 import {Renderer, getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
@@ -295,7 +295,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         const toolbar = getRendererToolbar(this.#renderer);
         let stackWidget = this.#renderer;
         if (toolbar)
-            stackWidget = new OverlayWrapper(this.#renderer, toolbar, this._hoverManager);
+            stackWidget = new RendererWrapper(this.#renderer, toolbar, this._hoverManager);
         else
             this._hoverManager.setRevealer(null);
         this._mainStack.add_child(stackWidget);
