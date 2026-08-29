@@ -13,6 +13,7 @@ export const ResizePolicy = Object.freeze({
     NAT_SIZE: 1,
     SCALED: 2,
     STATUS_PAGE: 3,
+    /** @deprecated Use {@link ResizePolicy.NAT_SIZE} instead and implement `GtkWidget.vfunc_measure`. */
     CUSTOM: 4,
 });
 
@@ -116,7 +117,8 @@ export class Renderer extends GObject.Interface {
         return ResizePolicy.MAX_SIZE;
     }
 
-    /** @returns {[number, number] | null} */
+    /** @deprecated Use {@link ResizePolicy.NAT_SIZE} instead and implement `GtkWidget.vfunc_measure`
+     *  @returns {[number, number] | null} */
     get customSize() {
         // customSize needs to be overridden for ResizePolicy.CUSTOM
         return null;
@@ -137,49 +139,6 @@ export class Renderer extends GObject.Interface {
 /** @param {Renderer} renderer */
 export const getRendererToolbar = renderer => {
     return toolbar.get(renderer);
-};
-
-/** @param {Renderer} renderer
- *  @param {[number, number]} maxSize
- *  @returns {[number, number]} */
-export const getRendererSize = (renderer, maxSize) => {
-    const rendererSize = renderer.get_preferred_size();
-    const natSize = [rendererSize[1].width, rendererSize[1].height];
-
-    switch (renderer.resizePolicy) {
-    case ResizePolicy.CUSTOM: {
-        const customSize = renderer.customSize;
-        if (!customSize) {
-            console.error('ResizePolicy programming error');
-            return [1, 1];
-        } else if (customSize[0] <= maxSize[0] && customSize[1] <= maxSize[1]) {
-            // no scaling needed
-            return customSize;
-        } else {
-            // scale by smaller ratio of width or height
-            const ratio = Math.min(maxSize[0] / customSize[0], maxSize[1] / customSize[1]);
-            return customSize.map(size => Math.floor(size * ratio));
-        }
-    }
-    case ResizePolicy.MAX_SIZE:
-        return maxSize;
-    case ResizePolicy.NAT_SIZE:
-        return natSize;
-    case ResizePolicy.SCALED:
-        if (natSize[0] <= maxSize[0] && natSize[1] <= maxSize[1]) {
-            // no scaling needed
-            return natSize;
-        } else {
-            // scale by smaller ratio of width or height
-            const ratio = Math.min(maxSize[0] / natSize[0], maxSize[1] / natSize[1]);
-            return natSize.map(size => Math.floor(size * ratio));
-        }
-    case ResizePolicy.STATUS_PAGE:
-        return [400, 420];
-    default:
-        console.warn(`Renderer uses unknown resize policy '${renderer.resizePolicy}'`);
-        return maxSize;
-    }
 };
 
 /** @param {Renderer} renderer
