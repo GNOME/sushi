@@ -1,3 +1,54 @@
+51.rc
+=====
+
+Enhancements:
+- Add Rename (`F2`) and Trash (`Del`) shortcuts (Peter Eisenmann)
+- Add `O` as a shortcut to open a file (Peter Eisenmann)
+- Open folders in currently previewed nautilus window (Peter Eisenmann)
+- Add play/pause (`P`) shortcut for audio and video (Peter Eisenmann)
+- Use dark background for videos (Peter Eisenmann)
+- Add foundry config (Tau Gärtli)
+- Resize window on changed scale factor (Tau Gärtli)
+
+Bug Fixes:
+- Fix playing animated images using glycin (Tau Gärtli)
+- Fix re-attaching dialog to nautilus after previously closing the window (Corey Berla)
+- Ignore errors from stopped/cancelled renderers (Tau Gärtli)
+- Fix HTML renderer without WebKit availability (Corey Berla)
+- Fix attaching open-with portal dialogs (Tau Gärtli)
+- Fix and rework user resizing detection (Tau Gärtli)
+- Avoid resizes on opening of window (Tau Gärtli)
+- Fix width/height ratio of image renderer (Tau Gärtli)
+- Don't scale up small images (Tau Gärtli)
+- Prefer Glycin over Papers to handle loading TIFF files (Tau Gärtli)
+- Fix long filenames making the window too wide (Tau Gärtli)
+
+Plugins:
+- Add example with UI file and shortcuts (Peter Eisenmann)
+- Add action group setup helper (Peter Eisenmann)
+- Add relative path resolving helper (Peter Eisenmann, Tau Gärtli)
+- Rename markReady/markInitialized API functions (Tau Gärtli)
+- Add explicit markFailed error API (Peter Eisenmann)
+- Remove ResizePolicy.CUSTOM, use ResizePolicy.SCALED instead (Tau Gärtli)
+
+Backend Changes:
+- Create RendererWrapper that handles overlays and GTK window size geometry (Tau Gärtli)
+- Use SignalGroup for renderer signals (Peter Eisenmann)
+- Add cyclic heap dumping development mechanism (Peter Eisenmann)
+- Rework content type matching, remove legacy generated type list (Peter Eisenmann)
+- Report (some) video stream errors (Peter Eisenmann)
+- Separate out LibreOffice conversion logic from pdf renderer (Peter Eisenmann)
+- Only initialize PapersDocument on demand (Peter Eisenmann)
+- Add an abstraction over GLib sources and connections (Tau Gärtli, Peter Eisenmann)
+- Fix various signal-related leaks (Peter Eisenmann, Tau Gärtli)
+- Port text UI to blueprint (Tau Gärtli)
+- Make private renderer fields inaccessible to renderers (Tau Gärtli)
+- Use correct wrap mode in text renderer (Corey Berla)
+- Improve error handling (Tau Gärtli)
+- Improve reactivity for large text files (Tau Gärtli)
+
+- Translation updates (GNOME Translation Project contributors)
+
 51.beta
 =======
 
