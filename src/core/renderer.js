@@ -7,6 +7,8 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
+import {isCancelledError} from '../util/error.js';
+
 /** Note: This constant is part of the stable plugin API. Only change it in backwards-compatible ways. */
 export const ResizePolicy = Object.freeze({
     MAX_SIZE: 0,
@@ -69,7 +71,8 @@ export class Renderer extends GObject.Interface {
     markFailed(error) {
         if (ready.get(this) === false) {
             // Prevent overwriting of previous error, but log error still
-            console.error(`Failed renderer failed again with "${error?.message ?? '[Unknown]'}"`);
+            if (!isCancelledError(error))
+                console.error(`Failed renderer failed again with "${error?.message ?? '[Unknown]'}"`);
             return;
         }
         stopRenderer(this);
