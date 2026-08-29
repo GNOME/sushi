@@ -17,7 +17,7 @@ import {HoverManager} from '../util/hoverManager.js';
 import {RendererWrapper} from '../widgets/rendererWrapper.js';
 import {selectRenderer} from './rendererSelector.js';
 import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/customIcon.js';
-import {Renderer, getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
+import {Renderer, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
 import {setupActions} from '../util/action.js';
 import {Connection} from '../util/connection.js';
 import {isCancelledError} from '../util/error.js';
@@ -292,12 +292,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     #embedRenderer() {
         this.#spinnerDelayId.remove();
 
-        const toolbar = getRendererToolbar(this.#renderer);
-        let stackWidget = this.#renderer;
-        if (toolbar)
-            stackWidget = new RendererWrapper(this.#renderer, toolbar, this._hoverManager);
-        else
-            this._hoverManager.setRevealer(null);
+        const stackWidget = new RendererWrapper(this.#renderer, this._hoverManager);
         this._mainStack.add_child(stackWidget);
         this.#setDisplayedWidget(stackWidget);
 

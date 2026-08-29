@@ -7,6 +7,8 @@
 import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 
+import {getRendererToolbar} from '../core/renderer.js';
+
 export class RendererWrapper extends Adw.Bin {
     static {
         GObject.registerClass({
@@ -15,12 +17,20 @@ export class RendererWrapper extends Adw.Bin {
         }, this);
     }
 
-    constructor(renderer, overlay, hoverManager) {
+    /** @param {import('../core/renderer').Renderer} renderer
+     *  @param {import('../util/hoverManager.js').HoverManager} hoverManager  */
+    constructor(renderer, hoverManager) {
         super();
 
-        this._overlay.set_child(renderer);
-        this._revealer.set_child(overlay);
-
-        hoverManager.setRevealer(this._revealer);
+        const toolbar = getRendererToolbar(renderer);
+        if (toolbar) {
+            this._overlay.set_child(renderer);
+            this._revealer.set_child(toolbar);
+            this.set_child(this._overlay);
+            hoverManager.setRevealer(this._revealer);
+        } else {
+            this.set_child(renderer);
+            hoverManager.setRevealer(null);
+        }
     }
 }
