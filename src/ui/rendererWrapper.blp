@@ -1,18 +1,18 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $Gjs_RendererWrapper: Adw.Bin {}
-
-Overlay overlay {
-  [overlay]
-  Revealer revealer {
-    halign: bind revealer.child as <Widget>.halign;
-    valign: bind revealer.child as <Widget>.valign;
-    margin-bottom: 12;
-    margin-top: 12;
-    margin-start: 12;
-    margin-end: 12;
-    reveal-child: true;
-    transition-type: crossfade;
-  }
+template $Gjs_RendererWrapper: Adw.Bin {
+  child: Overlay overlay {
+    [overlay]
+    Revealer revealer {
+      halign: bind revealer.child as <Widget>.halign;
+      valign: bind revealer.child as <Widget>.valign;
+      margin-bottom: 12;
+      margin-top: 12;
+      margin-start: 12;
+      margin-end: 12;
+      reveal-child: true;
+      transition-type: crossfade;
+    }
+  };
 }

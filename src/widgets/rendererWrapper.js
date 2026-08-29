@@ -36,13 +36,11 @@ export class RendererWrapper extends Adw.Bin {
         this.set_layout_manager(null);
 
         const toolbar = getRendererToolbar(renderer);
+        this._overlay.set_child(renderer);
         if (toolbar) {
-            this._overlay.set_child(renderer);
             this._revealer.set_child(toolbar);
-            this.set_child(this._overlay);
             hoverManager.setRevealer(this._revealer);
         } else {
-            this.set_child(renderer);
             hoverManager.setRevealer(null);
         }
     }
