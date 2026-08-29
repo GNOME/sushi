@@ -87,7 +87,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
 
     /** @param {number} delayInMilliseconds */
     #queueNextFrame(delayInMilliseconds) {
-        this.#nextFrameTimeout.timeoutAddOnce(GLib.PRIORITY_DEFAULT, delayInMilliseconds, () => {
+        this.#nextFrameTimeout.addTimeout(GLib.PRIORITY_DEFAULT, delayInMilliseconds, () => {
             this.#showNextFrame().catch(error => {
                 if (!isCancelledError(error))
                     console.warn('Failed to show next image frame', error);

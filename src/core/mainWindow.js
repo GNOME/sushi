@@ -246,7 +246,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             // sometimes not applied until the user hovers the window.
             // Setting the size again after a short delay fixes that.
             if (this.#recentlyReceivedFocus) {
-                this.#retrySetDefaultSizeTimeoutId.timeoutAddOnce(
+                this.#retrySetDefaultSizeTimeoutId.addTimeout(
                     GLib.G_PRIORITY_DEFAULT,
                     50,
                     () => this.set_default_size(this.#requestedDefaultWidth, this.#requestedDefaultHeight));
