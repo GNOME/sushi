@@ -21,17 +21,17 @@ export class RendererWrapper extends Adw.Bin {
 
     #renderer;
     #resizePolicy;
-    #getMaxSize;
+    #maxSize;
 
     /** @param {import('../core/renderer').Renderer} renderer
-     *  @param {() => [number, number]} getMaxSize
+     *  @param {[number, number]} maxSize
      *  @param {import('../util/hoverManager.js').HoverManager} hoverManager  */
-    constructor(renderer, getMaxSize, hoverManager) {
+    constructor(renderer, maxSize, hoverManager) {
         super();
 
         this.#renderer = renderer;
         this.#resizePolicy = renderer.resizePolicy; // cache the policy. changing it is not supported.
-        this.#getMaxSize = getMaxSize;
+        this.#maxSize = maxSize;
 
         this.set_layout_manager(null);
 
@@ -67,11 +67,11 @@ export class RendererWrapper extends Adw.Bin {
             return [-1, -1, -1, -1];
         switch (this.#resizePolicy) {
         case ResizePolicy.MAX_SIZE:
-            return measureMaxSize(child, orientation, this.#getMaxSize);
+            return measureMaxSize(child, orientation, this.#maxSize);
         case ResizePolicy.NAT_SIZE:
             return child.measure(orientation, forSize);
         case ResizePolicy.SCALED:
-            return measureScaledSize(child, orientation, this.#getMaxSize);
+            return measureScaledSize(child, orientation, this.#maxSize);
         case ResizePolicy.STATUS_PAGE:
             return measureStatusPage(child, orientation);
         default:
@@ -87,12 +87,12 @@ export class RendererWrapper extends Adw.Bin {
     }
 }
 
-const measureMaxSize = (child, orientation, getMaxSize) => {
+const measureMaxSize = (child, orientation, maxSize) => {
     const [childMin] = child.get_preferred_size();
     // by using `Math.max()` we ensure that min <= nat
     const nat = Math.max(
         getLength(childMin, orientation),
-        getMaxSize()[orientation]);
+        maxSize[orientation]);
     return [childMin[orientation], nat, -1, -1];
 };
 
@@ -105,12 +105,11 @@ const measureStatusPage = (child, orientation) => {
     return [min, nat, -1, -1];
 };
 
-const measureScaledSize = (child, orientation, getMaxSize) => {
+const measureScaledSize = (child, orientation, maxSize) => {
     const [childMinReq, childNatReq] = child.get_preferred_size();
     const childMin = [childMinReq.width, childMinReq.height];
     const childNat = [childNatReq.width, childNatReq.height];
-    const max = getMaxSize();
-    return getScaledSize(childMin, childNat, max, orientation);
+    return getScaledSize(childMin, childNat, maxSize, orientation);
 };
 
 const getScaledSize = (childMin, childNat, max, orientation) => {

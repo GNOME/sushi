@@ -171,7 +171,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     /** @returns {[number, number]} */
-    #getMaxSize = () => {
+    #getMaxSize() {
         const display = Gdk.Display.get_default();
         const surface = this.get_surface();
         const monitor = display.get_monitor_at_surface(surface);
@@ -289,7 +289,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     #embedRenderer() {
         this.#spinnerDelayId.remove();
 
-        const stackWidget = new RendererWrapper(this.#renderer, this.#getMaxSize, this._hoverManager);
+        const maxSize = this.#getMaxSize();
+        const stackWidget = new RendererWrapper(this.#renderer, maxSize, this._hoverManager);
         this._mainStack.add_child(stackWidget);
         this.#setDisplayedWidget(stackWidget);
 
