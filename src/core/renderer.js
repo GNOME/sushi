@@ -7,7 +7,7 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import {isCancelledError} from '../util/error.js';
+import {box, isCancelledError} from '../util/error.js';
 
 /** Note: This constant is part of the stable plugin API. Only change it in backwards-compatible ways. */
 export const ResizePolicy = Object.freeze({
@@ -76,7 +76,7 @@ export class Renderer extends GObject.Interface {
             return;
         }
         stopRenderer(this);
-        this.emit('failed', error);
+        this.emit('failed', box(error));
     }
 
     markInitialized() {

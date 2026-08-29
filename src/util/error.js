@@ -16,3 +16,11 @@ export const isCancelledError = error =>
 export const isGLibError = (error, domain, code) =>
     error instanceof GLib.Error &&
     error.matches(domain, code);
+
+/** @param {any} error
+ *  @returns {object} */
+export const box = error => Object(error);
+
+/** @param {object} error
+ *  @returns {any} */
+export const unbox = error => typeof error.valueOf === 'function' ? error.valueOf() : error;
