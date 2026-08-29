@@ -7,6 +7,8 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
+import {box} from '../util/error.js';
+
 /** Note: This constant is part of the stable plugin API. Only change it in backwards-compatible ways. */
 export const ResizePolicy = Object.freeze({
     MAX_SIZE: 0,
@@ -74,7 +76,7 @@ export class Renderer extends GObject.Interface {
             return;
         }
         stopRenderer(this);
-        this.emit('failed', error);
+        this.emit('failed', box(error));
     }
 
     markInitialized() {

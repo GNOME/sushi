@@ -24,7 +24,7 @@ export class ErrorRenderer extends Adw.Bin {
     constructor(error, constructProperties = {}) {
         super(constructProperties);
 
-        this._error_msg = error.message.trim();
+        this._error_msg = error?.message?.trim();
         this._statusPage.set_description(this.#getSummary(error));
 
         this.markReady();

@@ -20,7 +20,7 @@ import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/c
 import {Renderer, getRendererToolbar, isRendererReady, stopRenderer, getRendererSize} from './renderer.js';
 import {setupActions} from '../util/action.js';
 import {Connection} from '../util/connection.js';
-import {isCancelledError} from '../util/error.js';
+import {isCancelledError, unbox} from '../util/error.js';
 import {SourceId} from '../util/source.js';
 
 Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
@@ -167,7 +167,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         }
         if (isCancelledError(error))
             return;
-        this.#loadRenderer(new ErrorRenderer(error));
+        this.#loadRenderer(new ErrorRenderer(unbox(error)));
     }
 
     /** @returns {[number, number]} */
