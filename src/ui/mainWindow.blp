@@ -6,22 +6,24 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
     top-bar-style: raised_border;
 
     [top]
-    Adw.HeaderBar titlebar {
-      decoration-layout: bind $_getDecorationLayout() as <string>;
+    $Gjs_ShyBin {
+      child: Adw.HeaderBar titlebar {
+        decoration-layout: bind $_getDecorationLayout() as <string>;
 
-      [start]
-      Button fullscreen_button {
-        icon-name: "view-fullscreen-symbolic";
-        action-name: "win.fullscreen";
-        tooltip-text: _("Toggle Fullscreen");
-      }
+        [start]
+        Button fullscreen_button {
+          icon-name: "view-fullscreen-symbolic";
+          action-name: "win.fullscreen";
+          tooltip-text: _("Toggle Fullscreen");
+        }
 
-      [end]
-      Button {
-        icon-name: "detach-symbolic";
-        action-name: "win.open-file";
-        tooltip-text: _("Open");
-      }
+        [end]
+        Button {
+          icon-name: "detach-symbolic";
+          action-name: "win.open-file";
+          tooltip-text: _("Open");
+        }
+      };
     }
 
     content: Stack mainStack {

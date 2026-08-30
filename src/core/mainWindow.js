@@ -22,6 +22,7 @@ import {setupActions} from '../util/action.js';
 import {Connection} from '../util/connection.js';
 import {isCancelledError} from '../util/error.js';
 import {SourceId} from '../util/source.js';
+import {ShyBin} from '../widgets/shyBin.js';
 
 Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
 
@@ -63,6 +64,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     #recentlyReceivedFocus = false;
 
     constructor(application) {
+        GObject.type_ensure(ShyBin);
+
         super({
             application,
             widthRequest: MIN_WIDTH,

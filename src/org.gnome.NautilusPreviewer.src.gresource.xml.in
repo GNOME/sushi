@@ -30,6 +30,7 @@
     <file>viewers/video.js</file>
     <file>widgets/coverPaintable.js</file>
     <file>widgets/rendererWrapper.js</file>
+    <file>widgets/shyBin.js</file>
   </gresource>
   <gresource prefix="@fixed_object_path@">
     <file>plugin-api-1.js</file>
