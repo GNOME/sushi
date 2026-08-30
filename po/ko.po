@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the sushi package.
 #
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2011.
-# Changwoo Ryu <cwryu@debian.org>, 2012, 2019, 2021.
+# Changwoo Ryu <cwryu@debian.org>, 2012, 2019, 2021, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:15+0000\n"
-"PO-Revision-Date: 2021-09-13 09:35+0900\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-29 21:12+0000\n"
+"PO-Revision-Date: 2026-08-30 16:31+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -18,76 +18,106 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "스시"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "여러가지 종류의 파일을 빠르게 보는 기능을 제공합니다"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
-msgstr "스시는 그놈 데스크톱 환경을 위한 파일 미리 보기 프로그램입니다. 스시는 그놈 파일(노틸러스)과 연동해 동작하는 독립적인 구성 요소입니다."
+msgstr ""
+"스시는 그놈 데스크톱 환경을 위한 파일 미리 보기 프로그램입니다. 스시는 그놈 "
+"파일(노틸러스)과 연동해 동작하는 독립적인 구성 요소입니다."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "유형"
+# metainfo component/keywords/keyword 키워드 번역
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "노틸러스"
 
-#: src/ui/fallbackRenderer.js:251
+# metainfo component/keywords/keyword 키워드 번역
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "스시"
+
+# metainfo component/keywords/keyword 키워드 번역
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "보기"
+
+# metainfo component/keywords/keyword 키워드 번역
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "미리보기"
+
+# metainfo component/keywords/keyword 키워드 번역
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "미리보기"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "미리보기 실패"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "전체 에러 메시지 복사"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "크기"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "수정됨"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "사생활 보호를 위해 원격 컨텐츠는 차단되었습니다"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "원격 컨텐츠 표시(_S)"
+
+#: src/ui/mainWindow.blp:16
+msgid "Toggle Fullscreen"
+msgstr "전체화면 토글"
+
+#: src/ui/mainWindow.blp:23
+msgid "Open"
+msgstr "열기"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "이전 페이지"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "다음 페이지"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "만든 이"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "앨범"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "항목 %d개"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "빈 폴더"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "비었음"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "크기"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "수정됨"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "%s 파일을 표시할 수 없습니다"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "%s 프로그램으로 열기"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "열기"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "앨범"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "만든 이"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d (전체 %d)"
-
-#~ msgid "Client decoration"
-#~ msgstr "클라이언트 장식"
-
-#~ msgid "Whether the window draws WM decorations itself"
-#~ msgstr "창에서 창관리자 장식을 직접 그릴지 여부"
-
-#~ msgid "Loading…"
-#~ msgstr "불러오는 중…"
