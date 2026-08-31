@@ -4,90 +4,137 @@
 # Alexandre Franke <alexandre.franke@gmail.com>, 2011.
 # Charles Monzat <charles.monzat@free.fr>, 2019.
 # Julien Humbert <julroy67@gmail.com>, 2019.
+# Guillaume Bernard <associations@guillaume-bernard.fr>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:35+0000\n"
-"PO-Revision-Date: 2020-10-22 23:30+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-30 10:17+0000\n"
+"PO-Revision-Date: 2026-08-31 17:20+0200\n"
 "Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
-"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Gtranslator 50.0\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Fournit un moyen pour voir rapidement différents types de fichiers"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi est un outil de prévisualisation pour l’environnement de bureau "
-"GNOME. C’est un composant indépendant qui s’intègre avec Fichiers de "
-"GNOME (Nautilus)."
+"Sushi est un outil de prévisualisation pour l’environnement de bureau GNOME. "
+"C’est un composant indépendant qui s’intègre avec Fichiers de GNOME "
+"(Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Type"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "affichage"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "prévisualisation"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "prévisiualisation"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "La prévisualisation a échoué"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Copier le message d’erreur complet"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Taille"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Modifié"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Le contenu distant est bloqué pour protéger votre vie privée"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Afficher le contenu distant"
+
+#: src/ui/mainWindow.blp:17
+msgid "Toggle Fullscreen"
+msgstr "Basculer le mode plein écran"
+
+#: src/ui/mainWindow.blp:24
+msgid "Open"
+msgstr "Ouvrir"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "Page précédente"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "Page suivante"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "par"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "de"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d élément"
 msgstr[1] "%d éléments"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Dossier vide"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "Vide"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Taille"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Modifié"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Impossible d’afficher %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Ouvrir avec %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Ouvrir"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "de"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "par"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d sur %d"
+
+#~ msgid "Type"
+#~ msgstr "Type"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Dossier vide"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Impossible d’afficher %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Ouvrir avec %s"
 
 #~ msgid "Client decoration"
 #~ msgstr "Décoration du client"
