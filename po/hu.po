@@ -1,89 +1,122 @@
 # Hungarian translation for sushi.
-# Copyright (C) 2011, 2012, 2019, 2021 Free Software Foundation, Inc.
+# Copyright (C) 2011, 2012, 2019, 2021, 2026 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sushi package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2011, 2012.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2019, 2021.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2019, 2021, 2026.
 # Balázs Meskó <mesko.balazs at fsf dot hu>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:15+0000\n"
-"PO-Revision-Date: 2021-02-14 01:22+0100\n"
-"Last-Translator: Balázs Meskó <mesko.balazs at fsf dot hu>\n"
-"Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-30 10:17+0000\n"
+"PO-Revision-Date: 2026-09-01 22:53+0200\n"
+"Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
+"Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 25.12.3\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Lehetőség biztosítása különféle típusú fájlok gyors megtekintéséhez"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"A Sushi egy fájlelőnézet-készítő a GNOME asztali környezethez. Egy "
-"független összetevő, amely a GNOME Fájlokba (Nautilusba) épül be."
+"A Sushi egy fájlelőnézet-készítő a GNOME asztali környezethez. Egy független "
+"összetevő, amely a GNOME Fájlokba (Nautilusba) épül be."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Típus"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#| msgid "Sushi"
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "megtekintés"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "előnézet-készítő"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "előnézet"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Az előnézet sikertelen"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Teljes hibaüzenet másolása"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Méret"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Módosítva"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "A távoli tartalom tiltva van a magánélete védelme érdekében"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "Távoli tartalom _megjelenítése"
+
+#: src/ui/mainWindow.blp:17
+msgid "Toggle Fullscreen"
+msgstr "Teljes képernyő be- és kikapcsolása"
+
+#: src/ui/mainWindow.blp:24
+msgid "Open"
+msgstr "Megnyitás"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "Előző oldal"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "Következő oldal"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "–"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "ettől:"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d elem"
 msgstr[1] "%d elem"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Üres mappa"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "Üres"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Méret"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Módosítva"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Nem jeleníthető meg: %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Megnyitás ezzel: %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Megnyitás"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "ettől:"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "–"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d / %d"
