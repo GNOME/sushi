@@ -2,98 +2,119 @@
 # Copyright (C) 2011 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
 # Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011, 2012.
+# Марко Костић <marko.m.kostic@gmail.com>, 2026.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:35+0000\n"
-"PO-Revision-Date: 2020-10-25 05:39+0100\n"
-"Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-30 10:17+0000\n"
+"PO-Revision-Date: 2026-09-05 19:59+0200\n"
+"Last-Translator: Марко Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Суши"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Пружа могућност брзог прегледа различитих врста датотека"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
-"Sushi is a file previewer for the GNOME desktop environment. It is an "
-"independent component that integrates with GNOME Files (Nautilus)."
-msgstr ""
-"Суши је претпрегледач датотека за Гномову радну површ. Ово је "
-"независан део који се уграђује унутар Гномових Датотека (Наутилус)."
+"Sushi is a file previewer for the GNOME desktop environment. It is an independent component that integrates with GNOME Files (Nautilus)."
+msgstr "Суши је претпрегледач датотека за Гномово радно окружење. То је независан део који се интегрише са Гномовим Датотекама (Наутилус)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Врста"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "наутилус"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "суши"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "преглед"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "приказивач"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "преглед"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Преглед није успео"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Копирај целу поруку о грешци"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Величина"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Измењено"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Удаљени садржај је блокиран ради заштите ваше приватности"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "Прикажи удаљени _садржај"
+
+#: src/ui/mainWindow.blp:17
+msgid "Toggle Fullscreen"
+msgstr "Окини цео екран"
+
+#: src/ui/mainWindow.blp:24
+msgid "Open"
+msgstr "Отвори"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "Претходна страница"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "Следећа страница"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "од"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "од"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d ставка"
 msgstr[1] "%d ставке"
 msgstr[2] "%d ставки"
-msgstr[3] "Једна ставка"
+msgstr[3] "%d ставка"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Празна фасцикла"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "Празно"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Величина"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Измењенo"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Не могу да прикажем %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Отвори програмом %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Отвори"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "од"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "од"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d од %d"
-
-#~ msgid "Client decoration"
-#~ msgstr "Украс клијента"
-
-#~ msgid "Whether the window draws WM decorations itself"
-#~ msgstr "Да ли прозор сам исцртава украсе управника прозора"
-
-#~ msgid "Loading…"
-#~ msgstr "Учитавам…"
