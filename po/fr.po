@@ -4,59 +4,80 @@
 # Alexandre Franke <alexandre.franke@gmail.com>, 2011.
 # Charles Monzat <charles.monzat@free.fr>, 2019.
 # Julien Humbert <julroy67@gmail.com>, 2019.
+# Guillaume Bernard <associations@guillaume-bernard.fr>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:35+0000\n"
-"PO-Revision-Date: 2020-10-22 23:30+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-04-28 15:56+0000\n"
+"PO-Revision-Date: 2026-09-05 09:04+0200\n"
 "Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
-"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Gtranslator 50.0\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Fournit un moyen pour voir rapidement différents types de fichiers"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi est un outil de prévisualisation pour l’environnement de bureau "
-"GNOME. C’est un composant indépendant qui s’intègre avec Fichiers de "
-"GNOME (Nautilus)."
+"Sushi est un outil de prévisualisation pour l’environnement de bureau GNOME. "
+"C’est un composant indépendant qui s’intègre avec Fichiers de GNOME "
+"(Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "affichage"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "prévisualisation"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "prévisiualisation"
+
+#: src/ui/fallbackRenderer.js:244
 msgid "Type"
 msgstr "Type"
 
-#: src/ui/fallbackRenderer.js:251
+#: src/ui/fallbackRenderer.js:254
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d élément"
 msgstr[1] "%d éléments"
 
-#: src/ui/fallbackRenderer.js:256
+#: src/ui/fallbackRenderer.js:259
 msgid "Empty Folder"
 msgstr "Dossier vide"
 
-#: src/ui/fallbackRenderer.js:259
+#: src/ui/fallbackRenderer.js:263
 msgid "Size"
 msgstr "Taille"
 
-#: src/ui/fallbackRenderer.js:264
+#: src/ui/fallbackRenderer.js:269
 msgid "Modified"
 msgstr "Modifié"
 
@@ -67,24 +88,24 @@ msgid "Unable to display %s"
 msgstr "Impossible d’afficher %s"
 
 #. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
+#: src/ui/mainWindow.js:358
 #, javascript-format
 msgid "Open With %s"
 msgstr "Ouvrir avec %s"
 
-#: src/ui/mainWindow.js:348
+#: src/ui/mainWindow.js:364
 msgid "Open"
 msgstr "Ouvrir"
 
-#: src/viewers/audio.js:359
+#: src/viewers/audio.js:401
 msgid "from"
 msgstr "de"
 
-#: src/viewers/audio.js:364
+#: src/viewers/audio.js:406
 msgid "by"
 msgstr "par"
 
-#: src/viewers/evince.js:94
+#: src/viewers/evince.js:111
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d sur %d"
