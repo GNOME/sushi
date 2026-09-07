@@ -1,14 +1,14 @@
 # Esperanto translation for sushi.
 # Copyright (C) 2011 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sushi package.
-# Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011.
+# Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2023-06-29 22:30+0000\n"
-"PO-Revision-Date: 2023-09-20 22:55+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-08-30 10:17+0000\n"
+"PO-Revision-Date: 2026-09-07 22:59+0200\n"
 "Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
 "Language-Team: Esperanto <gnome-eo-list@gnome.org>\n"
 "Language: eo\n"
@@ -16,77 +16,121 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Gtranslator 50.0\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Suŝio"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr ""
-"Provizi instalaĵon por rapide vidi malsamajn specojn de dosieroj"
+msgstr "Provizi instalaĵon por rapide vidi malsamajn specojn de dosieroj"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Suŝio estas dosiero-antaŭrigardilo por la labortabla medio GNOME. Ĝi "
-"estas sendependa komponanto, kiu integriĝas kun GNOME-dosieroj "
-"(Nautilo)."
+"Suŝio estas dosiero-antaŭrigardilo por la labortabla medio GNOME. Ĝi estas "
+"sendependa komponanto, kiu integriĝas kun GNOME-dosieroj (Nautilo)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Tipo"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "naŭtilo"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "suŝio"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "vido"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "antaŭrigardilo"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "antaŭrigardo"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Antaŭrigardo malsukcesis"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Kopii plenan erarmesaĝon"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Grando"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Modifita"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Fora enhavo estas blokita por protekti vian privatecon"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Montri foran enhavon"
+
+#: src/ui/mainWindow.blp:17
+msgid "Toggle Fullscreen"
+msgstr "Baskuligi plenekranon"
+
+#: src/ui/mainWindow.blp:24
+msgid "Open"
+msgstr "Malfermi"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "Antaŭa paĝo"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "Sekva paĝo"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "de"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "de"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d elemento"
 msgstr[1] "%d elementoj"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Malplena dosierujo"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "Malplena"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Grando"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Modifite"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Ne eblas montri %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:358
-#, javascript-format
-msgid "Open With %s"
-msgstr "Malfermi per %s"
-
-#: src/ui/mainWindow.js:364
-msgid "Open"
-msgstr "Malfermi"
-
-#: src/viewers/audio.js:375
-msgid "from"
-msgstr "de"
-
-#: src/viewers/audio.js:380
-msgid "by"
-msgstr "de"
-
-#: src/viewers/evince.js:103
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d de %d"
+
+#~ msgid "Type"
+#~ msgstr "Tipo"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Malplena dosierujo"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Ne eblas montri %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Malfermi per %s"
 
 #~ msgid "Loading…"
 #~ msgstr "Ŝargante…"
