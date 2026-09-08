@@ -14,7 +14,7 @@ fribidi_dep = dependency(
   default_options: ['docs=false'],
 )
 papers_document_dep = dependency('papers-document-4.0')
-papers_view_dep = dependency('papers-view-4.0')
+papers_view_dep = dependency('papers-view-4.0', version: '>=51.beta')
 freetype_dep = dependency('freetype2')
 gio_unix_dep = dependency('gio-unix-2.0', version: '>=2.29.14')
 glib_dep = dependency('glib-2.0', version: '>=2.29.14')
