@@ -5,7 +5,7 @@ conf.set('app_id', app_id)
 
 configure_file(
   input: 'org.gnome.NautilusPreviewer.service.in',
-  output: '@0@.service'.format(app_id),
+  output: f'@app_id@.service',
   configuration: conf,
   install_dir: join_paths(datadir, 'dbus-1', 'services'),
 )
@@ -16,14 +16,14 @@ i18n.merge_file(
     output: '@BASENAME@',
     configuration: conf,
   ),
-  output: '@0@.metainfo.xml'.format(app_id),
+  output: f'@app_id@.metainfo.xml',
   po_dir: '../po',
   install: true,
   install_dir: join_paths(datadir, 'metainfo'),
 )
 
 sushi_data_resources = gnome.compile_resources(
-  '@0@.data'.format(app_id),
+  f'@app_id@.data',
   'org.gnome.NautilusPreviewer.data.gresource.xml',
   gresource_bundle: true,
   install: true,

@@ -55,7 +55,7 @@ plugin_api_js = configure_file(
 )
 
 sushi_src_resources = gnome.compile_resources(
-  '@0@.src'.format(app_id),
+  f'@app_id@.src',
   configure_file(
     input: 'org.gnome.NautilusPreviewer.src.gresource.xml.in',
     output: '@BASENAME@',
