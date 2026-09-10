@@ -1,3 +1,11 @@
+# icon
+icondir = join_paths('icons', 'hicolor', 'scalable', 'apps')
+install_data(
+  join_paths(icondir, f'@app_id@.svg'),
+  install_dir: join_paths(datadir, icondir),
+  rename: f'@app_id@.svg',
+)
+
 conf = configuration_data()
 
 conf.set('libexecdir', libexecdir)
