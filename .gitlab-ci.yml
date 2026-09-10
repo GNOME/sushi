@@ -10,6 +10,7 @@ include:
       job-stage: release
       dist-job-name: "flatpak@x86_64"
       tarball-artifact-path: "${TARBALL_ARTIFACT_PATH}"
+  - component: "gitlab.gnome.org/gnome/citemplates/gnomeos-basic-ci@master"
 
 variables:
   FLATPAK_MODULE: "sushi"
@@ -25,6 +26,7 @@ variables:
 stages:
   - image
   - review
+  - build
   - test
   - deploy
   - release
