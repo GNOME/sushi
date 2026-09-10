@@ -10,7 +10,7 @@ configure_file(
   install_dir: join_paths(datadir, 'dbus-1', 'services'),
 )
 
-i18n.merge_file(
+metainfo = i18n.merge_file(
   input: configure_file(
     input: 'org.gnome.NautilusPreviewer.metainfo.xml.in.in',
     output: '@BASENAME@',
@@ -24,7 +24,12 @@ i18n.merge_file(
 
 sushi_data_resources = gnome.compile_resources(
   f'@app_id@.data',
-  'org.gnome.NautilusPreviewer.data.gresource.xml',
+  configure_file(
+    input: 'data.gresource.xml.in',
+    output: '@BASENAME@',
+    configuration: conf,
+  ),
+  dependencies: [metainfo],
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
