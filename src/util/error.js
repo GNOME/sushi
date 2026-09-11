@@ -4,6 +4,9 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
+const SUSHI_ERROR_DOMAIN = GLib.quark_from_string('sushi');
+const SUSHI_ERROR_CODE_GENERIC = 1;
+
 /** @param {any} error
  *  @returns {boolean} */
 export const isCancelledError = error =>
@@ -16,3 +19,6 @@ export const isCancelledError = error =>
 export const isGLibError = (error, domain, code) =>
     error instanceof GLib.Error &&
     error.matches(domain, code);
+
+export const sushiError = text =>
+    new GLib.Error(SUSHI_ERROR_DOMAIN, SUSHI_ERROR_CODE_GENERIC, text);

@@ -7,7 +7,7 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import {isCancelledError} from '../util/error.js';
+import {isCancelledError, sushiError} from '../util/error.js';
 
 /** Note: This constant is part of the stable plugin API. Only change it in backwards-compatible ways. */
 export const ResizePolicy = Object.freeze({
@@ -69,6 +69,9 @@ export class Renderer extends GObject.Interface {
     }
 
     markFailed(error) {
+        if (!(error instanceof GLib.Error))
+            error = sushiError(error);
+
         if (ready.get(this) === false) {
             // Prevent overwriting of previous error, but log error still
             if (!isCancelledError(error))
