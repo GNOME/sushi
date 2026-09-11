@@ -1,3 +1,13 @@
+51.0
+====
+- Handle corrupted pdf documents (Peter Eisenmann)
+- Handle strings as errors from plugins (Peter Eisenmann)
+- Use ".Devel" suffix for the nightly version (Peter Eisenmann)
+- Add app icon (Jakub Steiner, Peter Eisenmann)
+- Fix papers dependency version (Marco Trevisan (Treviño))
+
+- Translation updates (GNOME Translation Project contributors)
+
 51.rc
 =====
 
