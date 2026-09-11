@@ -54,6 +54,8 @@ export class WrappedError extends GObject.Object {
             return lines[1];
         else if (error instanceof Gly.LoaderError)
             return _("Couldn't read image file");
+        else if (typeof error === 'string' || error instanceof String)
+            return error;
         else
             return null;
     }
