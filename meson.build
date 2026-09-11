@@ -60,7 +60,7 @@ base_name = 'org.gnome.NautilusPreviewer'
 if get_option('profile') == 'default'
   app_id = base_name
 else
-  app_id = base_name + 'Devel'
+  app_id = base_name + '.Devel'
 endif
 relative_object_path = '/@0@'.format(app_id.replace('.', '/'))
 fixed_object_path = '/@0@'.format(base_name.replace('.', '/'))

@@ -18,7 +18,7 @@ variables:
 .flatpak-vars:
   variables:
     MANIFEST_PATH: "flatpak/org.gnome.NautilusPreviewer.json"
-    APP_ID: "org.gnome.NautilusPreviewerDevel"
+    APP_ID: "org.gnome.NautilusPreviewer.Devel"
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
     BUNDLE: "sushi-dev.flatpak"
 
