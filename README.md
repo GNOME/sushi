@@ -14,12 +14,12 @@ Before filing an issue here, confirm that it has not been fixed on the latest ni
 
 ```
 flatpak remote-add --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
-flatpak install gnome-nightly org.gnome.NautilusPreviewerDevel
+flatpak install gnome-nightly org.gnome.NautilusPreviewer.Devel
 ```
 
 After installing the nightly flatpak, you can launch Sushi via the below command, or by initiating a preview from the NautilusDevel nightly flatpak.
 
-`flatpak run org.gnome.NautilusPreviewerDevel <filename>`
+`flatpak run org.gnome.NautilusPreviewer.Devel <filename>`
 
 ## Plugins
 

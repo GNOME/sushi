@@ -116,7 +116,7 @@ export class Application extends Adw.Application {
     }
 
     vfunc_dbus_register(connection, path) {
-        const actualPath = `/org/gnome/${pkg.name.split('.').at(-1)}`;
+        const actualPath = `/${pkg.name.replaceAll('.', '/')}`;
 
         this._skeleton2 = new NautilusPreviewer2Skeleton(this);
         this._skeleton2.export(connection, actualPath);
