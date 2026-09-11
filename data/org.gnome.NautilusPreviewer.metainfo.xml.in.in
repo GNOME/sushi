@@ -22,7 +22,7 @@
     <keyword>preview</keyword>
   </keywords>
   <releases>
-    <!--NEXT_RELEASE_PLACEHOLDER-->
+    <release version="@release-version@" type="snapshot"/>
     <release version="51.0" type="stable" date="2026-09-11">
       <ul>
         <li>Complete graphical overhaul:<ul>
