@@ -92,6 +92,11 @@ export const Klass = class PdfRenderer extends Adw.Bin {
             return;
         }
 
+        if (document.get_n_pages() === 0) {
+            this.markFailed('No pages found in document');
+            return;
+        }
+
         this._model.set_document(document);
 
         this._updatePageLabel(this._model);
