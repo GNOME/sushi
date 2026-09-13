@@ -18,6 +18,19 @@ configure_file(
   install_dir: join_paths(datadir, 'dbus-1', 'services'),
 )
 
+i18n.merge_file(
+  input: configure_file(
+    input: 'org.gnome.NautilusPreviewer.desktop.in.in',
+    output: '@BASENAME@',
+    configuration: conf,
+  ),
+  output: f'@app_id@.desktop',
+  po_dir: '../po',
+  install: true,
+  install_dir: join_paths(datadir, 'applications'),
+  type: 'desktop',
+)
+
 metainfo = i18n.merge_file(
   input: configure_file(
     input: 'org.gnome.NautilusPreviewer.metainfo.xml.in.in',

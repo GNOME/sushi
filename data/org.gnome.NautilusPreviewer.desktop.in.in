@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Sushi
+Comment=Provide a facility for quickly viewing different kinds of files
+Exec=sushi %u
+# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+Icon=@app_id@
+NoDisplay=true
+Terminal=false
+Type=Application
