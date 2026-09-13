@@ -27,6 +27,8 @@ import GLib from 'gi://GLib';
 import {Application} from './application.js';
 
 pkg.initGettext();
+GLib.setenv('PULSE_PROP_application.icon_name', pkg.name, /* overwrite */ true);
+GLib.set_application_name(_('Sushi'));
 
 export async function main(argv) {
     const application = new Application({
