@@ -7,6 +7,9 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0+</project_license>
   <name>Sushi</name>
+  <developer id="org.gnome">
+    <name>The GNOME Project</name>
+  </developer>
   <summary>Provide a facility for quickly viewing different kinds of files</summary>
   <description>
     <p>
