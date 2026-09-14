@@ -38,6 +38,7 @@ blueprint_cmd = find_program(
   required: true,
   version: '>= 0.19.0',
 )
+python = find_program('python3', required: false)
 
 prefixdir = get_option('prefix')
 bindir = join_paths(prefixdir, get_option('bindir'))
