@@ -24,20 +24,17 @@
   <releases>
     <release version="@release-version@" type="snapshot"/>
     <release version="51.0" type="stable" date="2026-09-11">
-      <ul>
-        <li>Complete graphical overhaul:<ul>
-            <li>Modernized graphical backend (Ported to GTK4, libadwaita and glycin)</li>
-            <li>Dark mode support</li>
-            <li>Simplified headerbar layout</li>
-            <li>Adjusted layout for several previewers</li>
-        <ul></li>
-        <li>Revamped plugin API for better plugin support</li>
-        <li>Smoother transitions between files, especially images</li>
-        <li>Protected HTML previews with optional web content loading</li>
-        <li>Reduced memory usage with fixed memory leaks</li>
-        <li>Supported F2 and Del shortcuts</li>
-        <li>Many additional bug fixes and added little niceties</li>
-      </ul>
+      <description>
+        <ul>
+            <li>Complete graphical overhaul, including a modernized graphical backend (Ported to GTK4, libadwaita and glycin), dark mode support, a simplified headerbar layout, and adjusted layout for several previewers</li>
+            <li>Revamped plugin API for better plugin support</li>
+            <li>Smoother transitions between files, especially images</li>
+            <li>Protected HTML previews with optional web content loading</li>
+            <li>Reduced memory usage with fixed memory leaks</li>
+            <li>Supported F2 and Del shortcuts</li>
+            <li>Many additional bug fixes and added little niceties</li>
+        </ul>
+      </description>
     </release>
     <release version="51~rc" type="development" date="2026-08-30"/>
     <release version="51~beta" type="development" date="2026-08-01"/>
