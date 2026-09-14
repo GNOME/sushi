@@ -38,6 +38,7 @@ blueprint_cmd = find_program(
   required: true,
   version: '>= 0.19.0',
 )
+appstreamcli = find_program('appstreamcli', required: false, disabler: true)
 python = find_program('python3', required: false)
 
 prefixdir = get_option('prefix')

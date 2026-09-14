@@ -53,3 +53,16 @@ sushi_data_resources = gnome.compile_resources(
   install: true,
   install_dir: pkgdatadir,
 )
+
+test(
+  'Validate appstream file',
+  appstreamcli,
+  args: [
+    'validate',
+    '--pedantic',
+    '--no-net',
+    '--explain',
+    metainfo.full_path(),
+  ],
+  depends: [metainfo],
+)
