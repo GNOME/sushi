@@ -11,7 +11,6 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
-import {ErrorRenderer} from '../viewers/error.js';
 import {FallbackRenderer} from '../viewers/fallback.js';
 import {HoverManager} from '../util/hoverManager.js';
 import {RendererWrapper} from '../widgets/rendererWrapper.js';
@@ -164,11 +163,11 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     /** @param {WrappedError} error */
     _reportError(error) {
-        if (this.#renderer instanceof ErrorRenderer) {
-            // ignore errors in error handler to avoid recursion
+        if (this.#renderer instanceof FallbackRenderer) {
+            // ignore errors in fallback handler to avoid recursion
             return;
         }
-        this.#loadRenderer(new ErrorRenderer(error));
+        this.#loadRenderer(new FallbackRenderer(this._file, this.#fileInfo, error));
     }
 
     /** @returns {[number, number]} */

@@ -1,7 +1,16 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $Gjs_FallbackRenderer: Adw.Bin {
+template $Gjs_FallbackRenderer: Box {
+  orientation: vertical;
+
+  Adw.Banner {
+    revealed: bind template.has-error;
+    title: bind template.error-summary;
+    button-label: _("_Copy Full Error");
+    button-clicked => $_copyFullError();
+  }
+
   Adw.StatusPage statusPage {
     paintable: Adw.SpinnerPaintable {};
 
