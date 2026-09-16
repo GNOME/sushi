@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-08-02 10:30+0000\n"
-"PO-Revision-Date: 2026-08-02 16:52+0200\n"
+"POT-Creation-Date: 2026-09-14 11:24+0000\n"
+"PO-Revision-Date: 2026-09-15 09:48+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -26,11 +26,15 @@ msgstr ""
 msgid "Sushi"
 msgstr "Suši"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:11
+msgid "The GNOME Project"
+msgstr "Projekt GNOME"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:13
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Program za hitro pregledovanje različnih vrst datotek"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:15
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -38,23 +42,23 @@ msgstr ""
 "Sushi je program za predogled datotek za namizje GNOME. Program je neodvisen "
 "od sistemskih knjižnic in razširja zmožnosti Datotek GNOME (Nautilus)."
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
 msgid "nautilus"
 msgstr "Nautilus"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
 msgid "sushi"
 msgstr "sushi"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:23
 msgid "view"
 msgstr "pogled"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:24
 msgid "previewer"
 msgstr "predoglednik"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:25
 msgid "preview"
 msgstr "predogled"
 
@@ -82,31 +86,31 @@ msgstr "Oddaljena vsebina je blokirana zaradi zaščite vaše zasebnosti"
 msgid "_Show Remote Content"
 msgstr "_Pokaži oddaljeno vsebino"
 
-#: src/ui/mainWindow.blp:16
+#: src/ui/mainWindow.blp:17
 msgid "Toggle Fullscreen"
 msgstr "Vključi/izključi celozaslonski pogled"
 
-#: src/ui/mainWindow.blp:22
+#: src/ui/mainWindow.blp:24
 msgid "Open"
 msgstr "Odpri"
 
-#: src/ui/pdf.blp:48
+#: src/ui/pdf.blp:58
 msgid "Previous Page"
 msgstr "Predhodna stran"
 
-#: src/ui/pdf.blp:70
+#: src/ui/pdf.blp:80
 msgid "Next Page"
 msgstr "Naslednja stran"
 
-#: src/viewers/audio.js:262
+#: src/viewers/audio.js:272
 msgid "by"
 msgstr "od"
 
-#: src/viewers/audio.js:267
+#: src/viewers/audio.js:277
 msgid "from"
 msgstr "od"
 
-#: src/viewers/fallback.js:191
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -115,11 +119,11 @@ msgstr[1] "%d predmet"
 msgstr[2] "%d predmeta"
 msgstr[3] "%d predmeti"
 
-#: src/viewers/fallback.js:196
+#: src/viewers/fallback.js:190
 msgid "Empty"
 msgstr "Prazno"
 
-#: src/viewers/pdf.js:135
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d od %d"
