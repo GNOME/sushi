@@ -39,8 +39,10 @@ export class RendererWrapper extends Adw.Bin {
         this._overlay.set_child(renderer);
         if (toolbar) {
             this._revealer.set_child(toolbar);
+            this._revealer.set_visible(true);
             hoverManager.setRevealer(this._revealer);
         } else {
+            this._revealer.set_visible(false);
             hoverManager.setRevealer(null);
         }
     }
