@@ -18,7 +18,6 @@
     <file>util/source.js</file>
     <file>util/webProcessExtensions.js</file>
     <file>viewers/audio.js</file>
-    <file>viewers/error.js</file>
     <file>viewers/fallback.js</file>
     <file>viewers/font.js</file>
     <file>viewers/html.js</file>
@@ -36,7 +35,6 @@
     <file>plugin-api-1.js</file>
     <!-- UI -->
     <file>ui/audio.ui</file>
-    <file>ui/error.ui</file>
     <file>ui/fallback.ui</file>
     <file>ui/html.ui</file>
     <file>ui/mainWindow.ui</file>

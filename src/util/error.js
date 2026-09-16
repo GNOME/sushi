@@ -52,7 +52,7 @@ export class WrappedError extends GObject.Object {
             error.code === 1)
             return lines[1];
         else
-            return `${lines[0]}${lines.length > 1 ? '…' : ''}`;
+            return null;
     }
 
     get message() {

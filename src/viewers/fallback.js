@@ -3,8 +3,6 @@
  *
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
-
-import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -150,17 +148,37 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
     _sendUpdate();
 };
 
-export class FallbackRenderer extends Adw.Bin {
+export class FallbackRenderer extends Gtk.Box {
     static {
         GObject.registerClass({
             Implements: [Renderer],
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
             InternalChildren: ['statusPage', 'spinner', 'sizeLabel', 'dateLabel'],
+            Properties: {
+                'has-error': GObject.ParamSpec.boolean(
+                    'has-error',
+                    null,
+                    null,
+                    GObject.ParamFlags.READABLE,
+                    false
+                ),
+                'error-summary': GObject.ParamSpec.string(
+                    'error-summary',
+                    null,
+                    null,
+                    GObject.ParamFlags.READABLE,
+                    null
+                ),
+            },
         }, this);
     }
 
-    constructor(file, fileInfo, constructProperties = {}) {
+    constructor(file, fileInfo, error = null, constructProperties = {}) {
         super(constructProperties);
+
+        this._error = error;
+        this.notify('has-error');
+        this.notify('error-summary');
 
         loadFile(file, fileInfo, this.cancellable, this._onFileInfoUpdated.bind(this));
 
@@ -198,6 +216,14 @@ export class FallbackRenderer extends Adw.Bin {
         this._dateLabel.set_label(date.format('%x %X'));
     }
 
+    get has_error() {
+        return !!this._error;
+    }
+
+    get error_summary() {
+        return this._error?.summary ?? _('Detailed file preview failed');
+    }
+
     _applyIcon(state) {
         const customIcon = getCustomIcon(state.file, state.fileInfo);
         const icon = customIcon ?? state.fileInfo.get_icon();
@@ -216,6 +242,11 @@ export class FallbackRenderer extends Adw.Bin {
 
         this._applyIcon(state);
         this._applyLabels(state);
+    }
+
+    _copyFullError() {
+        const clipboard = Gdk.Display.get_default()?.get_clipboard();
+        clipboard?.set(this._error.message);
     }
 
     get resizePolicy() {
