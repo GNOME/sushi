@@ -53,12 +53,12 @@
             "name": "poppler",
             "buildsystem": "cmake-ninja",
             "config-opts": [
-                "-DCMAKE_INSTALL_LIBDIR=/app/lib",
-                "-DCMAKE_INSTALL_INCLUDEDIR=/app/include",
-                "-DBUILD_GTK_TESTS=OFF",
                 "-DBUILD_CPP_TESTS=OFF",
-                "-DENABLE_CPP=OFF",
+                "-DBUILD_GTK_TESTS=OFF",
+                "-DCMAKE_INSTALL_INCLUDEDIR=/app/include",
+                "-DCMAKE_INSTALL_LIBDIR=/app/lib",
                 "-DENABLE_BOOST=OFF",
+                "-DENABLE_CPP=OFF",
                 "-DENABLE_GOBJECT_INTROSPECTION=OFF",
                 "-DENABLE_LIBOPENJPEG=openjpeg2",
                 "-DENABLE_QT5=OFF",
@@ -108,16 +108,15 @@
                 "/share/help"
             ],
             "config-opts": [
-                "-Dshell=true",
-                "-Dnautilus=false",
-                "-Ddocumentation=false",
-                "-Dpreviewer=false",
-                "-Dthumbnailer=false",
-                "-Dintrospection=enabled",
                 "-Dcomics=disabled",
+                "-Ddocumentation=false",
+                "-Dintrospection=enabled",
+                "-Dnautilus=false",
+                "-Dpreviewer=false",
+                "-Dshell=true",
                 "-Dtests=false",
-                "-Duser_doc=false",
-                "-Ddocumentation=false"
+                "-Dthumbnailer=false",
+                "-Duser_doc=false"
             ],
             "sources": [
                 {
