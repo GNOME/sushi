@@ -3,6 +3,7 @@
 
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import Gly from 'gi://Gly';
 import GObject from 'gi://GObject';
 
 /** @param {any} error
@@ -51,6 +52,8 @@ export class WrappedError extends GObject.Object {
             GLib.quark_to_string(error.domain) === 'gst-play-error-quark' &&
             error.code === 1)
             return lines[1];
+        else if (error instanceof Gly.LoaderError)
+            return _("Couldn't read image file");
         else
             return null;
     }
