@@ -88,14 +88,14 @@
             ],
             "sources": [
                 {
-                    "type": "git",
-                    "url": "https://gitlab.freedesktop.org/libopenraw/exempi.git",
-                    "tag": "2.6.6",
+                    "type": "archive",
+                    "url": "https://libopenraw.freedesktop.org/download/exempi-2.6.6.tar.xz",
+                    "sha256": "900fb9957be2095c78e5111b99c49378adac58161a358f52f93c55126f34eb8f",
                     "x-checker-data": {
-                        "type": "git",
-                        "tag-pattern": "^([\\d.]+)$"
-                    },
-                    "commit": "f9e868388ce7740ce27409f8629da3e9666cc04f"
+                        "type": "anitya",
+                        "project-id": 767,
+                        "url-template": "https://libopenraw.freedesktop.org/download/exempi-$version.tar.xz"
+                    }
                 }
             ]
         },
