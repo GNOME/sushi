@@ -131,8 +131,10 @@
             "name": "sourceview-5",
             "buildsystem": "meson",
             "config-opts": [
-                "-Dinstall-tests=false",
+                "-Dbuild-testsuite=false",
                 "-Ddocumentation=false",
+                "-Dinstall-tests=false",
+                "-Dintrospection=enabled",
                 "-Dvapi=false"
             ],
             "sources": [
