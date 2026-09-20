@@ -168,8 +168,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             // ignore errors in error handler to avoid recursion
             return;
         }
-        if (isCancelledError(error))
-            return;
         this.#loadRenderer(new ErrorRenderer(error));
     }
 
@@ -277,6 +275,8 @@ export class MainWindow extends Adw.ApplicationWindow {
                     this.#fileInfo = obj.query_info_finish(res);
                     this._createView();
                 } catch (e) {
+                    if (isCancelledError(e))
+                        return;
                     this._reportError(e);
                 }
             });
