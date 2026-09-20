@@ -13,7 +13,7 @@ import PapersView from 'gi://PapersView';
 // eslint-disable-next-line no-restricted-properties
 const Format = imports.format;
 
-import {Renderer} from '../core/renderer.js';
+import {Renderer, ResizePolicy} from '../core/renderer.js';
 import * as Image from './image.js';
 import {setupActions} from '../util/action.js';
 import {Connection} from '../util/connection.js';
@@ -61,6 +61,10 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         this.#loadJobId.disconnect();
         this._job?.cancel();
         this._job = null;
+    }
+
+    get resizePolicy() {
+        return ResizePolicy.STATUS_PAGE;
     }
 
     get toolbar() {
