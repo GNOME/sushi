@@ -1,3 +1,11 @@
+51.1
+====
+- Fix toolbar overlay from blocking content (Peter Eisenmann)
+- Fix release note tags (Tau Gärtli)
+- Add metainfo validation (Tau Gärtli)
+
+- Translation updates (GNOME Translation Project contributors)
+
 51.0
 ====
 - Handle corrupted pdf documents (Peter Eisenmann)
