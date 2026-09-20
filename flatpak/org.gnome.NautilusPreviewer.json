@@ -109,12 +109,14 @@
             "config-opts": [
                 "-Dcomics=disabled",
                 "-Ddocumentation=false",
+                "-Dfile_tests=false",
                 "-Dintrospection=enabled",
                 "-Dnautilus=false",
                 "-Dpreviewer=false",
                 "-Dshell=true",
                 "-Dtests=false",
                 "-Dthumbnailer=false",
+                "-Dtiff=disabled",
                 "-Duser_doc=false"
             ],
             "sources": [
