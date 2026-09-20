@@ -7,7 +7,7 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import {isCancelledError} from '../util/error.js';
+import {isCancelledError, WrappedError} from '../util/error.js';
 
 /** Note: This constant is part of the stable plugin API. Only change it in backwards-compatible ways. */
 export const ResizePolicy = Object.freeze({
@@ -55,7 +55,7 @@ export class Renderer extends GObject.Interface {
         GObject.registerClass({
             Requires: [Gtk.Widget],
             Signals: {
-                'failed': {param_types: [GLib.Error.$gtype]},
+                'failed': {param_types: [WrappedError.$gtype]},
                 'ready': {param_types: []},
             },
         }, this);
@@ -76,7 +76,7 @@ export class Renderer extends GObject.Interface {
             return;
         }
         stopRenderer(this);
-        this.emit('failed', error);
+        this.emit('failed', new WrappedError(error));
     }
 
     markInitialized() {

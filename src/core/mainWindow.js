@@ -20,7 +20,7 @@ import {METADATA_KEY_CUSTOM_ICON, METADATA_KEY_CUSTOM_ICON_NAME} from '../util/c
 import {Renderer, isRendererReady, stopRenderer} from './renderer.js';
 import {setupActions} from '../util/action.js';
 import {Connection} from '../util/connection.js';
-import {isCancelledError} from '../util/error.js';
+import {isCancelledError, WrappedError} from '../util/error.js';
 import {SourceId} from '../util/source.js';
 import {ShyBin} from '../widgets/shyBin.js';
 
@@ -162,7 +162,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             return '';
     }
 
-    /** @param {GLib.Error} error */
+    /** @param {WrappedError} error */
     _reportError(error) {
         if (this.#renderer instanceof ErrorRenderer) {
             // ignore errors in error handler to avoid recursion
@@ -277,7 +277,7 @@ export class MainWindow extends Adw.ApplicationWindow {
                 } catch (e) {
                     if (isCancelledError(e))
                         return;
-                    this._reportError(e);
+                    this._reportError(new WrappedError(e));
                 }
             });
     }
