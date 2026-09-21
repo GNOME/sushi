@@ -52,8 +52,6 @@
             "config-opts": [
                 "-DBUILD_CPP_TESTS=OFF",
                 "-DBUILD_GTK_TESTS=OFF",
-                "-DCMAKE_INSTALL_INCLUDEDIR=/app/include",
-                "-DCMAKE_INSTALL_LIBDIR=/app/lib",
                 "-DENABLE_BOOST=OFF",
                 "-DENABLE_CPP=OFF",
                 "-DENABLE_GOBJECT_INTROSPECTION=OFF",
