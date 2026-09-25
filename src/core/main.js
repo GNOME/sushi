@@ -19,7 +19,6 @@ import 'gi://GtkSource?version=5';
 import 'gi://Pango?version=1.0';
 import 'gi://PapersDocument?version=4.0';
 import 'gi://PapersView?version=4.0';
-import 'gi://Soup?version=3.0';
 import 'gi://Sushi?version=1.0';
 
 import Gio from 'gi://Gio';

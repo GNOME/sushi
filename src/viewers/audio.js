@@ -13,25 +13,16 @@ import GObject from 'gi://GObject';
 import Gst from 'gi://Gst';
 import GstTag from 'gi://GstTag';
 import Gtk from 'gi://Gtk';
-import Soup from 'gi://Soup';
 import Sushi from 'gi://Sushi';
-// eslint-disable-next-line no-restricted-properties
-const Format = imports.format;
 
 import {setupActions} from '../util/action.js';
 import {Renderer, ResizePolicy} from '../core/renderer.js';
 import {CoverPaintable} from '../widgets/coverPaintable.js';
 import {isCancelledError, isGLibError} from '../util/error.js';
 
-Gio._promisify(Gio.File.prototype, 'replace_async', 'replace_finish');
-Gio._promisify(Gio.FileOutputStream.prototype, 'splice_async', 'splice_finish');
 Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
-Gio._promisify(Soup.Session.prototype, 'send_async', 'send_finish');
-Gio._promisify(Soup.Session.prototype, 'send_and_read_async', 'send_and_read_finish');
 
-const COVER_ART_ARCHIVE_URL = 'https://coverartarchive.org/release/%s';
-const MUSIC_BRAINZ_ASIN_FORMAT = 'https://musicbrainz.org/ws/2/release/?query=release:"%s"AND artist:"%s"&limit=1&fmt=json';
 const fetchCoverArt = (_file, _tagList, _cancellable) => {
     function _fetchFromTags(cancellable) {
         let coverSample = null;
@@ -65,11 +56,6 @@ const fetchCoverArt = (_file, _tagList, _cancellable) => {
             return Promise.reject(new Error('No cover art tag'));
     }
 
-    function _getCacheFile(mbid) {
-        const cachePath = GLib.build_filenamev([GLib.get_user_cache_dir(), 'sushi']);
-        return Gio.File.new_for_path(GLib.build_filenamev([cachePath, `${mbid}.jpg`]));
-    }
-
     function _fetchFromFile(file, cancellable) {
         const loader = Gly.Loader.new(file);
         return loader.load_async(cancellable)
@@ -87,104 +73,6 @@ const fetchCoverArt = (_file, _tagList, _cancellable) => {
         return loader.load_async(cancellable)
             .then(image => image.next_frame_async(cancellable))
             .then(frame => GlyGtk4.frame_get_texture(frame));
-    }
-
-    function _fetchFromCache(mbid, cancellable) {
-        const file = _getCacheFile(mbid);
-        return _fetchFromFile(file, cancellable);
-    }
-
-    function _saveToCache(mbid, stream) {
-        let streamToClose = null;
-        const cacheFile = _getCacheFile(mbid);
-        const cachePath = cacheFile.get_parent().get_path();
-        GLib.mkdir_with_parents(cachePath, 448);
-
-        return cacheFile.replace_async(null, false, Gio.FileCreateFlags.PRIVATE, 0, _cancellable)
-            .then(outStream => {
-                streamToClose = outStream;
-                return outStream.splice_async(
-                    stream,
-                    Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
-                    Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
-                    0, _cancellable);
-            })
-            .then(_ => streamToClose.close(_cancellable));
-    }
-
-    function decode(buffer) {
-        const decoder = new TextDecoder('utf8');
-        return decoder.decode(buffer);
-    }
-
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    function _fetchCoverArtArchiveImage(uri, mbid) {
-        const session = new Soup.Session();
-
-        const message = Soup.Message.new('GET', uri);
-        message.request_headers.append('User-Agent', 'gnome-sushi');
-
-        return session.send_async(message, 0, _cancellable)
-            .then(stream => _saveToCache(mbid, stream))
-            .catch(error => {
-                console.warn(error, 'Unable to save cover to cache');
-                return error;
-            })
-            .then(_ => sleep(50)) // give the filesystem some time
-            .then(_ => _fetchFromCache(mbid, _cancellable));
-    }
-
-    function _fetchCoverArtArchiveMetadata(mbid) {
-        const uri = Format.vprintf(COVER_ART_ARCHIVE_URL, [mbid]);
-        const session = new Soup.Session();
-
-        const message = Soup.Message.new('GET', uri);
-        message.request_headers.append('User-Agent', 'gnome-sushi');
-        return session.send_and_read_async(message, 0, _cancellable)
-            .then(raw_data => {
-                const data = decode(raw_data.get_data());
-                if (message.get_status() !== Soup.Status.OK)
-                    return Promise.reject(new Error('Art archive cover fetch failed'));
-
-                const json_data = JSON.parse(data);
-
-                const uri = json_data['images'][0]['thumbnails']['small'];
-                return _fetchCoverArtArchiveImage(uri, mbid);
-            });
-    }
-
-    function _fetchFromMusicBrainz() {
-        const artist = _tagList.get_string('artist')[1];
-        const album = _tagList.get_string('album')[1];
-
-        if (!artist || !album)
-            return Promise.reject(new Error('Not enough metadata to lookup file'));
-
-        const uri = Format.vprintf(MUSIC_BRAINZ_ASIN_FORMAT, [album, artist]);
-        const session = new Soup.Session();
-
-        const message = Soup.Message.new('GET', uri);
-        message.request_headers.append('User-Agent', 'gnome-sushi');
-
-        return session.send_and_read_async(message, 0, _cancellable)
-            .then(raw_data => {
-                const data = decode(raw_data.get_data());
-                if (message.get_status() !== Soup.Status.OK)
-                    return Promise.reject(new Error('Musicbrainz lookup failed'));
-
-                const json_response = JSON.parse(data);
-
-                if (!('releases' in json_response) || json_response['releases'].length === 0)
-                    return Promise.reject(new Error('Musicbrainz: Unknown release'));
-
-                const mbid = json_response['releases'][0]['id'];
-
-                return _fetchFromCache(mbid, _cancellable)
-                    .catch(_ => _fetchCoverArtArchiveMetadata(mbid));
-            });
     }
 
     function findCoverFiles(folder) {
@@ -215,21 +103,13 @@ const fetchCoverArt = (_file, _tagList, _cancellable) => {
             }
         }
 
-        throw new Error('No cover file found');
+        return null;
     }
 
     return _fetchFromTags(_cancellable)
         .catch(error => {
             if (!isCancelledError(error))
                 return fetchFromFolder();
-        })
-        .catch(error => {
-            if (!isCancelledError(error))
-                return _fetchFromMusicBrainz();
-        })
-        .catch(error => {
-            if (!isCancelledError(error))
-                console.info(`Couldn't retrieve cover art: ${error}`);
         });
 };
 
