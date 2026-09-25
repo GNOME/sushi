@@ -1,16 +1,16 @@
 # Norwegian Nynorsk translation for sushi.
 # Copyright (C) 2025 sushi's COPYRIGHT HOLDER
 # This file is distributed under the same license as the sushi package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Bjørn Mørkedal <gnome@morkedal.com>, 2025.
+# Roy-Magne Mo <rmo@sunnmore.net>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2025-07-24 18:16+0000\n"
-"PO-Revision-Date: 2025-07-25 19:41+0200\n"
-"Last-Translator: Bjørn Mørkedal <gnome@morkedal.com>\n"
+"POT-Creation-Date: 2026-09-14 23:40+0000\n"
+"PO-Revision-Date: 2026-09-18 14:38+0200\n"
+"Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: Norwegian Nynorsk\n"
 "Language: nn\n"
 "MIME-Version: 1.0\n"
@@ -24,70 +24,117 @@ msgstr ""
 "X-DL-State: None\n"
 "X-Generator: Gtranslator 48.0\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
-msgstr "Tilbyr ein funksjon for rask visning av forskjellige filtyper"
+msgstr "Gjev ein måte å sjå raskt på ulike filtypar"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
 msgstr ""
-"Sushi er eit filførehandsvisningsprogram for GNOME-skrivebordsmiljøet. Det "
-"er ein uavhengig komponent som vert integrert med GNOME Filer (Nautilus)."
+"Sushi er ein førehandsvisar for filer i skrivebordsmiljøet GNOME. Han er ein"
+" sjølvstendig komponent som er integrert med GNOME Filer (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:244
-msgid "Type"
-msgstr "Type"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:254
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#| msgid "Sushi"
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "vising"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "førehandsvisar"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "førehandsvising"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Førehandsvisinga mislukkast"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Kopier full feilmelding"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Storleik"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Endra"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Fjerninnhald er blokkert for å verne personvernet ditt"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Vis fjerninnhald"
+
+#: src/ui/mainWindow.blp:17
+msgid "Toggle Fullscreen"
+msgstr "Slå fullskjerm av eller på"
+
+#: src/ui/mainWindow.blp:24
+msgid "Open"
+msgstr "Opne"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "Førre side"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "Neste side"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "av"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "frå"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d element"
 msgstr[1] "%d element"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Empty Folder"
-msgstr "Tom mappe"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "Tom"
 
-#: src/ui/fallbackRenderer.js:263
-msgid "Size"
-msgstr "Storleik"
-
-#: src/ui/fallbackRenderer.js:269
-msgid "Modified"
-msgstr "Endra"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Klarer ikkje å vise %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:358
-#, javascript-format
-msgid "Open With %s"
-msgstr "Opne med %s"
-
-#: src/ui/mainWindow.js:364
-msgid "Open"
-msgstr "Opne"
-
-#: src/viewers/audio.js:401
-msgid "from"
-msgstr "frå"
-
-#: src/viewers/audio.js:406
-msgid "by"
-msgstr "av"
-
-#: src/viewers/evince.js:111
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d av %d"
+
+#~ msgid "Type"
+#~ msgstr "Type"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Tom mappe"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Klarer ikkje å vise %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Opne med %s"
