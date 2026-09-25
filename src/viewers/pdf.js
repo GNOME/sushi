@@ -8,12 +8,13 @@ import Adw from 'gi://Adw';
 import GioUnix from 'gi://GioUnix';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 import PapersDocument from 'gi://PapersDocument';
 import PapersView from 'gi://PapersView';
 // eslint-disable-next-line no-restricted-properties
 const Format = imports.format;
 
-import {Renderer} from '../core/renderer.js';
+import {Renderer, ResizePolicy} from '../core/renderer.js';
 import * as Image from './image.js';
 import {setupActions} from '../util/action.js';
 import {Connection} from '../util/connection.js';
@@ -33,6 +34,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
     }
 
     #loadJobId = new Connection('finished', job => this._onLoadJobFinished(job));
+    #pageSize = [800, 800];
 
     constructor(file, fileInfo, constructProperties = {}) {
         if (!papersInitialized) {
@@ -54,6 +56,7 @@ export const Klass = class PdfRenderer extends Adw.Bin {
             ['copy', () => this._view.copy()],
         ]);
 
+        this.set_layout_manager(null);
         this.markInitialized();
     }
 
@@ -61,6 +64,21 @@ export const Klass = class PdfRenderer extends Adw.Bin {
         this.#loadJobId.disconnect();
         this._job?.cancel();
         this._job = null;
+    }
+
+    get resizePolicy() {
+        return ResizePolicy.NAT_SIZE;
+    }
+
+    vfunc_measure(orientation, _for_size) {
+        const [childMinReq] = this.get_child().get_preferred_size();
+        const nat = this.#pageSize[orientation];
+        const min = orientation === Gtk.Orientation.Horizontal ? childMinReq.width : childMinReq.height;
+        return [min, Math.max(min, nat), -1, -1];
+    }
+
+    vfunc_size_allocate(width, height, baseline) {
+        return this.get_child()?.allocate(width, height, baseline, null);
     }
 
     get toolbar() {
@@ -96,6 +114,9 @@ export const Klass = class PdfRenderer extends Adw.Bin {
             this.markFailed(_('No pages found in document'));
             return;
         }
+
+        this.#pageSize = document.get_page_size(0);
+        this.queue_resize();
 
         this._model.set_document(document);
 
