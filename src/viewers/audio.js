@@ -32,7 +32,7 @@ Gio._promisify(Soup.Session.prototype, 'send_and_read_async', 'send_and_read_fin
 
 const COVER_ART_ARCHIVE_URL = 'https://coverartarchive.org/release/%s';
 const MUSIC_BRAINZ_ASIN_FORMAT = 'https://musicbrainz.org/ws/2/release/?query=release:"%s"AND artist:"%s"&limit=1&fmt=json';
-const fetchCoverArt = (_tagList, _cancellable) => {
+const fetchCoverArt = (_file, _tagList, _cancellable) => {
     function _fetchFromTags(cancellable) {
         let coverSample = null;
         let idx = 0;
@@ -187,7 +187,42 @@ const fetchCoverArt = (_tagList, _cancellable) => {
             });
     }
 
+    function findCoverFiles(folder) {
+        try {
+            const regex = /(folder|cover|front)\.(jpg|jpeg|png)/;
+            const flags = Gio.FileQueryInfoFlags.NONE;
+            const enumerator = folder.enumerate_children('standard::name', flags, null);
+            return [...enumerator]
+                .filter(info => regex.test(info.get_name()))
+                .map(info => enumerator.get_child(info));
+        } catch (error) {
+            if (isGLibError(error, Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+                return [];
+            else
+                throw error;
+        }
+    }
+
+    async function fetchFromFolder() {
+        const parent = _file.get_parent();
+        const coverFiles = await findCoverFiles(parent);
+
+        for (const coverFile of coverFiles) {
+            try {
+                return _fetchFromFile(coverFile, _cancellable);
+            } catch {
+                continue;
+            }
+        }
+
+        throw new Error('No cover file found');
+    }
+
     return _fetchFromTags(_cancellable)
+        .catch(error => {
+            if (!isCancelledError(error))
+                return fetchFromFolder();
+        })
         .catch(error => {
             if (!isCancelledError(error))
                 return _fetchFromMusicBrainz();
@@ -258,13 +293,8 @@ export const Klass = class AudioRenderer extends Adw.Bin {
     _updateFromTags(tags) {
         const albumName = tags.get_string('album')[1];
         const artistName = tags.get_string('artist')[1];
-        let titleName = tags.get_string('title')[1];
-
-        if (!titleName) {
-            const file = Gio.file_new_for_uri(this._stream.file.get_uri());
-            titleName = file.get_basename();
-        }
-
+        const file = Gio.file_new_for_uri(this._stream.file.get_uri());
+        const titleName = tags.get_string('title')[1] ?? file.get_basename();
         let description = '';
 
         if (artistName) {
@@ -282,7 +312,7 @@ export const Klass = class AudioRenderer extends Adw.Bin {
 
         if (!this._coverFetched) {
             this._coverFetched = true;
-            fetchCoverArt(tags, this.cancellable)
+            fetchCoverArt(file, tags, this.cancellable)
                 .then(cover => {
                     this._coverPaintable.texture = cover;
                 })
