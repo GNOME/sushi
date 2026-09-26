@@ -30,6 +30,7 @@ const MIN_HEIGHT = 294;
 const WINDOW_MAX_PERCENT_W = 0.5;
 const WINDOW_MAX_PERCENT_H = 0.5;
 const ACCEPTABLE_USER_ACTION_DELAY_IN_MS = 200;
+const MAXIMUM_RENDERER_LOAD_DELAY_IN_MS = 3000;
 
 export class MainWindow extends Adw.ApplicationWindow {
     static {
@@ -58,6 +59,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     #requestedDefaultHeight = MIN_HEIGHT;
     #scaledByUser = false;
     #spinnerDelayId = new SourceId();
+    #loadingTimeoutId = new SourceId();
     #presentTimeoutId = new SourceId();
     #retrySetDefaultSizeTimeoutId = new SourceId();
     #recentlyReceivedFocus = false;
@@ -97,6 +99,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     vfunc_close_request() {
         this.#cleanupRenderer();
         this.#spinnerDelayId.remove();
+        this.#loadingTimeoutId.remove();
         this.#presentTimeoutId.remove();
         this.#retrySetDefaultSizeTimeoutId.remove();
         this._hoverManager.cleanup();
@@ -290,6 +293,7 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     #embedRenderer() {
         this.#spinnerDelayId.remove();
+        this.#loadingTimeoutId.remove();
 
         const stackWidget = new RendererWrapper(this.#renderer, this.#getMaxSize, this._hoverManager);
         this._mainStack.add_child(stackWidget);
@@ -324,6 +328,10 @@ export class MainWindow extends Adw.ApplicationWindow {
                 GLib.PRIORITY_DEFAULT_IDLE,
                 ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
                 () => this.#setDisplayedWidget(this._spinner));
+            this.#loadingTimeoutId.ensureTimeout(
+                GLib.PRIORITY_DEFAULT_IDLE,
+                MAXIMUM_RENDERER_LOAD_DELAY_IN_MS,
+                () => this._reportError(new WrappedError(null)));
         }
     }
 
