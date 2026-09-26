@@ -45,13 +45,10 @@ export class WrappedError extends GObject.Object {
     }
 
     #extractSummary(error) {
-        const lines = this.#message.split('\n');
-
-        if (isGLibError(error) &&
-            lines.length > 1 &&
+        if (error instanceof GLib.Error &&
             GLib.quark_to_string(error.domain) === 'gst-play-error-quark' &&
             error.code === 1)
-            return lines[1];
+            return _("Couldn't preview media, maybe a codec is missing");
         else if (error instanceof Gly.LoaderError)
             return _("Couldn't read image file");
         else
