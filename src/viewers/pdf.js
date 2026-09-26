@@ -72,7 +72,11 @@ export const Klass = class PdfRenderer extends Adw.Bin {
 
     vfunc_measure(orientation, _for_size) {
         const [childMinReq] = this.get_child().get_preferred_size();
-        const nat = this.#pageSize[orientation];
+        // We artificially grow the natural size by a factor chosen by trial-and-error.
+        // Any excess width/height will be cut off by the rendererWrapper's max size handling.
+        // Together, this means that the renderer is allowed to "deviate" from the document's
+        // aspect orientation by a fixed factor.
+        const nat = this.#pageSize[orientation] * 3;
         const min = orientation === Gtk.Orientation.Horizontal ? childMinReq.width : childMinReq.height;
         return [min, Math.max(min, nat), -1, -1];
     }
