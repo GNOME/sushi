@@ -71,7 +71,7 @@ export class RendererWrapper extends Adw.Bin {
         case ResizePolicy.MAX_SIZE:
             return measureMaxSize(child, orientation, this.#getMaxSize);
         case ResizePolicy.NAT_SIZE:
-            return child.measure(orientation, forSize);
+            return measureNatSize(child, orientation, this.#getMaxSize);
         case ResizePolicy.SCALED:
             return measureScaledSize(child, orientation, this.#getMaxSize);
         case ResizePolicy.STATUS_PAGE:
@@ -96,6 +96,16 @@ const measureMaxSize = (child, orientation, getMaxSize) => {
         getLength(childMin, orientation),
         getMaxSize()[orientation]);
     return [childMin[orientation], nat, -1, -1];
+};
+
+const measureNatSize = (child, orientation, getMaxSize) => {
+    const [childMin, childNat] = child.get_preferred_size();
+    const max = getMaxSize();
+    // by using `Math.max()` we ensure that min <= nat
+    const nat = Math.max(
+        getLength(childMin, orientation),
+        Math.min(getLength(childNat, orientation), max[orientation]));
+    return [getLength(childMin, orientation), nat, -1, -1];
 };
 
 const STATUS_PAGE_SIZE = [400, 420];
