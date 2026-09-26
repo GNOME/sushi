@@ -38,7 +38,7 @@ export class WrappedError extends GObject.Object {
     }
 
     #extractMessage(error) {
-        if (isGLibError(error))
+        if (error instanceof GLib.Error)
             return error.message.trim();
         else
             return `${error}`;
