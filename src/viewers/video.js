@@ -57,8 +57,7 @@ export const Klass = class VideoRenderer extends Adw.Bin {
         });
         this.#errorHandleId = this._stream.connect(
             'notify::error', mediaFile => {
-                if (mediaFile.error)
-                    this.markFailed(mediaFile.error);
+                this.markFailed(mediaFile.error ?? null);
             });
 
         this.markInitialized();
