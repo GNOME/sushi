@@ -92,10 +92,9 @@ export class RendererWrapper extends Adw.Bin {
 const measureMaxSize = (child, orientation, getMaxSize) => {
     const [childMin] = child.get_preferred_size();
     // by using `Math.max()` we ensure that min <= nat
-    const nat = Math.max(
-        getLength(childMin, orientation),
-        getMaxSize()[orientation]);
-    return [childMin[orientation], nat, -1, -1];
+    const min = getLength(childMin, orientation);
+    const nat = Math.max(min, getMaxSize()[orientation]);
+    return [min, nat, -1, -1];
 };
 
 const measureNatSize = (child, orientation, getMaxSize) => {
