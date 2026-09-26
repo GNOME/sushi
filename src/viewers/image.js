@@ -100,7 +100,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         const size = orientation === Gtk.Orientation.VERTICAL
             ? this._texture?.get_height() ?? this._imageHeight
             : this._texture?.get_width() ?? this._imageWidth;
-        return [1, (size ?? scaleFactor) / scaleFactor, -1, -1];
+        return [1, Math.max((size ?? scaleFactor) / scaleFactor, 1), -1, -1];
     }
 
     get resizePolicy() {
