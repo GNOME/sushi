@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-04-28 15:56+0000\n"
-"PO-Revision-Date: 2026-08-05 23:34+0200\n"
+"POT-Creation-Date: 2026-09-20 15:52+0000\n"
+"PO-Revision-Date: 2026-09-29 22:59+0200\n"
 "Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -42,7 +42,6 @@ msgid "nautilus"
 msgstr "nautilus"
 
 #: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
-#| msgid "Sushi"
 msgid "sushi"
 msgstr "sushi"
 
@@ -58,59 +57,85 @@ msgstr "Vorschau"
 msgid "preview"
 msgstr "Vorschau"
 
-#: src/ui/fallbackRenderer.js:244
-msgid "Type"
-msgstr "Typ"
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Vorschau fehlgeschlagen"
 
-#: src/ui/fallbackRenderer.js:254
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Volle Fehlermeldung kopieren"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Größe"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Geändert"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Entfernte Inhalte wurden blockiert zum Schutz ihrer Daten"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "Entfernten Inhalt _anzeigen"
+
+#: src/ui/mainWindow.blp:17
+msgid "Toggle Fullscreen"
+msgstr "Vollbild ein- oder ausschalten"
+
+#: src/ui/mainWindow.blp:24
+msgid "Open"
+msgstr "Öffnen"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "Vorherige Seite"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "Nächste Seite"
+
+# Kontext: by artistName
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "von"
+
+# Kontext: from albumName
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "aus"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d Objekt"
 msgstr[1] "%d Objekte"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Empty Folder"
-msgstr "Leerer Ordner"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "Leer"
 
-#: src/ui/fallbackRenderer.js:263
-msgid "Size"
-msgstr "Größe"
-
-#: src/ui/fallbackRenderer.js:269
-msgid "Modified"
-msgstr "Geändert"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "%s kann nicht angezeigt werden"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:358
-#, javascript-format
-msgid "Open With %s"
-msgstr "Mit %s öffnen"
-
-#: src/ui/mainWindow.js:364
-msgid "Open"
-msgstr "Öffnen"
-
-# Kontext: from albumName
-#: src/viewers/audio.js:401
-msgid "from"
-msgstr "aus"
-
-# Kontext: by artistName
-#: src/viewers/audio.js:406
-msgid "by"
-msgstr "von"
-
-#: src/viewers/evince.js:111
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d von %d"
+
+#~ msgid "Type"
+#~ msgstr "Typ"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Leerer Ordner"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "%s kann nicht angezeigt werden"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Mit %s öffnen"
 
 #~ msgid "Client decoration"
 #~ msgstr "Client-seitige Dekoration"
