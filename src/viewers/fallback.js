@@ -156,6 +156,13 @@ export class FallbackRenderer extends Adw.PreferencesPage {
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
             InternalChildren: ['fallbackIcon', 'nameLabel', 'typeLabel', 'sizeRow', 'spinner', 'modifiedRow'],
             Properties: {
+                'button-label': GObject.ParamSpec.string(
+                    'button-label',
+                    null,
+                    null,
+                    GObject.ParamFlags.READABLE,
+                    null
+                ),
                 'has-error': GObject.ParamSpec.boolean(
                     'has-error',
                     null,
@@ -178,6 +185,7 @@ export class FallbackRenderer extends Adw.PreferencesPage {
         super(constructProperties);
 
         this._error = error;
+        this.notify('button-label');
         this.notify('has-error');
         this.notify('error-summary');
 
@@ -216,6 +224,10 @@ export class FallbackRenderer extends Adw.PreferencesPage {
 
         const date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
         this._modifiedRow.set_subtitle(date.format('%x, %X'));
+    }
+
+    get button_label() {
+        return this._error?.hasDetail ? _('_Copy Full Error') : null;
     }
 
     get has_error() {

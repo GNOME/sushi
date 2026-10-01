@@ -5,7 +5,7 @@ template $Gjs_FallbackRenderer: Adw.PreferencesPage {
   banner: Adw.Banner {
     revealed: bind template.has-error;
     title: bind template.error-summary;
-    button-label: _("_Copy Full Error");
+    button-label: bind template.button-label;
     button-clicked => $_copyFullError();
   };
 
