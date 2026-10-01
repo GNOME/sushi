@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-09-20 15:52+0000\n"
-"PO-Revision-Date: 2026-09-29 22:59+0200\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2026-09-25 15:00+0000\n"
+"PO-Revision-Date: 2026-09-30 17:22+0200\n"
+"Last-Translator: Uwe Senkler\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
+#. overwrite
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:2
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9 src/core/main.js:31
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:3
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:13
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Verschiedene Arten von Dateien schnell ansehen"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:11
+msgid "The GNOME Project"
+msgstr "Das GNOME-Projekt"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:15
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -37,23 +44,23 @@ msgstr ""
 "unabhängige Komponente, die sich nahtlos in GNOME Dateien (Nautilus) "
 "integriert."
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
 msgid "nautilus"
 msgstr "nautilus"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
 msgid "sushi"
 msgstr "sushi"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:23
 msgid "view"
 msgstr "Ansicht"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:24
 msgid "previewer"
 msgstr "Vorschau"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:25
 msgid "preview"
 msgstr "Vorschau"
 
@@ -63,7 +70,7 @@ msgstr "Vorschau fehlgeschlagen"
 
 #: src/ui/error.blp:14
 msgid "Copy Full Error Message"
-msgstr "Volle Fehlermeldung kopieren"
+msgstr "Gesamte Fehlermeldung kopieren"
 
 #: src/ui/fallback.blp:29
 msgid "Size"
@@ -75,15 +82,15 @@ msgstr "Geändert"
 
 #: src/ui/html.blp:9
 msgid "Remote content is blocked to protect your privacy"
-msgstr "Entfernte Inhalte wurden blockiert zum Schutz ihrer Daten"
+msgstr "Aus Datenschutzgründen wurde externer Inhalt blockiert"
 
 #: src/ui/html.blp:10
 msgid "_Show Remote Content"
-msgstr "Entfernten Inhalt _anzeigen"
+msgstr "Externen Inhalt anzeigen"
 
 #: src/ui/mainWindow.blp:17
 msgid "Toggle Fullscreen"
-msgstr "Vollbild ein- oder ausschalten"
+msgstr "Vollbild umschalten"
 
 #: src/ui/mainWindow.blp:24
 msgid "Open"
