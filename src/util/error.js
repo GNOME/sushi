@@ -26,6 +26,7 @@ export class WrappedError extends GObject.Object {
         GObject.registerClass(this);
     }
 
+    #hasDetail;
     #message;
     #summary;
 
@@ -33,15 +34,15 @@ export class WrappedError extends GObject.Object {
     constructor(error, constructProperties = {}) {
         super(constructProperties);
 
-        this.#message = this.#extractMessage(error);
+        [this.#hasDetail, this.#message] = this.#extractMessage(error);
         this.#summary = this.#extractSummary(error);
     }
 
     #extractMessage(error) {
-        if (error instanceof GLib.Error)
-            return error.message.trim();
+        if (error instanceof GLib.Error || error instanceof Gly.LoaderError)
+            return [true, error.message.trim()];
         else
-            return `${error}`;
+            return [false, `${error}`];
     }
 
     #extractSummary(error) {
@@ -55,6 +56,10 @@ export class WrappedError extends GObject.Object {
             return error;
         else
             return null;
+    }
+
+    get hasDetail() {
+        return this.#hasDetail;
     }
 
     get message() {

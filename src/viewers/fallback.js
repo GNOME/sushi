@@ -155,6 +155,13 @@ export class FallbackRenderer extends Gtk.Box {
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
             InternalChildren: ['statusPage', 'spinner', 'sizeLabel', 'dateLabel'],
             Properties: {
+                'button-label': GObject.ParamSpec.string(
+                    'button-label',
+                    null,
+                    null,
+                    GObject.ParamFlags.READABLE,
+                    null
+                ),
                 'has-error': GObject.ParamSpec.boolean(
                     'has-error',
                     null,
@@ -177,6 +184,7 @@ export class FallbackRenderer extends Gtk.Box {
         super(constructProperties);
 
         this._error = error;
+        this.notify('button-label');
         this.notify('has-error');
         this.notify('error-summary');
 
@@ -214,6 +222,10 @@ export class FallbackRenderer extends Gtk.Box {
 
         const date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
         this._dateLabel.set_label(date.format('%x %X'));
+    }
+
+    get button_label() {
+        return this._error?.hasDetail ? _('_Copy Full Error') : null;
     }
 
     get has_error() {
