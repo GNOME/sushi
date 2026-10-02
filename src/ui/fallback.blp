@@ -1,88 +1,92 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $Gjs_FallbackRenderer: Box {
-  orientation: vertical;
-
-  Adw.Banner {
+template $Gjs_FallbackRenderer: Adw.PreferencesPage {
+  banner: Adw.Banner {
     revealed: bind template.has-error;
     title: bind template.error-summary;
     button-label: _("_Copy Full Error");
     button-clicked => $_copyFullError();
-  }
+  };
 
-  Adw.StatusPage statusPage {
-    paintable: Adw.SpinnerPaintable {};
+  Adw.PreferencesGroup {
+    layout-manager: Adw.ClampLayout {
+      maximum-size: 400;
+    };
 
-    styles [
-      "compact",
-      "icon-dropshadow",
-    ]
+    CenterBox {
+      margin-bottom: 12;
 
-    child: Box {
-      orientation: vertical;
-      spacing: 6;
-      halign: center;
+      [center]
+      Adw.Bin {
+        halign: center;
+        width-request: 96;
+        height-request: 96;
 
-      Grid {
-        column-spacing: 6;
-        row-spacing: 6;
+        Image fallbackIcon {
+          halign: center;
+          valign: center;
+          pixel-size: 96;
 
-        Label {
-          layout {
-            column: 0;
-            row: 0;
-          }
-
-          halign: start;
-          label: _("Size");
+          paintable: Adw.SpinnerPaintable {};
 
           styles [
-            "dimmed",
+            "icon-dropshadow",
           ]
-        }
-
-        Box {
-          layout {
-            column: 1;
-            row: 0;
-          }
-
-          spacing: 6;
-
-          Adw.Spinner spinner {}
-
-          Label sizeLabel {
-            xalign: 0.0;
-          }
-        }
-
-        Label {
-          layout {
-            column: 0;
-            row: 1;
-          }
-
-          halign: start;
-          label: _("Modified");
-
-          styles [
-            "dimmed",
-          ]
-        }
-
-        Label dateLabel {
-          layout {
-            column: 1;
-            row: 1;
-          }
-
-          /* Reserve more space than needed to prevent resizing
-           * of parent box by changing size label */
-          width-chars: 25;
-          xalign: 0.0;
         }
       }
+    }
+
+    Box {
+      orientation: vertical;
+      spacing: 6;
+
+      Label nameLabel {
+        wrap: true;
+        wrap-mode: word_char;
+
+        styles [
+          "title-3",
+        ]
+      }
+
+      Label typeLabel {
+        ellipsize: end;
+
+        styles [
+          "description",
+        ]
+      }
+    }
+  }
+
+  Adw.PreferencesGroup {
+    layout-manager: Adw.ClampLayout {
+      maximum-size: 400;
     };
+
+    Adw.ActionRow sizeRow {
+      title: _("Size");
+      subtitle: _("–");
+      subtitle-lines: 1;
+
+      [suffix]
+      Adw.Spinner spinner {}
+
+      styles [
+        "property",
+        "numeric",
+      ]
+    }
+
+    Adw.ActionRow modifiedRow {
+      title: _("Modified");
+      subtitle-lines: 1;
+
+      styles [
+        "property",
+        "numeric",
+      ]
+    }
   }
 }

@@ -3,6 +3,7 @@
  *
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
+import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -148,12 +149,12 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
     _sendUpdate();
 };
 
-export class FallbackRenderer extends Gtk.Box {
+export class FallbackRenderer extends Adw.PreferencesPage {
     static {
         GObject.registerClass({
             Implements: [Renderer],
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/fallback.ui',
-            InternalChildren: ['statusPage', 'spinner', 'sizeLabel', 'dateLabel'],
+            InternalChildren: ['fallbackIcon', 'nameLabel', 'typeLabel', 'sizeRow', 'spinner', 'modifiedRow'],
             Properties: {
                 'has-error': GObject.ParamSpec.boolean(
                     'has-error',
@@ -187,33 +188,34 @@ export class FallbackRenderer extends Gtk.Box {
 
     _applyLabels(state) {
         const fileName = state.fileInfo.get_display_name();
-        this._statusPage.set_title(fileName);
+        this._nameLabel.set_label(fileName);
 
         const contentType = state.fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
             ? state.fileInfo.get_content_type()
             : state.fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
         const typeDescr = Gio.content_type_get_description(contentType);
-        this._statusPage.set_description(typeDescr);
+        this._typeLabel.set_label(typeDescr);
 
         let sizeFormatted;
         if (state.fileInfo.get_file_type() !== Gio.FileType.DIRECTORY) {
             sizeFormatted = GLib.format_size(state.fileInfo.get_size());
         } else if (state.totalSize > 0) {
+            const count = state.fileItems + state.directoryItems;
             const itemsStr = Format.vprintf(Gettext.ngettext(
                 '%d item', '%d items',
-                state.fileItems + state.directoryItems),
-            [state.fileItems + state.directoryItems]);
+                count),
+            [count]);
             sizeFormatted = `${GLib.format_size(state.totalSize)}, ${itemsStr}`;
         } else if (!state.loading) {
             sizeFormatted = _('Empty');
         }
 
         if (sizeFormatted)
-            this._sizeLabel.set_label(sizeFormatted);
+            this._sizeRow.set_subtitle(sizeFormatted);
 
 
         const date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
-        this._dateLabel.set_label(date.format('%x %X'));
+        this._modifiedRow.set_subtitle(date.format('%x, %X'));
     }
 
     get has_error() {
@@ -228,11 +230,11 @@ export class FallbackRenderer extends Gtk.Box {
         const customIcon = getCustomIcon(state.file, state.fileInfo);
         const icon = customIcon ?? state.fileInfo.get_icon();
         const iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
-        const paintable = iconTheme.lookup_by_gicon(icon, 256, this.scale_factor, 0, 0);
+        const paintable = iconTheme.lookup_by_gicon(icon, 96, this.scale_factor, 0, 0);
         if (paintable)
-            this._statusPage.set_paintable(paintable);
+            this._fallbackIcon.set_from_paintable(paintable);
         else
-            this._statusPage.set_icon_name('image-missing-symbolic');
+            this._fallbackIcon.set_from_icon_name('image-missing-symbolic');
     }
 
     _onFileInfoUpdated(state) {
