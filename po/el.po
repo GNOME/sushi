@@ -7,27 +7,27 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:15+0000\n"
-"PO-Revision-Date: 2021-04-23 15:15+0300\n"
-"Last-Translator: Efstathios Iosifidis <eiosifidis@gnome.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-09-20 15:52+0000\n"
+"PO-Revision-Date: 2026-10-03 14:56+0300\n"
+"Last-Translator: Efstathios Iosifidis <eiosifidis@gmail.com>\n"
 "Language-Team: Greek, Modern (1453-) <gnome-el-list@gnome.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.9\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Μια δυνατότητα γρήγορης προβολής διαφόρων ειδών αρχείων"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -36,57 +36,105 @@ msgstr ""
 "επιφάνειας εργασίας GNOME. Είναι ένα ανεξάρτητο στοιχείο που ενσωματώνεται "
 "στο πρόγραμμα Αρχεία GNOME (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Τύπος"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "ναυτίλος"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "προβολή"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "πρόγραμμα προεπισκόπησης"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "προεπισκόπηση"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Η προεπισκόπηση απέτυχε"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Αντιγραφή ολόκληρου του μηνύματος σφάλματος"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Μέγεθος"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Τροποποιήθηκε"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr ""
+"Το περιεχόμενο από απομακρυσμένες πηγές έχει αποκλειστεί για την προστασία "
+"της ιδιωτικότητάς σας"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Εμφάνιση απομακρυσμένου περιεχομένου"
+
+#: src/ui/mainWindow.blp:17
+msgid "Toggle Fullscreen"
+msgstr "Εναλλαγή σε πλήρη οθόνη"
+
+#: src/ui/mainWindow.blp:24
+msgid "Open"
+msgstr "Άνοιγμα"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "Προηγούμενη σελίδα"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "Επόμενη σελίδα"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "από"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "του"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d αντικείμενο"
 msgstr[1] "%d αντικείμενα"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Άδειασμα του φακέλου"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "Κενό"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Μέγεθος"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Τροποποιήθηκε"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Αδυναμία εμφάνισης %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Άνοιγμα με %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Άνοιγμα"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "του"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "από"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d από %d"
+
+#~ msgid "Type"
+#~ msgstr "Τύπος"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Άδειασμα του φακέλου"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Αδυναμία εμφάνισης %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Άνοιγμα με %s"
 
 #~ msgid "Client decoration"
 #~ msgstr "Διακόσμηση πελάτη"
