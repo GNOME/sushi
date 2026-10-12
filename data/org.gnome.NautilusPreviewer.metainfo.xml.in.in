@@ -22,7 +22,6 @@
     <keyword>preview</keyword>
   </keywords>
   <releases>
-    <!--NEXT_RELEASE_PLACEHOLDER-->
     <release version="@release-version@" type="snapshot"/>
     <release version="51.2" type="stable" date="2026-10-12">
       <description><p>Minor system integration fixes</p></description>
