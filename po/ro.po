@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-08-03 11:41+0000\n"
-"PO-Revision-Date: 2026-08-03 14:26+0200\n"
+"POT-Creation-Date: 2026-09-25 15:00+0000\n"
+"PO-Revision-Date: 2026-10-12 21:54+0300\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);\n"
-"X-Generator: Gtranslator 50.0\n"
+"X-Generator: Gtranslator 51.0\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/sushi/\n"
@@ -29,15 +29,22 @@ msgstr ""
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
+#. overwrite
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:2
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9 src/core/main.js:31
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:3
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:13
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Oferă posibilitatea de a vedea rapid diferite tipuri de fișiere"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:11
+msgid "The GNOME Project"
+msgstr "Proiectul GNOME"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:15
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -45,23 +52,23 @@ msgstr ""
 "Sushi este o aplicație de previzualizat fișiere pentru interfața GNOME. Este "
 "o componentă independentă care se integrează cu Fișiere GNOME (Nautilus)."
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
 msgid "nautilus"
 msgstr "nautilus"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
 msgid "sushi"
 msgstr "sushi"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:23
 msgid "view"
 msgstr "arată"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:24
 msgid "previewer"
 msgstr "previzualizare"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:25
 msgid "preview"
 msgstr "previzualiza"
 
@@ -89,31 +96,31 @@ msgstr "Conținutul extern este blocat pentru a-ți proteja intimitatea"
 msgid "_Show Remote Content"
 msgstr "_Arată conținutul extern"
 
-#: src/ui/mainWindow.blp:16
+#: src/ui/mainWindow.blp:17
 msgid "Toggle Fullscreen"
 msgstr "Pe tot ecranul / Fereastră normală"
 
-#: src/ui/mainWindow.blp:22
+#: src/ui/mainWindow.blp:24
 msgid "Open"
 msgstr "Deschide"
 
-#: src/ui/pdf.blp:48
+#: src/ui/pdf.blp:58
 msgid "Previous Page"
 msgstr "Pagina precedentă"
 
-#: src/ui/pdf.blp:70
+#: src/ui/pdf.blp:80
 msgid "Next Page"
 msgstr "Pagina următoare"
 
-#: src/viewers/audio.js:261
+#: src/viewers/audio.js:272
 msgid "by"
 msgstr "de"
 
-#: src/viewers/audio.js:266
+#: src/viewers/audio.js:277
 msgid "from"
 msgstr "din"
 
-#: src/viewers/fallback.js:192
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -121,11 +128,11 @@ msgstr[0] "%d element"
 msgstr[1] "%d elemente"
 msgstr[2] "%d de elemente"
 
-#: src/viewers/fallback.js:197
+#: src/viewers/fallback.js:190
 msgid "Empty"
 msgstr "Gol"
 
-#: src/viewers/pdf.js:134
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d din %d"
