@@ -1,3 +1,13 @@
+51.2
+====
+- Minor graphical app icon fixes (Peter Eisenmann)
+- Update vulnerable NPM packages (Tau Gärtli)
+- Update and modernize flatpak manifest (Tau Gärtli)
+- Add desktop file (Tau Gärtli)
+- Set application name (Tau Gärtli)
+
+- Translation updates (GNOME Translation Project contributors)
+
 51.1
 ====
 - Fix toolbar overlay from blocking content (Peter Eisenmann)
