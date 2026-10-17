@@ -180,8 +180,11 @@ sushi_get_font_name (FT_Face face,
   if (family_name == NULL) {
     /* Try to get the basename of the file this was loaded from */
     GFile *file = face->generic.data;
-    if (G_IS_FILE (file))
-      return g_file_get_basename (file);
+    if (G_IS_FILE (file)) {
+      g_autofree gchar *basename = g_file_get_basename (file);
+
+      return g_utf8_make_valid (basename, -1);
+    }
 
     /* Use an empty string as the last fallback */
     return g_strdup ("");
@@ -189,7 +192,9 @@ sushi_get_font_name (FT_Face face,
 
   if (style_name == NULL ||
       (short_form && g_strcmp0 (style_name, "Regular") == 0))
-    return g_strdup (family_name);
+    return g_utf8_make_valid (family_name, -1);
 
-  return g_strconcat (family_name, ", ", style_name, NULL);
+  g_autofree gchar *name = g_strconcat (family_name, ", ", style_name, NULL);
+
+  return g_utf8_make_valid (name, -1);
 }
