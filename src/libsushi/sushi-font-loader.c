@@ -85,9 +85,10 @@ create_face_from_contents (FontLoadJob *job,
 
 static gboolean
 font_load_job_do_load (FontLoadJob *job,
+                       GCancellable *cancellable,
                        GError **error)
 {
-  return g_file_load_contents (job->file, NULL,
+  return g_file_load_contents (job->file, cancellable,
                                &job->face_contents, &job->face_length,
                                NULL, error);
 }
@@ -101,7 +102,7 @@ font_load_job (GTask *task,
   FontLoadJob *job = user_data;
   g_autoptr(GError) error = NULL;
 
-  font_load_job_do_load (job, &error);
+  font_load_job_do_load (job, cancellable, &error);
 
   if (error != NULL)
     g_task_return_error (task, g_steal_pointer (&error));
@@ -121,7 +122,7 @@ sushi_new_ft_face_from_uri (FT_Library library,
                             GError **error)
 {
   g_autoptr(FontLoadJob) job = font_load_job_new (library, uri, face_index, NULL, NULL);
-  if (!font_load_job_do_load (job, error))
+  if (!font_load_job_do_load (job, NULL, error))
     return NULL;
 
   return create_face_from_contents (job, contents, error);
@@ -135,11 +136,12 @@ void
 sushi_new_ft_face_from_uri_async (FT_Library library,
                                   const gchar *uri,
                                   gint face_index,
+                                  GCancellable *cancellable,
                                   GAsyncReadyCallback callback,
                                   gpointer user_data)
 {
   FontLoadJob *job = font_load_job_new (library, uri, face_index, callback, user_data);
-  g_autoptr(GTask) task = g_task_new (NULL, NULL, callback, user_data);
+  g_autoptr(GTask) task = g_task_new (NULL, cancellable, callback, user_data);
 
   g_task_set_task_data (task, job, (GDestroyNotify) font_load_job_free);
   g_task_run_in_thread (task, font_load_job);

@@ -30,6 +30,8 @@ struct _SushiFontWidget {
   gchar *uri;
   gint face_index;
 
+  GCancellable *cancellable;
+
   FT_Library library;
   FT_Face face;
   gchar *face_contents;
@@ -514,11 +516,20 @@ font_face_async_ready_cb (GObject *object,
 {
   SushiFontWidget *self = user_data;
   g_autoptr(GError) error = NULL;
+  g_autofree gchar *face_contents = NULL;
+  FT_Face face;
 
-  self->face =
-    sushi_new_ft_face_from_uri_finish (result,
-                                       &self->face_contents,
-                                       &error);
+  face = sushi_new_ft_face_from_uri_finish (result,
+                                            &face_contents,
+                                            &error);
+
+  if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    return;
+
+  g_clear_object (&self->cancellable);
+
+  self->face = face;
+  self->face_contents = g_steal_pointer (&face_contents);
 
   if (error != NULL) {
     g_signal_emit (self, signals[ERROR], 0, error);
@@ -536,9 +547,14 @@ font_face_async_ready_cb (GObject *object,
 void
 sushi_font_widget_load (SushiFontWidget *self)
 {
+  g_cancellable_cancel (self->cancellable);
+  g_clear_object (&self->cancellable);
+  self->cancellable = g_cancellable_new ();
+
   sushi_new_ft_face_from_uri_async (self->library,
                                     self->uri,
                                     self->face_index,
+                                    self->cancellable,
                                     font_face_async_ready_cb,
                                     self);
 }
@@ -600,6 +616,9 @@ static void
 sushi_font_widget_finalize (GObject *object)
 {
   SushiFontWidget *self = SUSHI_FONT_WIDGET (object);
+
+  g_cancellable_cancel (self->cancellable);
+  g_clear_object (&self->cancellable);
 
   g_free (self->uri);
 
