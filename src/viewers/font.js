@@ -22,6 +22,7 @@ export const Klass = class FontRenderer extends Sushi.FontWidget {
             uri: file.get_uri(),
         });
 
+        this.connect('error', (_, error) => this.markFailed(error));
         this.markReady();
     }
 };
