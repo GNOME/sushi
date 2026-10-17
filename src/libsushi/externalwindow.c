@@ -47,7 +47,7 @@ G_DEFINE_FINAL_TYPE (ExternalWindow, external_window, G_TYPE_OBJECT)
 ExternalWindow *
 create_external_window_from_handle (const char *handle_str)
 {
-  ExternalWindow *self = g_object_new (EXTERNAL_TYPE_WINDOW, NULL);
+  g_autoptr(ExternalWindow) self = g_object_new (EXTERNAL_TYPE_WINDOW, NULL);
   const char x11_prefix[] = "x11:";
   const char wayland_prefix[] = "wayland:";
 
@@ -56,14 +56,14 @@ create_external_window_from_handle (const char *handle_str)
       const char *x11_handle_str = handle_str + strlen (x11_prefix);
 
       self->xid = strtol (x11_handle_str, NULL, 16);
-      return self;
+      return g_steal_pointer (&self);
     }
   else if (g_str_has_prefix (handle_str, wayland_prefix))
     {
       const char *wayland_handle_str = handle_str + strlen (wayland_prefix);
 
       self->wayland_str = g_strdup (wayland_handle_str);
-      return self;
+      return g_steal_pointer (&self);
     }
 
   g_warning ("Unhandled parent window type %s\n", handle_str);
