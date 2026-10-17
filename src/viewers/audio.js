@@ -97,9 +97,11 @@ const fetchCoverArt = (_file, _tagList, _cancellable) => {
 
         for (const coverFile of coverFiles) {
             try {
-                return _fetchFromFile(coverFile, _cancellable);
-            } catch {
-                continue;
+                // eslint-disable-next-line no-await-in-loop
+                return await _fetchFromFile(coverFile, _cancellable);
+            } catch (error) {
+                if (isCancelledError(error))
+                    throw error;
             }
         }
 
