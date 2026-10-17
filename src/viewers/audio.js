@@ -68,7 +68,12 @@ const fetchCoverArt = (_file, _tagList, _cancellable) => {
         const [ok, info] = buffer.map(Gst.MapFlags.READ);
         if (!ok)
             return Promise.reject(new Error('Failed to map GstBuffer'));
-        const bytes = GLib.Bytes.new(info.data);
+        let bytes;
+        try {
+            bytes = GLib.Bytes.new(info.data);
+        } finally {
+            buffer.unmap(info);
+        }
         const loader = Gly.Loader.new_for_bytes(bytes);
         return loader.load_async(cancellable)
             .then(image => image.next_frame_async(cancellable))
