@@ -89,6 +89,7 @@ text_to_glyphs (cairo_t *cr,
   PangoDirection base_dir;
   GList *items;
   GList *visual_items;
+  GList *visual_items_head;
   FT_Face ft_face;
   hb_font_t *hb_font;
   gdouble x = 0, y = 0;
@@ -122,7 +123,7 @@ text_to_glyphs (cairo_t *cr,
   pango_attr_list_unref (attr_list);
 
   /* reorder the items in the visual order */
-  visual_items = pango_reorder_items (items);
+  visual_items = visual_items_head = pango_reorder_items (items);
 
   while (visual_items) {
     PangoItem *item;
@@ -164,7 +165,7 @@ text_to_glyphs (cairo_t *cr,
     visual_items = visual_items->next;
   }
 
-  g_list_free_full (visual_items, (GDestroyNotify) pango_item_free);
+  g_list_free (visual_items_head);
   g_list_free_full (items, (GDestroyNotify) pango_item_free);
 
   hb_font_destroy (hb_font);
