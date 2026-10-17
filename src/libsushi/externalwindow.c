@@ -97,8 +97,12 @@ external_window_set_parent_of (ExternalWindow *self,
     if (GDK_IS_X11_DISPLAY (gtk_widget_get_display (GTK_WIDGET (child_window))))
       {
         GdkDisplay *display = gtk_widget_get_display (GTK_WIDGET (child_window));
+        /* The GDK X11 backend is deprecated with no replacement. Drop X11
+         * support when porting to GTK 5. */
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         Display *dpy = gdk_x11_display_get_xdisplay (display);
         Window parent_xid = gdk_x11_surface_get_xid (surface);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         if (self->wayland_str != NULL)
         {
