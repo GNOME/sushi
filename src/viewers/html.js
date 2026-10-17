@@ -50,6 +50,7 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
         this.#file = file;
 
         this._webView.connect('create', this._onCreate.bind(this));
+        this._webView.connect('decide-policy', this.#decidePolicy);
 
         this._onUserMessageReceived = this._onUserMessageReceived.bind(this);
 
@@ -100,6 +101,31 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
         for (const item of contextMenu.get_items()) {
             if (!isAllowedStockAction(item))
                 contextMenu.remove(item);
+        }
+        return false; /* propagate the event further */
+    }
+
+    /** @param {WebKit.WebView} _webView
+     *  @param {WebKit.PolicyDecision} decision
+     *  @param {WebKit.PolicyDecisionType} decision
+     *  @returns {boolean} */
+    #decidePolicy = (_webView, decision, decisionType) => {
+        if (decisionType === WebKit.PolicyDecisionType.NAVIGATION_ACTION)
+            return this.#decideNavigationPolicy(decision);
+        return false; /* propagate the event further */
+    };
+
+    /** @param {WebKit.NavigationPolicyDecision} decision
+     *  @returns {boolean} */
+    #decideNavigationPolicy(decision) {
+        const action = decision.get_navigation_action();
+        const request = action.get_request();
+        const uri = request.get_uri();
+        const scheme = GLib.Uri.parse_scheme(uri).toLowerCase();
+        if (!WEB_URI_SCHEMES.has(scheme)) {
+            decision.ignore();
+            this._launchUri(uri);
+            return true;
         }
         return false; /* propagate the event further */
     }
@@ -199,3 +225,5 @@ const isAllowedStockAction = item => {
 };
 
 const LAUNCHABLE_URI_SCHEMES = new Set(['http', 'https', 'mailto']);
+// Adapted from Epiphany: <https://gitlab.gnome.org/GNOME/epiphany/-/blob/main/embed/ephy-embed-utils.c#L142>
+const WEB_URI_SCHEMES = new Set(['http', 'https', 'file', 'javascript', 'data', 'blob', 'about', 'gopher']);
