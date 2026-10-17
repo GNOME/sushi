@@ -12,4 +12,5 @@ src/ui/pdf.blp
 src/util/error.js
 src/viewers/audio.js
 src/viewers/fallback.js
+src/viewers/html.js
 src/viewers/pdf.js

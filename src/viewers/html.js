@@ -9,6 +9,8 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
+// eslint-disable-next-line no-restricted-properties
+const Format = imports.format;
 
 import {registerWebProcessExtension} from '../util/webProcessExtensions.js';
 
@@ -39,10 +41,13 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
         registerWebProcessExtension(WebKit.WebContext.get_default());
     }
 
+    #file;
+
     constructor(file, _fileInfo, constructProperties = {}) {
         GObject.type_ensure(WebKit.WebView);
 
         super(constructProperties);
+        this.#file = file;
 
         this._webView.connect('create', this._onCreate.bind(this));
 
@@ -116,13 +121,29 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
     /** @param {string} uri */
     async _tryLaunchUri(uri) {
         const parent = this.get_root();
-        const isFile = GLib.Uri.parse_scheme(uri).toLowerCase() === 'file';
-        if (isFile) {
+        const scheme = GLib.Uri.parse_scheme(uri).toLowerCase();
+        if (scheme === 'file') {
             const file = Gio.File.new_for_uri(uri);
             await Gtk.FileLauncher.new(file).launch(parent, this.cancellable);
-        } else {
+        } else if (LAUNCHABLE_URI_SCHEMES.has(scheme) || await this.#askForPermission(scheme)) {
             await Gtk.UriLauncher.new(uri).launch(parent, this.cancellable);
         }
+    }
+
+    #askForPermission(scheme) {
+        const heading = _('Open in External App?');
+        const body = Format.vprintf(_('Allow “%s” to open the “%s” link in an external app'), [this.#file.get_basename(), scheme]);
+        const dialog = Adw.AlertDialog.new(heading, body);
+        dialog.add_response('cancel', _('_Cancel'));
+        dialog.add_response('open', _('_Open Link'));
+        dialog.set_response_appearance('open', Adw.ResponseAppearance.SUGGESTED);
+
+        const parent = this.get_root();
+        dialog.present(parent);
+
+        return new Promise((resolve, _) => {
+            dialog.connect('response', (_, response) => resolve(response === 'open'));
+        });
     }
 
     get topBarStyle() {
@@ -177,3 +198,5 @@ const isAllowedStockAction = item => {
     const action = item.get_stock_action();
     return ALLOWED_STOCK_ACTIONS.has(action);
 };
+
+const LAUNCHABLE_URI_SCHEMES = new Set(['http', 'https', 'mailto']);
