@@ -60,10 +60,15 @@ static PangoDirection
 get_base_direction (const char *text)
 {
   /* Uses FriBidi to determine RTL/LTR string direction */
-  glong text_len = g_utf8_strlen (text, -1);
-  g_autofree FriBidiCharType *bidi_types = g_new (FriBidiCharType, text_len);
+  glong text_len = 0;
+  g_autofree gunichar *ucs4 = g_utf8_to_ucs4 (text, -1, NULL, &text_len, NULL);
+  g_autofree FriBidiCharType *bidi_types = NULL;
 
-  fribidi_get_bidi_types ((const FriBidiChar *) text, text_len, bidi_types);
+  if (ucs4 == NULL || text_len == 0)
+    return PANGO_DIRECTION_LTR;
+
+  bidi_types = g_new (FriBidiCharType, text_len);
+  fribidi_get_bidi_types ((const FriBidiChar *) ucs4, text_len, bidi_types);
 
   return (fribidi_get_par_direction (bidi_types, text_len) == FRIBIDI_PAR_RTL)
          ? PANGO_DIRECTION_RTL
