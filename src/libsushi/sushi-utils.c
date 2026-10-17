@@ -31,6 +31,9 @@ sushi_window_set_child_of_external (GtkWindow *window,
 {
   ExternalWindow *external_window;
 
+  if (handle == NULL || handle[0] == '\0')
+    return;
+
   gtk_widget_realize (GTK_WIDGET (window));
 
   external_window = create_external_window_from_handle (handle);
