@@ -12,6 +12,7 @@ import Gtk from 'gi://Gtk';
 // eslint-disable-next-line no-restricted-properties
 const Format = imports.format;
 
+import {isGLibError} from '../util/error.js';
 import {registerWebProcessExtension} from '../util/webProcessExtensions.js';
 
 Gio._promisify(Gtk.UriLauncher.prototype, 'launch', 'launch_finish');
@@ -140,7 +141,8 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
         try {
             await this._tryLaunchUri(uri);
         } catch (error) {
-            console.warn(`failed to launch URI '${uri}': ${error}`);
+            if (!isGLibError(error, Gtk.DialogError, Gtk.DialogError.DISMISSED))
+                console.warn(`failed to launch URI '${uri}': ${error}`);
         }
     }
 
