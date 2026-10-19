@@ -1,0 +1,120 @@
+# Māori translation of sushi.
+# Copyright (C) 2026 the sushi authors.
+# This file is distributed under the same licence as the sushi package.
+# Arlewatyerre Tuhoro-Bell <aidan@ursa.nz>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sushi gnome-51\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-10-12 19:54+0000\n"
+"PO-Revision-Date: 2026-10-19 14:16+1300\n"
+"Last-Translator: Arlewatyerre Tuhoro-Bell <aidan@ursa.nz>\n"
+"Language-Team: Māori <https://gitlab.gnome.org/Teams/Translation/mi>\n"
+"Language: mi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: gnomi\n"
+
+#. overwrite
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:2
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9 src/core/main.js:31
+msgid "Sushi"
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:3
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
+msgid "Provide a facility for quickly viewing different kinds of files"
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
+msgid ""
+"Sushi is a file previewer for the GNOME desktop environment. It is an "
+"independent component that integrates with GNOME Files (Nautilus)."
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "tiro"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr ""
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "arokite"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr ""
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr ""
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Rahi"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Kua whakakētia"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr ""
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr ""
+
+#: src/ui/mainWindow.blp:17
+msgid "Toggle Fullscreen"
+msgstr ""
+
+#: src/ui/mainWindow.blp:24
+msgid "Open"
+msgstr "Whakatuwhera"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr ""
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr ""
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "nā"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "mai i"
+
+#: src/viewers/fallback.js:185
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d tūemi"
+msgstr[1] "%d tūemi"
+
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr ""
+
+#: src/viewers/pdf.js:115
+#, javascript-format
+msgid "%d of %d"
+msgstr "%d o te %d"
