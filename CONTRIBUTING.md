@@ -1,5 +1,7 @@
 # Contributing to Sushi
 
+Commit messages should follow the format [explained in the handbook](https://handbook.gnome.org/development/commit-messages.html)
+
 ## Running
 
 After starting, you can preview files from Nautilus by pressing <kbd>Spacebar</kbd> (requires Nautilus >= 51). \
