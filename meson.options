@@ -17,3 +17,9 @@ option(
     value: 'default',
     description: 'Build with default or development App Id.',
 )
+option(
+    'webkitgtk',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build with WebKitGTK support.',
+)

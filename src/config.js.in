@@ -2,4 +2,4 @@
 // SPDX-FileCopyrightText: 2026 The Sushi authors
 
 export const SYSTEM_PLUGIN_DIRECTORY = '@system_plugin_directory@';
-export const WEB_PROCESS_EXTENSIONS_DIRECTORY = '@web_process_extensions_dir@';
+@const_web_process_extensions_directory@

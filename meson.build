@@ -26,12 +26,17 @@ gtk_x11_dep = dependency('gtk4-x11', required: get_option('X11'))
 gtk_dep = dependency('gtk4', version: '>= 4.20')
 gtksourceview_dep = dependency('gtksourceview-5')
 harfbuzz_dep = dependency('harfbuzz', version: '>=0.9.9')
-webkit_dep = dependency('webkitgtk-6.0')
+webkit_dep = dependency('webkitgtk-6.0', required: get_option('webkitgtk'))
 x11_dep = dependency('x11', required: get_option('X11'))
 libadwaita_dep = dependency('libadwaita-1')
 glycin_dep = dependency('glycin-2')
 glycin_gtk_dep = dependency('glycin-gtk4-2')
-webkit_webprocess_extension = dependency('webkitgtk-web-process-extension-6.0')
+webkit_webprocess_extension = dependency(
+  'webkitgtk-web-process-extension-6.0',
+  required: get_option('webkitgtk'),
+)
+
+with_webkitgtk = webkit_dep.found() and webkit_webprocess_extension.found()
 
 blueprint_cmd = find_program(
   'blueprint-compiler',
@@ -49,7 +54,11 @@ libexecdir = join_paths(prefixdir, get_option('libexecdir'))
 pkgdatadir = join_paths(datadir, meson.project_name())
 pkglibdir = join_paths(libdir, meson.project_name())
 plugindir = join_paths(prefixdir, 'lib', meson.project_name(), 'plugins-1')
-web_process_extensions_dir = join_paths(pkglibdir, 'web-process-extensions')
+
+if with_webkitgtk
+  web_process_extensions_dir = join_paths(pkglibdir, 'web-process-extensions')
+endif
+
 gjs = find_program('gjs', 'gjs-console')
 env = find_program('env')
 
