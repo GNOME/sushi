@@ -1,6 +1,6 @@
 # Contributing to Sushi
 
-Commit messages should follow the format [explained here](https://handbook.gnome.org/development/commit-messages.html)
+Commit messages should follow the format [explained in the handbook](https://handbook.gnome.org/development/commit-messages.html)
 
 ## Running
 
