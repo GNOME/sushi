@@ -10,6 +10,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <glib/gi18n-lib.h>
 #include <gio/gio.h>
 
 typedef struct {
@@ -178,7 +179,7 @@ sushi_get_font_name (FT_Face face,
   const char *style_name = face->style_name;
   const char *family_name = face->family_name;
 
-  if (family_name == NULL) {
+  if (family_name == NULL || family_name == '\0') {
     /* Try to get the basename of the file this was loaded from */
     GFile *file = face->generic.data;
     if (G_IS_FILE (file)) {
@@ -187,8 +188,7 @@ sushi_get_font_name (FT_Face face,
       return g_utf8_make_valid (basename, -1);
     }
 
-    /* Use an empty string as the last fallback */
-    return g_strdup ("");
+    return g_strdup (_("Unknown Font"));
   }
 
   if (style_name == NULL ||
