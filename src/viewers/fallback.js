@@ -22,7 +22,6 @@ function _getDeepCountAttrs() {
     return [
         Gio.FILE_ATTRIBUTE_STANDARD_SIZE,
         Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-        Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
         Gio.FILE_ATTRIBUTE_STANDARD_NAME,
         Gio.FILE_ATTRIBUTE_UNIX_INODE,
     ].join(',');
