@@ -209,7 +209,7 @@ export class FallbackRenderer extends Adw.PreferencesPage {
         } else if (state.totalSize > 0) {
             const count = state.fileItems + state.directoryItems;
             const itemsStr = Format.vprintf(Gettext.ngettext(
-                '%d item', '%d items',
+                '%Id item', '%Id items',
                 count),
             [count]);
             sizeFormatted = `${GLib.format_size(state.totalSize)}, ${itemsStr}`;
