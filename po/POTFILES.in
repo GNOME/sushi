@@ -4,6 +4,7 @@ data/org.gnome.NautilusPreviewer.desktop.in.in
 data/org.gnome.NautilusPreviewer.metainfo.xml.in.in
 src/core/main.js
 src/core/mainWindow.js
+src/libsushi/sushi-font-loader.c
 src/ui/error.blp
 src/ui/fallback.blp
 src/ui/html.blp
