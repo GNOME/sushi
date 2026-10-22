@@ -66,8 +66,7 @@ get_base_direction (const char *text)
   g_autofree gunichar *ucs4 = g_utf8_to_ucs4 (text, -1, NULL, &text_len, NULL);
   g_autofree FriBidiCharType *bidi_types = NULL;
 
-  if (ucs4 == NULL || text_len == 0)
-    return PANGO_DIRECTION_LTR;
+  g_return_val_if_fail (ucs4 != NULL && text_len > 0, PANGO_DIRECTION_LTR);
 
   bidi_types = g_new (FriBidiCharType, text_len);
   fribidi_get_bidi_types ((const FriBidiChar *) ucs4, text_len, bidi_types);
