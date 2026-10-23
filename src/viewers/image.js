@@ -5,6 +5,7 @@
  */
 
 import Adw from 'gi://Adw';
+import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
@@ -13,6 +14,7 @@ import Gly from 'gi://Gly';
 import GlyGtk4 from 'gi://GlyGtk4';
 
 import {Renderer, ResizePolicy} from '../core/renderer.js';
+import {setupActions} from '../util/action.js';
 import {isCancelledError} from '../util/error.js';
 import {SourceId} from '../util/source.js';
 
@@ -20,6 +22,13 @@ Gio._promisify(Gly.Loader.prototype, 'load_async', 'load_finish');
 Gio._promisify(Gly.Image.prototype, 'next_frame_async', 'next_frame_finish');
 
 const MICROS_PER_MILLIS = 1_000;
+
+const contentProviderFor = (gtype, object) => {
+    const value = new GObject.Value();
+    value.init(gtype);
+    value.set_object(object);
+    return Gdk.ContentProvider.new_for_value(value);
+};
 
 export const Klass = class ImageRenderer extends Gtk.Picture {
     static {
@@ -39,10 +48,26 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
     constructor(file, _fileInfo, constructProperties = {}) {
         super(constructProperties);
 
+        this._file = file;
         this._loadFile(file)
             .catch(error => this.markFailed(error));
 
+        setupActions(this, 'image', [
+            ['copy', () => this._copy()],
+        ]);
+
         this.markInitialized();
+    }
+
+    _copy() {
+        const providers = [
+            this._texture && contentProviderFor(Gdk.Texture, this._texture),
+            contentProviderFor(Gio.File, this._file),
+        ].filter(Boolean);
+
+        const clipboard = Gdk.Display.get_default()?.get_clipboard();
+        clipboard?.set_content(Gdk.ContentProvider.new_union(providers));
+        this.showToast(_('Image copied to clipboard'));
     }
 
     stop() {

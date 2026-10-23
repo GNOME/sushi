@@ -8,4 +8,13 @@ template $Gjs_ImageRenderer: Picture {
   GestureClick {
     pressed => $_handleClick();
   }
+
+  ShortcutController {
+    scope: managed;
+
+    Shortcut {
+      trigger: "<Ctrl>c";
+      action: "action(image.copy)";
+    }
+  }
 }
