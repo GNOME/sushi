@@ -37,6 +37,7 @@
     <file>ui/audio.ui</file>
     <file>ui/fallback.ui</file>
     @ui_html@
+    <file>ui/image.ui</file>
     <file>ui/mainWindow.ui</file>
     <file>ui/pdf.ui</file>
     <file>ui/rendererWrapper.ui</file>

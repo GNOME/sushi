@@ -25,34 +25,22 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
     static {
         GObject.registerClass({
             Implements: [Renderer],
+            Template: 'resource:///org/gnome/NautilusPreviewer/ui/image.ui',
         }, this);
     }
 
     #nextFrameTimeout = new SourceId();
 
-    _handleClick(numClicks) {
+    _handleClick(_, numClicks) {
         if (numClicks === 2)
             this.activate_action('win.fullscreen', null);
     }
 
     constructor(file, _fileInfo, constructProperties = {}) {
-        super({
-            ...constructProperties,
-            content_fit: Gtk.ContentFit.SCALE_DOWN,
-            halign: Gtk.Align.CENTER,
-            valign: Gtk.Align.CENTER,
-        });
+        super(constructProperties);
 
         this._loadFile(file)
             .catch(error => this.markFailed(error));
-
-        const click_handler = new Gtk.GestureClick();
-        click_handler.connect_object(
-            'pressed',
-            (_, numClicks) => this._handleClick(numClicks),
-            this, GObject.ConnectFlags.DEFAULT
-        );
-        this.add_controller(click_handler);
 
         this.markInitialized();
     }

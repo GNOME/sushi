@@ -7,6 +7,7 @@ endif
 blueprint_files = files(
   'ui/audio.blp',
   'ui/fallback.blp',
+  'ui/image.blp',
   'ui/mainWindow.blp',
   'ui/pdf.blp',
   'ui/rendererWrapper.blp',
