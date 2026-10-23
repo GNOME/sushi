@@ -26,12 +26,14 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
       };
     }
 
-    content: Stack mainStack {
-      visible-child: spinner;
+    content: Adw.ToastOverlay toast_overlay {
+      child: Stack mainStack {
+        visible-child: spinner;
 
-      StackPage loading {
-        child: Adw.Spinner spinner {};
-      }
+        StackPage loading {
+          child: Adw.Spinner spinner {};
+        }
+      };
     };
   };
 

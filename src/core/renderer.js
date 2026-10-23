@@ -57,6 +57,7 @@ export class Renderer extends GObject.Interface {
             Signals: {
                 'failed': {param_types: [WrappedError.$gtype]},
                 'ready': {param_types: []},
+                'toast': {param_types: [GObject.TYPE_STRING]},
             },
         }, this);
     }
@@ -101,6 +102,11 @@ export class Renderer extends GObject.Interface {
         // Cache toolbar, renderer isn't meant to dynamically change this
         toolbar.set(this, this.toolbar);
         this.emit('ready');
+    }
+
+    /** @param {string} title */
+    showToast(title) {
+        this.emit('toast', title);
     }
 
     /* Virtual methods, overridable by subclasses */

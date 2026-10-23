@@ -28,7 +28,7 @@ gtksourceview_dep = dependency('gtksourceview-5')
 harfbuzz_dep = dependency('harfbuzz', version: '>=0.9.9')
 webkit_dep = dependency('webkitgtk-6.0', required: get_option('webkitgtk'))
 x11_dep = dependency('x11', required: get_option('X11'))
-libadwaita_dep = dependency('libadwaita-1')
+libadwaita_dep = dependency('libadwaita-1', version: '>= 1.7')
 glycin_dep = dependency('glycin-2')
 glycin_gtk_dep = dependency('glycin-gtk4-2')
 webkit_webprocess_extension = dependency(

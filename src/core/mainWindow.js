@@ -37,7 +37,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         GObject.registerClass({
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/mainWindow.ui',
             InternalChildren: [
-                'toolbar_view', 'titlebar', 'fullscreen_button', 'mainStack', 'spinner',
+                'toolbar_view', 'titlebar', 'fullscreen_button', 'mainStack', 'spinner', 'toast_overlay',
             ],
             Properties: {
                 file: GObject.ParamSpec.object(
@@ -86,6 +86,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._animating = 0;
         this.#rendererSignals.connect_closure('ready', () => this.#embedRenderer(), false);
         this.#rendererSignals.connect_closure('failed', (_, err) => this._reportError(err), false);
+        this.#rendererSignals.connect_closure('toast', (_, title) => this.showToast(title), false);
 
         this._hoverManager = new HoverManager(this._toolbar_view, this._titlebar);
 
@@ -359,6 +360,11 @@ export class MainWindow extends Adw.ApplicationWindow {
                 if (error === Gtk.DialogError.FAILED)
                     console.warn(error);
             });
+    }
+
+    showToast(title) {
+        this._toast_overlay.dismiss_all();
+        this._toast_overlay.add_toast(new Adw.Toast({title}));
     }
 
     #toggleFullscreen() {
