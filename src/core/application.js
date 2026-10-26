@@ -11,6 +11,8 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Sushi from 'gi://Sushi';
 const ByteArray = imports.byteArray;
+// eslint-disable-next-line no-restricted-properties
+const Format = imports.format;
 
 import {MainWindow} from './mainWindow.js';
 import {checkInitDumping} from '../util/development.js';
@@ -87,7 +89,7 @@ export class Application extends Adw.Application {
 
     #emitTrashEvent() {
         const param = new GLib.Variant('(s)', [this._mainWindow.file.get_uri()]);
-        this._mainWindow.close();
+        this._mainWindow.showToast(Format.vprintf(_('Moving “%s” to trash'), [this._mainWindow.title]));
         this._skeleton2.impl.emit_signal('Trash', param);
     }
 
