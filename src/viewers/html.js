@@ -69,6 +69,8 @@ export const Klass = class HTMLRenderer extends Gtk.Box {
         if (pkg.name.endsWith('Devel'))
             this._enableDeveloperExtras();
 
+        this._webView.get_settings().set_enable_smooth_scrolling(true);
+
         this.#handler.initialize(this._webView);
 
         this._webView.connect('load-failed', (_view, _loadEvent, _uri, error) => {
