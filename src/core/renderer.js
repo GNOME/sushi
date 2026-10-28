@@ -134,6 +134,10 @@ export class Renderer extends GObject.Interface {
     }
 }
 
+/** Plugin modules may throw this error to signal that they are unavailable (e.g. because a dependency is missing).
+ *  Note: This class is part of the stable plugin API. Only change it in backwards-compatible ways. */
+export class PluginUnavailableError extends Error {}
+
 // Functions intended to be called by main window
 
 /** @param {Renderer} renderer */
