@@ -280,6 +280,7 @@ export class MainWindow extends Adw.ApplicationWindow {
                 } catch (e) {
                     if (isCancelledError(e))
                         return;
+                    this.#fileInfo = createFallbackFileInfo(this._file);
                     this._reportError(new WrappedError(e));
                 }
             });
@@ -379,3 +380,21 @@ export class MainWindow extends Adw.ApplicationWindow {
         this._hoverManager.setFullscreened(!fullscreened);
     }
 }
+
+const XDG_MIME_TYPE_UNKNOWN = 'application/octet-stream';
+
+/** @param {Gio.File} file
+ *  @returns {Gio.FileInfo} */
+const createFallbackFileInfo = file => {
+    const fileInfo = new Gio.FileInfo();
+
+    fileInfo.set_display_name(file.get_basename() ?? file.get_uri());
+    fileInfo.set_file_type(Gio.FileType.UNKNOWN);
+    fileInfo.set_attribute_string(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE, XDG_MIME_TYPE_UNKNOWN);
+
+    const icon = Gio.content_type_get_icon(XDG_MIME_TYPE_UNKNOWN);
+    if (icon != null)
+        fileInfo.set_icon(icon);
+
+    return fileInfo;
+};

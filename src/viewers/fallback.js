@@ -203,26 +203,29 @@ export class FallbackRenderer extends Adw.PreferencesPage {
         const typeDescr = Gio.content_type_get_description(contentType);
         this._typeLabel.set_label(typeDescr);
 
+        const isDirectory = state.fileInfo.get_file_type() === Gio.FileType.DIRECTORY;
         let sizeFormatted;
-        if (state.fileInfo.get_file_type() !== Gio.FileType.DIRECTORY) {
-            sizeFormatted = GLib.format_size(state.fileInfo.get_size());
-        } else if (state.totalSize > 0) {
+        if (isDirectory && state.totalSize > 0) {
             const count = state.fileItems + state.directoryItems;
             const itemsStr = Format.vprintf(Gettext.ngettext(
                 '%Id item', '%Id items',
                 count),
             [count]);
             sizeFormatted = `${GLib.format_size(state.totalSize)}, ${itemsStr}`;
-        } else if (!state.loading) {
+        } else if (isDirectory && !state.loading) {
             sizeFormatted = _('Empty');
+        } else if (state.fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_SIZE)) {
+            sizeFormatted = GLib.format_size(state.fileInfo.get_size());
         }
 
         if (sizeFormatted)
             this._sizeRow.set_subtitle(sizeFormatted);
 
 
-        const date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
-        this._modifiedRow.set_subtitle(date.format('%x, %X'));
+        if (state.fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_TIME_MODIFIED)) {
+            const date = GLib.DateTime.new_from_timeval_local(state.fileInfo.get_modification_time());
+            this._modifiedRow.set_subtitle(date.format('%x, %X'));
+        }
     }
 
     get button_label() {
@@ -239,9 +242,9 @@ export class FallbackRenderer extends Adw.PreferencesPage {
 
     _applyIcon(state) {
         const customIcon = getCustomIcon(state.file, state.fileInfo);
-        const icon = customIcon ?? state.fileInfo.get_icon();
+        const icon = customIcon ?? (state.fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_ICON) ? state.fileInfo.get_icon() : null);
         const iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
-        const paintable = iconTheme.lookup_by_gicon(icon, 96, this.scale_factor, 0, 0);
+        const paintable = icon != null ? iconTheme.lookup_by_gicon(icon, 96, this.scale_factor, 0, 0) : null;
         if (paintable)
             this._fallbackIcon.set_from_paintable(paintable);
         else
