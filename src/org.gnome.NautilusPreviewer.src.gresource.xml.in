@@ -21,6 +21,7 @@
     <file>viewers/fallback.js</file>
     <file>viewers/font.js</file>
     @viewers_html@
+    <file>viewers/html-markdown.js</file>
     <file>viewers/image.js</file>
     <file>viewers/libreoffice.js</file>
     <file>viewers/libreoffice-pdf.js</file>
@@ -33,6 +34,7 @@
   </gresource>
   <gresource prefix="@fixed_object_path@">
     <file>plugin-api-1.js</file>
+    <file>markdown.css</file>
     <!-- UI -->
     <file>ui/audio.ui</file>
     <file>ui/fallback.ui</file>

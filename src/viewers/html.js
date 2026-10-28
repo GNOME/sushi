@@ -26,6 +26,8 @@ try {
     throw new PluginUnavailableError('WebKit is missing', {cause: error});
 }
 
+import * as Markdown from './html-markdown.js';
+
 export const Klass = class HTMLRenderer extends Gtk.Box {
     static {
         GObject.registerClass({
@@ -38,12 +40,21 @@ export const Klass = class HTMLRenderer extends Gtk.Box {
     }
 
     #file;
+    #handler;
 
-    constructor(file, _fileInfo, constructProperties = {}) {
+    constructor(file, fileInfo, constructProperties = {}) {
         GObject.type_ensure(WebKit.WebView);
 
         super(constructProperties);
+
         this.#file = file;
+
+        const contentType = fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
+            ? fileInfo.get_content_type()
+            : fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
+        this.#handler = contentType === Markdown.CONTENT_TYPE
+            ? new Markdown.FileHandler()
+            : new HTMLFileHandler();
 
         this._webView.connect('create', this._onCreate.bind(this));
         this._webView.connect('decide-policy', this.#decidePolicy);
@@ -58,18 +69,32 @@ export const Klass = class HTMLRenderer extends Gtk.Box {
         if (pkg.name.endsWith('Devel'))
             this._enableDeveloperExtras();
 
-        this._webView.load_uri(file.get_uri());
-        this._webView.connect('load-failed', (view, loadEvent, uri, error) => {
+        this.#handler.initialize(this._webView);
+
+        this._webView.connect('load-failed', (_view, _loadEvent, _uri, error) => {
             this.markFailed(error);
         });
-        this.markReady();
+        this.#loadFile(file);
+    }
+
+    cleanup() {
+        this.#handler.cleanup?.();
+    }
+
+    async #loadFile() {
+        try {
+            await this.#handler.load(this.#file, this.cancellable);
+            this.markReady();
+        } catch (error) {
+            this.markFailed(error);
+        }
     }
 
     _onShowRemoteContentClicked() {
         this._banner.set_revealed(false);
         const message = WebKit.UserMessage.new('Sushi.EnableFetchRemoteResources', null);
         this._webView.get_context().send_message_to_all_extensions(message);
-        this._webView.reload();
+        this.#handler.reload();
     }
 
     /** @param {WebKit.WebContext} _webContext
@@ -173,7 +198,31 @@ export const Klass = class HTMLRenderer extends Gtk.Box {
     }
 };
 
-export const contentTypes = ['text/html', 'application/xhtml+xml'];
+export const contentTypes = (() => {
+    let contentTypes = ['text/html', 'application/xhtml+xml'];
+    if (Markdown.isAvailable)
+        contentTypes = [...contentTypes, 'text/markdown'];
+    return contentTypes;
+})();
+
+class HTMLFileHandler {
+    #webView;
+
+    /** @param {WebKit.WebView} webView */
+    initialize(webView) {
+        this.#webView = webView;
+    }
+
+    /** @param {Gio.File} file
+     *  @param {Gio.Cancellable cancellable} */
+    load(file, _cancellable) {
+        this.#webView.load_uri(file.get_uri());
+    }
+
+    reload() {
+        this.#webView.reload();
+    }
+}
 
 const ALLOWED_STOCK_ACTIONS = new Set([
     WebKit.ContextMenuAction.NO_ACTION,

@@ -35,6 +35,7 @@ webkit_webprocess_extension = dependency(
   'webkitgtk-web-process-extension-6.0',
   required: get_option('webkitgtk'),
 )
+md4c_html_dep = dependency('md4c-html', version: '>=0.6.0', required: false)
 
 with_webkitgtk = webkit_dep.found() and webkit_webprocess_extension.found()
 

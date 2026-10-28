@@ -24,6 +24,8 @@ libsushi_sources = [
   'sushi-font-widget.h',
   'sushi-utils.c',
   'sushi-utils.h',
+  'sushi-markdown.c',
+  'sushi-markdown.h',
 ]
 
 libsushi = shared_library(
