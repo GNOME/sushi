@@ -280,6 +280,7 @@ export class MainWindow extends Adw.ApplicationWindow {
                 } catch (e) {
                     if (isCancelledError(e))
                         return;
+                    console.warn('Failed to read file info', e);
                     this._reportError(new WrappedError(e));
                 }
             });

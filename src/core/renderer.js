@@ -76,6 +76,8 @@ export class Renderer extends GObject.Interface {
                 console.error(`Failed renderer failed again with "${error?.message ?? '[Unknown]'}"`);
             return;
         }
+        if (!isCancelledError(error))
+            console.warn('Renderer marked as failed', error);
         stopRenderer(this);
         this.emit('failed', new WrappedError(error));
     }
