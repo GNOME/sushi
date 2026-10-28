@@ -65,30 +65,34 @@ const loadRendererModule = async uri => {
     }
 };
 
+const toRendererEntry = renderer => {
+    const supportsFile = typeof renderer.supportsFile === 'function' ? renderer.supportsFile : () => true;
+    return {Klass: renderer.Klass, supportsFile};
+};
+
 const [contentTypeMap, contentTypeFunctions] = await (async () => {
     const renderers = await loadRenderers();
     const contentTypeMap = Object.fromEntries(renderers.flatMap(
-        r => Array.isArray(r.contentTypes) ? r.contentTypes.map(type => [type, r.Klass]) : []
+        r => Array.isArray(r.contentTypes) ? r.contentTypes.map(type => [type, toRendererEntry(r)]) : []
     ));
     const contentTypeFunctions = renderers.map(
-        r => r.supportsContentType instanceof Function ? [r.supportsContentType, r.Klass] : null
+        r => r.supportsContentType instanceof Function ? [r.supportsContentType, toRendererEntry(r)] : null
     ).filter(Boolean);
 
-    return [contentTypeMap, contentTypeFunctions];
+    return [Object.freeze(contentTypeMap), contentTypeFunctions];
 })();
 
-/** @param {string} contentType */
-export const selectRenderer = contentType => {
+/** @param {string} contentType
+ *  @param {Gio.File} file */
+export const selectRenderer = (contentType, file) => {
     const directMatch = contentTypeMap[contentType];
-    if (directMatch)
-        return directMatch;
+    if (directMatch && directMatch.supportsFile(file))
+        return directMatch.Klass;
 
-    const checkType = ([supportedType, _]) => Gio.content_type_is_a(contentType, supportedType);
+    const checkType = ([supportedType, renderer]) => Gio.content_type_is_a(contentType, supportedType) && renderer.supportsFile(file);
     const entry = Object.entries(contentTypeMap).find(checkType) ??
-        contentTypeFunctions.find(([fn, _]) =>  fn(contentType));
-    const renderer = entry?.[1] ?? FallbackRenderer;
-
-    contentTypeMap[contentType] = renderer;
+        contentTypeFunctions.find(([fn, renderer]) => fn(contentType) && renderer.supportsFile(file));
+    const renderer = entry?.[1]?.Klass ?? FallbackRenderer;
 
     return renderer;
 };

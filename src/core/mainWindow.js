@@ -342,7 +342,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             ? this.#fileInfo.get_content_type()
             : this.#fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
         const renderer = content_type
-            ? new (selectRenderer(content_type))(this._file, this.#fileInfo)
+            ? new (selectRenderer(content_type, this._file))(this._file, this.#fileInfo)
             : new FallbackRenderer(this._file, this.#fileInfo);
         this.#loadRenderer(renderer);
     }

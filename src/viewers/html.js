@@ -180,6 +180,14 @@ export const Klass = _isAvailable() ? class HTMLRenderer extends Gtk.Box {
 
 export const contentTypes = _isAvailable() ? ['text/html', 'application/xhtml+xml'] : [];
 
+/** @param {Gio.File}
+ *  @returns {boolean} */
+export const supportsFile = file => {
+    const uri = file.get_uri();
+    const scheme = GLib.Uri.parse_scheme(uri).toLowerCase();
+    return scheme === 'file';
+};
+
 const ALLOWED_STOCK_ACTIONS = _isAvailable() ? new Set([
     WebKit.ContextMenuAction.NO_ACTION,
     WebKit.ContextMenuAction.OPEN_LINK_IN_NEW_WINDOW,
