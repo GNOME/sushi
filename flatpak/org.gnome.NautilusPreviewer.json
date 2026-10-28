@@ -20,8 +20,10 @@
         "--share=network",
         "--device=dri",
         "--talk-name=org.freedesktop.FileManager1",
+        "--talk-name=org.gtk.vfs.*",
         "--filesystem=home:ro",
-        "--filesystem=xdg-data/sushi:ro"
+        "--filesystem=xdg-data/sushi:ro",
+        "--filesystem=xdg-run/gvfsd"
     ],
     "build-options": {
         "append-path": "/usr/lib/sdk/rust-stable/bin:",
