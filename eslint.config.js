@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT OR LGPL-2.1-or-later
 // SPDX-FileCopyrightText: 2026 The Sushi authors
 
-import {defineConfig} from 'eslint/config';
+import {defineConfig, globalIgnores} from 'eslint/config';
 import gnome from 'eslint-config-gnome';
 
 export default defineConfig([
+    globalIgnores(['src/markdown.js']),
     gnome.configs.recommended,
     {
         rules: {

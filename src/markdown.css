@@ -109,3 +109,85 @@ kbd {
     position: absolute;
     transform: translateX(-100%) translateX(-.7em);
 }
+
+/* Admonitions */
+
+.admonition-note,
+.admonition-tip,
+.admonition-important,
+.admonition-warning,
+.admonition-caution {
+    --admonition-fg-color: var(--admonition-color-1);
+    --admonition-bg-color: var(--admonition-color-2);
+    --admonition-horizontal-padding: 1rem;
+    background-color: var(--box-bg);
+    border-left: .2rem solid var(--admonition-fg-color);
+    border-radius: 0.2rem;
+    overflow: hidden;
+    padding: 0 var(--admonition-horizontal-padding);
+    box-shadow: 0 .2rem .5rem rgba(0, 0, 0, .05), 0 0 .0625rem rgba(0, 0, 0, .1);
+    margin-block: 1em;
+
+    @media (prefers-color-scheme: dark) {
+        --admonition-fg-color: var(--admonition-color-2);
+        --admonition-bg-color: var(--admonition-color-1);
+    }
+
+    > .admonition-title {
+        background-color: var(--admonition-bg-color);
+        font-weight: 500;
+        margin: 0 calc(-1 * var(--admonition-horizontal-padding));
+        padding: 0.5rem var(--admonition-horizontal-padding);
+        text-transform: capitalize;
+    }
+
+    /* [FIXME] This is a workaround for WebKitGTK not yet supporting alignment-baseline: central */
+    > .admonition-title span {
+        text-box: trim-both;
+        vertical-align: middle;
+    }
+
+    > .admonition-title::before {
+        content: '';
+        background-color: currentColor;
+        mask-image: var(--admonition-icon);
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        width: 1em;
+        height: 1em;
+        display: inline-block;
+        margin-right: 0.3rem;
+        vertical-align: middle;
+    }
+}
+
+.admonition-note {
+    --admonition-color-1: #1A5FB4;
+    --admonition-color-2: #99C1F1;
+    --admonition-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5v.01M7 8h1v3m7-3A7 7 0 1 1 1 8a7 7 0 0 1 14 0" /></svg>');
+}
+
+.admonition-tip {
+    --admonition-color-1: #26A269;
+    --admonition-color-2: #8FF0A4;
+    --admonition-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11v.015M8 5v3m7-3v6l-4 4H5l-4-4V5l4-4h6Z" /></svg>');
+}
+
+.admonition-important {
+    --admonition-color-1: #613583;
+    --admonition-color-2: #DC8ADD;
+    --admonition-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16.618"><path fill="none" stroke="currentColor" stroke-width="2" d="M1 5v5a4 4 0 0 0 4 4h2.993l2 1v-1H11a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4Z" class="foreground-stroke transparent-fill"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10.493v.015m0-6.015v3"/></svg>');
+}
+
+.admonition-warning {
+    --admonition-color-1: #E5A50A;
+    --admonition-color-2: #F9F06B;
+    --admonition-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="currentColor" d="M7.90625.09375C7.378906.066406 6.867188.375 6.46875 1.0625l-6.25 11.59375C-.316406 13.621094.265625 15 1.3125 15h13.15625c.980469 0 1.902344-1.160156 1.21875-2.34375L9.375 1.125C8.976562.480469 8.433594.121094 7.90625.09375M9 4v5c.007812.527344-.472656 1-1 1s-1.007812-.472656-1-1V4zm-1 7c.550781 0 1 .449219 1 1s-.449219 1-1 1-1-.449219-1-1 .449219-1 1-1m0 0"/></svg>');
+}
+
+.admonition-caution {
+    --admonition-color-1: #A51D2D;
+    --admonition-color-2: #ff806f;
+    --admonition-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11v.015M8 5v3m7-3v6l-4 4H5l-4-4V5l4-4h6Z" /></svg>');
+}

@@ -43,6 +43,20 @@ export const FileHandler = class MarkdownFileHandler {
         );
         webView.get_user_content_manager().add_style_sheet(styleSheet);
 
+        const jsBytes = Gio.resources_lookup_data(
+            '/org/gnome/NautilusPreviewer/markdown.js',
+            Gio.ResourceLookupFlags.NONE
+        );
+        const js = new TextDecoder().decode(jsBytes.toArray());
+        const script = new WebKit.UserScript(
+            js,
+            WebKit.UserContentInjectedFrames.TOP_FRAME,
+            WebKit.UserScriptInjectionTime.END,
+            null,
+            null
+        );
+        webView.get_user_content_manager().add_script(script);
+
         this.#accentColorHandler = new Connection('notify::accent-color-rgba', this.#updateCssVariables);
         this.#accentColorHandler.connect(this.#styleManager);
         this.#documentFontNameHandler = new Connection('notify::document-font-name', this.#updateCssVariables);
