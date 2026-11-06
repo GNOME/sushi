@@ -115,12 +115,18 @@ const measureScaledSize = (child, orientation, getMaxSize) => {
     return getScaledSize(childMin, childNat, max, orientation);
 };
 
+const MAX_STRETCH = 1.6;
+
 const getScaledSize = (childMin, childNat, max, orientation) => {
-    if (childNat[0] <= max[0] && childNat[1] <= max[1]) {
+    // Limit content to the area of the max size, regardless of its orientation
+    const areaRatio = Math.sqrt((max[0] * max[1]) / (childNat[0] * childNat[1]));
+    const widthRatio = (max[0] * MAX_STRETCH) / childNat[0];
+    const heightRatio = (max[1] * MAX_STRETCH) / childNat[1];
+    const ratio = Math.min(areaRatio, widthRatio, heightRatio);
+
+    if (ratio >= 1) {
         return [childMin[orientation], childNat[orientation], -1, -1];
     } else {
-        // scale by smaller ratio of width or height
-        const ratio = Math.min(max[0] / childNat[0], max[1] / childNat[1]);
         const nat = childNat.map(size => Math.floor(size * ratio));
         const min = childMin.map((size, index) => Math.min(size, nat[index]));
         return [min[orientation], nat[orientation], -1, -1];
