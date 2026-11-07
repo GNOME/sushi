@@ -5,11 +5,15 @@
  */
 
 import Adw from 'gi://Adw';
+import Gdk from 'gi://Gdk';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import {ResizePolicy} from '../core/renderer.js';
 
 import {getRendererToolbar} from '../core/renderer.js';
+
+const WINDOW_MAX_PERCENT_W = 0.5;
+const WINDOW_MAX_PERCENT_H = 0.5;
 
 export class RendererWrapper extends Adw.Bin {
     static {
@@ -21,17 +25,14 @@ export class RendererWrapper extends Adw.Bin {
 
     #renderer;
     #resizePolicy;
-    #getMaxSize;
 
     /** @param {import('../core/renderer').Renderer} renderer
-     *  @param {() => [number, number]} getMaxSize
      *  @param {import('../util/hoverManager.js').HoverManager} hoverManager  */
-    constructor(renderer, getMaxSize, hoverManager) {
+    constructor(renderer, hoverManager) {
         super();
 
         this.#renderer = renderer;
         this.#resizePolicy = renderer.resizePolicy; // cache the policy. changing it is not supported.
-        this.#getMaxSize = getMaxSize;
 
         this.set_layout_manager(null);
 
@@ -45,6 +46,25 @@ export class RendererWrapper extends Adw.Bin {
             this._revealer.set_visible(false);
             hoverManager.setRevealer(null);
         }
+    }
+
+    /** @returns {[number, number]} */
+    #getMaxSize() {
+        const display = Gdk.Display.get_default();
+        const surface = this.get_native().get_surface();
+        const monitor = display.get_monitor_at_surface(surface);
+        const geometry = monitor.get_geometry();
+
+        // Sanitize unexpected values
+        if (geometry.width > 100_000)
+            geometry.width = 800;
+        if (geometry.height > 100_000)
+            geometry.height = 800;
+
+        return [
+            Math.floor(geometry.width * WINDOW_MAX_PERCENT_W),
+            Math.floor(geometry.height * WINDOW_MAX_PERCENT_H),
+        ];
     }
 
     /** @returns {Gtk.SizeRequestMode} */
@@ -69,11 +89,11 @@ export class RendererWrapper extends Adw.Bin {
             return [-1, -1, -1, -1];
         switch (this.#resizePolicy) {
         case ResizePolicy.MAX_SIZE:
-            return measureMaxSize(child, orientation, this.#getMaxSize);
+            return measureMaxSize(child, orientation, this.#getMaxSize());
         case ResizePolicy.NAT_SIZE:
             return child.measure(orientation, forSize);
         case ResizePolicy.SCALED:
-            return measureScaledSize(child, orientation, this.#getMaxSize);
+            return measureScaledSize(child, orientation, this.#getMaxSize());
         case ResizePolicy.STATUS_PAGE:
             return measureStatusPage(child, orientation);
         default:
@@ -89,12 +109,12 @@ export class RendererWrapper extends Adw.Bin {
     }
 }
 
-const measureMaxSize = (child, orientation, getMaxSize) => {
+const measureMaxSize = (child, orientation, maxSize) => {
     const [childMin] = child.get_preferred_size();
     // by using `Math.max()` we ensure that min <= nat
     const nat = Math.max(
         getLength(childMin, orientation),
-        getMaxSize()[orientation]);
+        maxSize[orientation]);
     return [childMin[orientation], nat, -1, -1];
 };
 
@@ -107,11 +127,11 @@ const measureStatusPage = (child, orientation) => {
     return [min, nat, -1, -1];
 };
 
-const measureScaledSize = (child, orientation, getMaxSize) => {
+const measureScaledSize = (child, orientation, max) => {
     const [childMinReq, childNatReq] = child.get_preferred_size();
     const childMin = [childMinReq.width, childMinReq.height];
     const childNat = [childNatReq.width, childNatReq.height];
-    const max = getMaxSize();
+
     return getScaledSize(childMin, childNat, max, orientation);
 };
 
