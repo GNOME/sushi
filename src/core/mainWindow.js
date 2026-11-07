@@ -5,7 +5,6 @@
  */
 
 import Adw from 'gi://Adw';
-import Gdk from 'gi://Gdk';
 import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -27,8 +26,6 @@ Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
 
 const MIN_WIDTH = 340;
 const MIN_HEIGHT = 294;
-const WINDOW_MAX_PERCENT_W = 0.5;
-const WINDOW_MAX_PERCENT_H = 0.5;
 const ACCEPTABLE_USER_ACTION_DELAY_IN_MS = 200;
 const MAXIMUM_RENDERER_LOAD_DELAY_IN_MS = 10000;
 
@@ -174,25 +171,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.#loadRenderer(new FallbackRenderer(this._file, this.#fileInfo, error));
     }
 
-    /** @returns {[number, number]} */
-    #getMaxSize = () => {
-        const display = Gdk.Display.get_default();
-        const surface = this.get_surface();
-        const monitor = display.get_monitor_at_surface(surface);
-        const geometry = monitor.get_geometry();
-
-        // Sanitize unexpected values
-        if (geometry.width > 100_000)
-            geometry.width = 800;
-        if (geometry.height > 100_000)
-            geometry.height = 800;
-
-        return [
-            Math.floor(geometry.width * WINDOW_MAX_PERCENT_W),
-            Math.floor(geometry.height * WINDOW_MAX_PERCENT_H),
-        ];
-    };
-
     _resizeWindow() {
         if (this.#scaledByUser)
             return;
@@ -297,7 +275,7 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.#spinnerDelayId.remove();
         this.#loadingTimeoutId.remove();
 
-        const stackWidget = new RendererWrapper(this.#renderer, this.#getMaxSize, this._hoverManager);
+        const stackWidget = new RendererWrapper(this.#renderer, this._hoverManager);
         this._mainStack.add_child(stackWidget);
         this.#setDisplayedWidget(stackWidget);
 
