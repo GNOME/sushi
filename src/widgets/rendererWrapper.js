@@ -12,8 +12,16 @@ import {ResizePolicy} from '../core/renderer.js';
 
 import {getRendererToolbar} from '../core/renderer.js';
 
+/* In order to feel like a light, floating window, sushi limits itself to at
+ * most cover 25% of the screen space, so 50% in each direction.
+ * To allow more flexibility for different kind of contents, the window can grow
+ * beyond this limit in one dimension, while the other adjusts to keep the
+ * window's total area still below 25% screen space.
+ * This stretching is limited to 80% of a screen dimension, meaning the other
+ * dimension will not go below 25%. (80% = 1.6* 50%) */
 const WINDOW_MAX_PERCENT_W = 0.5;
 const WINDOW_MAX_PERCENT_H = 0.5;
+const MAX_STRETCH = 1.6;
 
 export class RendererWrapper extends Adw.Bin {
     static {
@@ -134,8 +142,6 @@ const measureScaledSize = (child, orientation, max) => {
 
     return getScaledSize(childMin, childNat, max, orientation);
 };
-
-const MAX_STRETCH = 1.6;
 
 const getScaledSize = (childMin, childNat, max, orientation) => {
     // Limit content to the area of the max size, regardless of its orientation
