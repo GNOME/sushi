@@ -12,8 +12,14 @@ import {ResizePolicy} from '../core/renderer.js';
 
 import {getRendererToolbar} from '../core/renderer.js';
 
+/* As a previewer, sushi wants to at most cover 25% of the screen space. By
+ * default that means 50% in each direction, but to  allow for more flexibility
+ * with different kinds of content, one dimension can stretch to up to 80% of a
+ * screen dimension, while the other then covers no more than 25%.
+ * This is expressed as a stretch factor (80% = 1.6*50%) */
 const WINDOW_MAX_PERCENT_W = 0.5;
 const WINDOW_MAX_PERCENT_H = 0.5;
+const MAX_STRETCH = 1.6;
 
 export class RendererWrapper extends Adw.Bin {
     static {
@@ -137,8 +143,6 @@ const measureScaledSize = (child, orientation, max) => {
 
     return getScaledSize(childMin, childNat, max, orientation);
 };
-
-const MAX_STRETCH = 1.6;
 
 const getScaledSize = (childMin, childNat, max, orientation) => {
     // Limit content to the area of the max size, regardless of its orientation
