@@ -197,6 +197,12 @@ load_libreoffice (GTask *task)
   }
 
   doc_path = g_file_get_path (data->file);
+  if (doc_path == NULL) {
+    g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                             "LibreOffice can only convert local files");
+    return;
+  }
+
   doc_name = g_file_get_basename (data->file);
 
   /* libreoffice --convert-to replaces the extension with .pdf */
