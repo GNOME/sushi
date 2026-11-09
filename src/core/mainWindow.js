@@ -115,6 +115,7 @@ export class MainWindow extends Adw.ApplicationWindow {
 
     set file(newFile) {
         this._file = newFile;
+        this.#fileInfo = null;
         this._createRenderer();
         this.notify('file');
     }
@@ -171,7 +172,17 @@ export class MainWindow extends Adw.ApplicationWindow {
             // ignore errors in fallback handler to avoid recursion
             return;
         }
-        this.#loadRenderer(new FallbackRenderer(this._file, this.#fileInfo, error));
+        this.#loadRenderer(new FallbackRenderer(this._getActivationFile(), this.#fileInfo, error));
+    }
+
+    /**
+     * Returns the file the current one points to via `standard::target-uri`
+     *
+     * @returns {Gio.File}
+     */
+    _getActivationFile() {
+        const targetUri = this.#fileInfo?.get_attribute_string(Gio.FILE_ATTRIBUTE_STANDARD_TARGET_URI);
+        return targetUri ? Gio.File.new_for_uri(targetUri) : this._file;
     }
 
     /** @returns {[number, number]} */
@@ -267,6 +278,7 @@ export class MainWindow extends Adw.ApplicationWindow {
                 Gio.FILE_ATTRIBUTE_STANDARD_ICON,
                 Gio.FILE_ATTRIBUTE_STANDARD_SIZE,
                 Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
+                Gio.FILE_ATTRIBUTE_STANDARD_TARGET_URI,
                 Gio.FILE_ATTRIBUTE_TIME_MODIFIED,
                 METADATA_KEY_CUSTOM_ICON,
                 METADATA_KEY_CUSTOM_ICON_NAME].join(','),
@@ -342,9 +354,10 @@ export class MainWindow extends Adw.ApplicationWindow {
         const content_type = this.#fileInfo.has_attribute(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
             ? this.#fileInfo.get_content_type()
             : this.#fileInfo.get_attribute_as_string(Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
+        const file = this._getActivationFile();
         const renderer = content_type
-            ? new (selectRenderer(content_type, this._file))(this._file, this.#fileInfo)
-            : new FallbackRenderer(this._file, this.#fileInfo);
+            ? new (selectRenderer(content_type, file))(file, this.#fileInfo)
+            : new FallbackRenderer(file, this.#fileInfo);
         this.#loadRenderer(renderer);
     }
 
@@ -354,7 +367,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             return;
         }
 
-        const fileLauncher = new Gtk.FileLauncher({file: this._file});
+        const fileLauncher = new Gtk.FileLauncher({file: this._getActivationFile()});
         fileLauncher.launch(this, null)
             .then(() => this.close())
             .catch(error => {
