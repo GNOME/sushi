@@ -5,30 +5,34 @@
 # Andika Triwidada <andika@gmail.com>, 2011, 2012.
 # Dirgita <dirgitadevina@yahoo.co.id>, 2012.
 # Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2019.
+# herpiko <herpiko@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues\n"
-"POT-Creation-Date: 2020-10-22 14:35+0000\n"
-"PO-Revision-Date: 2020-11-08 21:06+0700\n"
-"Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
+"POT-Creation-Date: 2026-10-12 19:54+0000\n"
+"PO-Revision-Date: 2026-11-10 14:16+0000\n"
+"Last-Translator: herpiko <herpiko@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: pelokalan.blankon.id\n"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:9
+#. overwrite
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:2
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9 src/core/main.js:31
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:10
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:3
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Menyediakan fasilitas untuk melihat berbagai jenis berkas dengan cepat"
 
-#: data/org.gnome.NautilusPreviewer.appdata.xml.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -36,53 +40,99 @@ msgstr ""
 "Sushi adalah pratinjau berkas untuk lingkungan desktop GNOME. Ini adalah "
 "komponen independen yang terintegrasi dengan GNOME Berkas (Nautilus)."
 
-#: src/ui/fallbackRenderer.js:241
-msgid "Type"
-msgstr "Jenis"
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+msgid "nautilus"
+msgstr "nautilus"
 
-#: src/ui/fallbackRenderer.js:251
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+msgid "sushi"
+msgstr "sushi"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+msgid "view"
+msgstr "tampilan"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+msgid "previewer"
+msgstr "pratinjau"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+msgid "preview"
+msgstr "pratinjau"
+
+#: src/ui/error.blp:6
+msgid "Preview Failed"
+msgstr "Pratinjau Gagal"
+
+#: src/ui/error.blp:14
+msgid "Copy Full Error Message"
+msgstr "Salin Semua Pesan Galat"
+
+#: src/ui/fallback.blp:29
+msgid "Size"
+msgstr "Ukuran"
+
+#: src/ui/fallback.blp:58
+msgid "Modified"
+msgstr "Diubah"
+
+#: src/ui/html.blp:9
+msgid "Remote content is blocked to protect your privacy"
+msgstr "Konten jarak jauh diblokir untuk melindungi privasi Anda"
+
+#: src/ui/html.blp:10
+msgid "_Show Remote Content"
+msgstr "_Tampilkan Konten Jarak Jauh"
+
+#: src/ui/mainWindow.blp:17
+msgid "Toggle Fullscreen"
+msgstr "Jungkitkan Layar Penuh"
+
+#: src/ui/mainWindow.blp:24
+msgid "Open"
+msgstr "Buka"
+
+#: src/ui/pdf.blp:58
+msgid "Previous Page"
+msgstr "Halaman Sebelumnya"
+
+#: src/ui/pdf.blp:80
+msgid "Next Page"
+msgstr "Halaman Selanjutnya"
+
+#: src/viewers/audio.js:272
+msgid "by"
+msgstr "oleh"
+
+#: src/viewers/audio.js:277
+msgid "from"
+msgstr "dari"
+
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d butir"
 
-#: src/ui/fallbackRenderer.js:256
-msgid "Empty Folder"
-msgstr "Folder Kosong"
+#: src/viewers/fallback.js:190
+msgid "Empty"
+msgstr "Kosong"
 
-#: src/ui/fallbackRenderer.js:259
-msgid "Size"
-msgstr "Ukuran"
-
-#: src/ui/fallbackRenderer.js:264
-msgid "Modified"
-msgstr "Diubah"
-
-#. TRANSLATORS: This is a filename, e.g. "image.jpg"
-#: src/ui/mainWindow.js:90
-#, javascript-format
-msgid "Unable to display %s"
-msgstr "Tidak dapat menampilkan %s"
-
-#. TRANSLATORS: This is the display name of an application, e.g. "Open With Image Viewer"
-#: src/ui/mainWindow.js:342
-#, javascript-format
-msgid "Open With %s"
-msgstr "Buka Dengan %s"
-
-#: src/ui/mainWindow.js:348
-msgid "Open"
-msgstr "Buka"
-
-#: src/viewers/audio.js:359
-msgid "from"
-msgstr "dari"
-
-#: src/viewers/audio.js:364
-msgid "by"
-msgstr "oleh"
-
-#: src/viewers/evince.js:94
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d dari %d"
+
+#~ msgid "Type"
+#~ msgstr "Jenis"
+
+#~ msgid "Empty Folder"
+#~ msgstr "Folder Kosong"
+
+#, javascript-format
+#~ msgid "Unable to display %s"
+#~ msgstr "Tidak dapat menampilkan %s"
+
+#, javascript-format
+#~ msgid "Open With %s"
+#~ msgstr "Buka Dengan %s"
