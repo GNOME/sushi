@@ -5,13 +5,17 @@
  * Authors: Peter Eisenmann <p3732@getgoogleoff.me>
  */
 
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
 import {SourceId} from './source.js';
 
+const MIN_REVEAL_TIME_US = 1_500_000;
+
 export class HoverManager {
     #revealTimeoutId = new SourceId();
+    #lastTimestamp = 0;
 
     constructor(toolbarView, titlebar) {
         this._lastX = 0.0;
@@ -50,7 +54,7 @@ export class HoverManager {
         );
         motion.connect_object(
             'leave', () => {
-                this.#resetTimeout();
+                this.#ensureTimeout();
                 this._hoveredChildren--;
             },
             widget, GObject.ConnectFlags.DEFAULT
@@ -77,15 +81,14 @@ export class HoverManager {
     }
 
     _onMotion(x, y) {
-        if (this._hoveredChildren !== 0)
+        if (this._lastX === x && this._lastY === y)
             return;
+        this._lastX = x;
+        this._lastY = y;
 
-        if (this._lastX !== x && this._lastY !== y) {
-            this._setRevealed(true);
-            this.#resetTimeout();
-            this._lastX = x;
-            this._lastY = y;
-        }
+        this.#lastTimestamp = GLib.get_monotonic_time();
+        this._setRevealed(true);
+        this.#ensureTimeout();
     }
 
     _setRevealed(revealed) {
@@ -97,9 +100,20 @@ export class HoverManager {
         }
     }
 
-    #resetTimeout() {
-        this.#revealTimeoutId.addTimeout(
-            1500,
-            () => this._setRevealed(false));
+    #checkReveal() {
+        const now = GLib.get_monotonic_time();
+        if (this.#lastTimestamp + MIN_REVEAL_TIME_US > now)
+            return;
+
+        if (this._hoveredChildren !== 0)
+            // Pointer is hovering an overlay widget
+            return;
+        this._setRevealed(false);
+        this.#revealTimeoutId.remove();
+    }
+
+    #ensureTimeout() {
+        this.#revealTimeoutId.ensureRepeatedTimeout(
+            250, () => this.#checkReveal());
     }
 }
