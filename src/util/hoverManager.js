@@ -14,13 +14,13 @@ import {SourceId} from './source.js';
 const MIN_REVEAL_TIME_MS = 1500;
 
 export class HoverManager {
+    #controllers = [];
     #revealTimeoutId = new SourceId();
     #lastTimestamp = 0;
 
     constructor(toolbarView, titlebar) {
         this._lastX = 0.0;
         this._lastY = 0.0;
-        this._hoveredChildren = 0;
         this._fullscreened = false;
         this._revealer = null;
 
@@ -37,6 +37,7 @@ export class HoverManager {
     }
 
     cleanup() {
+        this.#controllers = [];
         this.#revealTimeoutId.remove();
     }
 
@@ -44,22 +45,8 @@ export class HoverManager {
         if (!widget)
             return;
         const motion = new Gtk.EventControllerMotion();
-        motion.connect_object(
-            'enter', () => {
-                this.#revealTimeoutId.remove();
-                this._setRevealed(true);
-                this._hoveredChildren++;
-            },
-            widget, GObject.ConnectFlags.DEFAULT
-        );
-        motion.connect_object(
-            'leave', () => {
-                this.#resetTimeout();
-                this._hoveredChildren--;
-            },
-            widget, GObject.ConnectFlags.DEFAULT
-        );
         widget.add_controller(motion);
+        this.#controllers.push(motion);
     }
 
     setRevealer(revealer) {
@@ -105,7 +92,7 @@ export class HoverManager {
         if (this.#lastTimestamp + MIN_REVEAL_TIME_MS > now)
             return;
 
-        if (this._hoveredChildren !== 0)
+        if (this.#controllers.some(controller => controller.contains_pointer))
             // Pointer is hovering an overlay widget
             return;
         this._setRevealed(false);

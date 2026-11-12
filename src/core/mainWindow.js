@@ -341,6 +341,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     }
 
     #cleanupRenderer() {
+        this._hoverManager.cleanup();
         this.#rendererSignals.set_target(null);
         stopRenderer(this.#renderer);
     }
