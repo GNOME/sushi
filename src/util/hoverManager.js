@@ -85,6 +85,7 @@ export class HoverManager {
             this._toolbarView.set_reveal_top_bars(revealed || !this._fullscreened);
             this._toolbarView.set_reveal_bottom_bars(revealed || !this._fullscreened);
         }
+        this._toolbarView.set_cursor_from_name(revealed ? null : 'none');
     }
 
     #checkReveal() {
