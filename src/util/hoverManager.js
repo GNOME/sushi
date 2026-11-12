@@ -11,8 +11,11 @@ import Gtk from 'gi://Gtk';
 
 import {SourceId} from './source.js';
 
+const MIN_REVEAL_TIME_MS = 1500;
+
 export class HoverManager {
     #revealTimeoutId = new SourceId();
+    #lastTimestamp = 0;
 
     constructor(toolbarView, titlebar) {
         this._lastX = 0.0;
@@ -78,15 +81,14 @@ export class HoverManager {
     }
 
     _onMotion(x, y) {
-        if (this._hoveredChildren !== 0)
+        if (this._lastX === x && this._lastY === y)
             return;
+        this._lastX = x;
+        this._lastY = y;
 
-        if (this._lastX !== x && this._lastY !== y) {
-            this._setRevealed(true);
-            this.#resetTimeout();
-            this._lastX = x;
-            this._lastY = y;
-        }
+        this.#lastTimestamp = Date.now();
+        this._setRevealed(true);
+        this.#ensureTimeout();
     }
 
     _setRevealed(revealed) {
@@ -98,10 +100,21 @@ export class HoverManager {
         }
     }
 
-    #resetTimeout() {
-        this.#revealTimeoutId.addTimeout(
+    #checkReveal() {
+        const now = Date.now();
+        if (this.#lastTimestamp + MIN_REVEAL_TIME_MS > now)
+            return;
+
+        if (this._hoveredChildren !== 0)
+            // Pointer is hovering an overlay widget
+            return;
+        this._setRevealed(false);
+        this.#revealTimeoutId.remove();
+    }
+
+    #ensureTimeout() {
+        this.#revealTimeoutId.ensureTimeout(
             GLib.PRIORITY_DEFAULT,
-            1500,
-            () => this._setRevealed(false));
+            250, () => this.#checkReveal(), true);
     }
 }
