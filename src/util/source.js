@@ -22,12 +22,14 @@ export class SourceId {
      *  @param {number} interval
      *  @param {() => void} fn */
     addTimeout(interval, fn) {
-        const wrapper = () => {
-            fn();
-            this.#id = 0;
-            return GLib.SOURCE_REMOVE;
-        };
-        this.#replace(GLib.timeout_add(this.#priority, interval, wrapper));
+        this.#internalAddTimeout(false, interval, fn);
+    }
+
+    /** Equivalent to `addTimeout` but the callback will be repeated.
+     *  @param {number} interval
+     *  @param {() => void} fn */
+    addRepeatedTimeout(interval, fn) {
+        this.#internalAddTimeout(true, interval, fn);
     }
 
     /** Adds a timeout if one is not already set. See `addTimeout`.
@@ -35,7 +37,15 @@ export class SourceId {
      *  @param {() => void} fn */
     ensureTimeout(interval, fn) {
         if (this.#id === 0)
-            this.addTimeout(interval, fn);
+            this.#internalAddTimeout(false, interval, fn);
+    }
+
+    /** Equivalent to `ensureTimeout` but the callback will be repeated.
+     *  @param {number} interval
+     *  @param {() => void} callback */
+    ensureRepeatedTimeout(interval, callback) {
+        if (this.#id === 0)
+            this.#internalAddTimeout(true, interval, callback);
     }
 
     /** @param {number} id */
@@ -49,5 +59,18 @@ export class SourceId {
             GLib.source_remove(this.#id);
             this.#id = 0;
         }
+    }
+
+    #internalAddTimeout(repeated, interval, fn) {
+        const wrapper = () => {
+            fn();
+            if (!repeated) {
+                this.#id = 0;
+                return GLib.SOURCE_REMOVE;
+            } else {
+                return GLib.SOURCE_CONTINUE;
+            }
+        };
+        this.#replace(GLib.timeout_add(this.#priority, interval, wrapper));
     }
 }
