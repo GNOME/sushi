@@ -13,7 +13,7 @@ export class SourceId {
     }
 
     /** Replaces the current source with one created using `GLib.timeout_add`.
-     *  The source is removed after one invocation.
+     *  The source is thus removed after one invocation.
      *  @param {number} priority
      *  @param {number} interval
      *  @param {() => void} fn */
@@ -26,7 +26,7 @@ export class SourceId {
         this.replace(GLib.timeout_add(priority, interval, wrapper));
     }
 
-    /** Adds a timeout if not is already set. See `addTimeout`.
+    /** Adds a timeout if one is not already set. See `addTimeout`.
      *  @param {number} priority
      *  @param {number} interval
      *  @param {() => void} fn */
