@@ -10,6 +10,36 @@ template $Gjs_MainWindow: Adw.ApplicationWindow {
       child: Adw.HeaderBar titlebar {
         decoration-layout: bind $_getDecorationLayout() as <string>;
 
+        title-widget: Gtk.Box {
+          orientation: vertical;
+          valign: center;
+
+          Gtk.Label {
+            ellipsize: end;
+            wrap: false;
+            single-line-mode: true;
+            width-chars: 5;
+            label: bind template.title;
+
+            styles [
+              "title",
+            ]
+          }
+
+          Gtk.Label {
+            ellipsize: middle;
+            wrap: false;
+            single-line-mode: true;
+            width-chars: 5;
+            visible: bind template.subtitle-visible;
+            label: bind template.subtitle;
+
+            styles [
+              "subtitle",
+            ]
+          }
+        }
+
         [start]
         Button fullscreen_button {
           icon-name: "view-fullscreen-symbolic";

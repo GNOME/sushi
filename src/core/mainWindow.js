@@ -44,6 +44,20 @@ export class MainWindow extends Adw.ApplicationWindow {
                     GObject.ParamFlags.READWRITE | GObject.ParamFlags.STATIC_NAME,
                     Gio.File
                 ),
+                'subtitle': GObject.ParamSpec.string(
+                    'subtitle',
+                    null,
+                    null,
+                    GObject.ParamFlags.READABLE,
+                    null
+                ),
+                'subtitle-visible': GObject.ParamSpec.boolean(
+                    'subtitle-visible',
+                    null,
+                    null,
+                    GObject.ParamFlags.READABLE,
+                    false
+                ),
             },
         }, this);
     }
@@ -115,6 +129,36 @@ export class MainWindow extends Adw.ApplicationWindow {
         this.#fileInfo = null;
         this._createRenderer();
         this.notify('file');
+    }
+
+    get subtitle() {
+        const parent = this._file?.get_parent();
+
+        if (parent) {
+            if (this._file.is_native())
+                return parent.get_path();
+
+            const uri = parent.get_parse_name();
+
+            if (uri) {
+                switch (parent.get_uri_scheme()) {
+                case 'trash':
+                    return _('Trash');
+
+                case 'recent':
+                    return _('Recent');
+
+                default:
+                    return uri;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    get subtitle_visible() {
+        return Boolean(this._file?.get_parent());
     }
 
     presentWhenReady() {
@@ -310,6 +354,8 @@ export class MainWindow extends Adw.ApplicationWindow {
             this._file.get_basename() ??
             this._file.get_uri();
         this.set_title(title);
+        this.notify('subtitle');
+        this.notify('subtitle-visible');
 
         this.#rendererSignals.set_target(this.#renderer);
 
