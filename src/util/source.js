@@ -16,12 +16,17 @@ export class SourceId {
      *  The source is thus removed after one invocation.
      *  @param {number} priority
      *  @param {number} interval
-     *  @param {() => void} fn */
-    addTimeout(priority, interval, fn) {
+     *  @param {() => void} fn
+     *  @param {boolean} repeated */
+    addTimeout(priority, interval, fn, repeated = false) {
         const wrapper = () => {
             fn();
-            this.#id = 0;
-            return GLib.SOURCE_REMOVE;
+            if (!repeated) {
+                this.#id = 0;
+                return GLib.SOURCE_REMOVE;
+            } else {
+                return GLib.SOURCE_CONTINUE;
+            }
         };
         this.#replace(GLib.timeout_add(priority, interval, wrapper));
     }
@@ -29,10 +34,11 @@ export class SourceId {
     /** Adds a timeout if one is not already set. See `addTimeout`.
      *  @param {number} priority
      *  @param {number} interval
-     *  @param {() => void} fn */
-    ensureTimeout(priority, interval, fn) {
+     *  @param {() => void} callback
+     *  @param {boolean} repeated */
+    ensureTimeout(priority, interval, callback, repeated = false) {
         if (this.#id === 0)
-            this.addTimeout(priority, interval, fn);
+            this.addTimeout(priority, interval, callback, repeated);
     }
 
     /** @param {number} id */
