@@ -23,7 +23,7 @@ export class SourceId {
             this.#id = 0;
             return GLib.SOURCE_REMOVE;
         };
-        this.replace(GLib.timeout_add(priority, interval, wrapper));
+        this.#replace(GLib.timeout_add(priority, interval, wrapper));
     }
 
     /** Adds a timeout if one is not already set. See `addTimeout`.
@@ -36,7 +36,7 @@ export class SourceId {
     }
 
     /** @param {number} id */
-    replace(id) {
+    #replace(id) {
         this.remove();
         this.#id = id;
     }
