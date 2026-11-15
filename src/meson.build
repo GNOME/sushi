@@ -57,7 +57,7 @@ conf.set('system_plugin_directory', plugindir)
 if with_webkitgtk
   conf.set(
     'const_web_process_extensions_directory',
-    'export const WEB_PROCESS_EXTENSIONS_DIRECTORY = \'@0@\''.format(
+    'export const WEB_PROCESS_EXTENSIONS_DIRECTORY = \'@0@\';'.format(
       web_process_extensions_dir,
     ),
   )
