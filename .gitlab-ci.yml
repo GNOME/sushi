@@ -78,17 +78,13 @@ update-fedora-image@x86_64:
         when: never
 
 potfile:
-  extends:
-    - .fdo.distribution-image@fedora
-    - .fedora-x86_64
+  image: quay.io/gnome_infrastructure/gnome-build-meta:gnomeos-devel-nightly
   stage: review
   script:
     - build-aux/check-potfiles.sh
 
 style check:
-  extends:
-    - .fdo.distribution-image@fedora
-    - .fedora-x86_64
+  image: quay.io/gnome_infrastructure/gnome-build-meta:gnomeos-devel-nightly
   stage: review
   script:
     - build-aux/format.sh
