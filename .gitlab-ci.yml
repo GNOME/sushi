@@ -22,6 +22,18 @@ variables:
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
     BUNDLE: "sushi-dev.flatpak"
 
+workflow:
+  rules:
+    # Run merge request pipelines, for main or release branches, for
+    # manually triggered pipelines (source "web"), and tags, but not for
+    # translation updates
+    - if: $CI_COMMIT_TITLE !~ /^Update.*translation$/ &&
+          ($CI_PIPELINE_SOURCE == "merge_request_event" ||
+           $CI_COMMIT_TAG && $CI_COMMIT_REF_PROTECTED ||
+           $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH ||
+           $CI_COMMIT_BRANCH =~ /^gnome-.*$/ ||
+           $CI_PIPELINE_SOURCE == "web")
+
 stages:
   - image
   - review
