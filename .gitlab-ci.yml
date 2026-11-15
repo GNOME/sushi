@@ -73,35 +73,21 @@ potfile:
   script:
     - build-aux/check-potfiles.sh
 
-blueprint-format:
+style check:
   extends:
     - .fdo.distribution-image@fedora
     - .fedora-x86_64
   stage: review
   script:
-    - build-aux/check-blueprint-format.sh
-
-meson-format:
-  extends:
-    - .fdo.distribution-image@fedora
-    - .fedora-x86_64
-  stage: review
-  script:
-    - build-aux/check-meson-format.sh
-
-eslint:
-  extends:
-    - .fdo.distribution-image@fedora
-    - .fedora-x86_64
-  stage: review
-  variables:
-    LINT_REPORT: eslint-report.xml
-  script:
-    - build-aux/run-eslint.sh --output-file $LINT_REPORT --format junit --stdout
+    - build-aux/format.sh
   artifacts:
-    reports:
-      junit: $LINT_REPORT
-    when: always
+    name: 'Style check artifacts'
+    when: on_failure
+    paths:
+      - 'style-check.diff'
+    expire_in: 14 days
+  rules:
+    - if: $CI_COMMIT_BRANCH !~ /^gnome-.*$/
 
 flatpak@x86_64:
   extends:
