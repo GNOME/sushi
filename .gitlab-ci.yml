@@ -3,6 +3,11 @@ include:
     file: 'templates/default-rules.yml'
   - project: "gnome/citemplates"
     file: "flatpak/flatpak_ci_initiative.yml"
+  - component: "gitlab.gnome.org/GNOME/citemplates/gnomeos-basic-ci@master"
+    inputs:
+      before-script: "npm clean-install --install-links"
+      job-stage: "test"
+      gobject-linter: "disabled"
   - component: "gitlab.gnome.org/GNOME/citemplates/release-service@master"
     inputs:
       job-stage: release
