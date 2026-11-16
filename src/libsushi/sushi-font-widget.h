@@ -4,8 +4,7 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
-#ifndef __SUSHI_FONT_WIDGET_H__
-#define __SUSHI_FONT_WIDGET_H__
+#pragma once
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
@@ -29,5 +28,3 @@ const gchar *sushi_font_widget_get_uri (SushiFontWidget *self);
 void sushi_font_widget_load (SushiFontWidget *self);
 
 G_END_DECLS
-
-#endif /* __SUSHI_FONT_WIDGET_H__ */

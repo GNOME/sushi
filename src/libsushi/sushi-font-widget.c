@@ -622,20 +622,11 @@ sushi_font_widget_finalize (GObject *object)
   g_clear_object (&self->cancellable);
 
   g_free (self->uri);
-
-  if (self->face != NULL) {
-    FT_Done_Face (self->face);
-    self->face = NULL;
-  }
-
+  g_clear_pointer (&self->face, FT_Done_Face);
   g_free (self->font_name);
   g_free (self->sample_string);
   g_free (self->face_contents);
-
-  if (self->library != NULL) {
-    FT_Done_FreeType (self->library);
-    self->library = NULL;
-  }
+  g_clear_pointer (&self->library, FT_Done_FreeType);
 
   G_OBJECT_CLASS (sushi_font_widget_parent_class)->finalize (object);
 }
@@ -665,13 +656,13 @@ sushi_font_widget_class_init (SushiFontWidgetClass *klass)
 
   properties[PROP_URI] =
     g_param_spec_string ("uri",
-                         "Uri", "Uri",
-                         NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                         NULL, NULL,
+                         NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_NAME);
   properties[PROP_FACE_INDEX] =
     g_param_spec_int ("face-index",
-                      "Face index", "Face index",
+                      NULL, NULL,
                       0, G_MAXINT,
-                      0, G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                      0, G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_NAME);
 
   signals[LOADED] =
     g_signal_new ("loaded",

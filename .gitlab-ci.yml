@@ -7,7 +7,8 @@ include:
     inputs:
       before-script: "npm clean-install --install-links"
       job-stage: "test"
-      gobject-linter: "disabled"
+      gobject-linter: "enabled"
+      gobject-linter-options: "-c build-aux/gobject-linter.toml"
   - component: "gitlab.gnome.org/GNOME/citemplates/release-service@master"
     inputs:
       job-stage: release

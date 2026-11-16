@@ -1,0 +1,8 @@
+[rules.type_style]
+level = "ignore"
+
+[rules.include_order]
+level = "ignore"
+
+[rules.property_enum_convention]
+level = "ignore"

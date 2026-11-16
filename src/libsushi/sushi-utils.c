@@ -275,6 +275,7 @@ sushi_convert_libreoffice (GFile               *file,
                            gpointer             user_data)
 {
   GTask *task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, sushi_convert_libreoffice);
   TaskData *data = g_new0 (TaskData, 1);
   data->file = g_object_ref (file);
 
@@ -346,6 +347,8 @@ sushi_discoverer_finalize (GObject *object)
     gst_discoverer_stop (self->disco);
 
   g_clear_object (&self->disco);
+
+  G_OBJECT_CLASS (sushi_discoverer_parent_class)->finalize (object);
 }
 
 const GstTagList *
