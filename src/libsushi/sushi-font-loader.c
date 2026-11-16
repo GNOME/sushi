@@ -142,6 +142,7 @@ sushi_new_ft_face_from_uri_async (FT_Library library,
 {
   FontLoadJob *job = font_load_job_new (library, uri, face_index, callback, user_data);
   g_autoptr(GTask) task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, sushi_new_ft_face_from_uri_async);
 
   g_task_set_task_data (task, job, (GDestroyNotify) font_load_job_free);
   g_task_run_in_thread (task, font_load_job);

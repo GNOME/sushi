@@ -4,8 +4,7 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
-#ifndef __SUSHI_UTILS_H__
-#define __SUSHI_UTILS_H__
+#pragma once
 
 #include <gdk/gdk.h>
 #include <gio/gio.h>
@@ -40,5 +39,3 @@ SushiDiscoverer * sushi_discoverer_new (const char *uri);
 const GstTagList * sushi_discoverer_get_tag_list (SushiDiscoverer *self);
 
 G_END_DECLS
-
-#endif /* __SUSHI_UTILS_H__ */

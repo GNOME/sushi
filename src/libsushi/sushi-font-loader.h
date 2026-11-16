@@ -4,8 +4,7 @@
  * Authors: Cosimo Cecchi <cosimoc@redhat.com>
  */
 
-#ifndef __SUSHI_FONT_LOADER_H__
-#define __SUSHI_FONT_LOADER_H__
+#pragma once
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -30,5 +29,3 @@ FT_Face sushi_new_ft_face_from_uri_finish (GAsyncResult *result,
 
 gchar * sushi_get_font_name (FT_Face face,
                              gboolean short_form);
-
-#endif /* __SUSHI_FONT_LOADER_H__ */
