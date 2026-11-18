@@ -5,7 +5,6 @@
  * Authors: Peter Eisenmann <p3732@getgoogleoff.me>
  */
 
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
@@ -100,7 +99,6 @@ export class HoverManager {
 
     #resetTimeout() {
         this.#revealTimeoutId.addTimeout(
-            GLib.PRIORITY_DEFAULT,
             1500,
             () => this._setRevealed(false));
     }

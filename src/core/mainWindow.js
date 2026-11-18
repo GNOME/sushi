@@ -69,9 +69,9 @@ export class MainWindow extends Adw.ApplicationWindow {
     #requestedDefaultWidth = MIN_WIDTH;
     #requestedDefaultHeight = MIN_HEIGHT;
     #scaledByUser = false;
-    #spinnerDelayId = new SourceId();
-    #loadingTimeoutId = new SourceId();
-    #presentTimeoutId = new SourceId();
+    #spinnerDelayId = new SourceId(GLib.PRIORITY_DEFAULT_IDLE);
+    #loadingTimeoutId = new SourceId(GLib.PRIORITY_DEFAULT_IDLE);
+    #presentTimeoutId = new SourceId(GLib.G_PRIORITY_HIGH);
     #retrySetDefaultSizeTimeoutId = new SourceId();
     #recentlyReceivedFocus = false;
 
@@ -168,7 +168,6 @@ export class MainWindow extends Adw.ApplicationWindow {
         } else {
             // Window is shown for the first time
             this.#presentTimeoutId.ensureTimeout(
-                GLib.G_PRIORITY_HIGH,
                 ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
                 () => this.present());
         }
@@ -281,7 +280,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             // Setting the size again after a short delay fixes that.
             if (this.#recentlyReceivedFocus) {
                 this.#retrySetDefaultSizeTimeoutId.addTimeout(
-                    GLib.G_PRIORITY_DEFAULT,
                     50,
                     () => this.set_default_size(this.#requestedDefaultWidth, this.#requestedDefaultHeight));
             }
@@ -363,11 +361,9 @@ export class MainWindow extends Adw.ApplicationWindow {
             this.#embedRenderer();
         } else {
             this.#spinnerDelayId.ensureTimeout(
-                GLib.PRIORITY_DEFAULT_IDLE,
                 ACCEPTABLE_USER_ACTION_DELAY_IN_MS,
                 () => this.#setDisplayedWidget(this._spinner));
             this.#loadingTimeoutId.ensureTimeout(
-                GLib.PRIORITY_DEFAULT_IDLE,
                 MAXIMUM_RENDERER_LOAD_DELAY_IN_MS,
                 () => this._reportError(new WrappedError(null)));
         }

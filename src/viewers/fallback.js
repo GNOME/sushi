@@ -125,7 +125,7 @@ const loadFile = (_fileToLoad, _fileInfo, _cancellable, _updateCallback) => {
     }
 
     function _queueUpdate() {
-        _timeoutId.ensureTimeout(GLib.PRIORITY_DEFAULT, 300, () => _sendUpdate());
+        _timeoutId.ensureTimeout(300, () => _sendUpdate());
     }
 
     function _unqueueUpdate() {
