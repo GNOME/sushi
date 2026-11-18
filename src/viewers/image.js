@@ -7,7 +7,6 @@
 import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Gly from 'gi://Gly';
@@ -100,7 +99,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
 
     /** @param {number} delayInMilliseconds */
     #queueNextFrame(delayInMilliseconds) {
-        this.#nextFrameTimeout.addTimeout(GLib.PRIORITY_DEFAULT, delayInMilliseconds, () => {
+        this.#nextFrameTimeout.addTimeout(delayInMilliseconds, () => {
             this.#showNextFrame().catch(error => {
                 if (!isCancelledError(error))
                     console.warn('Failed to show next image frame', error);

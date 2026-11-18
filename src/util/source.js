@@ -6,6 +6,11 @@ import GLib from 'gi://GLib';
 /** A wrapper around a GLib source ID that simplifies removing/replacing the source. */
 export class SourceId {
     #id = 0;
+    #priority;
+
+    constructor(priority = GLib.PRIORITY_DEFAULT) {
+        this.#priority = priority;
+    }
 
     /** @return {boolean} */
     get added() {
@@ -14,25 +19,23 @@ export class SourceId {
 
     /** Replaces the current source with one created using `GLib.timeout_add`.
      *  The source is removed after one invocation.
-     *  @param {number} priority
      *  @param {number} interval
      *  @param {() => void} fn */
-    addTimeout(priority, interval, fn) {
+    addTimeout(interval, fn) {
         const wrapper = () => {
             fn();
             this.#id = 0;
             return GLib.SOURCE_REMOVE;
         };
-        this.#replace(GLib.timeout_add(priority, interval, wrapper));
+        this.#replace(GLib.timeout_add(this.#priority, interval, wrapper));
     }
 
     /** Adds a timeout if one is not already set. See `addTimeout`.
-     *  @param {number} priority
      *  @param {number} interval
      *  @param {() => void} fn */
-    ensureTimeout(priority, interval, fn) {
+    ensureTimeout(interval, fn) {
         if (this.#id === 0)
-            this.addTimeout(priority, interval, fn);
+            this.addTimeout(interval, fn);
     }
 
     /** @param {number} id */
