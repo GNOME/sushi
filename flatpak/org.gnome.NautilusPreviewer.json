@@ -146,24 +146,6 @@
             ]
         },
         {
-            "name": "sourceview-5",
-            "buildsystem": "meson",
-            "config-opts": [
-                "-Dbuild-testsuite=false",
-                "-Ddocumentation=false",
-                "-Dinstall-tests=false",
-                "-Dintrospection=enabled",
-                "-Dvapi=false"
-            ],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/gtksourceview.git",
-                    "tag": "5.20.0"
-                }
-            ]
-        },
-        {
             "name": "sushi",
             "buildsystem": "meson",
             "config-opts": [
