@@ -10,7 +10,7 @@ For older versions or if you have a system installation of Sushi, you can use th
 ### Directly from the build directory
 ```sh
 $ meson setup -Dprofile=development builddir
-$ ninja -C builddir devel
+$ meson compile -C builddir devel
 ```
 
 ### Using Foundry
