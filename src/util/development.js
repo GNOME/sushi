@@ -33,7 +33,7 @@ export const checkInitDumping = () => {
         console.warn(`Heap dumps will be created every ${intervalSeconds} seconds in ${dumpDir} (SUSHI_DUMP_INTERVAL_S is set)`);
         GLib.mkdir_with_parents(dumpDir, 0o755);
         GLib.timeout_add(
-            GLib.G_PRIORITY_DEFAULT,
+            GLib.PRIORITY_DEFAULT,
             intervalSeconds * 1000,
             createDump
         );

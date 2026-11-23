@@ -71,7 +71,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     #scaledByUser = false;
     #spinnerDelayId = new SourceId(GLib.PRIORITY_DEFAULT_IDLE);
     #loadingTimeoutId = new SourceId(GLib.PRIORITY_DEFAULT_IDLE);
-    #presentTimeoutId = new SourceId(GLib.G_PRIORITY_HIGH);
+    #presentTimeoutId = new SourceId(GLib.PRIORITY_HIGH);
     #retrySetDefaultSizeTimeoutId = new SourceId();
     #recentlyReceivedFocus = false;
 
