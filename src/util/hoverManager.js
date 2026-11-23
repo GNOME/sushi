@@ -14,7 +14,8 @@ import {SourceId} from './source.js';
 const MIN_REVEAL_TIME_US = 1_500_000;
 
 export class HoverManager {
-    #controllers = [];
+    #titlebarController = null;
+    #revealerController = null;
     #revealTimeoutId = new SourceId();
     #lastTimestamp = 0;
 
@@ -31,22 +32,14 @@ export class HoverManager {
         );
         toolbarView.add_controller(motion);
 
-        this.addWidget(titlebar);
+        this.#titlebarController = this.#trackWidget(titlebar);
 
         this._toolbarView = toolbarView;
     }
 
     cleanup() {
-        this.#controllers = [];
+        this.#untrackRevealer();
         this.#revealTimeoutId.remove();
-    }
-
-    addWidget(widget) {
-        if (!widget)
-            return;
-        const motion = new Gtk.EventControllerMotion();
-        widget.add_controller(motion);
-        this.#controllers.push(motion);
     }
 
     setRevealer(revealer) {
@@ -55,9 +48,10 @@ export class HoverManager {
             return;
         }
 
+        this.#untrackRevealer();
         this._revealer = revealer;
         if (this._revealer)
-            this.addWidget(this._revealer.get_child());
+            this.#revealerController = this.#trackWidget(this._revealer.get_child());
     }
 
     setFullscreened(fullscreened) {
@@ -93,11 +87,28 @@ export class HoverManager {
         if (this.#lastTimestamp + MIN_REVEAL_TIME_US > now)
             return;
 
-        if (this.#controllers.some(controller => controller.contains_pointer))
+        if (this.#titlebarController?.contains_pointer ||
+            this.#revealerController?.contains_pointer)
             // Pointer is hovering an overlay widget
             return;
         this._setRevealed(false);
         this.#revealTimeoutId.remove();
+    }
+
+    /** @param {Gtk.Widget | null} widget
+     *  @return {Gtk.EventControllerMotion | null} */
+    #trackWidget(widget) {
+        if (!widget)
+            return null;
+        const motion = new Gtk.EventControllerMotion();
+        widget.add_controller(motion);
+        return motion;
+    }
+
+    #untrackRevealer() {
+        const controller = this.#revealerController;
+        this.#revealerController = null;
+        controller?.get_widget()?.remove_controller(controller);
     }
 
     #ensureTimeout() {
