@@ -18,6 +18,10 @@ import {registerWebProcessExtension} from '../util/webProcessExtensions.js';
 Gio._promisify(Gtk.UriLauncher.prototype, 'launch', 'launch_finish');
 Gio._promisify(Gtk.FileLauncher.prototype, 'launch', 'launch_finish');
 
+/* Prevent Webkit from stealing SIGUSR1, as GJS uses it for heap dumps */
+if (GLib.getenv('GJS_DEBUG_HEAP_OUTPUT'))
+    GLib.setenv('JSC_SIGNAL_FOR_GC', /* SIGUSR2 */ '12', /* overwrite */ true);
+
 let WebKit;
 try {
     WebKit = (await import('gi://WebKit?version=6.0')).default;
