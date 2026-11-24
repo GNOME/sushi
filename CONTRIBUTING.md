@@ -32,13 +32,26 @@ After opening the project in Builder, do the following:
 Now you can start Sushi from Builder.
 
 ## Find Leaks
-GJS provides a [script to analyse heap dumps](https://gitlab.gnome.org/GNOME/gjs/-/blob/master/tools/heapgraph.md).
-Automatic heap dumping can be activated by setting `SUSHI_DUMP_INTERVAL_S` to an interval at which sushi should do so.
-The heap dumps will be placed in `/tmp/sushi-dumps` and can be analyzed with the `heapgraph.py` script.
-An example that shows the difference between two app states:
+
+GJS writes a heap dump whenever it receives `SIGUSR1`.
+Define where these heaps are created by setting `GJS_DEBUG_HEAP_OUTPUT` to a file name prefix:
 
 ```sh
-python3 heapgraph.py --no-gray-roots --no-weak-maps --diff-heap /tmp/sushi-dumps/sushi1.heap /tmp/sushi-dumps/sushi2.heap GObject
+mkdir -p /tmp/sushi-dumps/
+GJS_DEBUG_HEAP_OUTPUT=/tmp/sushi-dumps/sushi meson compile -C builddir devel
 ```
+
+Sending `SIGUSR1` to the process will create a heap dump named `<prefix>.<pid>.<n>`.
+Send the signal with e.g. `pkill -USR1 -f org.gnome.NautilusPreviewer`.
+With GJS's [`heapgraph.py`](https://gitlab.gnome.org/GNOME/gjs/-/blob/master/tools/heapgraph.md)
+two heap dumps can be compared.
+Objects that are still reachable in the second dump but not in the first are (most likely) leaked.
+
+```sh
+$ python3 heapgraph.py --no-gray-roots --no-weak-maps --diff-heap /tmp/sushi-dumps/sushi.<pid>.0 /tmp/sushi-dumps/sushi.<pid>.1 GObject
+```
+
+When running in a Flatpak sandbox (Foundry, Builder), pass `GJS_DEBUG_HEAP_OUTPUT` the same way as
+`SUSHI_PERSIST` (see above) and pick a directory that you can reach from the host.
 
 More information on memory management in GJS can be found at <https://gjs.guide/guides/gjs/memory-management.html>
