@@ -54,12 +54,15 @@
             "config-opts": [
                 "-DBUILD_CPP_TESTS=OFF",
                 "-DBUILD_GTK_TESTS=OFF",
+                "-DBUILD_MANUAL_TESTS=OFF",
                 "-DENABLE_BOOST=OFF",
                 "-DENABLE_CPP=OFF",
                 "-DENABLE_GOBJECT_INTROSPECTION=OFF",
-                "-DENABLE_LIBOPENJPEG=openjpeg2",
+                "-DENABLE_LIBCURL=OFF",
+                "-DENABLE_LIBOPENJPEG=ON",
                 "-DENABLE_QT5=OFF",
-                "-DENABLE_QT6=OFF"
+                "-DENABLE_QT6=OFF",
+                "-DENABLE_UTILS=OFF"
             ],
             "cleanup": [
                 "/bin"
@@ -99,7 +102,9 @@
         {
             "name": "djvulibre",
             "config-opts": [
-                "--disable-desktopfiles"
+                "--disable-desktopfiles",
+                "--disable-xmltools",
+                "--disable-dependency-tracking"
             ],
             "cleanup": [
                 "/bin"
@@ -131,7 +136,7 @@
                 "-Dintrospection=enabled",
                 "-Dnautilus=false",
                 "-Dpreviewer=false",
-                "-Dshell=true",
+                "-Dshell=false",
                 "-Dtests=false",
                 "-Dthumbnailer=false",
                 "-Dtiff=disabled",
