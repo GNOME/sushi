@@ -29,11 +29,12 @@ const contentProviderFor = (gtype, object) => {
     return Gdk.ContentProvider.new_for_value(value);
 };
 
-export const Klass = class ImageRenderer extends Gtk.Picture {
+export const Klass = class ImageRenderer extends Adw.Bin {
     static {
         GObject.registerClass({
             Implements: [Renderer],
             Template: 'resource:///org/gnome/NautilusPreviewer/ui/image.ui',
+            InternalChildren: ['paintable'],
         }, this);
     }
 
@@ -74,7 +75,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
     }
 
     cleanup() {
-        this.set_paintable(null);
+        this._paintable.set_paintable(null);
     }
 
     async _loadFile(file) {
@@ -91,7 +92,7 @@ export const Klass = class ImageRenderer extends Gtk.Picture {
         const frame = await this._image.next_frame_async(this.cancellable);
         const texture = GlyGtk4.frame_get_texture(frame);
         this._texture = texture;
-        this.set_paintable(texture);
+        this._paintable.set_paintable(texture);
         const delayInMicroseconds = frame.get_delay();
         if (delayInMicroseconds)
             this.#queueNextFrame(Math.max(delayInMicroseconds / MICROS_PER_MILLIS, 1));

@@ -1,9 +1,12 @@
 using Gtk 4.0;
+using Adw 1;
 
-template $Gjs_ImageRenderer: Picture {
-  content-fit: scale_down;
-  halign: center;
-  valign: center;
+template $Gjs_ImageRenderer: Adw.Bin {
+  child: Picture paintable {
+    content-fit: scale_down;
+    halign: center;
+    valign: center;
+  };
 
   GestureClick {
     pressed => $_handleClick();
