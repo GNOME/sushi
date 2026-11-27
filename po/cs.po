@@ -4,32 +4,39 @@
 #
 # PW <petr.wudi@gmail.com>, 2011.
 # Marek Černocký <marek@manet.cz>, 2011, 2012, 2019, 2020.
-# Patrik Sivek <sivekpatrik@gmail.com>, 2026.
+# Patrik Sivek <patriksivek@gnome.org>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sushi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/sushi/issues/\n"
-"POT-Creation-Date: 2026-08-03 11:41+0000\n"
-"PO-Revision-Date: 2026-08-03 23:22+0200\n"
-"Last-Translator: Patrik Sivek <sivekpatrik@gmail.com>\n"
+"POT-Creation-Date: 2026-09-25 15:00+0000\n"
+"PO-Revision-Date: 2026-11-27 23:14+0100\n"
+"Last-Translator: Patrik Sivek <patriksivek@gnome.org>\n"
 "Language-Team: Czech\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 50.0\n"
+"X-Generator: Gtranslator 51.0\n"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9
+#. overwrite
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:2
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:9 src/core/main.js:31
 msgid "Sushi"
 msgstr "Sushi"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:10
+#: data/org.gnome.NautilusPreviewer.desktop.in.in:3
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:13
 msgid "Provide a facility for quickly viewing different kinds of files"
 msgstr "Poskytuje příslušenství pro rychlé náhledy různých druhů souborů"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:12
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:11
+msgid "The GNOME Project"
+msgstr "Projekt GNOME"
+
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:15
 msgid ""
 "Sushi is a file previewer for the GNOME desktop environment. It is an "
 "independent component that integrates with GNOME Files (Nautilus)."
@@ -38,23 +45,23 @@ msgstr ""
 "Jedná se o nezávislou komponentu, která se začleňuje do aplikace Soubory "
 "GNOME (Nautilus)."
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:18
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
 msgid "nautilus"
 msgstr "nautilus"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:19
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
 msgid "sushi"
 msgstr "sushi"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:20
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:23
 msgid "view"
 msgstr "zobrazení"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:21
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:24
 msgid "previewer"
 msgstr "náhlížení"
 
-#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:22
+#: data/org.gnome.NautilusPreviewer.metainfo.xml.in.in:25
 msgid "preview"
 msgstr "náhled"
 
@@ -82,31 +89,31 @@ msgstr "Vzdálený obsah je blokován z důvodu ochrany vašeho soukromí"
 msgid "_Show Remote Content"
 msgstr "Zobrazit vzdálený ob_sah"
 
-#: src/ui/mainWindow.blp:16
+#: src/ui/mainWindow.blp:17
 msgid "Toggle Fullscreen"
 msgstr "Přepnout režim celé obrazovky"
 
-#: src/ui/mainWindow.blp:22
+#: src/ui/mainWindow.blp:24
 msgid "Open"
 msgstr "Otevřít"
 
-#: src/ui/pdf.blp:48
+#: src/ui/pdf.blp:58
 msgid "Previous Page"
 msgstr "Předchozí stránka"
 
-#: src/ui/pdf.blp:70
+#: src/ui/pdf.blp:80
 msgid "Next Page"
 msgstr "Následující stránka"
 
-#: src/viewers/audio.js:261
+#: src/viewers/audio.js:272
 msgid "by"
 msgstr "od"
 
-#: src/viewers/audio.js:266
+#: src/viewers/audio.js:277
 msgid "from"
 msgstr "z"
 
-#: src/viewers/fallback.js:192
+#: src/viewers/fallback.js:185
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -114,11 +121,11 @@ msgstr[0] "%d položka"
 msgstr[1] "%d položky"
 msgstr[2] "%d položek"
 
-#: src/viewers/fallback.js:197
+#: src/viewers/fallback.js:190
 msgid "Empty"
 msgstr "Prázdné"
 
-#: src/viewers/pdf.js:134
+#: src/viewers/pdf.js:115
 #, javascript-format
 msgid "%d of %d"
 msgstr "%d z %d"
